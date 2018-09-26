@@ -1,9 +1,9 @@
-# ScxmlEditor
+**[Video overview](https://youtu.be/tL-NICRwggY)**
 
+# ScxmlEditor
 Powerful tool for creating, editing and debugging SCXML charts
 
 ## System requirments
-
 Windows 7, 8, 10
 
 You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
@@ -41,8 +41,17 @@ Are used to add scxml elements, zoom, align, change chart visual options, etc.
 ## Debugging
 **ScxmlEditor** has an ability to listen UDP commands (AfterEnter, BeforeEnter, AfterExit, BeforeExit, Step, BeforeExecContent, AfterExecContent, BeforeInvoke, AfterInvoke, BeforeUnInvoke, AfterUnInvoke, BeforeTakingTransition, AfterTakingTransition, StableConfiguration, BeforeProcessingEvent). **Enter** and **Exit** graphically highlight the corresponding states. You can also trace the execution of the chart and use breakpoints.
 
-### Example of debugging Qt Calculator-QML project
-Add the next source code to **calculator-qml.cpp**
+### Local debugging
+
+1. Based on [USCXML framework](https://github.com/tklab-tud/uscxml).
+Supports **null, lua** datamodels
+
+2. Based on [Qt SCXML framework](https://doc.qt.io/qt-5.9/qtscxml-index.html)
+Supports **null, ecmascript** datamodels
+
+### External debugging
+#### Example of debugging Qt Calculator-QML project
+Add the next [source code](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Include/scxmlexternmonitor.h) to **calculator-qml.cpp**
 ```
 #include "scxmlexternmonitor.h"
 
