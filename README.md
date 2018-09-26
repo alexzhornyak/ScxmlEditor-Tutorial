@@ -40,3 +40,21 @@ Are used to add scxml elements, zoom, align, change chart visual options, etc.
 
 ## Debugging
 **ScxmlEditor** has an ability to listen UDP commands (AfterEnter, BeforeEnter, AfterExit, BeforeExit, Step, BeforeExecContent, AfterExecContent, BeforeInvoke, AfterInvoke, BeforeUnInvoke, AfterUnInvoke, BeforeTakingTransition, AfterTakingTransition, StableConfiguration, BeforeProcessingEvent). **Enter** and **Exit** graphically highlight the corresponding states. You can also trace the execution of the chart and use breakpoints.
+
+### Example of debugging Qt Calculator-QML project
+Add the next source code to **calculator-qml.cpp**
+```
+#include "scxmlexternmonitor.h"
+
+g_ScxmlStateMachineName = "CalculatorStateMachine";
+qInstallMessageHandler(myMessageOutput);
+QLoggingCategory::setFilterRules("qt.scxml.statemachine=true");
+```
+![2018-09-26 10 47 00](https://user-images.githubusercontent.com/18611095/46064985-9207fa00-c179-11e8-99e6-e8a8d1035ce8.png)
+
+1. Select **Run**->**Start listening from external application**
+2. Select **Run**->**Run**
+3. Launch **Calculator-QML.exe**
+4. Use **Pause** for tracing (optionally)
+
+![2018-09-26 10 53 10](https://user-images.githubusercontent.com/18611095/46065349-87019980-c17a-11e8-979b-1ec93351e84e.png)
