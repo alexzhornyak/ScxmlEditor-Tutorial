@@ -8,6 +8,8 @@ Windows 7, 8, 10
 
 You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
+Latest version: **1.0.0.925**
+
 ![2018-09-24 16 23 50](https://user-images.githubusercontent.com/18611095/45954643-3e30d000-c016-11e8-8f79-205f770af667.png)
 
 ## Creating SCXML charts
