@@ -6,7 +6,7 @@ Powerful tool for creating, editing and debugging SCXML charts
 ## System requirments
 Windows 7, 8, 10
 
-**vcredist_x86.exe** must be installed before start application
+**vcredist_x86.exe** must be installed before starting application
 
 You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
