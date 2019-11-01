@@ -1,6 +1,6 @@
 **[Video overview](https://youtu.be/tL-NICRwggY)**
 
-# ScxmlEditor
+# Scxml Editor
 Powerful tool for creating, editing and debugging SCXML charts
 
 ## System requirments
