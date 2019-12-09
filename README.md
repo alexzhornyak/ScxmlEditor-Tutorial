@@ -19,7 +19,7 @@ Latest version: **2.0.0.1136**
 ![2018-09-24 16 23 50](https://user-images.githubusercontent.com/18611095/45954643-3e30d000-c016-11e8-8f79-205f770af667.png)
 
 ## Table of contents
-1. Inheritance
+[1. Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md)
 
 ## Creating SCXML charts
 
