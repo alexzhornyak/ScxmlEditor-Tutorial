@@ -10,7 +10,7 @@ You may use **'~'** sign for **inversion**.
 
 ![ExcludeConditions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ConditionalDefines_ExcludeConditions.png)
 
-## Example:
+## [Example:](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Examples/ConditionDebugDefine.sproj)
 
 **ProjectDefines == DEBUG**
 
