@@ -20,6 +20,7 @@ Latest version: **2.0.0.1189**
 
 ## Table of contents
 [1. Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md)
+
 [2. Conditional Project Definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md)
 
 ## Creating SCXML charts
