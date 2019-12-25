@@ -3,6 +3,8 @@
 # Scxml Editor 2.0
 Powerful tool for creating, editing and debugging SCXML charts.
 
+![MainExample](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/Inheritance_TV_example.gif)
+
 **New:** [Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md), visual chart splitting, [conditional project defines](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md), GIF maker etc.
 
 ## System requirments
