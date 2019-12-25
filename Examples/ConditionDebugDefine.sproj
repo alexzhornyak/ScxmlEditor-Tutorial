@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf8"?>
+<scxmlproject>
+	<scxmlunit path="ConditionalDefines\exclude_conditions_example.scxml" scxmlname="ScxmlRocket"/>
+</scxmlproject>
