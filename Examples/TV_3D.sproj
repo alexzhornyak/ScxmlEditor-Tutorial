@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf8"?>
+<scxmlproject>
+	<scxmlunit path="TV\TV_Base.scxml" scxmlname="TV">
+		<scxmlunit path="TV_3D.scxml" scxmlname="TV_3D" inherited="TV_Base.scxml" build_root="1"/>
+	</scxmlunit>
+</scxmlproject>

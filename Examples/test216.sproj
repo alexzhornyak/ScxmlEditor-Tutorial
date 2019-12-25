@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf8"?>
+<scxmlproject>
+	<scxmlunit path="Tests\test216.scxml" scxmlname="Scxml_Test216" build_root="1">
+		<scxmlunit path="test226sub1.scxml" scxmlname="Scxml_Test226sub1"/>
+	</scxmlunit>
+</scxmlproject>
