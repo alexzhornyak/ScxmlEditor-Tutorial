@@ -1,4 +1,4 @@
-# Conditional Project Defines
+# Conditional Project Definitions
 State Chart elements are able to be excluded from saving by keyword which is defined in project options.
 
 ![program_options](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ConditionalDefines_ProgramOptions.png)
