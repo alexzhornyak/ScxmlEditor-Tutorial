@@ -1,5 +1,9 @@
 # [Inheritance](https://github.com/alexzhornyak/SCXML-tutorial/blob/master/Doc/Inheritance_SCXML.md)
 
+An option to inherit from base chart.
+
+![example](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/Inheritance_TV_example.gif)
+
 ### 1. Create empty project
 ![empty_proj](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/Inheritance_empty_proj.png)
 
