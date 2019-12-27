@@ -25,6 +25,8 @@ Latest version: **2.0.0.1197**
 
 [2. Conditional Project Definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md)
 
+[3. Smart Switch Transitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/SmartSwitchTransitions.md)
+
 ## Creating SCXML charts
 
 ### Creating a unit
