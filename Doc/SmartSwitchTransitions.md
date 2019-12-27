@@ -25,7 +25,7 @@ And we offer to implement 1 visual transition that will produce such inversion d
 ![invert](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/SmartTransitions_invert.png)
 
 ## Output
-![out](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/SmartTransitions_example.png)
+![out](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/SmartTransitions_animated.gif)
 
 ```
 <scxml datamodel="lua" initial="Off" name="TV" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
