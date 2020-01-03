@@ -37,3 +37,86 @@ Press **Ctrl+B** or select menu **File->Build**
 You may review script execution summary in **CMD Output** tab
 
 ![cmd_output](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ProjectBuild_PostBuildCMDOutput.png)
+
+## Example
+
+### Source files for build:
+
+**state_machine_project_build.scxml**
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml datamodel="lua" name="ScxmlShape1" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+	<datamodel>
+		<data id="VarTable" src="dataVarTable.lua"/>
+	</datamodel>
+	<state id="StateShape1">
+		<onentry>
+			<foreach array="VarTable" index="index" item="item">
+				<log expr="string.format(&quot;[%s] %s&quot;, index, item)" label="INFO"/>
+			</foreach>
+		</onentry>
+		<transition event="Step" target="StateShape2"/>
+	</state>
+	<state id="StateShape2">
+		<invoke autoforward="true" id="ID_CHILD" src="include_state_machine.scxml"/>
+		<transition event="done.invoke.ID_CHILD" target="FinalShape1"/>
+	</state>
+	<final id="FinalShape1"/>
+</scxml>
+```
+**include_state_machine.scxml**
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml name="ScxmlChild" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+	<state id="StateChild">
+		<transition event="Step" target="FinalChild"/>
+	</state>
+	<final id="FinalChild"/>
+</scxml>
+```
+**dataVarTable.lua**
+```
+{
+    "Item 1",
+    "Item 2",
+    "Item 3"    
+}
+```
+
+### Build Output
+**state_machine_project_build.flat.scxml**
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<scxml datamodel="lua" name="ScxmlShape1" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+	<datamodel>
+		<data id="VarTable">{
+    &quot;Item 1&quot;,
+    &quot;Item 2&quot;,
+    &quot;Item 3&quot;    
+}
+		</data>
+	</datamodel>
+	<state id="StateShape1">
+		<onentry>
+			<foreach array="VarTable" index="index" item="item">
+				<log expr="string.format(&quot;[%s] %s&quot;, index, item)" label="INFO"/>
+			</foreach>
+		</onentry>
+		<transition event="Step" target="StateShape2"/>
+	</state>
+	<state id="StateShape2">
+		<invoke autoforward="true" id="ID_CHILD">
+			<content>
+				<scxml name="ScxmlChild" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+					<state id="StateChild">
+						<transition event="Step" target="FinalChild"/>
+					</state>
+					<final id="FinalChild"/>
+				</scxml>
+			</content>
+		</invoke>
+		<transition event="done.invoke.ID_CHILD" target="FinalShape1"/>
+	</state>
+	<final id="FinalShape1"/>
+</scxml>
+```
