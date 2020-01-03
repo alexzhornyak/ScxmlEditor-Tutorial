@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf8"?>
+<scxmlproject>
+	<scxmlunit path="ProjectBuildExample\state_machine_project_build.scxml" scxmlname="ScxmlShape1" build_root="1">
+		<scxmlunit path="include_state_machine.scxml" scxmlname="ScxmlChild" postsave_cmd="ECHO off
+ECHO &quot;$(UnitFileName) - was saved!&quot;"/>
+	</scxmlunit>
+</scxmlproject>
