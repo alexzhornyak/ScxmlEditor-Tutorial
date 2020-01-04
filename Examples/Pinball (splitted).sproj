@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf8"?>
+<scxmlproject>
+	<scxmlunit path="Pinball - split\pinball.scxml" scxmlname="Pinball" build_root="1" virtual_dependencies="include_guiControl.scxml
+include_internalState.scxml">
+		<scxmlunit path="include_guiControl.scxml" scxmlname="ScxmlguiControl" virtual="1"/>
+		<scxmlunit path="include_internalState.scxml" scxmlname="ScxmlinternalState" virtual="1" virtual_dependencies="include_logicalState.scxml">
+			<scxmlunit path="include_logicalState.scxml" scxmlname="ScxmllogicalState" virtual="1"/>
+		</scxmlunit>
+	</scxmlunit>
+</scxmlproject>

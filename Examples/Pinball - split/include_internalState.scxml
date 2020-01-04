@@ -1,0 +1,461 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<scxml datamodel="ecmascript" name="ScxmlinternalState" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+	<parallel id="internalState">
+		<state id="workflow">
+			<transition event="done.state.letter.*">
+				<if cond="In('hurryStateOff')">
+					<assign location="score" expr="score + 1000"/>
+					<elseif cond="In('hurryStateOn')"/>
+					<assign location="score" expr="score + 10000"/>
+				</if>
+				<raise event="updateLights"/>
+			</transition>
+			<transition event="done.state.lettersState">
+				<if cond="In('hurryStateOff')">
+					<assign location="score" expr="score + 100000"/>
+					<raise event="goToHurryOn"/>
+					<elseif cond="In('hurryStateOn')"/>
+					<assign location="score" expr="score + 1000000"/>
+					<raise event="goToHurryOff"/>
+					<raise event="goForJackpot"/>
+				</if>
+			</transition>
+			<transition event="updateLights">
+				<send event="updateScore">
+					<param name="highScore" expr="highScore"/>
+					<param name="score" expr="score"/>
+				</send>
+				<if cond="In('jackpotStateOn')">
+					<raise event="turnOnJackpot"/>
+					<else/>
+					<raise event="turnOffJackpot"/>
+				</if>
+				<if cond="In('lightImpulseOn')">
+					<if cond="In('offState')">
+						<raise event="turnOnLights"/>
+						<raise event="turnOnHurry"/>
+						<raise event="turnOnJackpot"/>
+						<raise event="turnOnGameOver"/>
+						<elseif cond="In('hurryStateOff')"/>
+						<raise event="updateLightsAccordingToLettersState"/>
+						<raise event="turnOffHurry"/>
+						<raise event="turnOffGameOver"/>
+						<else/>
+						<raise event="turnOnLights"/>
+						<raise event="turnOnHurry"/>
+						<raise event="turnOffGameOver"/>
+					</if>
+					<else/>
+					<if cond="In('offState')">
+						<raise event="turnOffLights"/>
+						<raise event="turnOffHurry"/>
+						<raise event="turnOffJackpot"/>
+						<elseif cond="In('hurryStateOff')"/>
+						<raise event="turnOffLights"/>
+						<else/>
+						<raise event="updateLightsAccordingToLettersState"/>
+					</if>
+					<raise event="turnOffHurry"/>
+					<raise event="turnOffGameOver"/>
+				</if>
+			</transition>
+			<transition event="updateLightsAccordingToLettersState">
+				<if cond="In('cLetterOn')">
+					<raise event="turnOnC"/>
+					<else/>
+					<raise event="turnOffC"/>
+				</if>
+				<if cond="In('rLetterOn')">
+					<raise event="turnOnR"/>
+					<else/>
+					<raise event="turnOffR"/>
+				</if>
+				<if cond="In('aLetterOn')">
+					<raise event="turnOnA"/>
+					<else/>
+					<raise event="turnOffA"/>
+				</if>
+				<if cond="In('zLetterOn')">
+					<raise event="turnOnZ"/>
+					<else/>
+					<raise event="turnOffZ"/>
+				</if>
+				<if cond="In('yLetterOn')">
+					<raise event="turnOnY"/>
+					<else/>
+					<raise event="turnOffY"/>
+				</if>
+			</transition>
+			<transition event="turnOnLights">
+				<raise event="turnOnC"/>
+				<raise event="turnOnR"/>
+				<raise event="turnOnA"/>
+				<raise event="turnOnZ"/>
+				<raise event="turnOnY"/>
+			</transition>
+			<transition event="turnOffLights">
+				<raise event="turnOffC"/>
+				<raise event="turnOffR"/>
+				<raise event="turnOffA"/>
+				<raise event="turnOffZ"/>
+				<raise event="turnOffY"/>
+			</transition>
+			<state id="lightImpulseGenerator">
+				<onentry>
+					<raise event="update"/>
+				</onentry>
+				<transition event="scheduleNewImpulse">
+					<cancel sendid="lightId"/>
+					<if cond="In('offState')">
+						<send event="lightImpulse" id="lightId" delay="1s"/>
+						<elseif cond="In('hurryStateOff')"/>
+						<send event="lightImpulse" id="lightId" delay="500ms"/>
+						<else/>
+						<send event="lightImpulse" id="lightId" delay="200ms"/>
+					</if>
+				</transition>
+				<transition event="update">
+					<raise event="scheduleNewImpulse"/>
+					<raise event="updateLights"/>
+				</transition>
+				<transition cond="In('lightImpulseOn')" event="lightImpulse" target="lightImpulseOff"/>
+				<transition cond="In('lightImpulseOff')" event="lightImpulse" target="lightImpulseOn"/>
+				<state id="lightImpulseOn"/>
+				<state id="lightImpulseOff"/>
+			</state>
+		</state>
+		<parallel id="logicalState">
+			<state id="letterState">
+				<parallel id="lettersState">
+					<transition event="resetLetters" target="lettersState"/>
+					<state id="letter.C">
+						<state id="cLetterOff">
+							<transition cond="In('onState')" event="cLetterTriggered" target="cLetterOn"/>
+						</state>
+						<final id="cLetterOn"/>
+					</state>
+					<state id="letter.R">
+						<state id="rLetterOff">
+							<transition cond="In('onState')" event="rLetterTriggered" target="rLetterOn"/>
+						</state>
+						<final id="rLetterOn"/>
+					</state>
+					<state id="letter.A">
+						<state id="aLetterOff">
+							<transition cond="In('onState')" event="aLetterTriggered" target="aLetterOn"/>
+						</state>
+						<final id="aLetterOn"/>
+					</state>
+					<state id="letter.Z">
+						<state id="zLetterOff">
+							<transition cond="In('onState')" event="zLetterTriggered" target="zLetterOn"/>
+						</state>
+						<final id="zLetterOn"/>
+					</state>
+					<state id="letter.Y">
+						<state id="yLetterOff">
+							<transition cond="In('onState')" event="yLetterTriggered" target="yLetterOn"/>
+						</state>
+						<final id="yLetterOn"/>
+					</state>
+				</parallel>
+			</state>
+			<state id="modeState">
+				<state id="offState">
+					<onentry>
+						<if cond="highScore &lt; score">
+							<assign expr="score" location="highScore"/>
+						</if>
+						<raise event="resetLetters"/>
+						<raise event="update"/>
+					</onentry>
+					<transition event="startTriggered" target="onState"/>
+				</state>
+				<parallel id="onState">
+					<onentry>
+						<assign expr="0" location="score"/>
+					</onentry>
+					<transition event="ballOutTriggered" target="offState"/>
+					<state id="hurryState">
+						<state id="hurryStateOff">
+							<onentry>
+								<raise event="resetLetters"/>
+								<raise event="update"/>
+							</onentry>
+							<transition event="goToHurryOn" target="hurryStateOn"/>
+						</state>
+						<state id="hurryStateOn">
+							<onentry>
+								<send delay="5s" event="goToHurryOff" id="hurryId"/>
+								<raise event="resetLetters"/>
+								<raise event="update"/>
+							</onentry>
+							<onexit>
+								<cancel sendid="hurryId"/>
+							</onexit>
+							<transition event="goToHurryOff" target="hurryStateOff"/>
+						</state>
+					</state>
+					<state id="jackpotState">
+						<state id="jackpotStateOff">
+							<onentry>
+								<raise event="update"/>
+							</onentry>
+							<transition event="goForJackpot" target="jackpotStateOn"/>
+						</state>
+						<state id="jackpotStateOn">
+							<onentry>
+								<raise event="update"/>
+							</onentry>
+						</state>
+					</state>
+				</parallel>
+			</state>
+		</parallel>
+	</parallel>
+</scxml><!--VFBGMAdUVHJlZUV4AARMZWZ0AhEDVG9wAhEFV2lkdGgDPgIGSGVpZ2h0A8cCCURlc2lnbmluZw
+kMR3JpZC5WaXNpYmxlCRFIb3J6U2Nyb2xsQmFyLk1heANjAhFIb3J6U2Nyb2xsQmFyLk1pbgL/F
+khvcnpTY3JvbGxCYXIuUGFnZVNpemUDKAIVSG9yelNjcm9sbEJhci5WaXNpYmxlCQtQYWdlLkhl
+aWdodAN+BQpQYWdlLldpZHRoA1gFD1BhZ2UuVXNlUHJpbnRlcggVU2VsZWN0ZWQuU2Nyb2xsVG9
+WaWV3CA5TaG93SGludFNoYXBlcwgRVmVydFNjcm9sbEJhci5NYXgDwgIRVmVydFNjcm9sbEJhci
+5NaW4C/xZWZXJ0U2Nyb2xsQmFyLlBhZ2VTaXplA7ECFVZlcnRTY3JvbGxCYXIuVmlzaWJsZQkZV
+mlldzNET3B0aW9ucy5Ib3Jpek9mZnNldAL4GFZpZXczRE9wdGlvbnMuVmVydE9mZnNldALuDVpv
+b20uUGVuLk1vZGUHCHBtTm90WG9yBUFsaWduBwhhbENsaWVudAhUYWJPcmRlcgIDDUV4cGxpY2l
+0V2lkdGgD6wEORXhwbGljaXRIZWlnaHQDjwIAC1RTY3htbFNoYXBlFVNjeG1sU2hhcGUxX18yRD
+Y5NjgyMghBdXRvU2l6ZQgJQmFja0NvbG9yBObm5gAPQnJ1c2guQmFja0NvbG9yBObm5gAJUm91b
+mRTaXplAgoOU2hhZG93LlZpc2libGUIAlgwAggCWDEDYgICWTACCAJZMQOhAghFeHBhbmRlZAkK
+SW1hZ2VJbmRleAcGdGlOb25lDlRleHQuVmVydEFsaWduBwZ2dGFUb3AMVGV4dC5TdHJpbmdzAQY
+SU2N4bWxpbnRlcm5hbFN0YXRlAAlTY3htbE5hbWUGElNjeG1saW50ZXJuYWxTdGF0ZQlEYXRhbW
+9kZWwGCmVjbWFzY3JpcHQAAA5UUGFyYWxsZWxTaGFwZQ5QYXJhbGxlbFNoYXBlMwhBdXRvU2l6Z
+QgJQmFja0NvbG9yBObm5gAPQnJ1c2guQmFja0NvbG9yBObm5gAJUm91bmRTaXplAgoOU2hhZG93
+LlZpc2libGUIC1RyYW5zcGFyZW50CQJYMAISAlgxA1ECAlkwAiYCWTEDkwIIRXhwYW5kZWQJCkl
+tYWdlSW5kZXgHBnRpTm9uZQZQYXJlbnQHIVRyZWVFZGl0b3IxLlNjeG1sU2hhcGUxX18yRDY5Nj
+gyMg5UZXh0LlZlcnRBbGlnbgcGdnRhVG9wDFRleHQuU3RyaW5ncwEGDWludGVybmFsU3RhdGUAA
+klkBg1pbnRlcm5hbFN0YXRlAAALVFN0YXRlU2hhcGUMU3RhdGVTaGFwZTQ0CEF1dG9TaXplCAlC
+YWNrQ29sb3IE5ubmAA9CcnVzaC5CYWNrQ29sb3IE5ubmAAlSb3VuZFNpemUCCg5TaGFkb3cuVml
+zaWJsZQgLVHJhbnNwYXJlbnQJAlgwAiECWDEDPQICWTADWgECWTEDhgIIRXhwYW5kZWQJCkltYW
+dlSW5kZXgHBnRpTm9uZQZQYXJlbnQHGlRyZWVFZGl0b3IxLlBhcmFsbGVsU2hhcGUzDlRleHQuV
+mVydEFsaWduBwZ2dGFUb3AMVGV4dC5TdHJpbmdzAQYId29ya2Zsb3cAAklkBgh3b3JrZmxvdwAA
+C1RTdGF0ZVNoYXBlDFN0YXRlU2hhcGU0NQhBdXRvU2l6ZQgJQmFja0NvbG9yBObm5gAPQnJ1c2g
+uQmFja0NvbG9yBObm5gAJUm91bmRTaXplAgoOU2hhZG93LlZpc2libGUIC1RyYW5zcGFyZW50CQ
+JYMAI1AlgxAykCAlkwA74BAlkxA3wCCEV4cGFuZGVkCQpJbWFnZUluZGV4BwZ0aU5vbmUGUGFyZ
+W50BxhUcmVlRWRpdG9yMS5TdGF0ZVNoYXBlNDQOVGV4dC5WZXJ0QWxpZ24HBnZ0YVRvcAxUZXh0
+LlN0cmluZ3MBBhVsaWdodEltcHVsc2VHZW5lcmF0b3IAAklkBhVsaWdodEltcHVsc2VHZW5lcmF
+0b3IAABJUT25FbnRyeVN0YXRlU2hhcGUST25FbnRyeVN0YXRlU2hhcGU3EUltYWdlLlRyYW5zcG
+FyZW50CQpJbWFnZS5EYXRhCvwBAAAJVFBuZ0ltYWdliVBORw0KGgoAAAANSUhEUgAAAA4AAAAOC
+AYAAAAfSC3RAAAACXBIWXMAAAsSAAALEgHS3X78AAAABGdBTUEAALGOfPtRkwAAAZRJREFUeNqd
+kk1LQkEUht9JS1PCWyC1kFZBEAbXRWSBoLSKNkFpRAuVwF/Quh/SRl20adWuVSi0SFqkiARR2qZ
+Sy/zIvH5d7zT3cs0wbeEL7xzmMM+ZYc4hlFKMIiKDhJBexg4fW73MvJpJMIcRQ6h7RGF+QDs4lo
+ssL1t5q2MJ0/MmCG0B6fsM0rEnvD7m5AIuVqDcD8bdezv8zAqHTDGDWkOA0BSU2O600bhrIneTT
+zDQ1gPXiI/dFFz3rv6BlMjcFkXQmAQhW/fTaxpSQK2DRDwBt7PAFQZCQqOOltjC+IcW0q0YFa+o
+SwH1G6TkPz7kkm+poZAsjaSB9qpTblzSaQU0bpLS7tE+l8ymhkJdGa5Rrl2ooGmbRGxbq85XUvg
+X0lQB4wOilXP1qTMe4jNbZoOtRR0rVxkIyTK+ABMl+Itn6ufI7TAfID61YObzkzXlxn7pP4GpHB
+Lvp7/bwcA5LzgyhojGpOfLBtY3HYUICbomMPnFXEWCSnDlwv0DoMoSgI9tvSDqyFEGUISfTwaM3
+Cj6BmO5JfTInnBwAAAAAElFTkSuQmCCDlNoYWRvdy5WaXNpYmxlCAhFeHBhbmRlZAkKSW1hZ2VJ
+bmRleAcGdGlOb25lBlBhcmVudAcYVHJlZUVkaXRvcjEuU3RhdGVTaGFwZTQ1DFRleHQuU3RyaW5
+ncwEGB29uZW50cnkAAAALVFJhaXNlU2hhcGULUmFpc2VTaGFwZTkRSW1hZ2UuVHJhbnNwYXJlbn
+QJCkltYWdlLkRhdGEKZwMAAAlUUG5nSW1hZ2WJUE5HDQoaCgAAAA1JSERSAAAAEAAAABAIBgAAA
+B/z/2EAAAAJcEhZcwAACxMAAAsTAQCanBgAAAMPSURBVHjabZNbSBRRGMf/Z2Z35uxotqlJ7kNU
+a1mJkZC+BF0oH4LuPZRFvVZkpruWXSA1qJDK6qEIowsVFUQUBBFUCj10WR8UIVfLS1K6KYZr6s6
+Z3Z2dzhw3K2jgzJyZc77fnO/7/z/SdLRoRJs5nwLTABCIK/mIDLUxMzqeTYnBJvh6nXwGQ8QDB2
+JgcOGEeRgkUL+HFVZcUYEmHmLwEcfvK1B/yzD6ut0RJZ1dlGrxheTwsIhYmwJ8uLBPL/Kt4yfYN
+BlriFUgAbTcmM1C3z3uy2q10UvmIxVjsJLH+wuwnwNWUkR3iGBmKDCiFuAEmhsWstrBuuyvTi/T
+MA7FIYMQG2/xtzScNP0cUM8BFSsowiUieMP1RnhmTOebLSTiEnTLxeyc7cJ8HjSYHjWzo8TFUvh
+pqszjSUA5BwyUYDTiRMWrFtzcn4cBnqosTdUTEp/vvfrJaP1mujPkCVaRqMYcq4sX8XIpKyxbra
+J3G8Z1Cb43rTi5Ox+P2wGXc6qeUPn89rMeNvpj2H0ENcZc6zNPYxpI09HlI1pmCleqD3oUuJf1i
+B7flY8HbYD2F8DhAJ6+bGe7+0uzvXI3iyAFskMBee1bQs24BY1E0Rn30reLz4f82xfRa++BVOUP
+QJaBd+8+4rTrEiPEycs46RPyyl8g5LFlOpOoUQtyMsPlm+fRukZuLfoHYNegs70TDw/2YFbaqPj
+WzH1C3voXCIPYRhmOp9DiXDlcumWBeuw54KYQf7JvhJ+gJxjE2XVrsNIbgi1M4KaXkUeVxcKitl
+UVS6eaKocy0lQ6OMZllJygUoxKXIp4woQVm0DD1p3In9klTBe4n8vIncrNOCVf4Gn8FFonLFDTN
+BGTU+GJBam/oCNUuD6PBjsOIENRkJfeAynKbWpywBMOuFu5Eaflc6DQk31kCXlsmQ7pVapnzrLw
+Ut9aiv6dAFdJbEu2TODFfwA6NGEQ2yiaMUTVnI3horJVKrq3ibxFn9gAPm9+nWv8A4jzBsiyBoR
+FbasyS6WykhqyfQLuE1HRxGRR7RGZUNkvmt1UlwxyVKwAAAAASUVORK5CYIIOU2hhZG93LlZpc2
+libGUICkltYWdlSW5kZXgHBnRpTm9uZQZQYXJlbnQHHlRyZWVFZGl0b3IxLk9uRW50cnlTdGF0Z
+VNoYXBlNwxUZXh0LlN0cmluZ3MBBg5yYWlzZSB7dXBkYXRlfQAFRXZlbnQGBnVwZGF0ZQAAC1RT
+dGF0ZVNoYXBlDFN0YXRlU2hhcGU0NghBdXRvU2l6ZQgJQmFja0NvbG9yBObm5gALQnJ1c2guQ29
+sb3IEgNb/AA9CcnVzaC5CYWNrQ29sb3IE5ubmAAVDb2xvcgSA1v8ACVJvdW5kU2l6ZQIKDlNoYW
+Rvdy5WaXNpYmxlCAVTdHlsZQcRdHNzUm91bmRSZWN0YW5nbGUCWDADpwECWDEDCwICWTAD+gECW
+TEDLAIIRXhwYW5kZWQJCkltYWdlSW5kZXgHBnRpTm9uZQZQYXJlbnQHGFRyZWVFZGl0b3IxLlN0
+YXRlU2hhcGU0NQxUZXh0LlN0cmluZ3MBBg5saWdodEltcHVsc2VPbgACSWQGDmxpZ2h0SW1wdWx
+zZU9uAAALVFN0YXRlU2hhcGUMU3RhdGVTaGFwZTQ3CEF1dG9TaXplCAlCYWNrQ29sb3IE5ubmAA
+tCcnVzaC5Db2xvcgSA1v8AD0JydXNoLkJhY2tDb2xvcgTm5uYABUNvbG9yBIDW/wAJUm91bmRTa
+XplAgoOU2hhZG93LlZpc2libGUIBVN0eWxlBxF0c3NSb3VuZFJlY3RhbmdsZQJYMAI/AlgxA6MA
+AlkwA/oBAlkxAywCCEV4cGFuZGVkCQpJbWFnZUluZGV4BwZ0aU5vbmUGUGFyZW50BxhUcmVlRWR
+pdG9yMS5TdGF0ZVNoYXBlNDUMVGV4dC5TdHJpbmdzAQYPbGlnaHRJbXB1bHNlT2ZmAAJJZAYPbG
+lnaHRJbXB1bHNlT2ZmAAANVFZpcnR1YWxTaGFwZRdWaXJ0dWFsU2hhcGUyX181QzZFNzNEMwhBd
+XRvU2l6ZQgJQmFja0NvbG9yBObm5gALQnJ1c2guQ29sb3IHCGNsU2lsdmVyD0JydXNoLkJhY2tD
+b2xvcgTm5uYABUNvbG9yBwhjbFNpbHZlcglSb3VuZFNpemUCCg5TaGFkb3cuVmlzaWJsZQgFU3R
+5bGUHEXRzc1JvdW5kUmVjdGFuZ2xlAlgwAiECWDEDPQICWTACQwJZMQJ4CEV4cGFuZGVkCQpJbW
+FnZUluZGV4BwZ0aU5vbmUGUGFyZW50BxpUcmVlRWRpdG9yMS5QYXJhbGxlbFNoYXBlMwxUZXh0L
+lN0cmluZ3MBBgxsb2dpY2FsU3RhdGUAAklkBgxsb2dpY2FsU3RhdGUDU3JjBhppbmNsdWRlX2xv
+Z2ljYWxTdGF0ZS5zY3htbAAAD1RUcmVlQ29ubmVjdGlvbh9TdGF0ZVNoYXBlNDVfT25FbnRyeVN
+0YXRlU2hhcGU3CUZyb21TaGFwZQcYVHJlZUVkaXRvcjEuU3RhdGVTaGFwZTQ1B1RvU2hhcGUHHl
+RyZWVFZGl0b3IxLk9uRW50cnlTdGF0ZVNoYXBlNwAAD1RUcmVlQ29ubmVjdGlvbh5PbkVudHJ5U
+3RhdGVTaGFwZTdfUmFpc2VTaGFwZTkJRnJvbVNoYXBlBx5UcmVlRWRpdG9yMS5PbkVudHJ5U3Rh
+dGVTaGFwZTcHVG9TaGFwZQcXVHJlZUVkaXRvcjEuUmFpc2VTaGFwZTkAABdUU3RhdGVNYWNoaW5
+lQ29ubmVjdGlvbhBUcmVlQ29ubmVjdGlvbjI4E0Fycm93RnJvbS5CYWNrQ29sb3IHB2NsV2hpdG
+UZQXJyb3dGcm9tLkJydXNoLkJhY2tDb2xvcgcHY2xXaGl0ZQ5BcnJvd0Zyb20uU2l6ZQIKD0Fyc
+m93RnJvbS5TdHlsZQcJY2FzQ2lyY2xlEUFycm93VG8uQmFja0NvbG9yBwdjbEJsYWNrF0Fycm93
+VG8uQnJ1c2guQmFja0NvbG9yBwdjbEJsYWNrDEFycm93VG8uU2l6ZQIKDEJvcmRlci5Db2xvcgc
+GY2xCbHVlEEJvcmRlci5TbWFsbERvdHMIGEZvcm1hdC5HcmFkaWVudC5FbmRDb2xvcgcIY2xJbm
+ZvQmsaRm9ybWF0LkdyYWRpZW50LlN0YXJ0Q29sb3IHCGNsSW5mb0JrF0Zvcm1hdC5HcmFkaWVud
+C5WaXNpYmxlCRVGb3JtYXQuU2hhZG93LlZpc2libGUIBVN0eWxlBwZjc0xpbmUJRnJvbVNoYXBl
+BxhUcmVlRWRpdG9yMS5TdGF0ZVNoYXBlNDUHVG9TaGFwZQcYVHJlZUVkaXRvcjEuU3RhdGVTaGF
+wZTQ1ClRleHQuQW5nbGUCWgxUZXh0LlN0cmluZ3MBBhJzY2hlZHVsZU5ld0ltcHVsc2UGLDxjYW
+5jZWwgc2VuZGlkPSJsaWdodElkIi8+DQo8aWYgY29uZD0iSW4gLi4uAAVFdmVudAYSc2NoZWR1b
+GVOZXdJbXB1bHNlA1hNTAwZAQAAPGNhbmNlbCBzZW5kaWQ9ImxpZ2h0SWQiLz4NCjxpZiBjb25k
+PSJJbignb2ZmU3RhdGUnKSI+DQoJPHNlbmQgZXZlbnQ9ImxpZ2h0SW1wdWxzZSIgaWQ9ImxpZ2h
+0SWQiIGRlbGF5PSIxcyIvPg0KCTxlbHNlaWYgY29uZD0iSW4oJ2h1cnJ5U3RhdGVPZmYnKSIvPg
+0KCTxzZW5kIGV2ZW50PSJsaWdodEltcHVsc2UiIGlkPSJsaWdodElkIiBkZWxheT0iNTAwbXMiL
+z4NCgk8ZWxzZS8+DQoJPHNlbmQgZXZlbnQ9ImxpZ2h0SW1wdWxzZSIgaWQ9ImxpZ2h0SWQiIGRl
+bGF5PSIyMDBtcyIvPg0KPC9pZj4GUGFyYW1zDgAGUG9pbnRzAQIEAgQCKQIAAl4DvgECBAIEAgA
+C3gI1A5wBAgQCBAP0AQLeAykCA5wBAgQCBAPLAQIAAwACA74BAAAAF1RTdGF0ZU1hY2hpbmVDb2
+5uZWN0aW9uEFRyZWVDb25uZWN0aW9uMjkTQXJyb3dGcm9tLkJhY2tDb2xvcgcHY2xXaGl0ZRlBc
+nJvd0Zyb20uQnJ1c2guQmFja0NvbG9yBwdjbFdoaXRlDkFycm93RnJvbS5TaXplAgoPQXJyb3dG
+cm9tLlN0eWxlBwljYXNDaXJjbGURQXJyb3dUby5CYWNrQ29sb3IHB2NsQmxhY2sXQXJyb3dUby5
+CcnVzaC5CYWNrQ29sb3IHB2NsQmxhY2sMQXJyb3dUby5TaXplAgoMQm9yZGVyLkNvbG9yBwZjbE
+JsdWUQQm9yZGVyLlNtYWxsRG90cwgYRm9ybWF0LkdyYWRpZW50LkVuZENvbG9yBwhjbEluZm9Ca
+xpGb3JtYXQuR3JhZGllbnQuU3RhcnRDb2xvcgcIY2xJbmZvQmsXRm9ybWF0LkdyYWRpZW50LlZp
+c2libGUJFUZvcm1hdC5TaGFkb3cuVmlzaWJsZQgFU3R5bGUHBmNzTGluZQlGcm9tU2hhcGUHGFR
+yZWVFZGl0b3IxLlN0YXRlU2hhcGU0NQdUb1NoYXBlBxhUcmVlRWRpdG9yMS5TdGF0ZVNoYXBlND
+UKVGV4dC5BbmdsZQJaDFRleHQuU3RyaW5ncwEGBnVwZGF0ZQYsPHJhaXNlIGV2ZW50PSJzY2hlZ
+HVsZU5ld0ltcHVsc2UiLz4NCjxyYSAuLi4ABUV2ZW50BgZ1cGRhdGUDWE1MBkI8cmFpc2UgZXZl
+bnQ9InNjaGVkdWxlTmV3SW1wdWxzZSIvPg0KPHJhaXNlIGV2ZW50PSJ1cGRhdGVMaWdodHMiLz4
+GUGFyYW1zDgAGUG9pbnRzAQIEAgQCUgIAA4cAA74BAgQCBAIAArwCNQN6AQIEAgQD9AECvAMpAg
+N6AQIEAgQDogECAAPXAQO+AQAAABdUU3RhdGVNYWNoaW5lQ29ubmVjdGlvbhBUcmVlQ29ubmVjd
+GlvbjMwE0Fycm93RnJvbS5CYWNrQ29sb3IHB2NsV2hpdGUZQXJyb3dGcm9tLkJydXNoLkJhY2tD
+b2xvcgcHY2xXaGl0ZQ5BcnJvd0Zyb20uU2l6ZQIKD0Fycm93RnJvbS5TdHlsZQcJY2FzQ2lyY2x
+lEUFycm93VG8uQmFja0NvbG9yBwdjbEJsYWNrF0Fycm93VG8uQnJ1c2guQmFja0NvbG9yBwdjbE
+JsYWNrDEFycm93VG8uU2l6ZQIKDEJvcmRlci5Db2xvcgcFY2xSZWQMQm9yZGVyLlN0eWxlBwZwc
+0Rhc2gMQm9yZGVyLldpZHRoAgIQQm9yZGVyLlNtYWxsRG90cwgYRm9ybWF0LkdyYWRpZW50LkVu
+ZENvbG9yBwhjbEluZm9CaxpGb3JtYXQuR3JhZGllbnQuU3RhcnRDb2xvcgcIY2xJbmZvQmsXRm9
+ybWF0LkdyYWRpZW50LlZpc2libGUJFUZvcm1hdC5TaGFkb3cuVmlzaWJsZQgFU3R5bGUHBmNzTG
+luZQlGcm9tU2hhcGUHGFRyZWVFZGl0b3IxLlN0YXRlU2hhcGU0NQdUb1NoYXBlBxhUcmVlRWRpd
+G9yMS5TdGF0ZVNoYXBlNDcKVGV4dC5BbmdsZQJaDFRleHQuU3RyaW5ncwEGDGxpZ2h0SW1wdWxz
+ZQYUSW4oJ2xpZ2h0SW1wdWxzZU9uJykABUV2ZW50BgxsaWdodEltcHVsc2UJQ29uZGl0aW9uBhR
+JbignbGlnaHRJbXB1bHNlT24nKQZQYXJhbXMOAAAAF1RTdGF0ZU1hY2hpbmVDb25uZWN0aW9uEF
+RyZWVDb25uZWN0aW9uMzETQXJyb3dGcm9tLkJhY2tDb2xvcgcHY2xXaGl0ZRlBcnJvd0Zyb20uQ
+nJ1c2guQmFja0NvbG9yBwdjbFdoaXRlDkFycm93RnJvbS5TaXplAgoPQXJyb3dGcm9tLlN0eWxl
+BwljYXNDaXJjbGURQXJyb3dUby5CYWNrQ29sb3IHB2NsQmxhY2sXQXJyb3dUby5CcnVzaC5CYWN
+rQ29sb3IHB2NsQmxhY2sMQXJyb3dUby5TaXplAgoMQm9yZGVyLkNvbG9yBwVjbFJlZAxCb3JkZX
+IuU3R5bGUHBnBzRGFzaAxCb3JkZXIuV2lkdGgCAhBCb3JkZXIuU21hbGxEb3RzCBhGb3JtYXQuR
+3JhZGllbnQuRW5kQ29sb3IHCGNsSW5mb0JrGkZvcm1hdC5HcmFkaWVudC5TdGFydENvbG9yBwhj
+bEluZm9CaxdGb3JtYXQuR3JhZGllbnQuVmlzaWJsZQkVRm9ybWF0LlNoYWRvdy5WaXNpYmxlCAV
+TdHlsZQcGY3NMaW5lCUZyb21TaGFwZQcYVHJlZUVkaXRvcjEuU3RhdGVTaGFwZTQ1B1RvU2hhcG
+UHGFRyZWVFZGl0b3IxLlN0YXRlU2hhcGU0NgpUZXh0LkFuZ2xlAloMVGV4dC5TdHJpbmdzAQYMb
+GlnaHRJbXB1bHNlBhVJbignbGlnaHRJbXB1bHNlT2ZmJykABUV2ZW50BgxsaWdodEltcHVsc2UJ
+Q29uZGl0aW9uBhVJbignbGlnaHRJbXB1bHNlT2ZmJykGUGFyYW1zDgAAABdUU3RhdGVNYWNoaW5
+lQ29ubmVjdGlvbhBUcmVlQ29ubmVjdGlvbjMyE0Fycm93RnJvbS5CYWNrQ29sb3IHB2NsV2hpdG
+UZQXJyb3dGcm9tLkJydXNoLkJhY2tDb2xvcgcHY2xXaGl0ZQ5BcnJvd0Zyb20uU2l6ZQIKD0Fyc
+m93RnJvbS5TdHlsZQcJY2FzQ2lyY2xlEUFycm93VG8uQmFja0NvbG9yBwdjbEJsYWNrF0Fycm93
+VG8uQnJ1c2guQmFja0NvbG9yBwdjbEJsYWNrDEFycm93VG8uU2l6ZQIKDEJvcmRlci5Db2xvcgc
+GY2xCbHVlEEJvcmRlci5TbWFsbERvdHMIGEZvcm1hdC5HcmFkaWVudC5FbmRDb2xvcgcIY2xJbm
+ZvQmsaRm9ybWF0LkdyYWRpZW50LlN0YXJ0Q29sb3IHCGNsSW5mb0JrF0Zvcm1hdC5HcmFkaWVud
+C5WaXNpYmxlCRVGb3JtYXQuU2hhZG93LlZpc2libGUIBVN0eWxlBwZjc0xpbmUJRnJvbVNoYXBl
+BxhUcmVlRWRpdG9yMS5TdGF0ZVNoYXBlNDQHVG9TaGFwZQcYVHJlZUVkaXRvcjEuU3RhdGVTaGF
+wZTQ0ClRleHQuQW5nbGUCWgxUZXh0LlN0cmluZ3MBBhNkb25lLnN0YXRlLmxldHRlci4qBiw8aW
+YgY29uZD0iSW4oJ2h1cnJ5U3RhdGVPZmYnKSI+DQo8YXNzaWduIC4uLgAFRXZlbnQGE2RvbmUuc
+3RhdGUubGV0dGVyLioDWE1MBs48aWYgY29uZD0iSW4oJ2h1cnJ5U3RhdGVPZmYnKSI+DQoJPGFz
+c2lnbiBsb2NhdGlvbj0ic2NvcmUiIGV4cHI9InNjb3JlICsgMTAwMCIvPg0KCTxlbHNlaWYgY29
+uZD0iSW4oJ2h1cnJ5U3RhdGVPbicpIi8+DQoJPGFzc2lnbiBsb2NhdGlvbj0ic2NvcmUiIGV4cH
+I9InNjb3JlICsgMTAwMDAiLz4NCjwvaWY+DQo8cmFpc2UgZXZlbnQ9InVwZGF0ZUxpZ2h0cyIvP
+gZQYXJhbXMOAAZQb2ludHMBAgQCBAITAgACNANaAQIEAgQCAALeAiEDOAECBAIEAxwCAt4DPQID
+OAECBAIEAwkCAgADKgIDWgEAAAAXVFN0YXRlTWFjaGluZUNvbm5lY3Rpb24QVHJlZUNvbm5lY3R
+pb24zMxNBcnJvd0Zyb20uQmFja0NvbG9yBwdjbFdoaXRlGUFycm93RnJvbS5CcnVzaC5CYWNrQ2
+9sb3IHB2NsV2hpdGUOQXJyb3dGcm9tLlNpemUCCg9BcnJvd0Zyb20uU3R5bGUHCWNhc0NpcmNsZ
+RFBcnJvd1RvLkJhY2tDb2xvcgcHY2xCbGFjaxdBcnJvd1RvLkJydXNoLkJhY2tDb2xvcgcHY2xC
+bGFjawxBcnJvd1RvLlNpemUCCgxCb3JkZXIuQ29sb3IHBmNsQmx1ZRBCb3JkZXIuU21hbGxEb3R
+zCBhGb3JtYXQuR3JhZGllbnQuRW5kQ29sb3IHCGNsSW5mb0JrGkZvcm1hdC5HcmFkaWVudC5TdG
+FydENvbG9yBwhjbEluZm9CaxdGb3JtYXQuR3JhZGllbnQuVmlzaWJsZQkVRm9ybWF0LlNoYWRvd
+y5WaXNpYmxlCAVTdHlsZQcGY3NMaW5lCUZyb21TaGFwZQcYVHJlZUVkaXRvcjEuU3RhdGVTaGFw
+ZTQ0B1RvU2hhcGUHGFRyZWVFZGl0b3IxLlN0YXRlU2hhcGU0NApUZXh0LkFuZ2xlAloMVGV4dC5
+TdHJpbmdzAQYXZG9uZS5zdGF0ZS5sZXR0ZXJzU3RhdGUGLDxpZiBjb25kPSJJbignaHVycnlTdG
+F0ZU9mZicpIj4NCjxhc3NpZ24gLi4uAAVFdmVudAYXZG9uZS5zdGF0ZS5sZXR0ZXJzU3RhdGUDW
+E1MDBIBAAA8aWYgY29uZD0iSW4oJ2h1cnJ5U3RhdGVPZmYnKSI+DQoJPGFzc2lnbiBsb2NhdGlv
+bj0ic2NvcmUiIGV4cHI9InNjb3JlICsgMTAwMDAwIi8+DQoJPHJhaXNlIGV2ZW50PSJnb1RvSHV
+ycnlPbiIvPg0KCTxlbHNlaWYgY29uZD0iSW4oJ2h1cnJ5U3RhdGVPbicpIi8+DQoJPGFzc2lnbi
+Bsb2NhdGlvbj0ic2NvcmUiIGV4cHI9InNjb3JlICsgMTAwMDAwMCIvPg0KCTxyYWlzZSBldmVud
+D0iZ29Ub0h1cnJ5T2ZmIi8+DQoJPHJhaXNlIGV2ZW50PSJnb0ZvckphY2twb3QiLz4NCjwvaWY+
+BlBhcmFtcw4ABlBvaW50cwECBAIEAiYCAAJHA1oBAgQCBAIAArwCIQMWAQIEAgQDHAICvAM9AgM
+WAQIEAgQD9gECAAMXAgNaAQAAABdUU3RhdGVNYWNoaW5lQ29ubmVjdGlvbhBUcmVlQ29ubmVjdG
+lvbjM0E0Fycm93RnJvbS5CYWNrQ29sb3IHB2NsV2hpdGUZQXJyb3dGcm9tLkJydXNoLkJhY2tDb
+2xvcgcHY2xXaGl0ZQ5BcnJvd0Zyb20uU2l6ZQIKD0Fycm93RnJvbS5TdHlsZQcJY2FzQ2lyY2xl
+EUFycm93VG8uQmFja0NvbG9yBwdjbEJsYWNrF0Fycm93VG8uQnJ1c2guQmFja0NvbG9yBwdjbEJ
+sYWNrDEFycm93VG8uU2l6ZQIKDEJvcmRlci5Db2xvcgcGY2xCbHVlEEJvcmRlci5TbWFsbERvdH
+MIGEZvcm1hdC5HcmFkaWVudC5FbmRDb2xvcgcIY2xJbmZvQmsaRm9ybWF0LkdyYWRpZW50LlN0Y
+XJ0Q29sb3IHCGNsSW5mb0JrF0Zvcm1hdC5HcmFkaWVudC5WaXNpYmxlCRVGb3JtYXQuU2hhZG93
+LlZpc2libGUIBVN0eWxlBwZjc0xpbmUJRnJvbVNoYXBlBxhUcmVlRWRpdG9yMS5TdGF0ZVNoYXB
+lNDQHVG9TaGFwZQcYVHJlZUVkaXRvcjEuU3RhdGVTaGFwZTQ0ClRleHQuQW5nbGUCWgxUZXh0Ll
+N0cmluZ3MBBgx1cGRhdGVMaWdodHMGLDxzZW5kIGV2ZW50PSJ1cGRhdGVTY29yZSI+DQo8cGFyY
+W0gbmFtZT0gLi4uAAVFdmVudAYMdXBkYXRlTGlnaHRzA1hNTAw5BAAAPHNlbmQgZXZlbnQ9InVw
+ZGF0ZVNjb3JlIj4NCgk8cGFyYW0gbmFtZT0iaGlnaFNjb3JlIiBleHByPSJoaWdoU2NvcmUiLz4
+NCgk8cGFyYW0gbmFtZT0ic2NvcmUiIGV4cHI9InNjb3JlIi8+DQo8L3NlbmQ+DQo8aWYgY29uZD
+0iSW4oJ2phY2twb3RTdGF0ZU9uJykiPg0KCTxyYWlzZSBldmVudD0idHVybk9uSmFja3BvdCIvP
+g0KCTxlbHNlLz4NCgk8cmFpc2UgZXZlbnQ9InR1cm5PZmZKYWNrcG90Ii8+DQo8L2lmPg0KPGlm
+IGNvbmQ9IkluKCdsaWdodEltcHVsc2VPbicpIj4NCgk8aWYgY29uZD0iSW4oJ29mZlN0YXRlJyk
+iPg0KCQk8cmFpc2UgZXZlbnQ9InR1cm5PbkxpZ2h0cyIvPg0KCQk8cmFpc2UgZXZlbnQ9InR1cm
+5Pbkh1cnJ5Ii8+DQoJCTxyYWlzZSBldmVudD0idHVybk9uSmFja3BvdCIvPg0KCQk8cmFpc2UgZ
+XZlbnQ9InR1cm5PbkdhbWVPdmVyIi8+DQoJCTxlbHNlaWYgY29uZD0iSW4oJ2h1cnJ5U3RhdGVP
+ZmYnKSIvPg0KCQk8cmFpc2UgZXZlbnQ9InVwZGF0ZUxpZ2h0c0FjY29yZGluZ1RvTGV0dGVyc1N
+0YXRlIi8+DQoJCTxyYWlzZSBldmVudD0idHVybk9mZkh1cnJ5Ii8+DQoJCTxyYWlzZSBldmVudD
+0idHVybk9mZkdhbWVPdmVyIi8+DQoJCTxlbHNlLz4NCgkJPHJhaXNlIGV2ZW50PSJ0dXJuT25Ma
+WdodHMiLz4NCgkJPHJhaXNlIGV2ZW50PSJ0dXJuT25IdXJyeSIvPg0KCQk8cmFpc2UgZXZlbnQ9
+InR1cm5PZmZHYW1lT3ZlciIvPg0KCTwvaWY+DQoJPGVsc2UvPg0KCTxpZiBjb25kPSJJbignb2Z
+mU3RhdGUnKSI+DQoJCTxyYWlzZSBldmVudD0idHVybk9mZkxpZ2h0cyIvPg0KCQk8cmFpc2UgZX
+ZlbnQ9InR1cm5PZmZIdXJyeSIvPg0KCQk8cmFpc2UgZXZlbnQ9InR1cm5PZmZKYWNrcG90Ii8+D
+QoJCTxlbHNlaWYgY29uZD0iSW4oJ2h1cnJ5U3RhdGVPZmYnKSIvPg0KCQk8cmFpc2UgZXZlbnQ9
+InR1cm5PZmZMaWdodHMiLz4NCgkJPGVsc2UvPg0KCQk8cmFpc2UgZXZlbnQ9InVwZGF0ZUxpZ2h
+0c0FjY29yZGluZ1RvTGV0dGVyc1N0YXRlIi8+DQoJPC9pZj4NCgk8cmFpc2UgZXZlbnQ9InR1cm
+5PZmZIdXJyeSIvPg0KCTxyYWlzZSBldmVudD0idHVybk9mZkdhbWVPdmVyIi8+DQo8L2lmPgZQY
+XJhbXMOAAZQb2ludHMBAgQCBAI5AgACWgNaAQIEAgQCAAKaAiED9AACBAIEAxwCApoDPQID9AAC
+BAIEA+MBAgADBAIDWgEAAAAXVFN0YXRlTWFjaGluZUNvbm5lY3Rpb24QVHJlZUNvbm5lY3Rpb24
+zNRNBcnJvd0Zyb20uQmFja0NvbG9yBwdjbFdoaXRlGUFycm93RnJvbS5CcnVzaC5CYWNrQ29sb3
+IHB2NsV2hpdGUOQXJyb3dGcm9tLlNpemUCCg9BcnJvd0Zyb20uU3R5bGUHCWNhc0NpcmNsZRFBc
+nJvd1RvLkJhY2tDb2xvcgcHY2xCbGFjaxdBcnJvd1RvLkJydXNoLkJhY2tDb2xvcgcHY2xCbGFj
+awxBcnJvd1RvLlNpemUCCgxCb3JkZXIuQ29sb3IHBmNsQmx1ZRBCb3JkZXIuU21hbGxEb3RzCBh
+Gb3JtYXQuR3JhZGllbnQuRW5kQ29sb3IHCGNsSW5mb0JrGkZvcm1hdC5HcmFkaWVudC5TdGFydE
+NvbG9yBwhjbEluZm9CaxdGb3JtYXQuR3JhZGllbnQuVmlzaWJsZQkVRm9ybWF0LlNoYWRvdy5Wa
+XNpYmxlCAVTdHlsZQcGY3NMaW5lCUZyb21TaGFwZQcYVHJlZUVkaXRvcjEuU3RhdGVTaGFwZTQ0
+B1RvU2hhcGUHGFRyZWVFZGl0b3IxLlN0YXRlU2hhcGU0NApUZXh0LkFuZ2xlAloMVGV4dC5TdHJ
+pbmdzAQYjdXBkYXRlTGlnaHRzQWNjb3JkaW5nVG9MZXR0ZXJzU3RhdGUGLDxpZiBjb25kPSJJbi
+gnY0xldHRlck9uJykiPg0KPHJhaXNlIGV2ZW4gLi4uAAVFdmVudAYjdXBkYXRlTGlnaHRzQWNjb
+3JkaW5nVG9MZXR0ZXJzU3RhdGUDWE1MDPcBAAA8aWYgY29uZD0iSW4oJ2NMZXR0ZXJPbicpIj4N
+Cgk8cmFpc2UgZXZlbnQ9InR1cm5PbkMiLz4NCgk8ZWxzZS8+DQoJPHJhaXNlIGV2ZW50PSJ0dXJ
+uT2ZmQyIvPg0KPC9pZj4NCjxpZiBjb25kPSJJbignckxldHRlck9uJykiPg0KCTxyYWlzZSBldm
+VudD0idHVybk9uUiIvPg0KCTxlbHNlLz4NCgk8cmFpc2UgZXZlbnQ9InR1cm5PZmZSIi8+DQo8L
+2lmPg0KPGlmIGNvbmQ9IkluKCdhTGV0dGVyT24nKSI+DQoJPHJhaXNlIGV2ZW50PSJ0dXJuT25B
+Ii8+DQoJPGVsc2UvPg0KCTxyYWlzZSBldmVudD0idHVybk9mZkEiLz4NCjwvaWY+DQo8aWYgY29
+uZD0iSW4oJ3pMZXR0ZXJPbicpIj4NCgk8cmFpc2UgZXZlbnQ9InR1cm5PbloiLz4NCgk8ZWxzZS
+8+DQoJPHJhaXNlIGV2ZW50PSJ0dXJuT2ZmWiIvPg0KPC9pZj4NCjxpZiBjb25kPSJJbigneUxld
+HRlck9uJykiPg0KCTxyYWlzZSBldmVudD0idHVybk9uWSIvPg0KCTxlbHNlLz4NCgk8cmFpc2Ug
+ZXZlbnQ9InR1cm5PZmZZIi8+DQo8L2lmPgZQYXJhbXMOAAZQb2ludHMBAgQCBAJMAgACbQNaAQI
+EAgQCAAN4/wIhA9IAAgQCBAMcAgN4/wM9AgPSAAIEAgQD0AECAAPxAQNaAQAAABdUU3RhdGVNYW
+NoaW5lQ29ubmVjdGlvbhBUcmVlQ29ubmVjdGlvbjM2E0Fycm93RnJvbS5CYWNrQ29sb3IHB2NsV
+2hpdGUZQXJyb3dGcm9tLkJydXNoLkJhY2tDb2xvcgcHY2xXaGl0ZQ5BcnJvd0Zyb20uU2l6ZQIK
+D0Fycm93RnJvbS5TdHlsZQcJY2FzQ2lyY2xlEUFycm93VG8uQmFja0NvbG9yBwdjbEJsYWNrF0F
+ycm93VG8uQnJ1c2guQmFja0NvbG9yBwdjbEJsYWNrDEFycm93VG8uU2l6ZQIKDEJvcmRlci5Db2
+xvcgcGY2xCbHVlEEJvcmRlci5TbWFsbERvdHMIGEZvcm1hdC5HcmFkaWVudC5FbmRDb2xvcgcIY
+2xJbmZvQmsaRm9ybWF0LkdyYWRpZW50LlN0YXJ0Q29sb3IHCGNsSW5mb0JrF0Zvcm1hdC5HcmFk
+aWVudC5WaXNpYmxlCRVGb3JtYXQuU2hhZG93LlZpc2libGUIBVN0eWxlBwZjc0xpbmUJRnJvbVN
+oYXBlBxhUcmVlRWRpdG9yMS5TdGF0ZVNoYXBlNDQHVG9TaGFwZQcYVHJlZUVkaXRvcjEuU3RhdG
+VTaGFwZTQ0ClRleHQuQW5nbGUCWgxUZXh0LlN0cmluZ3MBBgx0dXJuT25MaWdodHMGLDxyYWlzZ
+SBldmVudD0idHVybk9uQyIvPg0KPHJhaXNlIGV2ZW50PSIgLi4uAAVFdmVudAYMdHVybk9uTGln
+aHRzA1hNTAaAPHJhaXNlIGV2ZW50PSJ0dXJuT25DIi8+DQo8cmFpc2UgZXZlbnQ9InR1cm5PblI
+iLz4NCjxyYWlzZSBldmVudD0idHVybk9uQSIvPg0KPHJhaXNlIGV2ZW50PSJ0dXJuT25aIi8+DQ
+o8cmFpc2UgZXZlbnQ9InR1cm5PblkiLz4GUGFyYW1zDgAGUG9pbnRzAQIEAgQCXwIAA4AAA1oBA
+gQCBAIAA1b/AiEDsAACBAIEAxwCA1b/Az0CA7AAAgQCBAO9AQIAA94BA1oBAAAAF1RTdGF0ZU1h
+Y2hpbmVDb25uZWN0aW9uEFRyZWVDb25uZWN0aW9uMzcTQXJyb3dGcm9tLkJhY2tDb2xvcgcHY2x
+XaGl0ZRlBcnJvd0Zyb20uQnJ1c2guQmFja0NvbG9yBwdjbFdoaXRlDkFycm93RnJvbS5TaXplAg
+oPQXJyb3dGcm9tLlN0eWxlBwljYXNDaXJjbGURQXJyb3dUby5CYWNrQ29sb3IHB2NsQmxhY2sXQ
+XJyb3dUby5CcnVzaC5CYWNrQ29sb3IHB2NsQmxhY2sMQXJyb3dUby5TaXplAgoMQm9yZGVyLkNv
+bG9yBwZjbEJsdWUQQm9yZGVyLlNtYWxsRG90cwgYRm9ybWF0LkdyYWRpZW50LkVuZENvbG9yBwh
+jbEluZm9CaxpGb3JtYXQuR3JhZGllbnQuU3RhcnRDb2xvcgcIY2xJbmZvQmsXRm9ybWF0LkdyYW
+RpZW50LlZpc2libGUJFUZvcm1hdC5TaGFkb3cuVmlzaWJsZQgFU3R5bGUHBmNzTGluZQlGcm9tU
+2hhcGUHGFRyZWVFZGl0b3IxLlN0YXRlU2hhcGU0NAdUb1NoYXBlBxhUcmVlRWRpdG9yMS5TdGF0
+ZVNoYXBlNDQKVGV4dC5BbmdsZQJaDFRleHQuU3RyaW5ncwEGDXR1cm5PZmZMaWdodHMGLDxyYWl
+zZSBldmVudD0idHVybk9mZkMiLz4NCjxyYWlzZSBldmVudD0gLi4uAAVFdmVudAYNdHVybk9mZk
+xpZ2h0cwNYTUwGhTxyYWlzZSBldmVudD0idHVybk9mZkMiLz4NCjxyYWlzZSBldmVudD0idHVyb
+k9mZlIiLz4NCjxyYWlzZSBldmVudD0idHVybk9mZkEiLz4NCjxyYWlzZSBldmVudD0idHVybk9m
+ZloiLz4NCjxyYWlzZSBldmVudD0idHVybk9mZlkiLz4GUGFyYW1zDgAGUG9pbnRzAQIEAgQCcgI
+AA5MAA1oBAgQCBAIAAzT/AiEDjgACBAIEAxwCAzT/Az0CA44AAgQCBAOqAQIAA8sBA1oBAAAAAA
+==-->

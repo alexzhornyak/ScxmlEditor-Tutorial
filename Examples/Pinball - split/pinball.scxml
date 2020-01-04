@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<scxml datamodel="ecmascript" name="Pinball" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
+	<datamodel>
+		<data expr="0" id="highScore"/>
+		<data expr="0" id="score"/>
+	</datamodel>
+	<parallel id="global">
+		<parallel id="guiControl">
+			<state id="cLight">
+				<state id="cLightOn">
+					<transition event="turnOffC" target="cLightOff"/>
+				</state>
+				<state id="cLightOff">
+					<transition event="turnOnC" target="cLightOn"/>
+				</state>
+			</state>
+			<state id="rLight">
+				<state id="rLightOn">
+					<transition event="turnOffR" target="rLightOff"/>
+				</state>
+				<state id="rLightOff">
+					<transition event="turnOnR" target="rLightOn"/>
+				</state>
+			</state>
+			<state id="aLight">
+				<state id="aLightOn">
+					<transition event="turnOffA" target="aLightOff"/>
+				</state>
+				<state id="aLightOff">
+					<transition event="turnOnA" target="aLightOn"/>
+				</state>
+			</state>
+			<state id="zLight">
+				<state id="zLightOn">
+					<transition event="turnOffZ" target="zLightOff"/>
+				</state>
+				<state id="zLightOff">
+					<transition event="turnOnZ" target="zLightOn"/>
+				</state>
+			</state>
+			<state id="yLight">
+				<state id="yLightOn">
+					<transition event="turnOffY" target="yLightOff"/>
+				</state>
+				<state id="yLightOff">
+					<transition event="turnOnY" target="yLightOn"/>
+				</state>
+			</state>
+			<state id="hurryLight">
+				<state id="hurryLightOn">
+					<transition event="turnOffHurry" target="hurryLightOff"/>
+				</state>
+				<state id="hurryLightOff">
+					<transition event="turnOnHurry" target="hurryLightOn"/>
+				</state>
+			</state>
+			<state id="jackpotLight">
+				<state id="jackpotLightOn">
+					<transition event="turnOffJackpot" target="jackpotLightOff"/>
+				</state>
+				<state id="jackpotLightOff">
+					<transition event="turnOnJackpot" target="jackpotLightOn"/>
+				</state>
+			</state>
+			<state id="gameOverLight">
+				<state id="gameOverLightOn">
+					<transition event="turnOffGameOver" target="gameOverLightOff"/>
+				</state>
+				<state id="gameOverLightOff">
+					<transition event="turnOnGameOver" target="gameOverLightOn"/>
+				</state>
+			</state>
+		</parallel>
+		<parallel id="internalState">
+			<state id="workflow">
+				<transition event="done.state.letter.*">
+					<if cond="In('hurryStateOff')">
+						<assign location="score" expr="score + 1000"/>
+						<elseif cond="In('hurryStateOn')"/>
+						<assign location="score" expr="score + 10000"/>
+					</if>
+					<raise event="updateLights"/>
+				</transition>
+				<transition event="done.state.lettersState">
+					<if cond="In('hurryStateOff')">
+						<assign location="score" expr="score + 100000"/>
+						<raise event="goToHurryOn"/>
+						<elseif cond="In('hurryStateOn')"/>
+						<assign location="score" expr="score + 1000000"/>
+						<raise event="goToHurryOff"/>
+						<raise event="goForJackpot"/>
+					</if>
+				</transition>
+				<transition event="updateLights">
+					<send event="updateScore">
+						<param name="highScore" expr="highScore"/>
+						<param name="score" expr="score"/>
+					</send>
+					<if cond="In('jackpotStateOn')">
+						<raise event="turnOnJackpot"/>
+						<else/>
+						<raise event="turnOffJackpot"/>
+					</if>
+					<if cond="In('lightImpulseOn')">
+						<if cond="In('offState')">
+							<raise event="turnOnLights"/>
+							<raise event="turnOnHurry"/>
+							<raise event="turnOnJackpot"/>
+							<raise event="turnOnGameOver"/>
+							<elseif cond="In('hurryStateOff')"/>
+							<raise event="updateLightsAccordingToLettersState"/>
+							<raise event="turnOffHurry"/>
+							<raise event="turnOffGameOver"/>
+							<else/>
+							<raise event="turnOnLights"/>
+							<raise event="turnOnHurry"/>
+							<raise event="turnOffGameOver"/>
+						</if>
+						<else/>
+						<if cond="In('offState')">
+							<raise event="turnOffLights"/>
+							<raise event="turnOffHurry"/>
+							<raise event="turnOffJackpot"/>
+							<elseif cond="In('hurryStateOff')"/>
+							<raise event="turnOffLights"/>
+							<else/>
+							<raise event="updateLightsAccordingToLettersState"/>
+						</if>
+						<raise event="turnOffHurry"/>
+						<raise event="turnOffGameOver"/>
+					</if>
+				</transition>
+				<transition event="updateLightsAccordingToLettersState">
+					<if cond="In('cLetterOn')">
+						<raise event="turnOnC"/>
+						<else/>
+						<raise event="turnOffC"/>
+					</if>
+					<if cond="In('rLetterOn')">
+						<raise event="turnOnR"/>
+						<else/>
+						<raise event="turnOffR"/>
+					</if>
+					<if cond="In('aLetterOn')">
+						<raise event="turnOnA"/>
+						<else/>
+						<raise event="turnOffA"/>
+					</if>
+					<if cond="In('zLetterOn')">
+						<raise event="turnOnZ"/>
+						<else/>
+						<raise event="turnOffZ"/>
+					</if>
+					<if cond="In('yLetterOn')">
+						<raise event="turnOnY"/>
+						<else/>
+						<raise event="turnOffY"/>
+					</if>
+				</transition>
+				<transition event="turnOnLights">
+					<raise event="turnOnC"/>
+					<raise event="turnOnR"/>
+					<raise event="turnOnA"/>
+					<raise event="turnOnZ"/>
+					<raise event="turnOnY"/>
+				</transition>
+				<transition event="turnOffLights">
+					<raise event="turnOffC"/>
+					<raise event="turnOffR"/>
+					<raise event="turnOffA"/>
+					<raise event="turnOffZ"/>
+					<raise event="turnOffY"/>
+				</transition>
+				<state id="lightImpulseGenerator">
+					<onentry>
+						<raise event="update"/>
+					</onentry>
+					<transition event="scheduleNewImpulse">
+						<cancel sendid="lightId"/>
+						<if cond="In('offState')">
+							<send event="lightImpulse" id="lightId" delay="1s"/>
+							<elseif cond="In('hurryStateOff')"/>
+							<send event="lightImpulse" id="lightId" delay="500ms"/>
+							<else/>
+							<send event="lightImpulse" id="lightId" delay="200ms"/>
+						</if>
+					</transition>
+					<transition event="update">
+						<raise event="scheduleNewImpulse"/>
+						<raise event="updateLights"/>
+					</transition>
+					<transition cond="In('lightImpulseOn')" event="lightImpulse" target="lightImpulseOff"/>
+					<transition cond="In('lightImpulseOff')" event="lightImpulse" target="lightImpulseOn"/>
+					<state id="lightImpulseOn"/>
+					<state id="lightImpulseOff"/>
+				</state>
+			</state>
+			<parallel id="logicalState">
+				<state id="letterState">
+					<parallel id="lettersState">
+						<transition event="resetLetters" target="lettersState"/>
+						<state id="letter.C">
+							<state id="cLetterOff">
+								<transition cond="In('onState')" event="cLetterTriggered" target="cLetterOn"/>
+							</state>
+							<final id="cLetterOn"/>
+						</state>
+						<state id="letter.R">
+							<state id="rLetterOff">
+								<transition cond="In('onState')" event="rLetterTriggered" target="rLetterOn"/>
+							</state>
+							<final id="rLetterOn"/>
+						</state>
+						<state id="letter.A">
+							<state id="aLetterOff">
+								<transition cond="In('onState')" event="aLetterTriggered" target="aLetterOn"/>
+							</state>
+							<final id="aLetterOn"/>
+						</state>
+						<state id="letter.Z">
+							<state id="zLetterOff">
+								<transition cond="In('onState')" event="zLetterTriggered" target="zLetterOn"/>
+							</state>
+							<final id="zLetterOn"/>
+						</state>
+						<state id="letter.Y">
+							<state id="yLetterOff">
+								<transition cond="In('onState')" event="yLetterTriggered" target="yLetterOn"/>
+							</state>
+							<final id="yLetterOn"/>
+						</state>
+					</parallel>
+				</state>
+				<state id="modeState">
+					<state id="offState">
+						<onentry>
+							<if cond="highScore &lt; score">
+								<assign expr="score" location="highScore"/>
+							</if>
+							<raise event="resetLetters"/>
+							<raise event="update"/>
+						</onentry>
+						<transition event="startTriggered" target="onState"/>
+					</state>
+					<parallel id="onState">
+						<onentry>
+							<assign expr="0" location="score"/>
+						</onentry>
+						<transition event="ballOutTriggered" target="offState"/>
+						<state id="hurryState">
+							<state id="hurryStateOff">
+								<onentry>
+									<raise event="resetLetters"/>
+									<raise event="update"/>
+								</onentry>
+								<transition event="goToHurryOn" target="hurryStateOn"/>
+							</state>
+							<state id="hurryStateOn">
+								<onentry>
+									<send delay="5s" event="goToHurryOff" id="hurryId"/>
+									<raise event="resetLetters"/>
+									<raise event="update"/>
+								</onentry>
+								<onexit>
+									<cancel sendid="hurryId"/>
+								</onexit>
+								<transition event="goToHurryOff" target="hurryStateOff"/>
+							</state>
+						</state>
+						<state id="jackpotState">
+							<state id="jackpotStateOff">
+								<onentry>
+									<raise event="update"/>
+								</onentry>
+								<transition event="goForJackpot" target="jackpotStateOn"/>
+							</state>
+							<state id="jackpotStateOn">
+								<onentry>
+									<raise event="update"/>
+								</onentry>
+							</state>
+						</state>
+					</parallel>
+				</state>
+			</parallel>
+		</parallel>
+	</parallel>
+</scxml><!--VFBGMAdUVHJlZUV4AARMZWZ0AhEDVG9wAhEFV2lkdGgD5QEGSGVpZ2h0A3cCCURlc2lnbmluZw
+kMR3JpZC5WaXNpYmxlCRFIb3J6U2Nyb2xsQmFyLk1heANSARFIb3J6U2Nyb2xsQmFyLk1pbgL/F
+khvcnpTY3JvbGxCYXIuUGFnZVNpemUD/wALUGFnZS5IZWlnaHQDRRAKUGFnZS5XaWR0aAM5Bw9Q
+YWdlLlVzZVByaW50ZXIIFVNlbGVjdGVkLlNjcm9sbFRvVmlldwgOU2hvd0hpbnRTaGFwZXMIEVZ
+lcnRTY3JvbGxCYXIuTWF4A+MAEVZlcnRTY3JvbGxCYXIuTWluAt8WVmVydFNjcm9sbEJhci5QYW
+dlU2l6ZQPZABlWaWV3M0RPcHRpb25zLkhvcml6T2Zmc2V0AgEYVmlldzNET3B0aW9ucy5WZXJ0T
+2Zmc2V0AiENWm9vbS5QZW4uTW9kZQcIcG1Ob3RYb3IFQWxpZ24HCGFsQ2xpZW50CFRhYk9yZGVy
+AgMNRXhwbGljaXRXaWR0aAM4AgALVFNjeG1sU2hhcGULU2N4bWxTaGFwZTEIQXV0b1NpemUICUJ
+hY2tDb2xvcgTm5uYAD0JydXNoLkJhY2tDb2xvcgTm5uYACVJvdW5kU2l6ZQIKDlNoYWRvdy5WaX
+NpYmxlCAJYMAIKAlgxA1EBAlkwAgoCWTEDHgEIRXhwYW5kZWQJCkltYWdlSW5kZXgHBnRpTm9uZ
+Q5UZXh0LlZlcnRBbGlnbgcGdnRhVG9wDFRleHQuU3RyaW5ncwEGB1BpbmJhbGwACVNjeG1sTmFt
+ZQYHUGluYmFsbAlEYXRhbW9kZWwGCmVjbWFzY3JpcHQAABRURGF0YW1vZGVsU3RhdGVTaGFwZRR
+EYXRhbW9kZWxTdGF0ZVNoYXBlMRFJbWFnZS5UcmFuc3BhcmVudAkKSW1hZ2UuRGF0YQoZAwAACV
+RQbmdJbWFnZYlQTkcNChoKAAAADUlIRFIAAAAQAAAAEAgGAAAAH/P/YQAAAAlwSFlzAAALEwAAC
+xMBAJqcGAAAAsFJREFUeNqlk81PE0EYxh9Ka0tLWyqCiIhfoOEoxBjRi8aExKgx0WhM/Ce8EC8a
+Ez2IiYl4wMQYLnr3Yjx48SN4QQUNJhoFKbSlu/3Ybmc/Zme27fq2h4U7k8z19877e55p8zwP2zl
+tTcDy/MTnVO+p8UB7BKFIDxrShGGsweElNFwHjqPBsuiaVahqFcurla93H7vHfUB68Xox1Tu+Kx
+RKIJoageuUwMrf4NgZeK5OoCyquoJ8gUNRODZULggQ2QK4mknsPDYQCiUR7TpKgDKq5UVwO4u6N
+CD4OkyWR04VUFSJYtnVCZDyAX/nz6e7usf27winEE0MQdCTTf07uLmBeq1KL9gA04vIKw5Nl1BL
+svTgaa3HByy9H52Kdw1NBsNJBGkNlwCO1XSgwRUSJucwLQemKVAoibJSELMEmNzq4E/3njPDbYE
+gItFB1KQOi/0mBwoaNYtACkxDgcHKtIKJf2k7f3tK9vuA1YUruWT3aH9zejRBDgRJ1BZoBXLgMn
+KQAasWWg7yqotSSbJ7T9ykD1j7cS2f6D7RFwp1IpakFLiOqvallUJNspZEgyTmVU5XQC1KiyR2+
+oBfcydfdiaP3AwEo4h09KHmVKgHK7CtEvkQsOwKmGGgrLVSMMuafPPouXfDByy8G3nds3vsciAU
+J4lxMs/AjRylwVBzObgwyINBQAfLadtaXucfpl94F3zAz0/nCvsOX+ppD3YgFqcYhQZDX4K0sqj
+VK5AUo8kUaBULq1mCrJjOw5lGxyZg7mxm74GJgfZADDEqkqQiMSqSQ0VqyGYTcyRRBcVHPRBIZ7
+k+NdPYLNLSx9OZwUMXB8KxPkTiw/AcHTpJ5NSFBq3TlGmwXKvG6YxDAFufeuZtAubfHrwTDg/ck
+l5C1hsxTwgHwi7SJ6IEXAlJn0ty22Om7NAqbkFn9VfTs959H7Cd8x/quvrwltn1RQAAAABJRU5E
+rkJggg5TaGFkb3cuVmlzaWJsZQgIRXhwYW5kZWQJCkltYWdlSW5kZXgHBnRpTm9uZQZQYXJlbnQ
+HF1RyZWVFZGl0b3IxLlNjeG1sU2hhcGUxDFRleHQuU3RyaW5ncwEGCWRhdGFtb2RlbAAAAA9URG
+F0YUNoaWxkU2hhcGUPRGF0YUNoaWxkU2hhcGUxEUltYWdlLlRyYW5zcGFyZW50CQpJbWFnZS5EY
+XRhCgYDAAAJVFBuZ0ltYWdliVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdB
+TUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAKOSURBVHj
+apZNdSJNRGMf/m9NNhwTBG7tIZNiwFQhR3kSw+RGUhRgDmSaMEXRhdNNFeCFBYBTB7kJIiCCMxs
+KmDYfMzV0k4p2YC8wMY7TY3ne67y/cR+c50Oqlj5sO/DnnPec8v/M8f55XUavV8D9D8SsgEAio2
+fcg00i1Wj3JZgMTW1ZDbN5l8zOmwNDQUOU3AAs+xdavBEHo0ul00Gq1aGlpAZ2nUilkMhmEw2FI
+krTK9qwWiyUiAywvLwc7OzvNbW1tUCgUf0y3XC4jFAphZ2fnxfDwsE0G8Pl8oslkEpqamv4JSCQ
+SlK1ktVqPyQBLS0ui2WwWkskkNBoN1Go1GhsbeQn5fB4HBweIRCLo6OhAMBiURkdH5QCv1yv29P
+QIuVyO11ssFnkwvZpOp1EqlaBSqWAwGLCysiKNjY3JAYuLixxAFymYAing8PAQ8XgcBKah1+t5C
+TabTQ7weDxib2+vQOkWCgUOID8IwJxHNpuFUqnkJfj9fslut8sBCwsLYl9fn0AXCUIA8oEAsVgM
+m+E1fE5uIVtMI1/I1fYz4j3vw82pOsDtdov9/f3cRAJUKhUOIJB/Yx77qo84azyH40cNCH6Yx3r
+oHb7sxh11wNzcHAeQ2wRgHYfm5maewWPPHVwbuAQ0KDFovA1H4CYaoITT/bZYB7hcLrG7u5s1oo
+BoNMp9+AG4+/I6xkdu4fLpG/We8GxN48HTqZ8eOJ3OAfaqy2g0atvb23n61FB0fmWyC1cHzCiji
+omLz/HIZ4emQS3PgMbs7KyeQSaZLMzxI/QvkAeB7TdItG7hfNcFGHRn8Cm6gbX3q/i6l3Io/vY7
+z8zMtLLgE0xVVsb26z3HfbY9ztTKlGGaXn/ybeI7bzSfq4FlHzMAAAAASUVORK5CYIIOU2hhZG9
+3LlZpc2libGUICkltYWdlSW5kZXgHBnRpTm9uZQZQYXJlbnQHIFRyZWVFZGl0b3IxLkRhdGFtb2
+RlbFN0YXRlU2hhcGUxDFRleHQuU3RyaW5ncwEGEmRhdGEge2hpZ2hTY29yZT0wfQACSWQGCWhpZ
+2hTY29yZQRFeHByBgEwFFhNTFRleHQuU3ludGF4U2NoZW1lBgpFY21hU2NyaXB0AAAPVERhdGFD
+aGlsZFNoYXBlD0RhdGFDaGlsZFNoYXBlMhFJbWFnZS5UcmFuc3BhcmVudAkKSW1hZ2UuRGF0YQo
+GAwAACVRQbmdJbWFnZYlQTkcNChoKAAAADUlIRFIAAAAQAAAAEAgGAAAAH/P/YQAAAARnQU1BAA
+CvyDcFiukAAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAACjklEQVR42qWTX
+UiTURjH/5vTTYcEwRu7SGTYsBUIUd5EsPkRlIUYA5kmjBF0YXTTRXghQWAUwe5CSIggjMbCpg2H
+zM1dJOKdmAvMDGO02N53uu8v3EfnOdDqpY+bDvw55z3nPL/zPH+eV1Gr1fA/Q/ErIBAIqNn3INN
+ItVo9yWYDE1tWQ2zeZfMzpsDQ0FDlNwALPsXWrwRB6NLpdNBqtWhpaQGdp1IpZDIZhMNhSJK0yv
+asFoslIgMsLy8HOzs7zW1tbVAoFH9Mt1wuIxQKYWdn58Xw8LBNBvD5fKLJZBKampr+CUgkEpStZ
+LVaj8kAS0tLotlsFpLJJDQaDdRqNRobG3kJ+XweBwcHiEQi6OjoQDAYlEZHR+UAr9cr9vT0CLlc
+jtdbLBZ5ML2aTqdRKpWgUqlgMBiwsrIijY2NyQGLi4scQBcpmAIp4PDwEPF4HASmodfreQk2m00
+O8Hg8Ym9vr0DpFgoFDiA/CMCcRzabhVKp5CX4/X7JbrfLAQsLC2JfX59AFwlCAPKBALFYDJvhNX
+xObiFbTCNfyNX2M+I978PNqTrA7XaL/f393EQCVCoVDiCQf2Me+6qPOGs8h+NHDQh+mMd66B2+7
+MYddcDc3BwHkNsEYB2H5uZmnsFjzx1cG7gENCgxaLwNR+AmGqCE0/22WAe4XC6xu7ubNaKAaDTK
+ffgBuPvyOsZHbuHy6Rv1nvBsTePB06mfHjidzgH2qstoNGrb29t5+tRQdH5lsgtXB8woo4qJi8/
+xyGeHpkEtz4DG7OysnkEmmSzM8SP0L5AHge03SLRu4XzXBRh0Z/ApuoG196v4updyKP72O8/MzL
+Sy4BNMVVbG9us9x322Pc7UypRhml5/8m3iO280n6uBZR8zAAAAAElFTkSuQmCCDlNoYWRvdy5Wa
+XNpYmxlCApJbWFnZUluZGV4BwZ0aU5vbmUGUGFyZW50ByBUcmVlRWRpdG9yMS5EYXRhbW9kZWxT
+dGF0ZVNoYXBlMQxUZXh0LlN0cmluZ3MBBg5kYXRhIHtzY29yZT0wfQACSWQGBXNjb3JlBEV4cHI
+GATAUWE1MVGV4dC5TeW50YXhTY2hlbWUGCkVjbWFTY3JpcHQAAA5UUGFyYWxsZWxTaGFwZQ5QYX
+JhbGxlbFNoYXBlMQhBdXRvU2l6ZQgJQmFja0NvbG9yBObm5gAPQnJ1c2guQmFja0NvbG9yBObm5
+gAJUm91bmRTaXplAgoOU2hhZG93LlZpc2libGUIC1RyYW5zcGFyZW50CQJYMAIUAlgxA0cBAlkw
+AloCWTEDFQEIRXhwYW5kZWQJCkltYWdlSW5kZXgHBnRpTm9uZQZQYXJlbnQHF1RyZWVFZGl0b3I
+xLlNjeG1sU2hhcGUxDlRleHQuVmVydEFsaWduBwZ2dGFUb3AMVGV4dC5TdHJpbmdzAQYGZ2xvYm
+FsAAJJZAYGZ2xvYmFsAAANVFZpcnR1YWxTaGFwZRdWaXJ0dWFsU2hhcGUyX18wMDczMjYzMQhBd
+XRvU2l6ZQgJQmFja0NvbG9yBObm5gALQnJ1c2guQ29sb3IHCGNsU2lsdmVyD0JydXNoLkJhY2tD
+b2xvcgTm5uYABUNvbG9yBwhjbFNpbHZlcglSb3VuZFNpemUCCg5TaGFkb3cuVmlzaWJsZQgFU3R
+5bGUHEXRzc1JvdW5kUmVjdGFuZ2xlAlgwAh4CWDEDNAECWTADggACWTEDuAAIRXhwYW5kZWQJCk
+ltYWdlSW5kZXgHBnRpTm9uZQZQYXJlbnQHGlRyZWVFZGl0b3IxLlBhcmFsbGVsU2hhcGUxDFRle
+HQuU3RyaW5ncwEGCmd1aUNvbnRyb2wAAklkBgpndWlDb250cm9sA1NyYwYYaW5jbHVkZV9ndWlD
+b250cm9sLnNjeG1sAAANVFZpcnR1YWxTaGFwZRdWaXJ0dWFsU2hhcGUzX18yRDYwNUE2NAhBdXR
+vU2l6ZQgJQmFja0NvbG9yBObm5gALQnJ1c2guQ29sb3IHCGNsU2lsdmVyD0JydXNoLkJhY2tDb2
+xvcgTm5uYABUNvbG9yBwhjbFNpbHZlcglSb3VuZFNpemUCCg5TaGFkb3cuVmlzaWJsZQgFU3R5b
+GUHEXRzc1JvdW5kUmVjdGFuZ2xlAlgwAiECWDEDNwECWTAD0gACWTEDCAEIRXhwYW5kZWQJCklt
+YWdlSW5kZXgHBnRpTm9uZQZQYXJlbnQHGlRyZWVFZGl0b3IxLlBhcmFsbGVsU2hhcGUxDFRleHQ
+uU3RyaW5ncwEGDWludGVybmFsU3RhdGUAAklkBg1pbnRlcm5hbFN0YXRlA1NyYwYbaW5jbHVkZV
+9pbnRlcm5hbFN0YXRlLnNjeG1sAAAPVFRyZWVDb25uZWN0aW9uIFNjeG1sU2hhcGUxX0RhdGFtb
+2RlbFN0YXRlU2hhcGUxCUZyb21TaGFwZQcXVHJlZUVkaXRvcjEuU2N4bWxTaGFwZTEHVG9TaGFw
+ZQcgVHJlZUVkaXRvcjEuRGF0YW1vZGVsU3RhdGVTaGFwZTEAAA9UVHJlZUNvbm5lY3Rpb24kRGF
+0YW1vZGVsU3RhdGVTaGFwZTFfRGF0YUNoaWxkU2hhcGUxCUZyb21TaGFwZQcgVHJlZUVkaXRvcj
+EuRGF0YW1vZGVsU3RhdGVTaGFwZTEHVG9TaGFwZQcbVHJlZUVkaXRvcjEuRGF0YUNoaWxkU2hhc
+GUxAAAPVFRyZWVDb25uZWN0aW9uJERhdGFtb2RlbFN0YXRlU2hhcGUxX0RhdGFDaGlsZFNoYXBl
+MglGcm9tU2hhcGUHIFRyZWVFZGl0b3IxLkRhdGFtb2RlbFN0YXRlU2hhcGUxB1RvU2hhcGUHG1R
+yZWVFZGl0b3IxLkRhdGFDaGlsZFNoYXBlMgAAAA==-->
