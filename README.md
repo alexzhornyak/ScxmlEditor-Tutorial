@@ -5,7 +5,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/Inheritance_TV_example.gif)
 
-**New:** [Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md), visual chart splitting, [conditional project definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md), GIF maker etc.
+**New:** [Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md), [visual chart splitting](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/VisualStateChartSplitting.md), [conditional project definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md), GIF maker etc.
 
 ## System requirments
 Windows 7, 8, 10
@@ -27,7 +27,9 @@ Latest version: **2.0.0.1204**
 
 [3. Smart Switch Transitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/SmartSwitchTransitions.md)
 
-[4. Building a project](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ProjectBuild.md)
+[4. Building a Project](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ProjectBuild.md)
+
+[5. Visual State Chart Splitting](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/VisualStateChartSplitting.md)
 
 ## Creating SCXML charts
 
