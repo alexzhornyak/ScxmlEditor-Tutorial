@@ -1,4 +1,5 @@
-**[Video overview](https://youtu.be/tL-NICRwggY)**
+**[Video overview - v.1.0](https://youtu.be/tL-NICRwggY)**
+**[Video overview - v.2.0](https://youtu.be/SryLDwxcCjA)**
 
 # Scxml Editor 2.0
 Powerful tool for creating, editing and debugging SCXML charts.
