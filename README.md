@@ -2,7 +2,7 @@
 
 **[Video overview - v.2.0](https://youtu.be/SryLDwxcCjA)**
 
-# Scxml Editor 2.0
+# Scxml Editor 2.1
 Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/Inheritance_TV_example.gif)
@@ -18,7 +18,7 @@ You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c
 
 [Zip Link](https://www.dropbox.com/s/1sx8p8o1e4t55hj/ScxmlEditor.zip?dl=0)
 
-Latest version: **2.0.0.1249**
+Latest version: **2.1.0.1302**
 
 ![2018-09-24 16 23 50](https://user-images.githubusercontent.com/18611095/45954643-3e30d000-c016-11e8-8f79-205f770af667.png)
 
