@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf8"?>
+<scxmlproject>
+	<scxmlunit path="SmartTransitions(full).scxml" scxmlname="TV"/>
+	<scxmlunit path="SmartTransitions.scxml" scxmlname="TV" build_root="1"/>
+</scxmlproject>
