@@ -38,3 +38,13 @@ If operation is successful you will see all states marked with **yellow circles*
 #### Yellow circle - means that there is no difference with the base state chart
 
 #### New states - will be marked without additional signs
+
+## How to resolve mismatches
+Since version 2.1 there is an option to mark mismatches as resolved
+![resolve_menu](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/Inheritance_resolve.png)
+
+You may review resolved values in property **InheritanceResolver**. 
+
+![resolved](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/Inheritance_resolved_circle.png)
+
+#### Elements with resolved properties will be marked with orange circle.
