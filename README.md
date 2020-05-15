@@ -7,7 +7,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/Inheritance_TV_example.gif)
 
-**New:** [Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md), [visual chart splitting](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/VisualStateChartSplitting.md), [conditional project definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md), GIF maker etc.
+**New:** IDE Insight, [Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md), [visual chart splitting](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/VisualStateChartSplitting.md), [conditional project definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md), GIF maker etc.
 
 ## System requirments
 Windows 7, 8, 10
@@ -18,7 +18,7 @@ You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c
 
 [Zip Link](https://www.dropbox.com/s/1sx8p8o1e4t55hj/ScxmlEditor.zip?dl=0)
 
-Latest version: **2.1.0.1302**
+Latest version: **[2.1.0.1319](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ![2018-09-24 16 23 50](https://user-images.githubusercontent.com/18611095/45954643-3e30d000-c016-11e8-8f79-205f770af667.png)
 
@@ -60,6 +60,10 @@ Is used to edit and examine the properties of the currently selected states, exe
 Are used to add scxml elements, zoom, align, change chart visual options, etc.
 
 ![2018-09-26 09 50 33](https://user-images.githubusercontent.com/18611095/46062784-8c0f1a80-c173-11e8-8fca-8937b9b0b721.png)
+
+### NEW! IDE Insight
+Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all actions through the application. Add shapes, edit properties in one place!
+![image](https://user-images.githubusercontent.com/18611095/82085867-52977400-96f6-11ea-99bd-b9240cb669b9.png)
 
 ## Debugging
 **ScxmlEditor** has an ability to listen UDP commands (AfterEnter, BeforeEnter, AfterExit, BeforeExit, Step, BeforeExecContent, AfterExecContent, BeforeInvoke, AfterInvoke, BeforeUnInvoke, AfterUnInvoke, BeforeTakingTransition, AfterTakingTransition, StableConfiguration, BeforeProcessingEvent). **Enter** and **Exit** graphically highlight the corresponding states. You can also trace the execution of the chart and use breakpoints.
