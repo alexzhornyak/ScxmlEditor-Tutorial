@@ -63,6 +63,7 @@ Are used to add scxml elements, zoom, align, change chart visual options, etc.
 
 ### NEW! IDE Insight
 Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all actions through the application. Add shapes, edit properties in one place!
+
 ![image](https://user-images.githubusercontent.com/18611095/82085867-52977400-96f6-11ea-99bd-b9240cb669b9.png)
 
 ## Debugging
