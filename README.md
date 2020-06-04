@@ -7,7 +7,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/Inheritance_TV_example.gif)
 
-**New:** IDE Insight, [Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md), [visual chart splitting](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/VisualStateChartSplitting.md), [conditional project definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md), GIF maker etc.
+**New:** IDE Insight, DOT-based auto-layout, [Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md), [visual chart splitting](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/VisualStateChartSplitting.md), [conditional project definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md), GIF maker etc.
 
 ## System requirments
 Windows 7, 8, 10
