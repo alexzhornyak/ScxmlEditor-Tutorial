@@ -7,7 +7,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/Inheritance_TV_example.gif)
 
-**New:** [IDE Insight](https://github.com/alexzhornyak/ScxmlEditor-Tutorial#new-ide-insight), DOT-based auto-layout, [Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md), [visual chart splitting](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/VisualStateChartSplitting.md), [conditional project definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md), GIF maker etc.
+**New:** [IDE Insight](https://github.com/alexzhornyak/ScxmlEditor-Tutorial#new-ide-insight), [DOT-based autolayout](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md), [visual chart splitting](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/VisualStateChartSplitting.md), [conditional project definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md), GIF maker etc.
 
 ## System requirments
 Windows 7, 8, 10
@@ -32,6 +32,10 @@ Latest version: **[2.1.0.1347](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 [4. Building a Project](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ProjectBuild.md)
 
 [5. Visual State Chart Splitting](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/VisualStateChartSplitting.md)
+
+[6. DOT-based autolayout](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/DotBasedAutoLayout.md#dot-based-auto-layout)
+
+[7. Convert SCXML to DOT](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot)
 
 ## Creating SCXML charts
 
