@@ -69,3 +69,11 @@ digraph {
 	StateShape2__9F1CE7D7_children->StateShape1__9E02659C[tooltip="StateMachineConnection2__A61AC440",color="teal",ltail="cluster_StateShape2__9F1CE7D7",label=<<FONT color="#008080"><b>Stop</b></FONT><br/>>]
 }
 ```
+
+## Special SCXML to DOT convertation features
+
+### 1. Graphviz cluster can not be connected to itself so self-transitions are encoded in cluster label
+![ExportAsDot_TimeGenerator_SelfTransitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ExportAsDot_TimeGenerator_SelfTransitions.png)
+
+### 2. Executable content is represented in single node without edges
+![ExportAsDot_TimeGenerator_ExecContent](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ExportAsDot_TimeGenerator_ExecContent.png)
