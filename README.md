@@ -20,7 +20,7 @@ You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c
 
 [Zip Link](https://www.dropbox.com/s/1sx8p8o1e4t55hj/ScxmlEditor.zip?dl=0)
 
-Latest version: **[2.1.0.1377](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.1.0.1378](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ![2018-09-24 16 23 50](https://user-images.githubusercontent.com/18611095/45954643-3e30d000-c016-11e8-8f79-205f770af667.png)
 
@@ -38,6 +38,8 @@ Latest version: **[2.1.0.1377](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 [6. DOT-based autolayout](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/DotBasedAutoLayout.md#dot-based-auto-layout)
 
 [7. Convert SCXML to DOT](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot)
+
+[8. SCXML source code view and live editing](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/LiveScxmlEdit.md)
 
 ## Creating SCXML charts
 
