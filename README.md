@@ -4,12 +4,14 @@
 
 **[Video overview - v.2.1](https://youtu.be/h2CXPBAK_XY)**
 
-# Scxml Editor 2.1
+# Scxml Editor 2.1.4
 Powerful tool for creating, editing and debugging SCXML charts.
 
-![MainExample](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/Inheritance_TV_example.gif)
+![MainExample](Images/Inheritance_TV_example.gif)
 
-**New:** [IDE Insight](https://github.com/alexzhornyak/ScxmlEditor-Tutorial#new-ide-insight), [DOT-based autolayout](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md), [visual chart splitting](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/VisualStateChartSplitting.md), [conditional project definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md), GIF maker etc.
+**New:** [IDE Insight](#new-ide-insight), [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](Doc/Inheritance.md), [visual chart splitting](Doc/VisualStateChartSplitting.md), [conditional project definitions](Doc/ConditionalDefines.md), GIF maker etc.
+
+**New since 2.1.4:** [Export SCXML to SVG](Doc/ExportScxmlToSVG.md), [Structure View](Doc/ScxmlStructureView.md)
 
 ## System requirments
 Windows 7, 8, 10
@@ -20,26 +22,26 @@ You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c
 
 [Zip Link](https://www.dropbox.com/s/1sx8p8o1e4t55hj/ScxmlEditor.zip?dl=0)
 
-Latest version: **[2.1.3.1425](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.1.4.1483](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
-![AppPreview](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ApplicationPreview.png)
+![AppPreview](Images/ApplicationPreview.png)
 
 ## Table of contents
-[1. Inheritance](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/Inheritance.md)
+[1. Inheritance](Doc/Inheritance.md)
 
-[2. Conditional Project Definitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ConditionalDefines.md)
+[2. Conditional Project Definitions](Doc/ConditionalDefines.md)
 
-[3. Smart Switch Transitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/SmartSwitchTransitions.md)
+[3. Smart Switch Transitions](Doc/SmartSwitchTransitions.md)
 
-[4. Building a Project](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/ProjectBuild.md)
+[4. Building a Project](Doc/ProjectBuild.md)
 
-[5. Visual State Chart Splitting](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/VisualStateChartSplitting.md)
+[5. Visual State Chart Splitting](Doc/VisualStateChartSplitting.md)
 
-[6. DOT-based autolayout](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/DotBasedAutoLayout.md#dot-based-auto-layout)
+[6. DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout)
 
-[7. Convert SCXML to DOT](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot)
+[7. Convert SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot)
 
-[8. SCXML source code view and live editing](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Doc/LiveScxmlEdit.md)
+[8. SCXML source code view and live editing](Doc/LiveScxmlEdit.md)
 
 ## Creating SCXML charts
 
@@ -72,7 +74,10 @@ Are used to add scxml elements, zoom, align, change chart visual options, etc.
 ### NEW! IDE Insight
 Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all actions through the application. Add shapes, edit properties in one place!
 
-![ide_insight](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/IDE_Insight_Demo.gif)
+![ide_insight](Images/IDE_Insight_Demo.gif)
+
+### Structure View with quick search
+![StructureViewSearch](Images/StructureView_Search.png)
 
 ## Debugging
 **ScxmlEditor** has an ability to listen UDP commands (AfterEnter, BeforeEnter, AfterExit, BeforeExit, Step, BeforeExecContent, AfterExecContent, BeforeInvoke, AfterInvoke, BeforeUnInvoke, AfterUnInvoke, BeforeTakingTransition, AfterTakingTransition, StableConfiguration, BeforeProcessingEvent). **Enter** and **Exit** graphically highlight the corresponding states. You can also trace the execution of the chart and use breakpoints.
@@ -87,7 +92,7 @@ Supports **null, ecmascript** datamodels
 
 ### External debugging
 #### Example of debugging Qt Calculator-QML project
-Add the next [source code](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Include/scxmlexternmonitor.h) to **calculator-qml.cpp**
+Add the next [source code](Include/scxmlexternmonitor.h) to **calculator-qml.cpp**
 ```
 #include "scxmlexternmonitor.h"
 
