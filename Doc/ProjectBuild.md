@@ -7,11 +7,11 @@ So we offer the system of building all external files to one source.
 ## Setting build configuration
 Select menu **Tools->Project Options**
 
-![project_options](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ProjectBuild_ProjectOptions.png)
+![project_options](../Images/ProjectBuild_ProjectOptions.png)
 
 ### Build types
 
-![build_params](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ProjectBuild_BuildTypes.png)
+![build_params](../Images/ProjectBuild_BuildTypes.png)
 
 **pbtSaveAll** - saves all modifications before build
 
@@ -22,28 +22,28 @@ Select menu **Tools->Project Options**
 ### Post-build script
 You are able to define CMD script wich will be executed after every build operation if the flag **pbtPostBuild** is set.
 
-![post_build](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ProjectBuild_PostBuild.png)
+![post_build](../Images/ProjectBuild_PostBuild.png)
 
 Double click on **ProjectPostBuild** item and script editor will be displayed.
 
-![script_editor](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ProjectBuild_PostBuildScript.png)
+![script_editor](../Images/ProjectBuild_PostBuildScript.png)
 
 ### Execution of project building
 Press **Ctrl+B** or select menu **File->Build**
 
-![file_build](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ProjectBuild_FileBuild.png)
+![file_build](../Images/ProjectBuild_FileBuild.png)
 
 ### CMD output
 You may review script execution summary in **CMD Output** tab
 
-![cmd_output](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ProjectBuild_PostBuildCMDOutput.png)
+![cmd_output](../Images/ProjectBuild_PostBuildCMDOutput.png)
 
 ## Example
 
 ### Source files for build:
 
 **state_machine_project_build.scxml**
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <scxml datamodel="lua" name="ScxmlShape1" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
 	<datamodel>

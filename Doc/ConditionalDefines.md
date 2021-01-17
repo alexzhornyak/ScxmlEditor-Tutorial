@@ -1,16 +1,16 @@
 # Conditional Project Definitions
 State Chart elements are able to be excluded from saving by keyword which is defined in project options.
 
-![program_options](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ConditionalDefines_ProgramOptions.png)
+![program_options](../Images/ConditionalDefines_ProgramOptions.png)
 
 ## 'ExcludeConditions' attribute
 It is a semicolon-separated list of project definitions.
 If the **'ExcludeConditions'** value matches the **'ProjectDefines'** value then the element is excluded from save. This attribute supports inversion also.
 You may use **'~'** sign for **inversion**.
 
-![ExcludeConditions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ConditionalDefines_ExcludeConditions.png)
+![ExcludeConditions](../Images/ConditionalDefines_ExcludeConditions.png)
 
-## [Example:](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Examples/ConditionDebugDefine.sproj)
+## [Example:](../Examples/ConditionDebugDefine.sproj)
 
 **ProjectDefines == DEBUG**
 
@@ -22,8 +22,8 @@ You may use **'~'** sign for **inversion**.
 
 **Project definitions will be displayed at the right side of the application's caption.**
 
-![debug_defined](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ConditionalDefines_DebugDefined.png)
+![debug_defined](../Images/ConditionalDefines_DebugDefined.png)
 
 **Excluded chart elements will be marked with the corresponding message**
 
-![excluded_shapes](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ConditionalDefines_Excluded.png)
+![excluded_shapes](../Images/ConditionalDefines_Excluded.png)

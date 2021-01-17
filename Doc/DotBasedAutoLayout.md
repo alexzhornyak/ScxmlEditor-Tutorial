@@ -15,26 +15,26 @@ Since version **2.1.0.1347** auto-layout option is based on Graphviz DOT render.
 ## How to automatically arrange layout
 **1.** Press right mouse button somewhere on the chart and select menu 'Auto Arrange Layout'
 
-![AutoLayout_MenuArrange](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/AutoLayout_MenuArrange.png)
+![AutoLayout_MenuArrange](../Images/AutoLayout_MenuArrange.png)
 
 **2.** Or press "**Ctrl + .**" shorcut and type "Auto" in **IDE Insight** focus search dialog
 
-![AutoLayout_IDEInsightArrange](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/AutoLayout_IDEInsightArrange.png)
+![AutoLayout_IDEInsightArrange](../Images/AutoLayout_IDEInsightArrange.png)
 
 **3.** Select **Orthographic splines** option to have square-like connections (default)
 
-![AutoLayout_OrthoSplines](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/AutoLayout_OrthoSplines.png)
+![AutoLayout_OrthoSplines](../Images/AutoLayout_OrthoSplines.png)
 
 **4.** Select **Polyline splines** option to draw connections as polylines
 
-![AutoLayout_PolyLineSplines](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/AutoLayout_PolyLineSplines.png)
+![AutoLayout_PolyLineSplines](../Images/AutoLayout_PolyLineSplines.png)
 
 ## How to convert SCXML to DOT
 #### 1. Search in IDE Insight (Ctrl+.) "DOT" or select menu "File->Export->Export as graph DOT"
-![AutoLayout_ExportAsDot](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/AutoLayout_ExportAsDot.png)
+![AutoLayout_ExportAsDot](../Images/AutoLayout_ExportAsDot.png)
 
 #### 2. Save as Graphviz (\*.gl) file
-![ExportAsDot_TimeGenerator](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ExportAsDot_TimeGenerator.png)
+![ExportAsDot_TimeGenerator](../Images/ExportAsDot_TimeGenerator.png)
 
 ```
 digraph {
@@ -73,7 +73,7 @@ digraph {
 ## Special SCXML to DOT convertation features
 
 ### 1. Graphviz cluster can not be connected to itself so self-transitions are encoded in cluster label
-![ExportAsDot_TimeGenerator_SelfTransitions](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ExportAsDot_TimeGenerator_SelfTransitions.png)
+![ExportAsDot_TimeGenerator_SelfTransitions](../Images/ExportAsDot_TimeGenerator_SelfTransitions.png)
 
 ### 2. Executable content is represented in single node without edges
-![ExportAsDot_TimeGenerator_ExecContent](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/ExportAsDot_TimeGenerator_ExecContent.png)
+![ExportAsDot_TimeGenerator_ExecContent](../Images/ExportAsDot_TimeGenerator_ExecContent.png)
