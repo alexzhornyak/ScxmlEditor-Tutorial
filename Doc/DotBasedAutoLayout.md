@@ -88,8 +88,10 @@ digraph {
 ![morse_code_trainer](https://raw.githubusercontent.com/alexzhornyak/SCXML-tutorial/master/Images/morseNull.png)
 
 ## Example 2. Autolayoting LCCA tests from [USCXML Benchmarks Tests](https://github.com/tklab-tud/uscxml/blob/master/docs/BENCHMARKS.md)
-![LCCA4](../Images/LCCA.4.png)
+### [LCCA.4.scxml](https://raw.githubusercontent.com/tklab-tud/uscxml/master/test/benchmarks/LCCA.4.scxml)
+![LCCA4_image](../Images/LCCA.4.png)
 
-![LCCA16](../Images/LCCA.16.png)
+### [LCCA.16.scxml](https://raw.githubusercontent.com/tklab-tud/uscxml/master/test/benchmarks/LCCA.16.scxml)
+![LCCA16_image](../Images/LCCA.16.png)
 
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
