@@ -85,6 +85,7 @@ digraph {
 # Examples
 
 ## Example 1. Autolayouting [Morse Code Trainer](https://github.com/alexzhornyak/SCXML-tutorial/tree/master/Examples/Qt/Morse) source code SCXML
+### [morseNull.scxml](https://github.com/alexzhornyak/SCXML-tutorial/blob/master/Examples/Qt/Morse/Src/morseNull.scxml)
 ![morse_code_trainer](https://raw.githubusercontent.com/alexzhornyak/SCXML-tutorial/master/Images/morseNull.png)
 
 ## Example 2. Autolayoting LCCA tests from [USCXML Benchmarks Tests](https://github.com/tklab-tud/uscxml/blob/master/docs/BENCHMARKS.md)
