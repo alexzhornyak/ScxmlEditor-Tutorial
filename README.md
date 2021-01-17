@@ -43,6 +43,10 @@ Latest version: **[2.1.4.1483](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 
 [8. SCXML source code view and live editing](Doc/LiveScxmlEdit.md)
 
+[9. Export SCXML to SVG](Doc/ExportScxmlToSVG.md)
+
+[10. SCXML Structure View](Doc/ScxmlStructureView.md)
+
 ## Creating SCXML charts
 
 ### Creating a unit
