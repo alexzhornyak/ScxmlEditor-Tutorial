@@ -1,3 +1,7 @@
+<a name="top-anchor"/>
+
+| [Contents](#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+
 **[Video overview - v.1.0](https://youtu.be/tL-NICRwggY)**
 
 **[Video overview - v.2.0](https://youtu.be/SryLDwxcCjA)**
@@ -114,3 +118,5 @@ Add **+=XML** to **Pro** file
 4. Use **Pause** for tracing (optionally)
 
 ![2018-09-26 10 53 10](https://user-images.githubusercontent.com/18611095/46065349-87019980-c17a-11e8-979b-1ec93351e84e.png)
+
+| [TOP](#top-anchor) | [Contents](#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
