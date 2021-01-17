@@ -56,7 +56,7 @@ You may review script execution summary in **CMD Output** tab
 	<state id="StateShape1">
 		<onentry>
 			<foreach array="VarTable" index="index" item="item">
-				<log expr="string.format(&quot;[%s] %s&quot;, index, item)" label="INFO"/>
+				<log expr="string.format('[%s] %s', index, item)" label="INFO"/>
 			</foreach>
 		</onentry>
 		<transition event="Step" target="StateShape2"/>
@@ -69,7 +69,7 @@ You may review script execution summary in **CMD Output** tab
 </scxml>
 ```
 **include_state_machine.scxml**
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <scxml name="ScxmlChild" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
 	<state id="StateChild">
@@ -89,21 +89,21 @@ You may review script execution summary in **CMD Output** tab
 
 ### Build Output
 **state_machine_project_build.flat.scxml**
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <scxml datamodel="lua" name="ScxmlShape1" version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
 	<datamodel>
 		<data id="VarTable">{
-    &quot;Item 1&quot;,
-    &quot;Item 2&quot;,
-    &quot;Item 3&quot;    
+    'Item 1',
+    'Item 2',
+    'Item 3'    
 }
 		</data>
 	</datamodel>
 	<state id="StateShape1">
 		<onentry>
 			<foreach array="VarTable" index="index" item="item">
-				<log expr="string.format(&quot;[%s] %s&quot;, index, item)" label="INFO"/>
+				<log expr="string.format('[%s] %s', index, item)" label="INFO"/>
 			</foreach>
 		</onentry>
 		<transition event="Step" target="StateShape2"/>
