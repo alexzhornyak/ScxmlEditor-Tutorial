@@ -1,3 +1,7 @@
+<a name="top-anchor"/>
+
+| [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+
 # Building a project
 
 Complex state machines may consists of many invoked state machines inside and nested data or script sources as separate files.
@@ -120,3 +124,5 @@ You may review script execution summary in **CMD Output** tab
 	<final id="FinalShape1"/>
 </scxml>
 ```
+
+| [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |

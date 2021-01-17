@@ -1,3 +1,7 @@
+<a name="top-anchor"/>
+
+| [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+
 # DOT-based Auto-Layout
 
 Since version **2.1.0.1347** auto-layout option is based on Graphviz DOT render.
@@ -77,3 +81,5 @@ digraph {
 
 ### 2. Executable content is represented in single node without edges
 ![ExportAsDot_TimeGenerator_ExecContent](../Images/ExportAsDot_TimeGenerator_ExecContent.png)
+
+| [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |

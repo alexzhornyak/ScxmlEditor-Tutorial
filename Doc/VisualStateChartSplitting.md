@@ -1,3 +1,7 @@
+<a name="top-anchor"/>
+
+| [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+
 # How to split State Chart without using \<invoke\>
 
 SCXML has an option to split state machine into sub state machines using \<invoke\> element. But in this case we need to provide data sharing between all parts.
@@ -51,3 +55,5 @@ After run all entered states will be highlighted
 
 You may double click on virtual shape to switch to the its source unit
 ![debug2](../Images/VisualSplitting_Debug2.png)
+
+| [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |

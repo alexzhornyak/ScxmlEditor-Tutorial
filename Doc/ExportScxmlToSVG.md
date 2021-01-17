@@ -1,3 +1,7 @@
+<a name="top-anchor"/>
+
+| [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+
 # Export SCXML to SVG
 
 There are a couple ways to exprt SCXML to SVG.
@@ -20,3 +24,5 @@ There are a couple ways to exprt SCXML to SVG.
 
 ## Example 2. All state chart exported
 ![Part](../Images/SVG_Example_Bolero.svg)
+
+| [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |

@@ -1,4 +1,8 @@
-# [Inheritance](https://github.com/alexzhornyak/SCXML-tutorial/blob/master/Doc/Inheritance_SCXML.md)
+<a name="top-anchor"/>
+
+| [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+
+# [Inheritance](https://alexzhornyak.github.io/SCXML-tutorial/Doc/Inheritance_SCXML.html)
 
 An option to inherit from base chart.
 
@@ -48,3 +52,5 @@ You may review resolved values in property **InheritanceResolver**.
 ![resolved](../Images/Inheritance_resolved_circle.png)
 
 #### Elements with resolved properties will be marked with orange circle.
+
+| [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
