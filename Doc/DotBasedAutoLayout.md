@@ -40,7 +40,7 @@ Since version **2.1.0.1347** auto-layout option is based on Graphviz DOT render.
 #### 2. Save as Graphviz (\*.gl) file
 ![ExportAsDot_TimeGenerator](../Images/ExportAsDot_TimeGenerator.png)
 
-```
+```dot
 digraph {
 	compound=true;
 	graph [splines=ortho, fontname="Arial"];
@@ -81,5 +81,15 @@ digraph {
 
 ### 2. Executable content is represented in single node without edges
 ![ExportAsDot_TimeGenerator_ExecContent](../Images/ExportAsDot_TimeGenerator_ExecContent.png)
+
+# Examples
+
+## Example 1. Autolayouting [Morse Code Trainer](https://github.com/alexzhornyak/SCXML-tutorial/tree/master/Examples/Qt/Morse) source code SCXML
+![morse_code_trainer](https://raw.githubusercontent.com/alexzhornyak/SCXML-tutorial/master/Images/morseNull.png)
+
+## Example 2. Autolayoting LCCA tests from [USCXML Benchmarks Tests](https://github.com/tklab-tud/uscxml/blob/master/docs/BENCHMARKS.md)
+![LCCA4](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/LCCA.4.png)
+
+![LCCA16](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/blob/master/Images/LCCA.16.png)
 
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
