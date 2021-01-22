@@ -1,10 +1,11 @@
 <a name="top-anchor"/>
 
 | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|
 
 # Building a project
 
-Complex state machines may consists of many invoked state machines inside and nested data or script sources as separate files.
+Complex state machines may consists of many [invoked state machines](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html) inside and nested [data](https://alexzhornyak.github.io/SCXML-tutorial/Doc/datamodel.html#data) or [script](https://alexzhornyak.github.io/SCXML-tutorial/Doc/script.html) sources as separate files.
 Such projects may be inconvinient during the deployment because you should collect all files and check that all links to external files are valid.
 So we offer the system of building all external files to one source.
 
@@ -79,7 +80,7 @@ You may review script execution summary in **CMD Output** tab
 </scxml>
 ```
 **dataVarTable.lua**
-```
+```lua
 {
     "Item 1",
     "Item 2",
@@ -126,3 +127,4 @@ You may review script execution summary in **CMD Output** tab
 ```
 
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|---|

@@ -1,10 +1,11 @@
 <a name="top-anchor"/>
 
 | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|
 
-# How to split State Chart without using \<invoke\>
+# How to split State Chart without using [\<invoke\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html)
 
-SCXML has an option to split state machine into sub state machines using \<invoke\> element. But in this case we need to provide data sharing between all parts.
+SCXML has an option to split state machine into sub state machines using [\<invoke\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html) element. But in this case we need to provide [data](https://alexzhornyak.github.io/SCXML-tutorial/Doc/datamodel.html) sharing between all parts.
 This procedure in some cases may be redundant or complex. And not all SCXML SDKs support such feature.
 But what to do if state chart becomes too large and difficult to read?
 
@@ -57,3 +58,4 @@ You may double click on virtual shape to switch to the its source unit
 ![debug2](../Images/VisualSplitting_Debug2.png)
 
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|---|

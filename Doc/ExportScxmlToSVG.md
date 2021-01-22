@@ -1,10 +1,11 @@
 <a name="top-anchor"/>
 
 | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|
 
-# Export SCXML to SVG
+# Export [SCXML](https://alexzhornyak.github.io/SCXML-tutorial/) to [SVG](https://www.w3.org/Graphics/SVG/)
 
-There are a couple ways to exprt SCXML to SVG.
+There are a couple ways to export [SCXML](https://alexzhornyak.github.io/SCXML-tutorial/) to [SVG](https://www.w3.org/Graphics/SVG/).
 
 ### 1. Quick view SVG source code by switching to the 'SVG' tab
 ![SvgTab](../Images/SVG_Tab.png)
@@ -26,3 +27,4 @@ There are a couple ways to exprt SCXML to SVG.
 ![Part](../Images/SVG_Example_Bolero.svg)
 
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|---|

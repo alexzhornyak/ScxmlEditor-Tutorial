@@ -1,10 +1,11 @@
 <a name="top-anchor"/>
 
 | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|
 
-# Smart Switch Transitions
+# Smart Switch [Transitions](https://alexzhornyak.github.io/SCXML-tutorial/Doc/transition.html)
 
-There are some cases when 2 shapes are connected with transitions that work as **switch**. Let's take a look at the picture below.
+There are some cases when 2 shapes are connected with [transitions](https://alexzhornyak.github.io/SCXML-tutorial/Doc/transition.html) that work as **switch**. Let's take a look at the picture below.
 
 ![intro](../Images/SmartTransitions_Intro.png)
 
@@ -55,3 +56,4 @@ And we offer to implement 1 visual transition that will produce such inversion d
 ```
 
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|---|

@@ -1,10 +1,11 @@
 <a name="top-anchor"/>
 
 | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|
 
-# DOT-based Auto-Layout
+# [DOT-based](https://graphviz.org/) Auto-Layout
 
-Since version **2.1.0.1347** auto-layout option is based on Graphviz DOT render.
+Since version **2.1.0.1347** auto-layout option is based on [Graphviz DOT render](https://graphviz.org/).
 
 ### Requirements
 1. [Visual C++ Redistributable for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145) must be installed
@@ -12,9 +13,9 @@ Since version **2.1.0.1347** auto-layout option is based on Graphviz DOT render.
 2. **ScxmlEditor\Graphviz** core must be present
 
 ## Auto-layout is applied when:
-**1.** **The SCXML document without shapes and connections metainformation** is opened
+**1.** **The plain SCXML document without ScxmlEditor metainformation** is opened
 
-**2.** User calls **'Auto Arrange Layout'** option.
+**2.** User calls **'Auto Arrange Layout'** option manually.
 
 ## How to automatically arrange layout
 **1.** Press right mouse button somewhere on the chart and select menu 'Auto Arrange Layout'
@@ -33,11 +34,11 @@ Since version **2.1.0.1347** auto-layout option is based on Graphviz DOT render.
 
 ![AutoLayout_PolyLineSplines](../Images/AutoLayout_PolyLineSplines.png)
 
-## How to convert SCXML to DOT
+## How to convert [SCXML](https://alexzhornyak.github.io/SCXML-tutorial/) to [DOT](https://graphviz.org/)
 #### 1. Search in IDE Insight (Ctrl+.) "DOT" or select menu "File->Export->Export as graph DOT"
 ![AutoLayout_ExportAsDot](../Images/AutoLayout_ExportAsDot.png)
 
-#### 2. Save as Graphviz (\*.gl) file
+#### 2. Save as [Graphviz](https://graphviz.org/) (\*.gl) file
 ![ExportAsDot_TimeGenerator](../Images/ExportAsDot_TimeGenerator.png)
 
 ```dot
@@ -74,7 +75,7 @@ digraph {
 }
 ```
 
-## Special SCXML to DOT convertation features
+## Special [SCXML](https://alexzhornyak.github.io/SCXML-tutorial/) to [DOT](https://graphviz.org/) convertation features
 
 ### 1. Graphviz cluster can not be connected to itself so self-transitions are encoded in cluster label
 ![ExportAsDot_TimeGenerator_SelfTransitions](../Images/ExportAsDot_TimeGenerator_SelfTransitions.png)
@@ -96,3 +97,4 @@ digraph {
 ![LCCA16_image](../Images/LCCA.16.png)
 
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|---|

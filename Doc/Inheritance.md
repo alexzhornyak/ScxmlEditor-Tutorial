@@ -1,6 +1,7 @@
 <a name="top-anchor"/>
 
 | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|
 
 # [Inheritance](https://alexzhornyak.github.io/SCXML-tutorial/Doc/Inheritance_SCXML.html)
 
@@ -54,3 +55,4 @@ You may review resolved values in property **InheritanceResolver**.
 #### Elements with resolved properties will be marked with orange circle.
 
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|---|
