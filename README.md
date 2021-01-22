@@ -9,14 +9,15 @@
 
 **[Video overview - v.2.1](https://youtu.be/h2CXPBAK_XY)**
 
-# Scxml Editor 2.1.4
+# Scxml Editor 2.1.5
 Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](Images/Inheritance_TV_example.gif)
 
 **New:** [IDE Insight](#new-ide-insight), [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](Doc/Inheritance.md), [visual chart splitting](Doc/VisualStateChartSplitting.md), [conditional project definitions](Doc/ConditionalDefines.md), GIF maker etc.
-
-**New since 2.1.4:** [Export SCXML to SVG](Doc/ExportScxmlToSVG.md), [Structure View](Doc/ScxmlStructureView.md)
+### Changelog
+**2.1.5:** [Refactored Qt external debugger](Include/README.md) <br/>
+**2.1.4:** [Export SCXML to SVG](Doc/ExportScxmlToSVG.md), [Structure View](Doc/ScxmlStructureView.md)
 
 ## System requirments
 Windows 7, 8, 10
@@ -27,7 +28,7 @@ You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c
 
 [Zip Link](https://www.dropbox.com/s/1sx8p8o1e4t55hj/ScxmlEditor.zip?dl=0)
 
-Latest version: **[2.1.4.1483](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.1.5.1490](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ![AppPreview](Images/ApplicationPreview.png)
 
@@ -51,6 +52,8 @@ Latest version: **[2.1.4.1483](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 [9. Export SCXML to SVG](Doc/ExportScxmlToSVG.md)
 
 [10. SCXML Structure View](Doc/ScxmlStructureView.md)
+
+[11. External monitor for Qt applications](Include/README.md)
 
 ## Creating SCXML charts
 
@@ -100,25 +103,17 @@ Supports **null, lua** datamodels
 Supports **null, ecmascript** datamodels
 
 ### External debugging
+Include ['scxmlexternmonitor2.h'](Include/scxmlexternmonitor2.h) header to your project and follow [the instructions](Include/README.md)
+
 #### Example of debugging Qt Calculator-QML project
-Add the next [source code](Include/scxmlexternmonitor.h) to **calculator-qml.cpp**
-```
-#include "scxmlexternmonitor.h"
-
-g_ScxmlStateMachineName = "CalculatorStateMachine";
-qInstallMessageHandler(myMessageOutput);
-QLoggingCategory::setFilterRules("qt.scxml.statemachine=true");
-```
-Add **+=XML** to **Pro** file
-
-![2018-09-26 10 47 00](https://user-images.githubusercontent.com/18611095/46064985-9207fa00-c179-11e8-99e6-e8a8d1035ce8.png)
+![MonitorQML1](Images/ExternMonitor_QML1.png)
 
 1. Select **Run**->**Start listening from external application**
 2. Select **Run**->**Run**
 3. Launch **Calculator-QML.exe**
 4. Use **Pause** for tracing (optionally)
 
-![2018-09-26 10 53 10](https://user-images.githubusercontent.com/18611095/46065349-87019980-c17a-11e8-979b-1ec93351e84e.png)
+![CalculatorDebug](Images/CalculatorDebug.gif)
 
 | [TOP](#top-anchor) | [Contents](#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [SCXML Examples](https://alexzhornyak.github.io/SCXML-tutorial/Examples/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
 |---|---|---|---|---|
