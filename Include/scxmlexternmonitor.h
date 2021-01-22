@@ -12,42 +12,27 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-#define MLOG(VAL)	std::wcout << L#VAL << "> " << QDateTime::currentDateTime().toString("HH:mm:ss.zzz").toStdWString() << " QtScxmlTester.exe "
+/*******************************/
+/* !!! DEPRECATION WARNING !!! */
+/*******************************/
+
+/* !!! This SCXML monitor is deprecated !!! */
+
+/* Use: https://github.com/alexzhornyak/ScxmlEditor-Tutorial/tree/master/Include/scxmlexternmonitor2.h */
+
+#define MLOG(VAL)	std::wcout << L ## #VAL << L"> " << QDateTime::currentDateTime().toString("HH:mm:ss.zzz").toStdWString() << " QtScxmlTester.exe "
 
 typedef enum {
     smttUnknown, smttAfterEnter, smttBeforeEnter, smttAfterExit, smttBeforeExit, smttStep, smttBeforeExecContent, smttAfterExecContent,
     smttBeforeInvoke, smttAfterInvoke, smttBeforeUnInvoke, smttAfterUnInvoke, smttBeforeTakingTransition, smttAfterTakingTransition, smttMAXSIZE
 }TScxmlMsgType;
 
-static QString ScxmlMsgTypeToString(const TScxmlMsgType AType) {
-    switch (AType) {
-    case smttAfterEnter: return "smttAfterEnter";
-    case smttBeforeEnter: return "smttBeforeEnter";
-    case smttAfterExit: return "smttAfterExit";
-    case smttBeforeExit: return "smttBeforeExit";
-    case smttBeforeExecContent: return "smttBeforeExecContent";
-    case smttAfterExecContent: return "smttAfterExecContent";
-    case smttBeforeInvoke: return "smttBeforeInvoke";
-    case smttAfterInvoke: return "smttAfterInvoke";
-    case smttBeforeUnInvoke: return "smttBeforeUnInvoke";
-    case smttAfterUnInvoke: return "smttAfterUnInvoke";
-    case smttBeforeTakingTransition: return "smttBeforeTakingTransition";
-    case smttAfterTakingTransition: return "smttAfterTakingTransition";
-    case smttStep: return "smttStep";
-    }
-    return "smttUnknown";
-}
-
 struct Settings {
-    // flags
-    bool bCheckIssue = false;
-    bool bExitStop = false;
     bool bScxmlMonitorLog = false;
     // network
     long nRemotePort = 11005;
-    long nLocalPort = 11001;
-    // scxml
-    QString sScxmlFilePath = "";
+    long nLocalPort = 11001;    
+    QHostAddress haRemoteHost = QHostAddress::LocalHost;
 };
 
 static QString g_ScxmlStateMachineName = "";
@@ -66,7 +51,7 @@ void sendTestingMessage(const QString &sInterpreter, const QString &sName, const
     QByteArray ba;
     ba+=sMsg;
 
-    g_Socket.writeDatagram(ba, QHostAddress::LocalHost, g_Settings.nRemotePort);
+    g_Socket.writeDatagram(ba, g_Settings.haRemoteHost, static_cast<quint16>(g_Settings.nRemotePort));
 }
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -105,7 +90,7 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
                 if (iCaptureCount==3) {
                     const QString sInterpreter = rxEnterExit.capturedTexts()[1];
                     const bool active = QString::compare(rxEnterExit.capturedTexts()[2], "entering") == 0;
-                    const QStringList &states = rxEnterExit.capturedTexts()[3].split(",",QString::SkipEmptyParts);
+                    const QStringList &states = rxEnterExit.capturedTexts()[3].split(",",Qt::SkipEmptyParts);
 
                     foreach (QString it_str, states) {
 
