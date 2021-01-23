@@ -92,9 +92,25 @@ Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all a
 ![StructureViewSearch](Images/StructureView_Search.png)
 
 ## Debugging
-**ScxmlEditor** has an ability to listen UDP commands (AfterEnter, BeforeEnter, AfterExit, BeforeExit, Step, BeforeExecContent, AfterExecContent, BeforeInvoke, AfterInvoke, BeforeUnInvoke, AfterUnInvoke, BeforeTakingTransition, AfterTakingTransition, StableConfiguration, BeforeProcessingEvent). **Enter** and **Exit** graphically highlight the corresponding states. You can also trace the execution of the chart and use breakpoints.
+**ScxmlEditor** has an ability to receive and send string UDP commands: <br/>
+### Receive API:
+- `@@@` - clear highlighted states in all statecharts
+- `@@@ScxmlName` - clear highlighted states in statechart where [\<scxml\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/scxml.html) 'name' is equal `ScxmlName` 
+- `ID@ScxmlName@Msg` - commands to highlight state or display message in **CallStack** panel <br/>
+**Description:**
+  `ID` - integer type of command: `1 - AfterEnter, 2 - BeforeEnter, 3 - AfterExit, 4 - BeforeExit, 5 - Step, 6 - BeforeExecContent, 7 - AfterExecContent, 8 - BeforeInvoke, 9 - AfterInvoke, 10 - BeforeUnInvoke, 11 - AfterUnInvoke, 12 - BeforeTakingTransition, 13 - AfterTakingTransition, 14 - StableConfiguration, 15 - BeforeProcessingEvent` <br/>
+  `ScxmlName` - name of [\<scxml\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/scxml.html) <br/>
+  `Msg` - message which depends on type of command. For example: for **BeforeEnter** or **BeforeExit** - it is the id(name) of states, for **BeforeInvoke** or **BeforeUnInvoke** it is the name of invoked element, etc. </br>
+> **BeforeEnter** graphically highlight and **BeforeExit** unhighlight the corresponding states, other commands are displayed in **CallStack** panel
+#### Example of commands:
+- `2@CalculatorStateMachine@operand1` - highlight state **operand1** in statechart **CalculatorStateMachine** <br/>
+- `4@CalculatorStateMachine@operand1` - unhighlight state **operand1** in statechart **CalculatorStateMachine** <br/>
+You can also trace the execution of the chart and use breakpoints.
 
 ### Local debugging
+ScxmlEditor starts a testing application, intercepts its command line output, receives UDP commands and sends events to testing application also as UDP packages
+
+There are two ready-to-use testing applications:
 
 1. Based on [USCXML framework](https://github.com/tklab-tud/uscxml).
 Supports **null, lua** datamodels
@@ -102,8 +118,13 @@ Supports **null, lua** datamodels
 2. Based on [Qt SCXML framework](https://doc.qt.io/qt-5.9/qtscxml-index.html)
 Supports **null, ecmascript** datamodels
 
+Also you may write your own testing application using the corresponding API
+
 ### External debugging
-Include ['scxmlexternmonitor2.h'](Include/scxmlexternmonitor2.h) header to your project and follow [the instructions](Include/README.md)
+In this mode ScxmlEditor only listens UDP commands for highlighting states and displaying messages in CallStack panel
+
+#### Qt SCXML framework debugging
+For Qt SCXML applications you may include ['scxmlexternmonitor2.h'](Include/scxmlexternmonitor2.h) header to your project and follow [the instructions](Include/README.md)
 
 #### Example of debugging Qt Calculator-QML project
 ![MonitorQML1](Images/ExternMonitor_QML1.png)
