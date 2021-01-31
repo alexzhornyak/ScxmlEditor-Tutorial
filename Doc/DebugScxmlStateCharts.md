@@ -35,6 +35,12 @@ You can also trace the execution of the chart and use breakpoints.
 
 ### Send API:
 It is similar to [SCXML send events logic](https://alexzhornyak.github.io/SCXML-tutorial/Doc/send.html)
+
+#### Testing application receives events as UDP string packages in the next format:
+- `%EVENT_NAME%` - valid event name
+- `%PARAM_NAME%` - valid param name
+- `%DATA_TYPE%` - `0-Default`(Variant type), `1-Bool`, `2-Integer`, `3-Double`, `4-String`
+- `%CONTENT_DATA%`,`%PARAM_DATA%` - event data depending on `%DATA_TYPE%`
 #### Option 1. With single content expression
 ```xml
 <EVENT name="%EVENT_NAME%" >
@@ -46,10 +52,30 @@ It is similar to [SCXML send events logic](https://alexzhornyak.github.io/SCXML-
 #### Option 2. With multiple params
 ```xml
 <EVENT name="%EVENT_NAME%" >
-	<param type="%DATA_TYPE%" expr="%PARAM_DATA%">
-	<param type="%DATA_TYPE%" expr="%PARAM_DATA%">
+	<param name="%PARAM_NAME%" type="%DATA_TYPE%" expr="%PARAM_DATA%">
+	<param name="%PARAM_NAME%" type="%DATA_TYPE%" expr="%PARAM_DATA%">
 </EVENT>
 ```
+
+### Triggers
+- #### May be assigned as `trigger shapes` in statechart
+![TriggerPanel](../Images/Debug_TriggerPanel.png)
+
+- #### May be applied via `ContentTrigger` property of `transition`
+![TriggerSimple](../Images/Debug_TriggerSimple.png)
+
+### Type of triggers representation
+- #### Default
+![Default](../Images/Debug_TriggerSimple2.png)
+
+- #### CheckBox
+![Default](../Images/Debug_TriggerCheckBox.png)
+
+- #### ComboBox
+![Default](../Images/Debug_TriggerCombo.png)
+
+- #### TrackBar
+![Default](../Images/Debug_TriggerTrackBar.png)
 
 ### External debugging
 In this mode ScxmlEditor only listens UDP commands for highlighting states and displaying messages in CallStack panel
