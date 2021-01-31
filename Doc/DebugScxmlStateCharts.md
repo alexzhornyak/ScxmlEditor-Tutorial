@@ -33,10 +33,28 @@ Also you may write your own testing application using the corresponding API
 - `4@CalculatorStateMachine@operand1` - unhighlight state **operand1** in statechart **CalculatorStateMachine** <br/>
 You can also trace the execution of the chart and use breakpoints.
 
+### Send API:
+It is similar to [SCXML send events logic](https://alexzhornyak.github.io/SCXML-tutorial/Doc/send.html)
+#### Option 1. With single content expression
+```xml
+<EVENT name="%EVENT_NAME%" >
+	<content type="%DATA_TYPE%" >
+		%CONTENT_DATA%
+	</content>
+</EVENT>
+```
+#### Option 2. With multiple params
+```xml
+<EVENT name="%EVENT_NAME%" >
+	<param type="%DATA_TYPE%" expr="%PARAM_DATA%">
+	<param type="%DATA_TYPE%" expr="%PARAM_DATA%">
+</EVENT>
+```
+
 ### External debugging
 In this mode ScxmlEditor only listens UDP commands for highlighting states and displaying messages in CallStack panel
 
-#### [Qt SCXML framework debugging]((../Include/README.md))
+#### [Qt SCXML framework debugging](../Include/README.md)
 For Qt SCXML applications you may include [scxmlexternmonitor2.h](../Include/scxmlexternmonitor2.h) header to your project and follow [the instructions](../Include/README.md)
 
 #### Example of debugging Qt Calculator-QML project
