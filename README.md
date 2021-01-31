@@ -93,7 +93,7 @@ Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all a
 ### Structure View with quick search
 ![StructureViewSearch](Images/StructureView_Search.png)
 
-## [Debugging]((Doc/DebugScxmlStateCharts.md))
+## [Debugging](Doc/DebugScxmlStateCharts.md)
 **ScxmlEditor** has an ability to receive and send string UDP commands: <br/>
 ### Receive API:
 - `@@@` - clear highlighted states in all statecharts
