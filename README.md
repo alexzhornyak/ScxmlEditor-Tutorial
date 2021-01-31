@@ -55,6 +55,8 @@ Latest version: **[2.1.5.1501](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 
 [11. External monitor for Qt applications](Include/README.md)
 
+[12. How to debug SCXML statecharts](Doc/DebugScxmlStateCharts.md)
+
 ## Creating SCXML charts
 
 ### Creating a unit
@@ -91,7 +93,7 @@ Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all a
 ### Structure View with quick search
 ![StructureViewSearch](Images/StructureView_Search.png)
 
-## Debugging
+## [Debugging]((Doc/DebugScxmlStateCharts.md))
 **ScxmlEditor** has an ability to receive and send string UDP commands: <br/>
 ### Receive API:
 - `@@@` - clear highlighted states in all statecharts
@@ -123,8 +125,8 @@ Also you may write your own testing application using the corresponding API
 ### External debugging
 In this mode ScxmlEditor only listens UDP commands for highlighting states and displaying messages in CallStack panel
 
-#### Qt SCXML framework debugging
-For Qt SCXML applications you may include ['scxmlexternmonitor2.h'](Include/scxmlexternmonitor2.h) header to your project and follow [the instructions](Include/README.md)
+#### [Qt SCXML framework debugging](Include/README.md)
+For Qt SCXML applications you may include [scxmlexternmonitor2.h](Include/scxmlexternmonitor2.h) header to your project and follow [the instructions](Include/README.md)
 
 #### Example of debugging Qt Calculator-QML project
 ![MonitorQML1](Images/ExternMonitor_QML1.png)
