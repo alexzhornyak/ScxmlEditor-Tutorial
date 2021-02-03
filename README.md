@@ -28,7 +28,7 @@ You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c
 
 [Zip Link](https://www.dropbox.com/s/1sx8p8o1e4t55hj/ScxmlEditor.zip?dl=0)
 
-Latest version: **[2.1.5.1501](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.1.5.1505](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ![AppPreview](Images/ApplicationPreview.png)
 
