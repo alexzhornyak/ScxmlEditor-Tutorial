@@ -28,7 +28,7 @@ You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c
 
 [Zip Link](https://www.dropbox.com/s/1sx8p8o1e4t55hj/ScxmlEditor.zip?dl=0)
 
-Latest version: **[2.1.5.1505](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.1.5.1507](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ![AppPreview](Images/ApplicationPreview.png)
 
@@ -115,7 +115,7 @@ ScxmlEditor starts a testing application, intercepts its command line output, re
 There are two ready-to-use testing applications:
 
 1. Based on [USCXML framework](https://github.com/tklab-tud/uscxml).
-Supports **null, lua** datamodels
+Supports **null, lua, ecmascript** datamodels
 
 2. Based on [Qt SCXML framework](https://doc.qt.io/qt-5.9/qtscxml-index.html)
 Supports **null, ecmascript** datamodels
