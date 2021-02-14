@@ -12,7 +12,7 @@ ScxmlEditor starts a testing application, intercepts its command line output, re
 There are two ready-to-use testing applications:
 
 1. Based on [USCXML framework](https://github.com/tklab-tud/uscxml).
-Supports **null, lua** datamodels
+Supports **null, lua, ecmascript(since 2.1.5.1507)** datamodels
 
 2. Based on [Qt SCXML framework](https://doc.qt.io/qt-5/qtscxml-index.html)
 Supports **null, ecmascript** datamodels
