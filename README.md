@@ -9,26 +9,28 @@
 
 **[Video overview - v.2.1](https://youtu.be/h2CXPBAK_XY)**
 
-# Scxml Editor 2.1.5
+# Scxml Editor 2.1.6
 Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](Images/Inheritance_TV_example.gif)
 
 **New:** [IDE Insight](#new-ide-insight), [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](Doc/Inheritance.md), [visual chart splitting](Doc/VisualStateChartSplitting.md), [conditional project definitions](Doc/ConditionalDefines.md), GIF maker etc.
 ### Changelog
+**2.1.6:** UScxmlTester with EcmaScript, In() predicate autocomplete, QtScxmlTester 5.9.1->5.15 <br/>
 **2.1.5:** [Refactored Qt external debugger](Include/README.md) <br/>
 **2.1.4:** [Export SCXML to SVG](Doc/ExportScxmlToSVG.md), [Structure View](Doc/ScxmlStructureView.md)
 
 ## System requirments
 Windows 7, 8, 10
 
-! **vcredist_x86.exe** must be installed before starting application !
+! **ScxmlEditor\vcredist_x86.exe** must be installed for **UscxmlTester**, **Graphviz** and other components ! <br/>
+! **ScxmlEditor\QtScxmlTester\vcredist_x64.exe** must be installed for **QtScxmlTester** !
 
 You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 [Zip Link](https://www.dropbox.com/s/1sx8p8o1e4t55hj/ScxmlEditor.zip?dl=0)
 
-Latest version: **[2.1.5.1507](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.1.6.1519](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ![AppPreview](Images/ApplicationPreview.png)
 
