@@ -15,4 +15,6 @@ A set of examples showing capabilities of [SCXML Editor](../README.md).
 - **test216.sproj**, **test239.sproj** - project showing how to organize root SCXML files and [invoked SCXML files](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html) in a project
 - **TimeGenerator.scxml** - single unit demonstrating [simple time generator](https://alexzhornyak.github.io/SCXML-tutorial/#time-generator-example)
 - **TV.sproj**, **TV_3D.sproj** - projects showing usage of [visual inheritance in state machines](../Doc/Inheritance.md)
+- **QtBugTracking_2_4.scxml** - single unit visualizing Qt Bug Tracking Workflow
+![QtBugTracking](https://raw.githubusercontent.com/alexzhornyak/SCXML-tutorial/master/Images/QtBugTracking_v_2_4.gif)
 
