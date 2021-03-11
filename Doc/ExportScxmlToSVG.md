@@ -26,5 +26,30 @@ There are a couple ways to export [SCXML](https://alexzhornyak.github.io/SCXML-t
 ## Example 2. All state chart exported
 ![Part](../Images/SVG_Example_Bolero.svg)
 
+## SVG Export Settings
+Since ScxmlEditor 2.1.7 there are available export settings:
+- **ExportSvgShapeRendering** appends SVG attribute `shape-rendering` with values `auto | optimizeSpeed | crispEdges | geometricPrecision`
+
+- **ExportSvgTextRendering** appends SVG attribute `text-rendering` with values `auto | optimizeSpeed | optimizeLegibility | geometricPrecision`
+
+- **ExportSvgTextFontUsePoints** boolean value used for adjusting font size values:
+1) if it is set to **true** then font size is given in points with extension `pt` (Example: `font-size="8pt"`)
+2) if it is set to **false** then font size is calculated by expression `Font->Size * Screen->PixelsPerInch / 72.0f` (Example: `font-size="10.67"`)
+
+- **ExportSvgExtraParams** appends user defined params to SVG element
+
+![ExportSettings](../Images/SVG_Export_Settings.png)
+
+SVG attributes text-rendering and shape-rendering are predefined and may be changed from settings
+
+![ShapeRendering](../Images/SVG_Export_CrispEdges.png)
+
+And there is an option to use custom SVG element attributes
+
+![SvgCustom](../Images/SVG_Export_CustomParams.png)
+![SvgTextCustom](../Images/SVG_Export_CustomParams_Text.png)
+### Example: `shape-rendering="crispEdges"`
+![SvgTextCustom](../Images/SVG_Export_StopWatch_CrispEdges.svg)
+
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
 |---|---|---|---|
