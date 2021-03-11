@@ -9,13 +9,14 @@
 
 **[Video overview - v.2.1](https://youtu.be/h2CXPBAK_XY)**
 
-# Scxml Editor 2.1.6
+# Scxml Editor 2.1.7
 Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](Images/Inheritance_TV_example.gif)
 
 **New:** [IDE Insight](#new-ide-insight), [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](Doc/Inheritance.md), [visual chart splitting](Doc/VisualStateChartSplitting.md), [conditional project definitions](Doc/ConditionalDefines.md), GIF maker etc.
 ### Changelog
+**2.1.7:** [SVG Export Settings](Doc/ExportScxmlToSVG.md#svg-export-settings)
 **2.1.6:** UScxmlTester with EcmaScript, In() predicate autocomplete, QtScxmlTester 5.9.1->5.15 <br/>
 **2.1.5:** [Refactored Qt external debugger](Include/README.md) <br/>
 **2.1.4:** [Export SCXML to SVG](Doc/ExportScxmlToSVG.md), [Structure View](Doc/ScxmlStructureView.md)
@@ -30,7 +31,7 @@ You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c
 
 [Zip Link](https://www.dropbox.com/s/1sx8p8o1e4t55hj/ScxmlEditor.zip?dl=0)
 
-Latest version: **[2.1.6.1531](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.1.7.1537](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ![AppPreview](Images/ApplicationPreview.png)
 
