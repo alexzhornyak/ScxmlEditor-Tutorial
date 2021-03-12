@@ -67,10 +67,14 @@ Latest version: **[2.1.7.1537](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 
 Select **File**->**New Unit** or press **Shift+Ctrl+N**
 
+![new_unit](Images/Tutorial_NewUnit.gif)
+
 ### Creating a project
 **Project** is the most preferred choice of designing scxml charts to get all benefits (custom triggers, nested scxml charts, etc.)
 
 Select **File**->**New Project** or press **Ctrl+N**
+
+![new_project](Images/Tutorial_NewProject.gif)
 
 ## Editing SCXML charts
 **ScxmlEditor** provides a project wizard for opening scxml. It supports either opening files with metainformation about the position of states and transitions or plain scxml files. You can use **ScxmlEditor** to add states and transitions to the chart. You can add executable content to a state chart to enable the state machine to modify its data model and to interact with external entities.
