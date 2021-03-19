@@ -9,13 +9,14 @@
 
 **[Video overview - v.2.1](https://youtu.be/h2CXPBAK_XY)**
 
-# Scxml Editor 2.1.7
+# Scxml Editor 2.1.8
 Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](Images/Inheritance_TV_example.gif)
 
 **New:** [IDE Insight](#new-ide-insight), [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](Doc/Inheritance.md), [visual chart splitting](Doc/VisualStateChartSplitting.md), [conditional project definitions](Doc/ConditionalDefines.md), GIF maker etc.
 ### Changelog
+**2.1.8:** [Support of custom console testing applications](Doc/DebugScxmlStateCharts.md#custom-testing-application-setup) like [SCION command-line tool](https://gitlab.com/scion-scxml/cli) <br/>
 **2.1.7:** [SVG Export Settings](Doc/ExportScxmlToSVG.md#svg-export-settings) <br/>
 **2.1.6:** UScxmlTester with EcmaScript, In() predicate autocomplete, QtScxmlTester 5.9.1->5.15 <br/>
 **2.1.5:** [Refactored Qt external debugger](Include/README.md) <br/>
@@ -31,7 +32,7 @@ You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c
 
 [Zip Link](https://www.dropbox.com/s/1sx8p8o1e4t55hj/ScxmlEditor.zip?dl=0)
 
-Latest version: **[2.1.7.1537](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.1.8.1565](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ![AppPreview](Images/ApplicationPreview.png)
 
@@ -117,7 +118,9 @@ Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all a
 You can also trace the execution of the chart and use breakpoints.
 
 ### Local debugging
-ScxmlEditor starts a testing application, intercepts its command line output, receives UDP commands and sends events to testing application also as UDP packages
+ScxmlEditor starts a testing application, intercepts its command line output and may communicate in two modes:
+- [**UDP mode**](Doc/DebugScxmlStateCharts.md#receive-api) (receives UDP commands and sends events as UDP packages to testing application)
+- [**Pipes mode (since version 2.1.8)**](Doc/DebugScxmlStateCharts.md#custom-testing-application-setup) (capture enter-exit events from console output by regexp, and submit trigger event to state machine to console input)
 
 There are two ready-to-use testing applications:
 
