@@ -7,7 +7,9 @@
 **[ScxmlEditor](../README.md)** has an ability to execute [SCXML statecharts](https://alexzhornyak.github.io/SCXML-tutorial/) via testing applications or to listen external UDP commands such as state enter or exit, etc.
 
 ### Local debugging
-ScxmlEditor starts a testing application, intercepts its command line output, receives UDP commands and sends events as UDP packages to testing application
+ScxmlEditor starts a testing application, intercepts its command line output and may communicate in two modes:
+- UDP mode (receives UDP commands and sends events as UDP packages to testing application)
+- Pipes mode (since version 2.1.8) (capture enter-exit events from console output by regexp, and submit trigger event to state machine to console input)
 
 There are two ready-to-use testing applications:
 
@@ -92,6 +94,22 @@ For Qt SCXML applications you may include [scxmlexternmonitor2.h](../Include/scx
 4. Use **Pause** for tracing (optionally)
 
 ![CalculatorDebug](../Images/CalculatorDebug.gif)
+
+### Custom testing application setup
+Since version 2.1.8 there is an option to communicate with testing applications via pipes.
+#### Example: how to setup [The SCION command-line tool](https://gitlab.com/scion-scxml/cli) as custom testing application
+1) install [SCION CLI](https://gitlab.com/scion-scxml/cli) by command `npm install -g @scion-scxml/cli`
+2) after installation check [c:\Users\USER_NAME\AppData\Roaming\npm\node_modules\@scion-scxml\cli\bin\cli.js](https://gitlab.com/scion-scxml/cli/-/raw/master/bin/cli.js) is to be the latest from the corresponding [gitlab repo](https://gitlab.com/scion-scxml/cli)
+3) run any test scxml file in CMD to check that [SCION CLI](https://gitlab.com/scion-scxml/cli) is working [without errors](https://gitlab.com/scion-scxml/scion/-/issues/5)
+![SCION_CLI_console](../Images/SCION_CLI_console.gif)
+4) open `Settings->TestApplicationPresets` and check that it is properly adjusted according to the image below
+![Tutorial_CustomTesterScion](../Images/Tutorial_CustomTesterScion.png)
+![Tutorial_CustomOutputCapture](../Images/Tutorial_CustomOutputCapture.png)
+> If API is changed in the future you may edit regular expressions to capture enter-exit events properly
+5) select SCION CLI in application run presets
+![Tutorial_CustomSelectTester](../Images/Tutorial_CustomSelectTester.png)
+6) if everything is set properly you will see callstack messages and state machine will flow from state to state
+![Tutorial_CustomDebug](../Images/Tutorial_CustomDebug.png)
 
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
 |---|---|---|---|
