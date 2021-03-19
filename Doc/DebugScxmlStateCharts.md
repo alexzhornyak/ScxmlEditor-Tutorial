@@ -8,8 +8,8 @@
 
 ### Local debugging
 ScxmlEditor starts a testing application, intercepts its command line output and may communicate in two modes:
-- **UDP mode** (receives UDP commands and sends events as UDP packages to testing application)
-- **Pipes mode (since version 2.1.8)** (capture enter-exit events from console output by regexp, and submit trigger event to state machine to console input)
+- [**UDP mode**](#receive-api) (receives UDP commands and sends events as UDP packages to testing application)
+- [**Pipes mode (since version 2.1.8)**](#custom-testing-application-setup) (capture enter-exit events from console output by regexp, and submit trigger event to state machine to console input)
 
 There are two ready-to-use testing applications:
 
