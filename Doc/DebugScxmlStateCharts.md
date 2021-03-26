@@ -60,6 +60,7 @@ It is similar to [SCXML send events logic](https://alexzhornyak.github.io/SCXML-
 ```
 
 ### Triggers
+Triggers will create a GUI elements for passing data to statechart
 - #### May be assigned as `trigger shapes` in statechart
 ![TriggerPanel](../Images/Debug_TriggerPanel.png)
 
@@ -71,13 +72,21 @@ It is similar to [SCXML send events logic](https://alexzhornyak.github.io/SCXML-
 ![Default](../Images/Debug_TriggerSimple2.png)
 
 - #### CheckBox
-![Default](../Images/Debug_TriggerCheckBox.png)
+![CheckBox](../Images/Debug_TriggerCheckBox.png)
 
 - #### ComboBox
-![Default](../Images/Debug_TriggerCombo.png)
+![ComboBox](../Images/Debug_TriggerCombo.png)
 
 - #### TrackBar
-![Default](../Images/Debug_TriggerTrackBar.png)
+![TrackBar](../Images/Debug_TriggerTrackBar.png)
+
+### Nested `event.data` params
+If you need to pass nested `event.data` like `event.data.val` there is a menu **Params** in inspector
+![EventDataParams](../Images/EventDataParams.png)
+
+**DEMO.** In runtime params will be represented as edits with buttons
+
+![EventDataParamsDemo](https://raw.githubusercontent.com/alexzhornyak/SCXML-tutorial/master/Images/Foreach_Example.gif)
 
 ### External debugging
 In this mode ScxmlEditor only listens UDP commands for highlighting states and displaying messages in CallStack panel
