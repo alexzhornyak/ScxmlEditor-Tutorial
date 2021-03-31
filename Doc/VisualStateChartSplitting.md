@@ -43,6 +43,11 @@ After splitting virtual unit will be marked. And nested virtual state chart shap
 
 ![level2_after_split](../Images/VisualSplitting_internalState.png)
 
+## Adding [onentry](https://alexzhornyak.github.io/SCXML-tutorial/Doc/onentry.html), [onexit](https://alexzhornyak.github.io/SCXML-tutorial/Doc/onexit.html), [datamodel](https://alexzhornyak.github.io/SCXML-tutorial/Doc/datamodel.html) and [invoke](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html) to virtual states
+**Since [ScxmlEditor 2.1.9](../README.md)** it is available to add [onentry](https://alexzhornyak.github.io/SCXML-tutorial/Doc/onentry.html), [onexit](https://alexzhornyak.github.io/SCXML-tutorial/Doc/onexit.html), [datamodel](https://alexzhornyak.github.io/SCXML-tutorial/Doc/datamodel.html) and [invoke](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html) either to virtual state or to referenced state on splitted chart
+
+![VisualSplitting__OnentryExample](../Images/VisualSplitting__OnentryExample.png)
+
 ## Debugging
 Set SCXML unit which will be as root
 
