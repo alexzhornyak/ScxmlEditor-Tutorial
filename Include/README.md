@@ -24,5 +24,25 @@ We implemented Qt SCXML monitor in a single header [ScxmlExternMonitor2.h](scxml
 ## 2. Usage in C++ Qt Widgets
 ![cppOpt](../Images/ExternMonitor_CPP.png)
 
+## 3. Import active states configuration
+There is an option to export and import active states configuration. It may be useful when you are unable to use a remote debugger. You can export active states configuration to file and open it later with ScxmlEditor **`Import states configuration`** menu option.
+### Let's take a look at a simple example. 
+Suppose that your deployed application does not work properly on the remote device.
+- You can implement calling [**`IScxmlExternMonitor`** method **`QStringList dumpAllActiveStates()`**](scxmlexternmonitor2.h) into your application. And it will save active states configuration by demand.
+![ImportStatesConfiguration_MenuDump](../Images/ImportStatesConfiguration_MenuDump.png)
+
+- Later you can transfer dump file to your working place
+
+- Open the corresponding project with ScxmlEditor
+
+- Call menu **`Import states configuration`**
+![ImportStatesConfiguration](../Images/ImportStatesConfiguration.png)
+
+- Select dump file in dialog
+![ImportStatesConfiguration_Dialog](../Images/ImportStatesConfiguration_Dialog.png)
+
+- Analyze active states
+![ImportStatesConfiguration_Highlight](../Images/ImportStatesConfiguration_Highlight.png)
+
 | [TOP](#top-anchor) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
 |---|---|---|
