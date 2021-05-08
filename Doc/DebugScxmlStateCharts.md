@@ -59,7 +59,7 @@ It is similar to [SCXML send events logic](https://alexzhornyak.github.io/SCXML-
 </EVENT>
 ```
 
-### Triggers
+## Triggers
 Triggers will create a GUI elements for passing data to statechart
 - #### May be assigned as `trigger shapes` in statechart
 ![TriggerPanel](../Images/Debug_TriggerPanel.png)
@@ -88,10 +88,27 @@ If you need to pass nested `event.data` like `event.data.val` there is a menu **
 
 ![EventDataParamsDemo](https://raw.githubusercontent.com/alexzhornyak/SCXML-tutorial/master/Images/Foreach_Example.gif)
 
-### External debugging
+## Breakpoints
+You can associate breakpoints with states. When the state with breakpoint set is entered, state machine events queue is interrupted and program highlights the breakpoint and changes the scxml root element background into light yellow colour.
+![BreakpointsIdle](../Images/Breakpoints_NotActive.png)
+### Adding breakpoints
+- select shape
+- set 'Breakpoint' menu option checked
+
+![BreakpointsAdd](../Images/Breakpoints_Set.png)
+### Trace mode
+In trace mode state machine event queue is interrupted and waits for user 'Next Step' button is clicked. 
+
+This mode is activated when:
+- breakpoint is triggered
+- pause button is pressed
+
+![BreakpointsAdd](../Images/Breakpoint_Tracing.png)
+
+## External debugging
 In this mode ScxmlEditor only listens UDP commands for highlighting states and displaying messages in CallStack panel
 
-#### [Qt SCXML framework debugging](../Include/README.md)
+### [Qt SCXML framework debugging](../Include/README.md)
 For Qt SCXML applications you may include [scxmlexternmonitor2.h](../Include/scxmlexternmonitor2.h) header to your project and follow [the instructions](../Include/README.md)
 
 #### Example of debugging Qt Calculator-QML project
@@ -104,7 +121,7 @@ For Qt SCXML applications you may include [scxmlexternmonitor2.h](../Include/scx
 
 ![CalculatorDebug](../Images/CalculatorDebug.gif)
 
-### Custom testing application setup
+## Custom testing application setup
 Since version 2.1.8 there is an option to communicate with testing applications via pipes.
 #### Example: how to setup [The SCION command-line tool](https://gitlab.com/scion-scxml/cli) as custom testing application
 1) install [SCION CLI](https://gitlab.com/scion-scxml/cli) by command `npm install -g @scion-scxml/cli`
