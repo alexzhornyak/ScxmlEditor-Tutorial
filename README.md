@@ -16,7 +16,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 
 **New:** [IDE Insight](#new-ide-insight), [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](Doc/Inheritance.md), [visual chart splitting](Doc/VisualStateChartSplitting.md), [conditional project definitions](Doc/ConditionalDefines.md), GIF maker etc.
 ### Changelog
-**2.1.10:** [New breakpoints interface](Doc/DebugScxmlStateCharts.md#breakpoints)
+**2.1.10:** [New breakpoints interface](Doc/DebugScxmlStateCharts.md#breakpoints) <br/>
 **2.1.9:** [Better handling of virtual states](Doc/VisualStateChartSplitting.md#adding-onentry-onexit-datamodel-and-invoke-to-virtual-states) <br/>
 **2.1.8:** [Support of custom console testing applications](Doc/DebugScxmlStateCharts.md#custom-testing-application-setup) like [SCION command-line tool](https://gitlab.com/scion-scxml/cli) <br/>
 **2.1.7:** [SVG Export Settings](Doc/ExportScxmlToSVG.md#svg-export-settings) <br/>
