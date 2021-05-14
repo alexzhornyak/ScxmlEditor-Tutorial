@@ -1,6 +1,9 @@
 #ifndef SCXMLEXTERNMONITOR2_H
 #define SCXMLEXTERNMONITOR2_H
 
+#include <map>
+#include <algorithm>
+
 #include <QLoggingCategory>
 #include <QScxmlStateMachine>
 #include <QUdpSocket>
@@ -8,9 +11,7 @@
 
 namespace Scxmlmonitor {
 
-const std::size_t SCXML_MONITOR_VERSION = 0x02;
-
-typedef std::tuple<QString /*parent*/, QString /*invoker*/, QString /*id*/> InvokerTuple;
+const std::size_t SCXML_MONITOR_VERSION = 0x03;
 
 /*          External SCXML monitor for ScxmlEditor            */
 /* See 'https://github.com/alexzhornyak/ScxmlEditor-Tutorial' */
@@ -29,6 +30,8 @@ typedef enum { /* some elements are not used and are present for compatibility *
     smttMAXSIZE
 }TScxmlMsgType;
 
+typedef std::tuple<QString /*parent*/, QString /*invoker*/, QString /*id*/> InvokerTuple;
+
 /* Interface fot Qt Scxml monitors */
 class IScxmlExternMonitor: public QObject {
     Q_OBJECT
@@ -37,6 +40,8 @@ class IScxmlExternMonitor: public QObject {
 
 public:
     inline explicit IScxmlExternMonitor(QObject *parent = nullptr): QObject(parent) {}
+
+    enum InvType {Machine,SubMachine,Id};
 
     /* sends all active states of state machine and invoked sessions */
     Q_INVOKABLE void synchronizeAllMonitors(void) {
@@ -49,8 +54,13 @@ public:
     /* for using in menu 'Import states configuration' */
     Q_INVOKABLE QStringList dumpAllActiveStates() {
         QStringList out;
-        iterateAllActiveStates(_machine, [&out](QScxmlStateMachine *itMachine, const QString &itState){
-            out.append(itMachine->name() + "=" + itState);
+        iterateAllActiveStates(_machine, "", [&out](QScxmlStateMachine *itMachine,
+                               const QString &id,
+                               const QString &itState){
+
+            out.append(itMachine->name() +
+                       (id.isEmpty() ? id : QString("[%1]").arg(id)) +
+                       "=" + itState);
         });
         return out;
     }
@@ -90,23 +100,26 @@ Q_SIGNALS:
 
 protected:
 
-    virtual void processMonitorMessage(const QString &sInterpreter, const QString &sName, const TScxmlMsgType AType) = 0;
+    virtual void processMonitorMessage(const QString &sInterpreter,
+                                       const QString &sID,
+                                       const QString &sMsg,
+                                       const TScxmlMsgType AType) = 0;
     virtual void processClearMonitor(const QString &sInterpreter) = 0;
     virtual void processClearAllMonitors(void) = 0;
 
-    inline void iterateAllActiveStates(QScxmlStateMachine *machine,
-                                 std::function<void (QScxmlStateMachine *,const QString&)> func) {
+    inline void iterateAllActiveStates(QScxmlStateMachine *machine, const QString &id,
+                                 std::function<void (QScxmlStateMachine *, const QString &, const QString&)> func) {
         if (machine) {
             const auto allActive = machine->activeStateNames(false);
-            for (const auto &it: allActive) {
-                func(machine, it);
+            for (const auto &itState: allActive) {
+                func(machine, id, itState);
             }
 
             const auto allInvoked = machine->invokedServices();
-            for (const auto it: allInvoked) {
-                QScxmlStateMachine *submachine = qvariant_cast<QScxmlStateMachine *>(it->property("stateMachine"));
+            for (const auto itInvoked: allInvoked) {
+                QScxmlStateMachine *submachine = qvariant_cast<QScxmlStateMachine *>(itInvoked->property("stateMachine"));
                 if (submachine && submachine!=machine) {
-                    iterateAllActiveStates(submachine, func);
+                    iterateAllActiveStates(submachine, itInvoked->id(), func);
                 }
             }
         }
@@ -118,7 +131,7 @@ private slots:
         if (!_machine)
             return;
 
-        QSet<InvokerTuple> machines;
+        std::map<QScxmlStateMachine*, InvokerTuple> newMachines, uninvokedMachines;
 
         for (const auto it: invokedServices) {
             /* Invokers */
@@ -131,12 +144,13 @@ private slots:
                                                          it->parentStateMachine()->name() : _machine->name(),
                                                      it->name(), it->id());
 
-                machines.insert(invoker);
+                newMachines.insert(std::make_pair(submachine, invoker));
 
-                if (!_invokedMachines.contains(invoker)) {
+                if (_invokedMachines.find(submachine)!=_invokedMachines.end()) {
 
-                    processMonitorMessage(std::get<0>(invoker),
+                    processMonitorMessage(std::get<InvType::Machine>(invoker),
                                        getInvokeName(invoker),
+                                       std::get<InvType::Id>(invoker),
                                        smttBeforeInvoke);
 
                     connectMonitorToMachine(submachine);
@@ -145,24 +159,29 @@ private slots:
 
         }
 
-        const auto subtractedMachines = _invokedMachines.subtract(machines);
-        for (const auto &it: subtractedMachines) {
-            processMonitorMessage(std::get<0>(it),
-                               getInvokeName(it),
+        std::set_symmetric_difference(_invokedMachines.begin(), _invokedMachines.end(),
+                                newMachines.begin(), newMachines.end(),
+                                std::inserter(uninvokedMachines, uninvokedMachines.end()));
+
+        for (const auto &it: uninvokedMachines) {
+            processMonitorMessage(std::get<InvType::Machine>(it.second),
+                               getInvokeName(it.second),
+                               std::get<InvType::Id>(it.second),
                                smttBeforeUnInvoke);
             /* we should check if name is not empty otherwise it will clear all in the editor */
-            if (!std::get<1>(it).isEmpty()) {
-                processClearMonitor(std::get<1>(it));
+            if (!std::get<InvType::SubMachine>(it.second).isEmpty()) {
+                processClearMonitor(std::get<InvType::SubMachine>(it.second));
             }
         }
 
-        _invokedMachines.swap(machines);
+        _invokedMachines.swap(newMachines);
     }
 
 private:
 
     inline QString getInvokeName(const InvokerTuple &invoker) const {
-        return std::get<1>(invoker) + QLatin1String("[") + std::get<2>(invoker) + QLatin1String("]");
+        return std::get<InvType::SubMachine>(invoker) + QLatin1String("[") +
+                std::get<InvType::Id>(invoker) + QLatin1String("]");
     }
 
     inline void connectMonitorToMachine(QScxmlStateMachine *machine) {
@@ -173,16 +192,22 @@ private:
 
         /* OnEnter, OnExit - states */
         const auto allStates = machine->stateNames(false);
-        for (const auto &it : allStates) {
-            auto stateconnection = machine->connectToState(it, [=](bool active) {
-                processMonitorMessage(machine->name(), it, active ? smttBeforeEnter : smttBeforeExit);
+        for (const auto &itState : allStates) {
+            auto stateconnection = machine->connectToState(itState, [=](bool active) {
+                auto itInvoker = _invokedMachines.find(machine);
+                const QString id = itInvoker == _invokedMachines.end() ?
+                            QString("") : std::get<InvType::Id>(itInvoker->second);
+                processMonitorMessage(machine->name(), id, itState, active ? smttBeforeEnter : smttBeforeExit);
             });
             _scxmlConnections.append(stateconnection);
         }
 
         /* all events + transitions */
         auto eventconnection = machine->connectToEvent("*", [=](const QScxmlEvent &event) {
-            processMonitorMessage(machine->name(), event.name(), smttBeforeTakingTransition);
+            auto itInvoker = _invokedMachines.find(machine);
+            const QString id = itInvoker == _invokedMachines.end() ?
+                        QString("") : std::get<InvType::Id>(itInvoker->second);
+            processMonitorMessage(machine->name(), id, event.name(), smttBeforeTakingTransition);
         });
         _scxmlConnections.append(eventconnection);
 
@@ -211,13 +236,14 @@ private:
 
     inline void processSyncAllMonitors(QScxmlStateMachine *machine) {
 
-        iterateAllActiveStates(machine, [this](QScxmlStateMachine *itMachine, const QString& itState){
-            this->processMonitorMessage(itMachine->name(), itState, smttBeforeEnter);
+        iterateAllActiveStates(machine, "",
+                               [this](QScxmlStateMachine *itMachine, const QString &id, const QString& itState){
+            this->processMonitorMessage(itMachine->name(), id, itState, smttBeforeEnter);
         });
     }
 
     QScxmlStateMachine *_machine = nullptr;
-    QSet<InvokerTuple> _invokedMachines;
+    std::map<QScxmlStateMachine *, InvokerTuple> _invokedMachines;
     QSet<QScxmlStateMachine*> _connectedMachines;
     QList<QMetaObject::Connection> _scxmlConnections;
 };
@@ -240,8 +266,13 @@ protected:
     int _remotePort = 11005;
     QString _remoteHost = "";
 
-    inline virtual void processMonitorMessage(const QString &sInterpreter, const QString &sName, const TScxmlMsgType AType) override {
-        sendStringMessage(QString::number(AType) + QLatin1String("@") + sInterpreter + QLatin1String("@") + sName);
+    inline virtual void processMonitorMessage(const QString &sInterpreter, const QString &sID, const QString &sMsg, const TScxmlMsgType AType) override {
+        sendStringMessage(QString("%1@%2@%3")
+                          .arg(AType)
+                          .arg(sInterpreter)
+                          /* Compatibility with ScxmlEditor < 2.2 */
+                          .arg(sMsg + (sID.isEmpty() ? sID : QString("@%1").arg(sID)))
+                          );
     }
 
     virtual void processClearMonitor(const QString &sInterpreter) override {
@@ -268,7 +299,7 @@ private:
 
 namespace std {
     inline uint qHash(const Scxmlmonitor::InvokerTuple &key, uint seed){
-        return qHash(std::get<0>(key) + QLatin1String("@") + std::get<1>(key) + QLatin1String("@") + std::get<2>(key), seed);
+        return qHash(QString("%1@%2%3").arg(std::get<0>(key)).arg(std::get<1>(key)).arg(std::get<2>(key)), seed);
     }
 }
 
