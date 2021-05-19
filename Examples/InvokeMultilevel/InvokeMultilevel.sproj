@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf8"?>
+<scxmlproject>
+	<scxmlunit path="state_machine1.scxml" scxmlname="ScxmlInvokeMultiLevel" build_root="1">
+		<scxmlunit path="state_machineA1.scxml" scxmlname="ScxmlSub1" virtual_dependencies="include_isSub1.scxml
+include_isSub2.scxml">
+			<scxmlunit path="state_machineAA1.scxml" scxmlname="ScxmlSub2"/>
+			<scxmlunit path="include_isSub1.scxml" scxmlname="ScxmlisSub1" virtual="1"/>
+			<scxmlunit path="include_isSub2.scxml" scxmlname="ScxmlisSub2" virtual="1"/>
+		</scxmlunit>
+	</scxmlunit>
+</scxmlproject>
