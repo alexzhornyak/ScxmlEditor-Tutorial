@@ -108,6 +108,24 @@ This mode is activated when:
 
 ![BreakpointsAdd](../Images/Breakpoint_Tracing.png)
 
+## How to debug multiple invoked state machines
+Let's take a look at the example when state machine invokes two same nested state machines
+![DebugInvoke](../Images/Debug_InvokeID.png)
+
+### Invoke ID
+![DebugInvoke2](../Images/Debug_InvokeID_PropInsp.png)
+> If invoke identifier of submachine is not set then the first identifier is used
+
+![DebugInvoke3](../Images/Debug_DetectingInvoke.png)
+### How to change current Invoke ID
+- Select SCXML element
+- Call IDE Insight 'InvokeID'
+- Type new id
+
+![DebugInvoke3](../Images/Debug_ChangeInvokeID2.png)
+
+![DebugInvoke4](../Images/Debug_ChangeInvokeID3.png)
+
 ## External debugging
 In this mode ScxmlEditor only listens UDP commands for highlighting states and displaying messages in CallStack panel
 
