@@ -22,13 +22,16 @@ Supports **null, ecmascript** datamodels
 Also you may write your own testing application using the corresponding API
 
 ### Receive API:
+#### Commands to clear state charts
 - `@@@` - clear highlighted states in all statecharts
-- `@@@ScxmlName` - clear highlighted states in statechart where [\<scxml\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/scxml.html) 'name' is equal `ScxmlName` 
-- `ID@ScxmlName@Msg` - commands to highlight state or display message in **CallStack** panel <br/>
+- `@@@ScxmlName@Id` - clear highlighted states in statechart where [\<scxml\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/scxml.html) 'name' is equal `ScxmlName` and `Id` is the [identifier of the invoked state machine](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html#id) when message comes from invoked session. `ScxmlName` or `Id` can be empty. In this case state chart will be cleared either by `ScxmlName` or `Id`
+#### State chart processing commands
+- `Type@ScxmlName@Msg@Id` - command to highlight state or display message in **CallStack** panel
 **Description:**
-  `ID` - integer type of command: `1 - AfterEnter, 2 - BeforeEnter, 3 - AfterExit, 4 - BeforeExit, 5 - Step, 6 - BeforeExecContent, 7 - AfterExecContent, 8 - BeforeInvoke, 9 - AfterInvoke, 10 - BeforeUnInvoke, 11 - AfterUnInvoke, 12 - BeforeTakingTransition, 13 - AfterTakingTransition, 14 - StableConfiguration, 15 - BeforeProcessingEvent` <br/>
-  `ScxmlName` - name of [\<scxml\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/scxml.html) <br/>
-  `Msg` - message which depends on type of command. For example: for **BeforeEnter** or **BeforeExit** - it is the id(name) of states, for **BeforeInvoke** or **BeforeUnInvoke** it is the name of invoked element, etc. </br>
+1) `Type` - integer type of command: `1 - AfterEnter, 2 - BeforeEnter, 3 - AfterExit, 4 - BeforeExit, 5 - Step, 6 - BeforeExecContent, 7 - AfterExecContent, 8 - BeforeInvoke, 9 - AfterInvoke, 10 - BeforeUnInvoke, 11 - AfterUnInvoke, 12 - BeforeTakingTransition, 13 - AfterTakingTransition, 14 - StableConfiguration, 15 - BeforeProcessingEvent` <br/>
+2) `ScxmlName` - name of [\<scxml\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/scxml.html) <br/>
+3) `Msg` - message which depends on type of command. For example: for **BeforeEnter** or **BeforeExit** - it is the id(name) of states, for **BeforeInvoke** or **BeforeUnInvoke** it is the name of invoked element, etc. </br>
+4) `Id` - [identifier of the invoked state machine](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html#id) (Since **ScxmlEditor 2.2**). Can be empty for root machines
 > **BeforeEnter** graphically highlight and **BeforeExit** unhighlight the corresponding states, other commands are displayed in **CallStack** panel
 #### Example of commands:
 - `2@CalculatorStateMachine@operand1` - highlight state **operand1** in statechart **CalculatorStateMachine** <br/>
