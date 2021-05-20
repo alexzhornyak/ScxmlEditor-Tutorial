@@ -36,7 +36,9 @@ Also you may write your own testing application using the corresponding API
 #### Example of commands:
 - `2@CalculatorStateMachine@operand1` - highlight state **operand1** in statechart **CalculatorStateMachine** <br/>
 - `4@CalculatorStateMachine@operand1` - unhighlight state **operand1** in statechart **CalculatorStateMachine** <br/>
-You can also trace the execution of the chart and use breakpoints.
+- `2@ScxmlSub1@isSub1@ID_SUB_1` - highlight state **isSub1** in statechart **ScxmlSub1** when [invoke Id](#how-to-debug-multiple-invoked-state-machines) is **ID_SUB_1** <br/>
+
+You can also [trace the execution of the chart](#trace-mode) and use [breakpoints](#breakpoints).
 
 ### Send API:
 It is similar to [SCXML send events logic](https://alexzhornyak.github.io/SCXML-tutorial/Doc/send.html)
