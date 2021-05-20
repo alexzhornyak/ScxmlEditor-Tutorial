@@ -27,15 +27,26 @@ Powerful tool for creating, editing and debugging SCXML charts.
 
 ## System requirments
 Windows 7, 8, 10
+MSVC 2015 Update 3 Runtimes installed
 
-! **ScxmlEditor\vcredist_x86.exe** must be installed for **UscxmlTester**, **Graphviz** and other components ! <br/>
-! **ScxmlEditor\QtScxmlTester\vcredist_x64.exe** must be installed for **QtScxmlTester** !
-
+## Installation
 You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
-[Zip Link](https://www.dropbox.com/s/1sx8p8o1e4t55hj/ScxmlEditor.zip?dl=0)
+[Zip Link](https://www.dropbox.com/s/bc5lrne5wmksth9/ScxmlEditor.zip?dl=0)
 
 Latest version: **[2.2.0.1609](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+
+### First Install
+1. Download by upper link and unpack it in any target location
+2. Install **ScxmlEditor\vcredist_x86.exe** for **UscxmlTester**, **Graphviz**
+3. Install  **ScxmlEditor\vcredist_x64.exe** must be installed for **QtScxmlTester** <br/>
+(_You may skip steps 2 and 3 if you have previously installed MSVC 2015 Update 3_)
+
+### Update
+1. Download by upper link and unpack it into **Temporary** folder
+2. Run **Temporary\ScxmlEditor\ScxmlEditor_InstallOrUpdate.cmd "Path\To\Location\ScxmlEditor"**
+
+> NOTICE! We are continiously making updates, so follow the version number on the README page and update to the latest to have all last cool features
 
 ![AppPreview](Images/ApplicationPreview.png)
 
@@ -109,11 +120,12 @@ Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all a
 ### Receive API:
 - `@@@` - clear highlighted states in all statecharts
 - `@@@ScxmlName` - clear highlighted states in statechart where [\<scxml\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/scxml.html) 'name' is equal `ScxmlName` 
-- `ID@ScxmlName@Msg` - commands to highlight state or display message in **CallStack** panel <br/>
+- `Type@ScxmlName@Msg@Id` - commands to highlight state or display message in **CallStack** panel <br/>
 **Description:**
-  `ID` - integer type of command: `1 - AfterEnter, 2 - BeforeEnter, 3 - AfterExit, 4 - BeforeExit, 5 - Step, 6 - BeforeExecContent, 7 - AfterExecContent, 8 - BeforeInvoke, 9 - AfterInvoke, 10 - BeforeUnInvoke, 11 - AfterUnInvoke, 12 - BeforeTakingTransition, 13 - AfterTakingTransition, 14 - StableConfiguration, 15 - BeforeProcessingEvent` <br/>
+  `Type` - integer type of command: `1 - AfterEnter, 2 - BeforeEnter, 3 - AfterExit, 4 - BeforeExit, 5 - Step, 6 - BeforeExecContent, 7 - AfterExecContent, 8 - BeforeInvoke, 9 - AfterInvoke, 10 - BeforeUnInvoke, 11 - AfterUnInvoke, 12 - BeforeTakingTransition, 13 - AfterTakingTransition, 14 - StableConfiguration, 15 - BeforeProcessingEvent` <br/>
   `ScxmlName` - name of [\<scxml\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/scxml.html) <br/>
   `Msg` - message which depends on type of command. For example: for **BeforeEnter** or **BeforeExit** - it is the id(name) of states, for **BeforeInvoke** or **BeforeUnInvoke** it is the name of invoked element, etc. </br>
+  `Id` - [identifier of the invoked](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html#id) state machine (Since ScxmlEditor 2.2). Can be empty for root machines
 > **BeforeEnter** graphically highlight and **BeforeExit** unhighlight the corresponding states, other commands are displayed in **CallStack** panel
 #### Example of commands:
 - `2@CalculatorStateMachine@operand1` - highlight state **operand1** in statechart **CalculatorStateMachine** <br/>
@@ -130,7 +142,7 @@ There are two ready-to-use testing applications:
 1. Based on [USCXML framework](https://github.com/tklab-tud/uscxml).
 Supports **null, lua, ecmascript** datamodels
 
-2. Based on [Qt SCXML framework](https://doc.qt.io/qt-5.9/qtscxml-index.html)
+2. Based on [Qt SCXML framework](https://doc.qt.io/qt-5/qtscxml-overview.html)
 Supports **null, ecmascript** datamodels
 
 Also you may write your own testing application using the corresponding API
