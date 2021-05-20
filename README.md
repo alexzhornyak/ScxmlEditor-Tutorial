@@ -39,7 +39,7 @@ Latest version: **[2.2.0.1609](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 ### First Install
 1. Download by upper link and unpack it in any target location
 2. Install **ScxmlEditor\vcredist_x86.exe** for **UscxmlTester**, **Graphviz**
-3. Install  **ScxmlEditor\vcredist_x64.exe** must be installed for **QtScxmlTester** <br/>
+3. Install  **ScxmlEditor\vcredist_x64.exe** for **QtScxmlTester** <br/>
 (_You may skip steps 2 and 3 if you have previously installed MSVC 2015 Update 3_)
 
 ### Update
@@ -128,9 +128,9 @@ Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all a
   `Id` - [identifier of the invoked](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html#id) state machine (Since ScxmlEditor 2.2). Can be empty for root machines
 > **BeforeEnter** graphically highlight and **BeforeExit** unhighlight the corresponding states, other commands are displayed in **CallStack** panel
 #### Example of commands:
-- `2@CalculatorStateMachine@operand1` - highlight state **operand1** in statechart **CalculatorStateMachine** <br/>
-- `4@CalculatorStateMachine@operand1` - unhighlight state **operand1** in statechart **CalculatorStateMachine** <br/>
-- `2@ScxmlSub1@isSub1@ID_SUB_1` - highlight state **isSub1** in statechart **ScxmlSub1** when [invoke Id](Doc/DebugScxmlStateCharts.md#how-to-debug-multiple-invoked-state-machines) is **ID_SUB_1** <br/>
+- `2@CalculatorStateMachine@operand1` - highlight state `operand1` in statechart **CalculatorStateMachine** <br/>
+- `4@CalculatorStateMachine@operand1` - unhighlight state `operand1` in statechart **CalculatorStateMachine** <br/>
+- `2@ScxmlSub1@isSub1@ID_SUB_1` - highlight state `isSub1` in statechart **ScxmlSub1** when [invoke Id](Doc/DebugScxmlStateCharts.md#how-to-debug-multiple-invoked-state-machines) is `ID_SUB_1` <br/>
 
 You can also [trace the execution of the chart](Doc/DebugScxmlStateCharts.md#trace-mode) and use [breakpoints](Doc/DebugScxmlStateCharts.md#breakpoints).
 
