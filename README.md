@@ -32,18 +32,16 @@ MSVC 2015 Update 3 Runtimes installed
 ## Installation
 You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
-[Zip Link](https://www.dropbox.com/s/bc5lrne5wmksth9/ScxmlEditor.zip?dl=0)
-
 Latest version: **[2.2.0.1609](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ### First Install
-1. Download by upper link and unpack it in any target location
+1. [Download](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it in any target location
 2. Install **ScxmlEditor\vcredist_x86.exe** for **UscxmlTester**, **Graphviz**
 3. Install  **ScxmlEditor\vcredist_x64.exe** for **QtScxmlTester** <br/>
 (_You may skip steps 2 and 3 if you have previously installed MSVC 2015 Update 3_)
 
 ### Update
-1. Download by upper link and unpack it into **Temporary** folder
+1. [Download](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it into **Temporary** folder
 2. Run **Temporary\ScxmlEditor\ScxmlEditor_InstallOrUpdate.cmd "Path\To\Location\ScxmlEditor"**
 
 > NOTICE! We are continiously making updates, so follow the version number on the README page and update to the latest to have all last cool features
