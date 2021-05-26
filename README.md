@@ -157,7 +157,7 @@ In this mode ScxmlEditor only listens UDP commands for highlighting states and d
 ## [Qt SCXML framework debugging](Include/README.md)
 
 ### NEW! [Qt SCXML Debug Via SVG](Include/README.md)
-It was an old dream to monitor state machine workflow without any external dependencies it Qt and finally it comes true. </b>
+It was an old dream to monitor state machine workflow without any external dependencies in Qt and finally it comes true. </b>
 We prepared some native SCXML SVG monitors:
 - [scxmlsvgview.h](Include/scxmlsvgview.h) - for widgets (based on QGraphicsView)
     - see how to use it in [Dining Philosophers Example](https://github.com/alexzhornyak/SCXML-tutorial/tree/master/Examples/Qt/DiningPhilosophers)

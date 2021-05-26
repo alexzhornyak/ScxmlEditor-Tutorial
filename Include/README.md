@@ -4,7 +4,7 @@
 |---|---|
 
 # NEW! Qt [SCXML](https://alexzhornyak.github.io/SCXML-tutorial/) Debug Via SVG
-It was an old dream to monitor state machine workflow without any external dependencies it Qt and finally it comes true. </b>
+It was an old dream to monitor state machine workflow without any external dependencies in Qt and finally it comes true. </b>
 We prepared some native SCXML SVG monitors:
 - [scxmlsvgview.h](scxmlsvgview.h) - for widgets (based on QGraphicsView)
     - see how to use it in [Dining Philosophers Example](https://github.com/alexzhornyak/SCXML-tutorial/tree/master/Examples/Qt/DiningPhilosophers)
