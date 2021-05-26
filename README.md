@@ -16,13 +16,14 @@ Powerful tool for creating, editing and debugging SCXML charts.
 
 **New:** [IDE Insight](#new-ide-insight), [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](Doc/Inheritance.md), [visual chart splitting](Doc/VisualStateChartSplitting.md), [conditional project definitions](Doc/ConditionalDefines.md), GIF maker etc.
 ### Changelog
+**2.2.1:** [Qt SVG Monitors Released](Include/README.md) <br/>
 **2.2:** [Invoke ID is sending by testing apps](Doc/DebugScxmlStateCharts.md#how-to-debug-multiple-invoked-state-machines) <br/>
 **2.1.10:** [New breakpoints interface](Doc/DebugScxmlStateCharts.md#breakpoints) <br/>
 **2.1.9:** [Better handling of virtual states](Doc/VisualStateChartSplitting.md#adding-onentry-onexit-datamodel-and-invoke-to-virtual-states) <br/>
 **2.1.8:** [Support of custom console testing applications](Doc/DebugScxmlStateCharts.md#custom-testing-application-setup) like [SCION command-line tool](https://gitlab.com/scion-scxml/cli) <br/>
 **2.1.7:** [SVG Export Settings](Doc/ExportScxmlToSVG.md#svg-export-settings) <br/>
 **2.1.6:** UScxmlTester with EcmaScript, In() predicate autocomplete, QtScxmlTester 5.9.1->5.15 <br/>
-**2.1.5:** [Refactored Qt external debugger](Include/README.md) <br/>
+**2.1.5:** [Refactored Qt external debugger](Include/README.md#qt-scxml-external-debugging-monitor) <br/>
 **2.1.4:** [Export SCXML to SVG](Doc/ExportScxmlToSVG.md), [Structure View](Doc/ScxmlStructureView.md)
 
 ## System requirments
@@ -32,7 +33,7 @@ MSVC 2015 Update 3 Runtimes installed
 ## Installation
 You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
-Latest version: **[2.2.0.1609](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.2.1.1614](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ### First Install
 1. [Download](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it in any target location
@@ -69,7 +70,7 @@ Latest version: **[2.2.0.1609](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 
 [10. SCXML Structure View](Doc/ScxmlStructureView.md)
 
-[11. External monitor for Qt applications](Include/README.md)
+[11. Qt SCXML Monitors](Include/README.md)
 
 [12. How to debug SCXML statecharts](Doc/DebugScxmlStateCharts.md)
 
@@ -153,7 +154,22 @@ In this mode ScxmlEditor only listens UDP commands for highlighting states and d
 ### Breakpoints
 ![BreakpointsImage](Images/Breakpoints.gif)
 
-#### [Qt SCXML framework debugging](Include/README.md)
+## [Qt SCXML framework debugging](Include/README.md)
+
+### NEW! [Qt SCXML Debug Via SVG](Include/README.md)
+It was an old dream to monitor state machine workflow without any external dependencies it Qt and finally it comes true. </b>
+We prepared some native SCXML SVG monitors:
+- [scxmlsvgview.h](Include/scxmlsvgview.h) - for widgets (based on QGraphicsView)
+    - see how to use it in [Dining Philosophers Example](https://github.com/alexzhornyak/SCXML-tutorial/tree/master/Examples/Qt/DiningPhilosophers)
+- [scxmlsvgqmlitem.h](Include/scxmlsvgqmlitem.h) - for QML (based on QQuickPaintedItem)
+    - see how to use it in [Stopwatch Example](https://github.com/alexzhornyak/SCXML-tutorial/tree/master/Examples/Qt/StopWatch)
+
+![StopWatchDemo](Images/StopWatch_SvgMonitor.gif)
+
+Since ScxmlEditor 2.2.1 you can export SCXML to SVG, include only monitor headers in your app and create monitor instances any time. 
+> **NOTICE:** While state machine pointer is not set, the monitor **does nothing** and can be left in **Release**.
+
+### Qt SCXML External Debugging with ScxmlEditor
 For Qt SCXML applications you may include [scxmlexternmonitor2.h](Include/scxmlexternmonitor2.h) header to your project and follow [the instructions](Include/README.md)
 
 #### Example of debugging Qt Calculator-QML project

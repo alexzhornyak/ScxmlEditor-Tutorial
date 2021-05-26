@@ -3,6 +3,19 @@
 | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
 |---|---|
 
+# NEW! Qt [SCXML](https://alexzhornyak.github.io/SCXML-tutorial/) Debug Via SVG
+It was an old dream to monitor state machine workflow without any external dependencies it Qt and finally it comes true. </b>
+We prepared some native SCXML SVG monitors:
+- [scxmlsvgview.h](scxmlsvgview.h) - for widgets (based on QGraphicsView)
+    - see how to use it in [Dining Philosophers Example](https://github.com/alexzhornyak/SCXML-tutorial/tree/master/Examples/Qt/DiningPhilosophers)
+- [scxmlsvgqmlitem.h](scxmlsvgqmlitem.h) - for QML (based on QQuickPaintedItem)
+    - see how to use it in [Stopwatch Example](https://github.com/alexzhornyak/SCXML-tutorial/tree/master/Examples/Qt/StopWatch)
+
+![StopWatchDemo](../Images/StopWatch_SvgMonitor.gif)
+
+Since ScxmlEditor 2.2.1 you can export SCXML to SVG, include only monitor headers in your app and create monitor instances any time. 
+> **NOTICE:** While state machine pointer is not set, the monitor **does nothing** and can be left in **Release**.
+
 # Qt [SCXML](https://alexzhornyak.github.io/SCXML-tutorial/) External Debugging Monitor
 Native QtCreator's scxml designer does not allow user to debug [SCXML statecharts](https://alexzhornyak.github.io/SCXML-tutorial/) and observe statemachine work flow, so we offer to use [ScxmlEditor](../README.md) as an instrument for debugging complex SCXML state charts
 

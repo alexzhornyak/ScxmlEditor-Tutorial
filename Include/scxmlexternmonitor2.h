@@ -8,7 +8,7 @@
 
 namespace Scxmlmonitor {
 
-const std::size_t SCXML_MONITOR_VERSION = 0x05;
+static const std::size_t SCXML_MONITOR_VERSION = 0x06;
 
 /*          External SCXML monitor for ScxmlEditor            */
 /* See 'https://github.com/alexzhornyak/ScxmlEditor-Tutorial' */
@@ -37,6 +37,7 @@ class IScxmlExternMonitor: public QObject {
 
 public:
     inline explicit IScxmlExternMonitor(QObject *parent = nullptr): QObject(parent) {}
+    virtual ~IScxmlExternMonitor() override { cleanup(); }
 
     enum InvType { ParentMachine, Machine, Id };
 
@@ -84,10 +85,13 @@ public:
     inline QScxmlStateMachine *scxmlStateMachine(void) { return _machine; }
     inline void setScxmlStateMachine(QScxmlStateMachine *machine) {
         if (_machine != machine) {
-            _machine = machine;
+
+            this->processClearAllMonitors();
 
             /* cleanup section */
             this->cleanup();
+
+            _machine = machine;
 
             /* setup section */
             if (_machine) {
@@ -247,14 +251,14 @@ private:
         }
     }
 
-    inline void cleanup(void) {
+    inline void cleanup(void) {        
         _invokedMachines.clear();
         for (auto &it : _scxmlConnections) {
             QObject::disconnect(it);
         }
-        _scxmlConnections.clear();
-        this->processClearAllMonitors();
+        _scxmlConnections.clear();        
         _connectedMachines.clear();
+        _machine = nullptr;
     }
 
     inline void processSyncAllMonitors(QScxmlStateMachine *machine) {
