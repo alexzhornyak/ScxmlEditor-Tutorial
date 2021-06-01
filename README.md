@@ -49,6 +49,18 @@ Latest version: **[2.2.1.1614](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 
 ![AppPreview](Images/ApplicationPreview.png)
 
+## Roadmap
+- Make Open API (Lua based)
+- Make cross-platform
+- Make opensource
+
+## Donations
+If you are interested in the development of ScxmlEditor we would be highly appreciated for any help.
+
+| Paypal |
+| ------ |
+| [![PaypalBtn](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?business=XRF8TTUJFNCXA&item_name=Development+of+SCXML+State+Machines+and+ScxmlEditor&currency_code=USD) |
+
 ## Table of contents
 [1. Inheritance](Doc/Inheritance.md)
 
