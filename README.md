@@ -47,7 +47,7 @@ Latest version: **[2.2.1.1614](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 
 > NOTICE! We are continiously making updates, so follow the version number on the README page and update to the latest to have all last cool features
 
-![AppPreview](Images/ApplicationPreview.png)
+![AppPreview](Images/ApplicationPreview.gif)
 
 ## Roadmap
 - Make Open API (Lua based)
