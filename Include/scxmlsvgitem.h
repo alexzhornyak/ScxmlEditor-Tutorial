@@ -23,7 +23,7 @@
 
 namespace Scxmlmonitor {
 
-static const std::size_t SCXML_SVG_MONITOR_ITEM_VERSION = 0x01;
+static const std::size_t SCXML_SVG_MONITOR_ITEM_VERSION = 0x02;
 
 class ScxmlSvgMonitorItem: public IScxmlExternMonitor {
 
@@ -45,8 +45,9 @@ public:
             qCritical() << "Invalid renderer for " << svgFileName;
             return;
         }
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         _graphicItem->renderer()->setAspectRatioMode(Qt::KeepAspectRatio);
+#endif
         _graphicItem->setFlags(QGraphicsItem::ItemClipsToShape);
 
         QString scxmlDocumentName = "";
@@ -54,7 +55,7 @@ public:
 
         _scxmlName = machineName.isEmpty() ? scxmlDocumentName : machineName;
 
-        for (const auto &it : _stateIdentifiers) {
+        for (const auto &it : qAsConst(_stateIdentifiers)) {
             if (_graphicItem->renderer()->elementExists(it)) {
                 auto item = new QGraphicsRectItem;                
                 item->setParentItem(_graphicItem);                
@@ -109,7 +110,7 @@ protected:
     inline void exitAll(void) {
         _activeMonitorRect = nullptr;
 
-        for (const auto &it : _monitorRects) {
+        for (const auto &it : qAsConst(_monitorRects)) {
             this->setItemState(it, ItemState::Exited);
         }
     }

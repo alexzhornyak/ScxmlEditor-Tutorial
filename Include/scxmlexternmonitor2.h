@@ -3,12 +3,13 @@
 
 #include <QLoggingCategory>
 #include <QScxmlStateMachine>
+#include <QScxmlInvokableService>
 #include <QUdpSocket>
 #include <QNetworkDatagram>
 
 namespace Scxmlmonitor {
 
-static const std::size_t SCXML_MONITOR_VERSION = 0x06;
+static const std::size_t SCXML_MONITOR_VERSION = 0x07;
 
 /*          External SCXML monitor for ScxmlEditor            */
 /* See 'https://github.com/alexzhornyak/ScxmlEditor-Tutorial' */

@@ -25,12 +25,11 @@
 
 namespace Scxmlmonitor {
 
-static const std::size_t SCXML_SVG_MONITOR_QML_ITEM_VERSION = 0x01;
+static const std::size_t SCXML_SVG_MONITOR_QML_ITEM_VERSION = 0x02;
 
 class ScxmlSvgQmlMonitor : public QQuickPaintedItem
 {
     Q_OBJECT
-    QML_ELEMENT
 
     /* this property initialize svg and monitor */
     Q_PROPERTY(QScxmlStateMachine *scxmlStateMachine READ scxmlStateMachine WRITE setScxmlStateMachine NOTIFY scxmlStateMachineChanged)
