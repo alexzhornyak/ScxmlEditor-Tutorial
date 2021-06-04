@@ -55,5 +55,21 @@ And we offer to implement 1 visual transition that will produce such inversion d
 </scxml>
 ```
 
+## Option to override Inverted Condition (Since ScxmlEditor 2.2.2)
+Suppose that you flow between two states by different conditions which are not related and boolean expression can not be applied
+
+![](../Images/SmartTransitions_TwoConditions.gif)
+
+Since ScxmlEditor 2.2.2 there is an option to override back condition:
+- Select condition on the chart
+- Select menu 'ConditionBack' in Property Inspector
+- Set desired condition value for going back
+
+![](../Images/2021-06-04-07-33-50.png)
+
+> Now all visual transitions are reduced by 2 times and chart becomes more tiny
+
+![](../Images/SmartTransitions_TwoConditions_Override.gif)
+
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
 |---|---|---|---|
