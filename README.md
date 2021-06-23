@@ -18,6 +18,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 
 **New:** [IDE Insight](#new-ide-insight), [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](Doc/Inheritance.md), [visual chart splitting](Doc/VisualStateChartSplitting.md), [conditional project definitions](Doc/ConditionalDefines.md), GIF maker etc.
 ### Changelog
+**2.2.4:** [Import QtCreator state charts](Doc/ImportStateCharts.md) <br/>
 **2.2.3:** [Transition indexes bugfix](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/issues/66) <br/>
 **2.2.2:** [Option to override SmartTransitions](Doc/SmartSwitchTransitions.md#option-to-override-inverted-condition-since-scxmleditor-222) <br/>
 **2.2.1:** [Qt SVG Monitors Released](Include/README.md) <br/>
@@ -37,7 +38,7 @@ MSVC 2015 Update 3 Runtimes installed
 ## Installation
 You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
-Latest version: **[2.2.3.1629](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.2.4.1638](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ### First Install
 1. [Download](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it in any target location
@@ -66,29 +67,39 @@ If you are interested in the development of ScxmlEditor we would be highly appre
 | [![PaypalBtn](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?business=XRF8TTUJFNCXA&item_name=Development+of+SCXML+State+Machines+and+ScxmlEditor&currency_code=USD) |
 
 ## Table of contents
-[1. Inheritance](Doc/Inheritance.md)
-
-[2. Conditional Project Definitions](Doc/ConditionalDefines.md)
-
-[3. Smart Switch Transitions](Doc/SmartSwitchTransitions.md)
-
-[4. Building a Project](Doc/ProjectBuild.md)
-
-[5. Visual State Chart Splitting](Doc/VisualStateChartSplitting.md)
-
-[6. DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout)
-
-[7. Convert SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot)
-
-[8. SCXML source code view and live editing](Doc/LiveScxmlEdit.md)
-
-[9. Export SCXML to SVG](Doc/ExportScxmlToSVG.md)
-
-[10. SCXML Structure View](Doc/ScxmlStructureView.md)
-
-[11. Qt SCXML Monitors](Include/README.md)
-
-[12. How to debug SCXML statecharts](Doc/DebugScxmlStateCharts.md)
+- Common
+  - IDE Insight
+  - Main menu
+  - Main toolbar
+  - Project tree
+  - Property inspector
+  - [SCXML source code view and live editing](Doc/LiveScxmlEdit.md)
+- Projects
+  - [Building a Project](Doc/ProjectBuild.md)
+  - [Visual State Chart Splitting](Doc/VisualStateChartSplitting.md)
+  - [Conditional Project Definitions](Doc/ConditionalDefines.md)
+- State chart
+  - Interface
+    - [SCXML Structure View](Doc/ScxmlStructureView.md)
+    - Side toolbar
+    - Tool (bookmarks) panel
+    - Shapes panel
+    - Chart design panel
+  - States and children (Shapes)
+  - Transitions (Connections)
+    - [Smart Switch Transitions](Doc/SmartSwitchTransitions.md)
+  - [Inheritance](Doc/Inheritance.md)
+  - [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout)
+- [Imports](Doc/ImportStateCharts.md)
+  - [Import from QtCreator state charts](Doc/ImportStateCharts.md)
+  - [Import from ScxmlGui (by fmorbini) state charts](Doc/ImportStateCharts.md)
+- Exports
+  - [Convert SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot)
+  - [Export SCXML to SVG](Doc/ExportScxmlToSVG.md)
+- Run and Debug
+  - [How to debug SCXML statecharts](Doc/DebugScxmlStateCharts.md)
+  - [Qt SCXML framework debugging](Include/README.md)
+    - [Qt SCXML Monitors (UDP, SVG)](Include/README.md)    
 
 ## Creating SCXML charts
 

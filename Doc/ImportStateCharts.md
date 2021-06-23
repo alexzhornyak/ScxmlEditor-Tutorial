@@ -5,7 +5,7 @@
 
 # SCXML Import
 
-## Import from [QtCreator state charts](https://doc.qt.io/qtcreator/creator-scxml.html)
+## Import from [QtCreator state charts](https://doc.qt.io/qtcreator/creator-scxml.html) (Since 2.2.4)
 **QtCreator** state charts has visual layout metainformation that is decoded with **qt:editorinfo** nodes
 
 ![QtCreator_ChartDemo](../Images/QtCreator_ChartDemo.png)
@@ -40,7 +40,11 @@
 - scxml initial shape is not created separately
 - labels positioning is automatic
 
-![](../Images/2021-06-23-06-54-05.png)
+![QtCreator_AfterImport](../Images/QtCreator_AfterImport.png)
+
+> **NOTICE:** If you want to store **qt:editorinfo** set **IDE Insight -> ParserDoNotLoadQtEditorInfo** to **False**
+
+![QtCreator_ParserDoNotLoadQtEditorInfo](../Images/QtCreator_ParserDoNotLoad.png)
 
 ## Import from [ScxmlGui (by fmorbini)](https://github.com/fmorbini/scxmlgui) state charts
 ![scxmlGui](../Images/ScxmlGui_demo.png)
