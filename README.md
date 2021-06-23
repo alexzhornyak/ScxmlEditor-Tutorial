@@ -92,7 +92,7 @@ If you are interested in the development of ScxmlEditor we would be highly appre
   - [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout)
 - [Imports](Doc/ImportStateCharts.md)
   - [Import from QtCreator state charts](Doc/ImportStateCharts.md)
-  - [Import from ScxmlGui (by fmorbini) state charts](Doc/ImportStateCharts.md)
+  - [Import from ScxmlGui (by fmorbini) state charts](Doc/ImportStateCharts.md#import-from-scxmlgui-by-fmorbini-state-charts)
 - Exports
   - [Convert SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot)
   - [Export SCXML to SVG](Doc/ExportScxmlToSVG.md)
