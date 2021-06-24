@@ -68,7 +68,7 @@ If you are interested in the development of ScxmlEditor we would be highly appre
 
 ## Table of contents
 - Common
-  - IDE Insight
+  - [IDE Insight](Doc/IDEInsight.md)
   - Main menu
   - Main toolbar
   - Project tree
@@ -86,7 +86,7 @@ If you are interested in the development of ScxmlEditor we would be highly appre
     - Shapes panel
     - Chart design panel
   - States and children (Shapes)
-  - Transitions (Connections)
+  - [Transitions (Connections)](Doc/Transitions.md)
     - [Smart Switch Transitions](Doc/SmartSwitchTransitions.md)
   - [Inheritance](Doc/Inheritance.md)
   - [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout)
@@ -133,7 +133,7 @@ Are used to add scxml elements, zoom, align, change chart visual options, etc.
 
 ![2018-09-26 09 50 33](https://user-images.githubusercontent.com/18611095/46062784-8c0f1a80-c173-11e8-8fca-8937b9b0b721.png)
 
-### NEW! IDE Insight
+### NEW! [IDE Insight](Doc/IDEInsight.md)
 Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all actions through the application. Add shapes, edit properties in one place!
 
 ![ide_insight](Images/IDE_Insight_Demo.gif)
