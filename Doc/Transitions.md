@@ -15,19 +15,24 @@
 ![tr_connect_right](../Images/Transition_ConnectCtrlRight.gif)
 
 ### Visual types
-* **Lines** <br/>
+* **Lines**
+
 ![tr_lines](../Images/Transition_Lines.gif)
 
-* **Square (IN: Top|Bottom)** <br/>
+* **Square (IN: Top|Bottom)**
+
 ![tr_top](../Images/Transition_SquareTop.gif)
 
-* **Square (IN: Left|Right)** <br/>
+* **Square (IN: Left|Right)**
+
 ![tr_left](../Images/Transition_SquareLeft.gif)
 
-* **Curve** <br/>
+* **Curve**
+
 ![tr_curve](../Images/Transition_Curve.gif)
 
-* **Connection over Left | Top | Right | Bottom** <br/>
+* **Connection over Left | Top | Right | Bottom**
+
 ![tr_over](../Images/Transitions_ConnectionOver.gif)
 
 ## Self Transitions
