@@ -17,6 +17,10 @@ Powerful tool for creating, editing and debugging SCXML charts.
 ![MainExample](Images/Inheritance_TV_example.gif)
 
 **New:** [IDE Insight](#new-ide-insight), [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](Doc/Inheritance.md), [visual chart splitting](Doc/VisualStateChartSplitting.md), [conditional project definitions](Doc/ConditionalDefines.md), GIF maker etc.
+
+## Discussions
+[![Discord](Images/Discord.svg)](https://discord.gg/5XWDsbEXzn)
+
 ### Changelog
 **2.2.4:** [Import QtCreator state charts](Doc/ImportStateCharts.md) <br/>
 **2.2.3:** [Transition indexes bugfix](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/issues/66) <br/>
