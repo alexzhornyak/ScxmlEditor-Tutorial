@@ -76,7 +76,7 @@ If you are interested in the development of ScxmlEditor we would be highly appre
   - Main menu
   - Main toolbar
   - Project tree
-  - Property inspector
+  - [Property inspector](Doc/PropertyInspector.md)
   - [SCXML source code view and live editing](Doc/LiveScxmlEdit.md)
 - Projects
   - [Building a Project](Doc/ProjectBuild.md)
@@ -127,7 +127,7 @@ Select **File**->**New Project** or press **Ctrl+N**
 1. Select **File**->**Open Unit** or press **Shift+Ctrl+O** (for all types of .scxml files)
 2. Select **File**->**Open Project** or press **Ctrl+O** (for ScxmlEditor .sproj files)
 
-### Property inspector
+### [Property inspector](Doc/PropertyInspector.md)
 Is used to edit and examine the properties of the currently selected states, executable contents and transitions.
 
 ![2018-09-26 09 50 33](https://user-images.githubusercontent.com/18611095/46062582-eeb3e680-c172-11e8-993b-cedbc270894d.png)
