@@ -75,7 +75,7 @@ If you are interested in the development of ScxmlEditor we would be highly appre
   - [IDE Insight](Doc/IDEInsight.md)
   - Main menu
   - Main toolbar
-  - Project tree
+  - [Project tree](Doc/ProjectTree.md)
   - [Property inspector](Doc/PropertyInspector.md)
   - [SCXML source code view and live editing](Doc/LiveScxmlEdit.md)
 - Projects
