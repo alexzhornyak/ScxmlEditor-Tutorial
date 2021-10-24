@@ -35,7 +35,25 @@
 
 ![tr_over](../Images/Transitions_ConnectionOver.gif)
 
-## Self Transitions
+## Self Transitions (Connections)
+A self transition is a transition that starts and ends in the same state.
+### How to create:
+* select state and press **'Make Self-connection'** button in **'Tools (Bookmarks)'** panel
+* select state, right-click to call context menu and hit menu item **'Make Self-connection'**
+
+![Transitions_Self](../Images/Transitions_Self.gif)
+
+### Arrange Self Transitions (Connections)
+Multiple self transitions may be quickly arranged by pressing **'Arrange Self-connections'** menu item. Primary left and right coordinates for transitions are defined by **the first transition**
+
+![Transitions_Self_Arrange](../Images/Transitions_Self_Arrange.gif)
+
+## Delayed transition
+A delayed transition is a transition that happens after a period of time, specifically being in a specific state for a certain amount of time.
+
+Delayed transitions are not part of [SCXML]((https://alexzhornyak.github.io/SCXML-tutorial/)).  Instead, you have to specify to send a delayed event, and a normal transition that handles that event. The delayed event must be given a name, and also a unique identifier (in order to cancel the delayed event).
+
+![Transitions_Delayed](../Images/Transitions_Delayed.gif)
 
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
 |---|---|---|---|
