@@ -18,7 +18,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 
 **New:** [IDE Insight](#new-ide-insight), [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout), [SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot), [Inheritance](Doc/Inheritance.md), [visual chart splitting](Doc/VisualStateChartSplitting.md), [conditional project definitions](Doc/ConditionalDefines.md), GIF maker etc.
 
-## Discussions
+## Quick Support
 [![Discord](Images/Discord.svg)](https://discord.gg/5XWDsbEXzn)
 
 ### Changelog
@@ -35,26 +35,48 @@ Powerful tool for creating, editing and debugging SCXML charts.
 **2.1.5:** [Refactored Qt external debugger](Include/README.md#qt-scxml-external-debugging-monitor) <br/>
 **2.1.4:** [Export SCXML to SVG](Doc/ExportScxmlToSVG.md), [Structure View](Doc/ScxmlStructureView.md)
 
-## System requirments
-Windows 7, 8, 10
+## System requirements
+- **Windows** 7, 8, 10
 MSVC 2015 Update 3 Runtimes installed
+- **Linux** via [Wine](https://www.winehq.org/)
+- **Mac OS** via [Wine](https://www.winehq.org/)
+
 
 ## Installation
 You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 Latest version: **[2.2.4.1642](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
-### First Install
+### Windows installation
+#### First Install
 1. [Download](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it in any target location
 2. Install **ScxmlEditor\vcredist_x86.exe** for **UscxmlTester**, **Graphviz**
 3. Install  **ScxmlEditor\vcredist_x64.exe** for **QtScxmlTester** <br/>
 (_You may skip steps 2 and 3 if you have previously installed MSVC 2015 Update 3_)
 
-### Update
+#### Update
 1. [Download](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it into **Temporary** folder
 2. Run **Temporary\ScxmlEditor\ScxmlEditor_InstallOrUpdate.cmd "Path\To\Location\ScxmlEditor"**
 
 > NOTICE! We are continiously making updates, so follow the version number on the README page and update to the latest to have all last cool features
+
+### [Linux installation](Doc/LinuxInstallation.md)
+1. **Install [Wine](https://www.winehq.org/):**
+```batch
+sudo apt -y install wine
+```
+2. **Install Microsoft fonts**
+- Install a collection of Microsoft fonts.
+```batch
+sudo apt install ttf-mscorefonts-installer
+```
+- Acknowledge the terms of the EULA in your terminal when prompted.
+3. [Download ScxmlEditor](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it in any target location 
+4. Run program
+```batch
+cd /path/to/ScxmlEditor
+wine ScxmlEditor.exe
+```
 
 ![AppPreview](Images/ApplicationPreview.gif)
 
