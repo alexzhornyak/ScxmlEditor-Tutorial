@@ -36,8 +36,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 **2.1.4:** [Export SCXML to SVG](Doc/ExportScxmlToSVG.md), [Structure View](Doc/ScxmlStructureView.md)
 
 ## System requirements
-- **Windows** 7, 8, 10
-MSVC 2015 Update 3 Runtimes installed
+- **Windows** 7, 8, 10 (MSVC 2015 Update 3 Runtimes installed)
 - **Linux** via [Wine](https://www.winehq.org/)
 - **Mac OS** via [Wine](https://www.winehq.org/)
 
