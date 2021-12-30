@@ -36,7 +36,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 **2.1.4:** [Export SCXML to SVG](Doc/ExportScxmlToSVG.md), [Structure View](Doc/ScxmlStructureView.md)
 
 ## System requirements
-- **Windows** 7, 8, 10 (MSVC 2015 Update 3 Runtimes installed)
+- **Windows** 7, 8, 10, 11 (MSVC 2010, MSVC 2015 Update 3 Runtimes installed)
 - **Linux** via [Wine](https://www.winehq.org/)
 - **Mac OS** via [Wine](https://www.winehq.org/)
 
@@ -51,7 +51,9 @@ Latest version: **[2.2.4.1642](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 1. [Download](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it in any target location
 2. Install **ScxmlEditor\vcredist_x86.exe** for **UscxmlTester**, **Graphviz**
 3. Install  **ScxmlEditor\vcredist_x64.exe** for **QtScxmlTester** <br/>
-(_You may skip steps 2 and 3 if you have previously installed MSVC 2015 Update 3_)
+(_You may skip steps 2 and 3 if you have previously installed MSVC 2015 Update 3 redistributable_)
+4. Install **ScxmlEditor\UScxmlTester\vcredist_x86_vc10.exe** for **UscxmlTester** with **EcmaScript** datamodel <br/>
+(_You may skip step 4 if you have previously installed MSVC 2010 redistributable_)
 
 #### Update
 1. [Download](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it into **Temporary** folder
