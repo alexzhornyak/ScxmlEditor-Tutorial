@@ -144,6 +144,8 @@ protected:
             switch (AType) {
             case smttBeforeEnter: this->enterState(sMsg, true); break;
             case smttBeforeExit: this->enterState(sMsg, false); break;
+            default:
+                break;
             }
         }
     }

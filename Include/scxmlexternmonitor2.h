@@ -9,7 +9,7 @@
 
 namespace Scxmlmonitor {
 
-static const std::size_t SCXML_MONITOR_VERSION = 0x07;
+static const std::size_t SCXML_MONITOR_VERSION = 0x08;
 
 /*          External SCXML monitor for ScxmlEditor            */
 /* See 'https://github.com/alexzhornyak/ScxmlEditor-Tutorial' */
@@ -35,6 +35,9 @@ class IScxmlExternMonitor: public QObject {
     Q_OBJECT
 
     Q_PROPERTY(QScxmlStateMachine *scxmlStateMachine READ scxmlStateMachine WRITE setScxmlStateMachine NOTIFY scxmlStateMachineChanged)
+    /* Is used for multiple instances of the same State Chart */
+    /* Must be set before 'scxmlStateMachine' */
+    Q_PROPERTY(QString machineID READ machineID WRITE setMachineID NOTIFY machineIDChanged)
 
 public:
     inline explicit IScxmlExternMonitor(QObject *parent = nullptr): QObject(parent) {}
@@ -56,7 +59,7 @@ public:
         /* 2) we do not use 'break' becase there maybe a couple of same interpreters */
 
         QHash<QScxmlStateMachine*, InvokedTuple> allMachines;
-        iterateAllMachines(_machine, "", "", allMachines);
+        iterateAllMachines(_machine, "", this->_machineID, allMachines);
 
         for (auto it = allMachines.cbegin();it!=allMachines.cend();++it) {
             if (sInterpreter.isEmpty() || std::get<InvType::Machine>(it.value())==sInterpreter) {
@@ -72,7 +75,7 @@ public:
     /* for using in menu 'Import states configuration' */
     Q_INVOKABLE QStringList dumpAllActiveStates() {
         QStringList out;
-        iterateAllActiveStates(_machine, "", [&out](QScxmlStateMachine *itMachine,
+        iterateAllActiveStates(_machine, this->_machineID, [&out](QScxmlStateMachine *itMachine,
                                const QString &id,
                                const QString &itState){
 
@@ -103,7 +106,7 @@ public:
                 });
                 _scxmlConnections.append(runningconnection);
 
-                this->iterateAllMachines(_machine, "", "", _invokedMachines);
+                this->iterateAllMachines(_machine, "", this->_machineID, _invokedMachines);
 
                 /* Main Machine */
                 connectMonitorToMachine(_machine);
@@ -118,8 +121,27 @@ public:
         }
     }
 
+    inline void setScxmlStateMachineWithID(QScxmlStateMachine *machine, const QString &sID) {
+        this->setMachineID(sID);
+        this->setScxmlStateMachine(machine);
+    }
+
+    inline void setScxmlStateMachineWithSessionID(QScxmlStateMachine *machine) {
+        this->setScxmlStateMachineWithID(machine,
+                                         machine ? machine->sessionId() : QString(""));
+    }
+
+    inline QString machineID() { return _machineID; }
+    inline void setMachineID(QString machineID) {
+        if (_machineID!=machineID) {
+            _machineID = machineID;
+            emit machineIDChanged(_machineID);
+        }
+    }
+
 signals:
     void scxmlStateMachineChanged(QScxmlStateMachine *scxmlStateMachine);
+    void machineIDChanged(QString machineID);
 
 protected:
 
@@ -156,7 +178,7 @@ private slots:
 
         QHash<QScxmlStateMachine*, InvokedTuple> allMachines;
 
-        iterateAllMachines(_machine, "", "", allMachines);
+        iterateAllMachines(_machine, "", this->_machineID, allMachines);
 
         for (auto it = allMachines.cbegin();it!=allMachines.cend();++it) {
             auto itMachine = _invokedMachines.find(it.key());
@@ -224,7 +246,7 @@ private:
             auto stateconnection = machine->connectToState(itState, [=](bool active) {
                 auto itInvoked = _invokedMachines.constFind(machine);
                 const QString id = itInvoked == _invokedMachines.cend() ?
-                            QString("") : std::get<InvType::Id>(itInvoked.value());
+                            this->_machineID : std::get<InvType::Id>(itInvoked.value());
                 processMonitorMessage(machine->name(), id, itState, active ? smttBeforeEnter : smttBeforeExit);
             });
             _scxmlConnections.append(stateconnection);
@@ -234,7 +256,7 @@ private:
         auto eventconnection = machine->connectToEvent("*", [=](const QScxmlEvent &event) {
             auto itInvoked = _invokedMachines.constFind(machine);
             const QString id = itInvoked == _invokedMachines.cend() ?
-                        QString("") : std::get<InvType::Id>(itInvoked.value());
+                        this->_machineID : std::get<InvType::Id>(itInvoked.value());
             processMonitorMessage(machine->name(), id, event.name(), smttBeforeTakingTransition);
         });
         _scxmlConnections.append(eventconnection);
@@ -264,7 +286,7 @@ private:
 
     inline void processSyncAllMonitors(QScxmlStateMachine *machine) {
 
-        iterateAllActiveStates(machine, "",
+        iterateAllActiveStates(machine, this->_machineID,
                                [this](QScxmlStateMachine *itMachine, const QString &id, const QString& itState){
             this->processMonitorMessage(itMachine->name(), id, itState, smttBeforeEnter);
         });
@@ -274,6 +296,7 @@ private:
     QHash<QScxmlStateMachine *, InvokedTuple> _invokedMachines;
     QSet<QScxmlStateMachine*> _connectedMachines;
     QList<QMetaObject::Connection> _scxmlConnections;
+    QString _machineID = "";
 };
 
 class UDPScxmlExternMonitor: public IScxmlExternMonitor {
