@@ -39,12 +39,12 @@ Powerful tool for creating, editing and debugging SCXML charts.
 - **Windows** 7, 8, 10, 11 (MSVC 2010, MSVC 2015 Update 3 Runtimes installed)
 - **Linux** via [Wine](https://www.winehq.org/)
 - **Mac OS** via [Wine](https://www.winehq.org/)
-
+> **NOTICE! Dot '.' must be a float-point delimiter in OS Regional Settings !!!**
 
 ## Installation
 You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
-Latest version: **[2.2.4.1642](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.2.5.1644](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
 ### Windows installation
 #### First Install
