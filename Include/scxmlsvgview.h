@@ -19,7 +19,7 @@
 
 namespace Scxmlmonitor {
 
-const std::size_t SCXML_SVG_MONITOR_VIEW_VERSION = 0x01;
+const std::size_t SCXML_SVG_MONITOR_VIEW_VERSION = 0x02;
 
 class ScxmlSvgView : public QGraphicsView
 {
@@ -40,19 +40,16 @@ public:
         setDragMode(ScrollHandDrag);
         setViewportUpdateMode(FullViewportUpdate);
 
-        if (machine) {
-
-            _svgScxmlItem = new ScxmlSvgMonitorItem(svgFileName, machineName, invokeID, this);
-            auto svgItem = _svgScxmlItem->graphicItem();
-            if (svgItem && svgItem->renderer()->isValid()) {
-                auto viewScene = this->scene();
-                viewScene->clear();
-                this->resetTransform();
-                svgItem->setVisible(true);
-                viewScene->addItem(svgItem);
-                viewScene->setSceneRect(svgItem->boundingRect());
-                _svgScxmlItem->setScxmlStateMachine(machine);
-            }
+        _svgScxmlItem = new ScxmlSvgMonitorItem(svgFileName, machineName, invokeID, this);
+        auto svgItem = _svgScxmlItem->graphicItem();
+        if (svgItem && svgItem->renderer()->isValid()) {
+            auto viewScene = this->scene();
+            viewScene->clear();
+            this->resetTransform();
+            svgItem->setVisible(true);
+            viewScene->addItem(svgItem);
+            viewScene->setSceneRect(svgItem->boundingRect());
+            _svgScxmlItem->setScxmlStateMachine(machine);
         }
     }
 
@@ -82,6 +79,10 @@ public:
             _svgScxmlItem->setScxmlInvokeID(invokeID);
             emit scxmlInvokeIDChanged(invokeID);
         }
+    }
+
+    inline ScxmlSvgMonitorItem *getSvgMonitorItem(void) {
+        return _svgScxmlItem;
     }
 
 public slots:
