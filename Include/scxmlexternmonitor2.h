@@ -9,7 +9,7 @@
 
 namespace Scxmlmonitor {
 
-static const std::size_t SCXML_MONITOR_VERSION = 0x08;
+static const std::size_t SCXML_MONITOR_VERSION = 0x09;
 
 /*          External SCXML monitor for ScxmlEditor            */
 /* See 'https://github.com/alexzhornyak/ScxmlEditor-Tutorial' */
@@ -170,6 +170,10 @@ protected:
         }
     }
 
+    inline virtual void processEventMessage(QScxmlStateMachine *machine, const QString &id, const QScxmlEvent &event) {
+        processMonitorMessage(machine->name(), id, event.name(), smttBeforeTakingTransition);
+    }
+
 private slots:
 
     inline void onInvokedServicesChanged(const QVector<QScxmlInvokableService *> &) {
@@ -257,7 +261,7 @@ private:
             auto itInvoked = _invokedMachines.constFind(machine);
             const QString id = itInvoked == _invokedMachines.cend() ?
                         this->_machineID : std::get<InvType::Id>(itInvoked.value());
-            processMonitorMessage(machine->name(), id, event.name(), smttBeforeTakingTransition);
+            processEventMessage(machine, id, event);
         });
         _scxmlConnections.append(eventconnection);
 
