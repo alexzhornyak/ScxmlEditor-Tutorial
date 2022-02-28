@@ -159,6 +159,36 @@ For Qt SCXML applications you may include [scxmlexternmonitor2.h](../Include/scx
 
 ![CalculatorDebug](../Images/CalculatorDebug.gif)
 
+#### Option to pass event or custom data to CallStack View
+If you need to pass event or custom data to CallStack view, you can override monitor class.
+
+![Debug_ProcessEventData](../Images/Debug_ProcessEventData.png)
+
+```cpp
+class MyMonitor: public Scxmlmonitor::UDPScxmlExternMonitor {
+    public:
+        inline explicit MyMonitor(QObject *parent = nullptr): Scxmlmonitor::UDPScxmlExternMonitor(parent) {}
+    protected:
+        inline virtual void processEventMessage(QScxmlStateMachine *machine, const QString &id, const QScxmlEvent &event) {
+            const QString sEventData = event.data().toString();
+            processMonitorMessage(machine->name(),
+                                  id,
+                                  sEventData.isEmpty() ? event.name() : (event.name() + ": [" + sEventData + "]"),
+                                  Scxmlmonitor::smttBeforeTakingTransition);
+            // ---> example: add custom info to all events, that starts with 'in.'
+            if (event.name().startsWith("in.")) {
+                processMonitorMessage(machine->name(),
+                                      id,
+                                      "my custom data: " + sEventData,
+                                      Scxmlmonitor::smttBeforeProcessingEvent);
+            }
+        }
+};
+```
+
+You should enable custom data types in ScxmlEditor settings if you want to receive it in CallStack View
+![process_events_settings](../Images/Debug_ProcessEventData_settings.png)
+
 ## Custom testing application setup
 Since version 2.1.8 there is an option to communicate with testing applications via pipes.
 #### Example: how to setup [The SCION command-line tool](https://gitlab.com/scion-scxml/cli) as custom testing application
