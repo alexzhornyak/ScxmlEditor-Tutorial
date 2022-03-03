@@ -42,7 +42,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 > **NOTICE! Dot '.' must be a float-point delimiter in OS Regional Settings !!!**
 
 ## Installation
-You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)** or as attached Zip in ScxmlEditor Github Release page
 
 Latest version: **[2.2.6.1652](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
 
