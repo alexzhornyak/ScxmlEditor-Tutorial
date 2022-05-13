@@ -3,6 +3,8 @@
 | [Contents](#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [SCXML Examples](https://alexzhornyak.github.io/SCXML-tutorial/Examples/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
 |---|---|---|---|
 
+![stand_with_Ukraine](Images/I_stand_with_Ukraine_banner.svg)
+
 **[Video overview - v.1.0](https://youtu.be/tL-NICRwggY)**
 
 **[Video overview - v.2.0](https://youtu.be/SryLDwxcCjA)**
