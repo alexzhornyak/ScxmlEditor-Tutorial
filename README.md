@@ -199,7 +199,7 @@ There are two ready-to-use testing applications:
 1. Based on [USCXML framework](https://github.com/tklab-tud/uscxml).
 Supports **null, lua, ecmascript** datamodels
 
-2. Based on [Qt SCXML framework](https://doc.qt.io/qt-5/qtscxml-overview.html)
+2. [QtScxmlTester](Testers/QtScxmlTester/README.md) - based on [Qt SCXML framework](https://doc.qt.io/qt-5/qtscxml-overview.html)
 Supports **null, ecmascript** datamodels
 
 Also you may write your own testing application using the corresponding API
