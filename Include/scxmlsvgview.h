@@ -19,7 +19,7 @@
 
 namespace Scxmlmonitor {
 
-const std::size_t SCXML_SVG_MONITOR_VIEW_VERSION = 0x02;
+const std::size_t SCXML_SVG_MONITOR_VIEW_VERSION = 0x03;
 
 class ScxmlSvgView : public QGraphicsView
 {
@@ -27,7 +27,10 @@ class ScxmlSvgView : public QGraphicsView
 
     Q_PROPERTY(QString scxmlName READ scxmlName WRITE setScxmlName NOTIFY scxmlNameChanged)
     Q_PROPERTY(QString scxmlInvokeID READ scxmlInvokeID WRITE setScxmlInvokeID NOTIFY scxmlInvokeIDChanged)
-    Q_PROPERTY(int selectionBorderWidth READ selectionBorderWidth WRITE setSelectionBorderWidth NOTIFY selectionBorderWidthChanged)
+    Q_PROPERTY(QPen penActiveState READ penActiveState WRITE setPenActiveState NOTIFY penActiveStateChanged)
+    Q_PROPERTY(QPen penEnteredState READ penEnteredState WRITE setPenEnteredState NOTIFY penEnteredStateChanged)
+    Q_PROPERTY(QPen penActiveTransition READ penActiveTransition WRITE setPenActiveTransition NOTIFY penActiveTransitionChanged)
+    Q_PROPERTY(QRectF transitionMargins READ transitionMargins WRITE setTransitionMargins NOTIFY transitionMarginsChanged)
 
 public:
 
@@ -57,11 +60,39 @@ public:
 
     inline qreal zoomFactor() const { return transform().m11(); }
 
-    inline int selectionBorderWidth() const { return _svgScxmlItem ? _svgScxmlItem->selectionBorderWidth() : 0; }
-    inline void setSelectionBorderWidth(int width) {
-        if (_svgScxmlItem && _svgScxmlItem->selectionBorderWidth() != width) {
-            _svgScxmlItem->setSelectionBorderWidth(width);
-            emit selectionBorderWidthChanged(width);
+    inline QPen penActiveState(void) const {
+        return _svgScxmlItem ? _svgScxmlItem->penActiveState() : QPen(); }
+    inline void setPenActiveState(const QPen &val) {
+        if (_svgScxmlItem) {
+            _svgScxmlItem->setPenActiveState(val);
+            emit penActiveStateChanged(val);
+        }
+    }
+
+    inline QPen penEnteredState(void) const {
+        return _svgScxmlItem ? _svgScxmlItem->penEnteredState() : QPen(); }
+    inline void setPenEnteredState(const QPen &val) {
+        if (_svgScxmlItem) {
+            _svgScxmlItem->setPenEnteredState(val);
+            emit penEnteredStateChanged(val);
+        }
+    }
+
+    inline QPen penActiveTransition(void) const {
+        return _svgScxmlItem ? _svgScxmlItem->penActiveTransition() : QPen(); }
+    inline void setPenActiveTransition(const QPen &val) {
+        if (_svgScxmlItem) {
+            _svgScxmlItem->setPenActiveTransition(val);
+            emit penActiveTransitionChanged(val);
+        }
+    }
+
+    inline QRectF transitionMargins(void) const {
+        return _svgScxmlItem ? _svgScxmlItem->transitionMargins() : QRectF(-10.0, -10.0, 20.0, 20.0); }
+    inline void setTransitionMargins(const QRectF &val) {
+        if (_svgScxmlItem) {
+            _svgScxmlItem->setTransitionMargins(val);
+            emit transitionMarginsChanged(val);
         }
     }
 
@@ -98,7 +129,10 @@ public slots:
 
 signals:
     void zoomChanged();
-    void selectionBorderWidthChanged(int);
+    void penActiveStateChanged(QPen);
+    void penEnteredStateChanged(QPen);
+    void penActiveTransitionChanged(QPen);
+    void transitionMarginsChanged(QRectF);
     void scxmlNameChanged(QString);
     void scxmlInvokeIDChanged(QString);
 

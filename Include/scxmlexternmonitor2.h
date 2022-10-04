@@ -7,9 +7,19 @@
 #include <QUdpSocket>
 #include <QNetworkDatagram>
 
+#ifdef USE_SCXML_TRIGGERED_TRANSITIONS
+    /* This is the only way to monitor triggered transitions */
+    /* QT += scxml-private */
+    #include <algorithm>
+    #include <map>
+    #include <set>
+    #include <QtScxml/private/qscxmlstatemachineinfo_p.h>
+    #include <QtScxml/private/qscxmlstatemachine_p.h>
+#endif
+
 namespace Scxmlmonitor {
 
-static const std::size_t SCXML_MONITOR_VERSION = 0x09;
+static const std::size_t SCXML_MONITOR_VERSION = 10;
 
 /*          External SCXML monitor for ScxmlEditor            */
 /* See 'https://github.com/alexzhornyak/ScxmlEditor-Tutorial' */
@@ -171,7 +181,7 @@ protected:
     }
 
     inline virtual void processEventMessage(QScxmlStateMachine *machine, const QString &id, const QScxmlEvent &event) {
-        processMonitorMessage(machine->name(), id, event.name(), smttBeforeTakingTransition);
+        processMonitorMessage(machine->name(), id, event.name(), smttBeforeProcessingEvent);
     }
 
 private slots:
@@ -238,6 +248,13 @@ private:
         }
     }
 
+    inline QString monitorID(QScxmlStateMachine *machine) const {
+        auto itInvoked = _invokedMachines.constFind(machine);
+        const QString id = itInvoked == _invokedMachines.cend() ?
+                    this->_machineID : std::get<InvType::Id>(itInvoked.value());
+        return id;
+    }
+
     inline void connectMonitorToMachine(QScxmlStateMachine *machine) {
         if (!machine || _connectedMachines.contains(machine))
             return;
@@ -248,26 +265,60 @@ private:
         const auto allStates = machine->stateNames(false);
         for (const auto &itState : allStates) {
             auto stateconnection = machine->connectToState(itState, [=](bool active) {
-                auto itInvoked = _invokedMachines.constFind(machine);
-                const QString id = itInvoked == _invokedMachines.cend() ?
-                            this->_machineID : std::get<InvType::Id>(itInvoked.value());
-                processMonitorMessage(machine->name(), id, itState, active ? smttBeforeEnter : smttBeforeExit);
+                processMonitorMessage(machine->name(), monitorID(machine), itState, active ? smttBeforeEnter : smttBeforeExit);
             });
             _scxmlConnections.append(stateconnection);
         }
 
         /* all events + transitions */
         auto eventconnection = machine->connectToEvent("*", [=](const QScxmlEvent &event) {
-            auto itInvoked = _invokedMachines.constFind(machine);
-            const QString id = itInvoked == _invokedMachines.cend() ?
-                        this->_machineID : std::get<InvType::Id>(itInvoked.value());
-            processEventMessage(machine, id, event);
+            processEventMessage(machine, monitorID(machine), event);
         });
         _scxmlConnections.append(eventconnection);
 
         const auto invokeconnection = connect(machine, &QScxmlStateMachine::invokedServicesChanged,
                 this, &IScxmlExternMonitor::onInvokedServicesChanged);
         _scxmlConnections.append(invokeconnection);
+
+#ifdef USE_SCXML_TRIGGERED_TRANSITIONS
+        QScxmlStateMachineInfo *scxmlInfo = new QScxmlStateMachineInfo(machine);
+
+        std::map<QScxmlStateMachineInfo::StateId, std::set<QScxmlStateMachineInfo::TransitionId>> transitionsMap;
+        const auto allTrans = scxmlInfo->allTransitions();
+        for (auto transitionId : allTrans) {
+            const auto stateFromId = scxmlInfo->transitionSource(transitionId);
+            auto itStateTransitions = transitionsMap.find(stateFromId);
+            if (itStateTransitions == transitionsMap.cend()) {
+                transitionsMap.insert(std::make_pair(stateFromId, std::set<QScxmlStateMachineInfo::TransitionId>{ transitionId }));
+            } else {
+                itStateTransitions->second.insert(transitionId);
+            }
+        }
+
+        const auto connectionInfo = QObject::connect(scxmlInfo, &QScxmlStateMachineInfo::transitionsTriggered, scxmlInfo,
+                         [=](const QVector<QScxmlStateMachineInfo::TransitionId> &transitions) {
+            if (scxmlInfo->stateMachine()) {
+                for (auto transitionId : transitions) {
+                    auto fromID = scxmlInfo->transitionSource(transitionId);
+                    const QString sFrom = scxmlInfo->stateName(fromID);
+
+                    const auto itStateTransitions = transitionsMap.find(fromID);
+                    if (itStateTransitions != transitionsMap.cend()) {
+                        const auto itTransition = itStateTransitions->second.find(transitionId);
+                        if (itTransition != itStateTransitions->second.end()) {
+                            const auto pos = std::distance(itStateTransitions->second.begin(), itTransition);
+                            this->processMonitorMessage(machine->name(), this->monitorID(machine),
+                                                        QString("%1|%2").arg(
+                                                            sFrom).arg(pos),
+                                                        TScxmlMsgType::smttBeforeTakingTransition);
+                        }
+                    }
+                }
+            }
+        });
+        _scxmlInfoConnections.append(connectionInfo);
+
+#endif
 
         const auto allInvoked = machine->invokedServices();
         for (const auto it: allInvoked) {
@@ -280,10 +331,19 @@ private:
 
     inline void cleanup(void) {        
         _invokedMachines.clear();
+
+#ifdef USE_SCXML_TRIGGERED_TRANSITIONS
+        for (auto &it : _scxmlInfoConnections) {
+            QObject::disconnect(it);
+        }
+        _scxmlInfoConnections.clear();
+#endif
+
         for (auto &it : _scxmlConnections) {
             QObject::disconnect(it);
         }
-        _scxmlConnections.clear();        
+        _scxmlConnections.clear();
+
         _connectedMachines.clear();
         _machine = nullptr;
     }
@@ -301,6 +361,10 @@ private:
     QSet<QScxmlStateMachine*> _connectedMachines;
     QList<QMetaObject::Connection> _scxmlConnections;
     QString _machineID = "";
+
+#ifdef USE_SCXML_TRIGGERED_TRANSITIONS
+    QList<QMetaObject::Connection> _scxmlInfoConnections;
+#endif
 };
 
 class UDPScxmlExternMonitor: public IScxmlExternMonitor {
@@ -350,6 +414,19 @@ protected:
 
     inline virtual void processClearAllMonitors(void) override {
         processClearMonitor("", "");
+    }
+
+    inline virtual void processEventMessage(QScxmlStateMachine *machine, const QString &id, const QScxmlEvent &event) override {
+        QString sEventData = event.data().toString();
+        if (!sEventData.isEmpty()) {
+            if (sEventData.length() > 40) {
+                sEventData = sEventData.left(40) + "...";
+            }
+        }
+        processMonitorMessage(machine->name(),
+                              id,
+                              sEventData.isEmpty() ? event.name() : (event.name() + ": [" + sEventData + "]"),
+                              Scxmlmonitor::smttBeforeProcessingEvent);
     }
 
 private:

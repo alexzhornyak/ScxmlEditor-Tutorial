@@ -1,0 +1,17 @@
+debug
+debug.debug
+debug.gethook
+debug.getinfo
+debug.getlocal
+debug.getmetatable
+debug.getregistry
+debug.getupvalue
+debug.getuservalue
+debug.sethook
+debug.setlocal
+debug.setmetatable
+debug.setupvalue
+debug.setuservalue
+debug.traceback
+debug.upvalueid
+debug.upvaluejoin
