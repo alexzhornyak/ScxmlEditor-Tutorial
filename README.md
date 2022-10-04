@@ -13,7 +13,7 @@
 
 **[Video overview - v.2.2](https://youtu.be/30dyXAs-m1A)**
 
-# Scxml Editor 2.2
+# Scxml Editor 2.3
 Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](Images/Inheritance_TV_example.gif)
@@ -24,6 +24,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 [![Discord](Images/Discord.svg)](https://discord.gg/5XWDsbEXzn)
 
 ### Changelog
+**2.3:** Highlight Transitions <br>
 **2.2.4:** [Import QtCreator state charts](Doc/ImportStateCharts.md) <br/>
 **2.2.3:** [Transition indexes bugfix](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/issues/66) <br/>
 **2.2.2:** [Option to override SmartTransitions](Doc/SmartSwitchTransitions.md#option-to-override-inverted-condition-since-scxmleditor-222) <br/>
@@ -44,13 +45,13 @@ Powerful tool for creating, editing and debugging SCXML charts.
 > **NOTICE! Dot '.' must be a float-point delimiter in OS Regional Settings !!!**
 
 ## Installation
-You can find portable version **[here](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)** or as attached Zip in ScxmlEditor Github Release page
+You can find portable version as attached Zip in ScxmlEditor Github Release page
 
-Latest version: **[2.2.6.1652](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0)**
+Latest version: **[2.3.0.1707]**
 
 ### Windows installation
 #### First Install
-1. [Download](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it in any target location
+1. Download from latest Release page and unpack it in any target location
 2. Install **ScxmlEditor\vcredist_x86.exe** for **UscxmlTester**, **Graphviz**
 3. Install  **ScxmlEditor\vcredist_x64.exe** for **QtScxmlTester** <br/>
 (_You may skip steps 2 and 3 if you have previously installed MSVC 2015 Update 3 redistributable_)
@@ -58,7 +59,7 @@ Latest version: **[2.2.6.1652](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_AS
 (_You may skip step 4 if you have previously installed MSVC 2010 redistributable_)
 
 #### Update
-1. [Download](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it into **Temporary** folder
+1. Download from latest Release page and unpack it into **Temporary** folder
 2. Run **Temporary\ScxmlEditor\ScxmlEditor_InstallOrUpdate.cmd "Path\To\Location\ScxmlEditor"**
 
 > NOTICE! We are continiously making updates, so follow the version number on the README page and update to the latest to have all last cool features
@@ -93,7 +94,23 @@ If you are interested in the development of ScxmlEditor we would be highly appre
 
 | Paypal |
 | ------ |
-| [![PaypalBtn](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?business=XRF8TTUJFNCXA&item_name=Development+of+SCXML+State+Machines+and+ScxmlEditor&currency_code=USD) |
+| [![PaypalBtn](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=6W4NBU7TEF27W) |
+
+## Licensing
+ScxmlEditor source code is distributed under under the terms of the BSD 3-Clause License but if you want to compile binary application by yourself you need to purchase external components with their own licensies by yourself.
+
+Current binaries are compiled with single development licensies registered by this github account owner name.
+**Many thanks to all who made donations and especially to [Ed K]() for his valuable contribution**
+
+| External Components | License | Comment |
+|---------|---------|---------|
+| [TeeChart Pro](https://www.steema.com/feature_matrix/vcl) | [Steema Software Licenses](https://www.steema.com/licensing/vcl) | State chart editor is based on TTree |
+| [LMD VCL Complete](https://www.lmdinnovative.com/products/vcl/lmdvcl) | [LMD Innovative License](https://curl.haxx.se/docs/copyright.html) | Used in Dock Panels, Property inspector, etc. |
+| [VCL Components](https://xerces.apache.org/xerces-c/) | [C++Builder Community Edition](https://www.embarcadero.com/products/cbuilder/starter) | General application compilation and VCL standard components |
+| [log4cpp](https://github.com/orocos-toolchain/log4cpp) | [LGPL-2.1 license](https://github.com/orocos-toolchain/log4cpp/blob/master/COPYING) | Logger |
+| [myJSON](http://uriparser.sourceforge.net) | [MIT License](https://github.com/badunius/myJSON/blob/master/LICENSE) | JSON Parsing |
+| [PNG Functions](https://github.com/TurboPack/PNGComponents) | [Mozilla Public License 1.1](https://github.com/TurboPack/PNGComponents/blob/master/license.txt) | PNG Functions |
+
 
 ## Table of contents
 - Common
