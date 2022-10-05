@@ -33,10 +33,15 @@ Also you may write your own testing application using the corresponding API
 3) `Msg` - message which depends on type of command. For example: for **BeforeEnter** or **BeforeExit** - it is the id(name) of states, for **BeforeInvoke** or **BeforeUnInvoke** it is the name of invoked element, etc. </br>
 4) `Id` - [identifier of the invoked state machine](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html#id) (Since **ScxmlEditor 2.2**). Can be empty for root machines
 > **BeforeEnter** graphically highlight and **BeforeExit** unhighlight the corresponding states, other commands are displayed in **CallStack** panel
+
+> Since **ScxmlEditor 2.3** there is an option to highlight taking transitions in **BeforeTakingTransition**
+> Message format: `FromState|TransitionIndex` where `TransitionIndex` is transition xml child index
+
 #### Example of commands:
 - `2@CalculatorStateMachine@operand1` - highlight state **operand1** in statechart **CalculatorStateMachine** <br/>
 - `4@CalculatorStateMachine@operand1` - unhighlight state **operand1** in statechart **CalculatorStateMachine** <br/>
 - `2@ScxmlSub1@isSub1@ID_SUB_1` - highlight state **isSub1** in statechart **ScxmlSub1** when [invoke Id](#how-to-debug-multiple-invoked-state-machines) is **ID_SUB_1** <br/>
+- `12@CalculatorStateMachine@operand1|0` - highlight the first transition from **operand1** state in statechart **CalculatorStateMachine** <br/>
 
 You can also [trace the execution of the chart](#trace-mode) and use [breakpoints](#breakpoints).
 
@@ -47,6 +52,7 @@ It is similar to [SCXML send events logic](https://alexzhornyak.github.io/SCXML-
 - `%EVENT_NAME%` - valid event name
 - `%PARAM_NAME%` - valid param name
 - `%DATA_TYPE%` - `0-Default`(Variant type), `1-Bool`, `2-Integer`, `3-Double`, `4-String`
+Since ScxmlEditor 2.3 there were added `5-Json`, `6-UserData`. Json is converted to QVariant in QScxmlTester. User data may be used in custom testing applications.
 - `%CONTENT_DATA%`,`%PARAM_DATA%` - event data depending on `%DATA_TYPE%`
 #### Option 1. With single content expression
 ```xml

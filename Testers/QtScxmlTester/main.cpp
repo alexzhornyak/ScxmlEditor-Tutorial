@@ -21,7 +21,7 @@
 
 #define MLOG(VAL)	std::wcout << L#VAL << "> " << QDateTime::currentDateTime().toString("HH:mm:ss.zzz").toStdWString() << " QtScxmlTester.exe "
 
-typedef enum { cttDefault, cttBool, cttInteger, cttDouble, cttString } TContentTriggerType;
+typedef enum { cttDefault, cttBool, cttInteger, cttDouble, cttString, cttJson, cttUserData } TContentTriggerType;
 
 struct Settings {
     // flags
@@ -159,7 +159,18 @@ int main(int argc, char *argv[])
                     const bool bVal = sText.compare("true",Qt::CaseInsensitive) == 0;
                     varData = bVal;
                 } break;
+            case cttJson:
+                {
+                    const auto jsonDoc = QJsonDocument::fromJson(sText.toUtf8());
+                    if (!jsonDoc.isNull()) {
+                        varData = jsonDoc.toVariant();
+                    }
+                    if (varData.isNull()) {
+                        varData = sText;
+                    }
+                } break;
             case cttString:
+            case cttUserData:
             default:
                 varData = sText;
                 break;
@@ -167,7 +178,7 @@ int main(int argc, char *argv[])
             return varData;
         };
 
-        QObject::connect(&socket, &QUdpSocket::readyRead, [&](){
+        QObject::connect(&socket, &QUdpSocket::readyRead, &socket, [&](){
             while (socket.hasPendingDatagrams()) {
                 QNetworkDatagram datagram = socket.receiveDatagram();
 

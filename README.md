@@ -75,7 +75,7 @@ sudo apt -y install wine
 sudo apt install ttf-mscorefonts-installer
 ```
 - Acknowledge the terms of the EULA in your terminal when prompted.
-3. [Download ScxmlEditor](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it in any target location 
+3. Download ScxmlEditor from latest Release page and unpack it in any target location 
 4. Run program
 ```batch
 cd /path/to/ScxmlEditor
@@ -85,9 +85,9 @@ wine ScxmlEditor.exe
 ![AppPreview](Images/ApplicationPreview.gif)
 
 ## Roadmap
-- Make Open API (Lua based)
-- Make cross-platform
-- Make opensource
+- [ ] Make Open API (Lua based)
+- [ ] Make cross-platform
+- [x] Make opensource
 
 ## Donations
 If you are interested in the development of ScxmlEditor we would be highly appreciated for any help.
@@ -199,10 +199,15 @@ Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all a
   `Msg` - message which depends on type of command. For example: for **BeforeEnter** or **BeforeExit** - it is the id(name) of states, for **BeforeInvoke** or **BeforeUnInvoke** it is the name of invoked element, etc. </br>
   `Id` - [identifier of the invoked](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html#id) state machine (Since ScxmlEditor 2.2). Can be empty for root machines
 > **BeforeEnter** graphically highlight and **BeforeExit** unhighlight the corresponding states, other commands are displayed in **CallStack** panel
+
+> Since **ScxmlEditor 2.3** there is an option to highlight taking transitions in **BeforeTakingTransition**
+> Message format: `FromState|TransitionIndex` where `TransitionIndex` is transition xml child index
+
 #### Example of commands:
 - `2@CalculatorStateMachine@operand1` - highlight state `operand1` in statechart **CalculatorStateMachine** <br/>
 - `4@CalculatorStateMachine@operand1` - unhighlight state `operand1` in statechart **CalculatorStateMachine** <br/>
 - `2@ScxmlSub1@isSub1@ID_SUB_1` - highlight state `isSub1` in statechart **ScxmlSub1** when [invoke Id](Doc/DebugScxmlStateCharts.md#how-to-debug-multiple-invoked-state-machines) is `ID_SUB_1` <br/>
+- `12@CalculatorStateMachine@operand1|0` - highlight the first transition from **operand1** state in statechart **CalculatorStateMachine** <br/>
 
 You can also [trace the execution of the chart](Doc/DebugScxmlStateCharts.md#trace-mode) and use [breakpoints](Doc/DebugScxmlStateCharts.md#breakpoints).
 
