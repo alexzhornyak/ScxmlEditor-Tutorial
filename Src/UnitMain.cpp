@@ -52,7 +52,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // local
 #include "XMLSerialize/UnitXMLSerializeLoad.h"
 #include "UnitPropertyConfiguratorEx.h"
-#include "UnitTreeBase.h"
 #include "UnitSettings.h"
 #include "UnitCustomUtils.h"
 #include "UnitStateMachineParser.h"
@@ -93,6 +92,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "UnitDialogRegisterScxmlUnitsAndProjects.h"
 #include "UnitCreateTriggers.h"
 #include "UnitMaskedTextShape.h"
+#include "UnitDModule.h"
 
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
