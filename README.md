@@ -108,7 +108,7 @@ Current binaries are compiled with single development licensies registered by th
 | [LMD VCL Complete](https://www.lmdinnovative.com/products/vcl/lmdvcl) | [LMD Innovative License](https://curl.haxx.se/docs/copyright.html) | Used in Dock Panels, Property inspector, etc. |
 | [VCL Components](https://xerces.apache.org/xerces-c/) | [C++Builder Community Edition](https://www.embarcadero.com/products/cbuilder/starter) | General application compilation and VCL standard components |
 | [log4cpp](https://github.com/orocos-toolchain/log4cpp) | [LGPL-2.1 license](https://github.com/orocos-toolchain/log4cpp/blob/master/COPYING) | Logger |
-| [myJSON](http://uriparser.sourceforge.net) | [MIT License](https://github.com/badunius/myJSON/blob/master/LICENSE) | JSON Parsing |
+| [myJSON](https://github.com/badunius/myJSON) | [MIT License](https://github.com/badunius/myJSON/blob/master/LICENSE) | JSON Parsing |
 | [PNG Functions](https://github.com/TurboPack/PNGComponents) | [Mozilla Public License 1.1](https://github.com/TurboPack/PNGComponents/blob/master/license.txt) | PNG Functions |
 
 
