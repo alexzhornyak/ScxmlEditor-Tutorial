@@ -41,7 +41,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 ## System requirements
 - **Windows** 7, 8, 10, 11 (MSVC 2010, MSVC 2015 Update 3 Runtimes installed)
 - **Linux** via [Wine](https://www.winehq.org/)
-- **Mac OS** via [Wine](https://www.winehq.org/)
+- **Mac OS** via [Wine](https://www.winehq.org/) and [Wineskin](https://github.com/Gcenx/WineskinServer)
 > **NOTICE! Dot '.' must be a float-point delimiter in OS Regional Settings !!!**
 
 ## Installation
@@ -49,7 +49,7 @@ You can find portable version as attached Zip in ScxmlEditor Github Release page
 
 Latest version: **[2.3.0.1707]**
 
-### Windows installation
+### Windows Installation
 #### First Install
 1. Download from latest Release page and unpack it in any target location
 2. Install **ScxmlEditor\vcredist_x86.exe** for **UscxmlTester**, **Graphviz**
@@ -64,7 +64,7 @@ Latest version: **[2.3.0.1707]**
 
 > NOTICE! We are continiously making updates, so follow the version number on the README page and update to the latest to have all last cool features
 
-### [Linux installation](Doc/LinuxInstallation.md)
+### [Linux Installation](Doc/LinuxInstallation.md)
 1. **Install [Wine](https://www.winehq.org/):**
 ```batch
 sudo apt -y install wine
@@ -81,6 +81,11 @@ sudo apt install ttf-mscorefonts-installer
 cd /path/to/ScxmlEditor
 wine ScxmlEditor.exe
 ```
+
+### [MacOS Installation](Doc/MacOSInstallation.md)
+Read detailed installation steps [here](Doc/MacOSInstallation.md)
+
+---
 
 ![AppPreview](Images/ApplicationPreview.gif)
 

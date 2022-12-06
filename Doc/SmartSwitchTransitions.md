@@ -65,7 +65,7 @@ Since ScxmlEditor 2.2.2 there is an option to override back condition:
 - Select menu 'ConditionBack' in Property Inspector
 - Set desired condition value for going back
 
-![](../Images/2021-06-04-07-33-50.png)
+![](../Images/SmartTransitions_ConditionBack.png)
 
 > Now all visual transitions are reduced by 2 times and chart becomes more tiny
 

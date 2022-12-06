@@ -11,6 +11,8 @@
 #vscode
 *.vscode
 
+.DS_Store
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
