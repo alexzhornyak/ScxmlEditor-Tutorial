@@ -20,10 +20,10 @@ brew install --cask --no-quarantine wine-stable
 brew install --no-quarantine gcenx/wine/unofficial-wineskin
 ```
 - Start Wineskin
-![wineskin_start](../Images/MacOs_Wineskin.png)
+![wineskin_start](../Images/MacOs_wineskin.png)
 
 - Install Wineskin Engine, Wrapper Version
-![wineskin_start](../Images/MacOs_Wineskin_2.png)
+![wineskin_start](../Images/MacOs_wineskin_2.png)
 
 - Create new blank Wineskin wrapper
 ![wineskin_wrapper](../Images/MacOs_wineskin_wrapper.png)
