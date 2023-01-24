@@ -4,7 +4,7 @@
 |---|---|---|
 
 # Export [SCXML](https://alexzhornyak.github.io/SCXML-tutorial/) to [SVG](https://www.w3.org/Graphics/SVG/)
-> For Qt programmers: see how to use SVG as source for [Qt SCXML Debug](../Include/README.md)
+> For Qt programmers: see how to use SVG as source for [Qt SCXML Debug](https://raw.githubusercontent.com/alexzhornyak/QtScxmlMonitor/main/README.md)
 
 There are a couple ways to export [SCXML](https://alexzhornyak.github.io/SCXML-tutorial/) to [SVG](https://www.w3.org/Graphics/SVG/).
 

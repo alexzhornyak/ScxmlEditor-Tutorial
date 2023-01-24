@@ -137,14 +137,14 @@ Let's take a look at the example when state machine invokes two same nested stat
 ## External debugging
 In this mode ScxmlEditor only listens UDP commands for highlighting states and displaying messages in CallStack panel
 
-### [Qt SCXML framework debugging](../Include/README.md)
+### [Qt SCXML framework debugging](https://raw.githubusercontent.com/alexzhornyak/QtScxmlMonitor/main/README.md)
 
-#### NEW! [Qt SCXML Debug Via SVG](../Include/README.md)
+#### NEW! [Qt SCXML Debug Via SVG](https://raw.githubusercontent.com/alexzhornyak/QtScxmlMonitor/main/README.md)
 It was an old dream to monitor state machine workflow without any external dependencies in Qt and finally it comes true. </b>
 We prepared some native SCXML SVG monitors:
-- [scxmlsvgview.h](../Include/scxmlsvgview.h) - for widgets (based on QGraphicsView)
+- [scxmlsvgview.h](https://raw.githubusercontent.com/alexzhornyak/QtScxmlMonitor/main/scxmlsvgview.h) - for widgets (based on QGraphicsView)
     - see how to use it in [Dining Philosophers Example](https://github.com/alexzhornyak/SCXML-tutorial/tree/master/Examples/Qt/DiningPhilosophers)
-- [scxmlsvgqmlitem.h](../Include/scxmlsvgqmlitem.h) - for QML (based on QQuickPaintedItem)
+- [scxmlsvgqmlitem.h](https://raw.githubusercontent.com/alexzhornyak/QtScxmlMonitor/main/scxmlsvgqmlitem.h) - for QML (based on QQuickPaintedItem)
     - see how to use it in [Stopwatch Example](https://github.com/alexzhornyak/SCXML-tutorial/tree/master/Examples/Qt/StopWatch)
 
 ![StopWatchDemo](../Images/StopWatch_SvgMonitor.gif)
@@ -152,8 +152,8 @@ We prepared some native SCXML SVG monitors:
 Since ScxmlEditor 2.2.1 you can export SCXML to SVG, include only monitor headers in your app and create monitor instances any time. 
 > **NOTICE:** While state machine pointer is not set, the monitor **does nothing** and can be left in **Release**.
 
-#### [Qt SCXML External Debugging with ScxmlEditor](../Include/README.md#qt-scxml-external-debugging-monitor)
-For Qt SCXML applications you may include [scxmlexternmonitor2.h](../Include/scxmlexternmonitor2.h) header to your project and follow [the instructions](../Include/README.md)
+#### [Qt SCXML External Debugging with ScxmlEditor](https://raw.githubusercontent.com/alexzhornyak/QtScxmlMonitor/main/README.md#qt-scxml-external-debugging-monitor)
+For Qt SCXML applications you may include [scxmlexternmonitor2.h](https://raw.githubusercontent.com/alexzhornyak/QtScxmlMonitor/main/scxmlexternmonitor2.h) header to your project and follow [the instructions](https://raw.githubusercontent.com/alexzhornyak/QtScxmlMonitor/main/README.md)
 
 #### Example of debugging Qt Calculator-QML project
 ![MonitorQML1](../Images/ExternMonitor_QML1.png)
