@@ -47,7 +47,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 ## Installation
 You can find portable version as attached Zip in ScxmlEditor Github Release page
 
-Latest version: **[2.3.1.1717]**
+Latest version: **[2.3.1.1712]**
 
 ### Windows Installation
 #### First Install
