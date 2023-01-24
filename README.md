@@ -28,14 +28,14 @@ Powerful tool for creating, editing and debugging SCXML charts.
 **2.2.4:** [Import QtCreator state charts](Doc/ImportStateCharts.md) <br/>
 **2.2.3:** [Transition indexes bugfix](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/issues/66) <br/>
 **2.2.2:** [Option to override SmartTransitions](Doc/SmartSwitchTransitions.md#option-to-override-inverted-condition-since-scxmleditor-222) <br/>
-**2.2.1:** [Qt SVG Monitors Released]https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md) <br/>
+**2.2.1:** [Qt SVG Monitors Released](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md) <br/>
 **2.2:** [Invoke ID is sending by testing apps](Doc/DebugScxmlStateCharts.md#how-to-debug-multiple-invoked-state-machines) <br/>
 **2.1.10:** [New breakpoints interface](Doc/DebugScxmlStateCharts.md#breakpoints) <br/>
 **2.1.9:** [Better handling of virtual states](Doc/VisualStateChartSplitting.md#adding-onentry-onexit-datamodel-and-invoke-to-virtual-states) <br/>
 **2.1.8:** [Support of custom console testing applications](Doc/DebugScxmlStateCharts.md#custom-testing-application-setup) like [SCION command-line tool](https://gitlab.com/scion-scxml/cli) <br/>
 **2.1.7:** [SVG Export Settings](Doc/ExportScxmlToSVG.md#svg-export-settings) <br/>
 **2.1.6:** UScxmlTester with EcmaScript, In() predicate autocomplete, QtScxmlTester 5.9.1->5.15 <br/>
-**2.1.5:** [Refactored Qt external debugger]https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md#qt-scxml-external-debugging-monitor) <br/>
+**2.1.5:** [Refactored Qt external debugger](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md#qt-scxml-external-debugging-monitor) <br/>
 **2.1.4:** [Export SCXML to SVG](Doc/ExportScxmlToSVG.md), [Structure View](Doc/ScxmlStructureView.md)
 
 ## System requirements
@@ -149,8 +149,8 @@ Current binaries are compiled with single development licensies registered by th
   - [Export SCXML to SVG](Doc/ExportScxmlToSVG.md)
 - Run and Debug
   - [How to debug SCXML statecharts](Doc/DebugScxmlStateCharts.md)
-  - [Qt SCXML framework debugging]https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md)
-    - [Qt SCXML Monitors (UDP, SVG)]https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md)    
+  - [Qt SCXML framework debugging](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md)
+    - [Qt SCXML Monitors (UDP, SVG)](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md)    
 
 ## Creating SCXML charts
 
@@ -237,9 +237,9 @@ In this mode ScxmlEditor only listens UDP commands for highlighting states and d
 ### Breakpoints
 ![BreakpointsImage](Images/Breakpoints.gif)
 
-## [Qt SCXML framework debugging]https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md)
+## [Qt SCXML framework debugging](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md)
 
-### NEW! [Qt SCXML Debug Via SVG]https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md)
+### NEW! [Qt SCXML Debug Via SVG](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md)
 It was an old dream to monitor state machine workflow without any external dependencies in Qt and finally it comes true. </b>
 We prepared some native SCXML SVG monitors:
 - [scxmlsvgview.h](Include/scxmlsvgview.h) - for widgets (based on QGraphicsView)
@@ -253,7 +253,7 @@ Since ScxmlEditor 2.2.1 you can export SCXML to SVG, include only monitor header
 > **NOTICE:** While state machine pointer is not set, the monitor **does nothing** and can be left in **Release**.
 
 ### Qt SCXML External Debugging with ScxmlEditor
-For Qt SCXML applications you may include [scxmlexternmonitor2.h](Include/scxmlexternmonitor2.h) header to your project and follow [the instructions]https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md)
+For Qt SCXML applications you may include [scxmlexternmonitor2.h](Include/scxmlexternmonitor2.h) header to your project and follow [the instructions](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md)
 
 #### Example of debugging Qt Calculator-QML project
 ![MonitorQML1](Images/ExternMonitor_QML1.png)
