@@ -125,6 +125,8 @@ private:	// User declarations
 	int FHintPause;
 	int FHintShortPause;
 
+	bool FAutoSaveCache;
+
 	bool FZoomHintsEnabled;
 	int FZoomHintsStartLevel;
 	int FZoomHintsFontSizeEnlargePercents;
@@ -277,6 +279,8 @@ public:		// User declarations
 	// P.S. Do not move to __published !!!
 	__property TTestSettings *ActiveTestSettings = { read=GetActiveTestSettings };
 
+	UnicodeString __fastcall GetCacheDir(void);
+
 __published:	// PROPERTIES THAT ARE SEEN IN SETTINGS EDITOR
 
 	/********************************************************************/
@@ -296,6 +300,8 @@ __published:	// PROPERTIES THAT ARE SEEN IN SETTINGS EDITOR
 	__property int HintHidePause = {read=FHintHidePause, write=FHintHidePause, default=2500};
 	__property int HintPause = {read=FHintPause, write=FHintPause, default=50};
 	__property int HintShortPause = {read=FHintShortPause, write=FHintShortPause, default=0};
+
+	__property bool AutoSaveCache = {read=FAutoSaveCache, write=FAutoSaveCache, default=true};
 
 	__property TStrings * TempRegistry = {read=FTempRegistry, write=FTempRegistry}; // для всяких временных свойств НЕ ВИДЕН В РЕДАКТОРЕ!!!
 	__property TSettingsRegistryItems * TempRegistryItems = {read=FRegistryItems, write=FRegistryItems}; // для всяких временных свойств НЕ ВИДЕН В РЕДАКТОРЕ!!!

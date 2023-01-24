@@ -81,6 +81,9 @@ __fastcall TSettingsData::TSettingsData(TComponent* Owner) : TSettingsBase(Owner
 	FHintHidePause = 2500;
 	FHintPause = 50;
 	FHintShortPause = 0;
+
+	FAutoSaveCache = true;
+
 	FExternScriptEditorFileName = L"";
 	FExternScriptEditorEnabled = false;
 	FExternScriptEditorExtension = L"";
@@ -234,6 +237,8 @@ void __fastcall TSettingsData::Assign(TPersistent* Source) {
 			FHintHidePause = ASettingsData->FHintHidePause;
 			FHintPause = ASettingsData->FHintPause;
 			FHintShortPause = ASettingsData->FHintShortPause;
+
+			FAutoSaveCache = ASettingsData->FAutoSaveCache;
 
 			FAutoCompleteItems->Assign(ASettingsData->FAutoCompleteItems);
 
@@ -436,6 +441,7 @@ void __fastcall TSettingsData::PropSettingsRegisterCategories(TLMDPropertyInspec
 	APropSettingsInspector->RegisterPropCategory(L"Common", L"HintHidePause");
 	APropSettingsInspector->RegisterPropCategory(L"Common", L"HintPause");
 	APropSettingsInspector->RegisterPropCategory(L"Common", L"HintShortPause");
+	APropSettingsInspector->RegisterPropCategory(L"Common", L"AutoSaveCache");
 	APropSettingsInspector->RegisterPropCategory(L"Common", L"AviaExtensionEnabled");
 	APropSettingsInspector->RegisterPropCategory(L"Common", L"LoggingProperties");
 	APropSettingsInspector->RegisterPropCategory(L"Common", L"ProfilingEnabled");
@@ -911,6 +917,11 @@ bool __fastcall TSettingsData::IsTestCoverageEnabled(void) {
 		return FormScxmlGui->actTestCoverage->Checked;
 	}
 	return false;
+}
+
+// ---------------------------------------------------------------------------
+UnicodeString __fastcall TSettingsData::GetCacheDir(void) {
+	return TPath::Combine(TPath::GetTempPath(), L"ScxmlEditor");
 }
 
 // ---------------------------------------------------------------------------

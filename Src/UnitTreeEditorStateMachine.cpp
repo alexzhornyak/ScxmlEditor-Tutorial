@@ -4855,7 +4855,7 @@ void __fastcall TStateMachineEditor::FinalizeLoadTree(const UnicodeString sEdito
 
 		ClearAllUndoRedo();
 		const UnicodeString sUndoType = FinalizeScxmlTypeToString(AFinalizeType);
-		AddUndo(sUndoType + " [" + ExtractFileName(sEditorCaption) + "]");
+		AddUndo(sUndoType + " [" + ExtractFileName(sEditorCaption) + "]", NULL, false);
 
 		// fix bug: может записаться не дефолтный курсор
 		TheTree->Cursor = crDefault;

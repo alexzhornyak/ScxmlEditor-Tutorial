@@ -1,34 +1,34 @@
 /***********************************************************************************
-	BSD 3-Clause License
+BSD 3-Clause License
 
-	Copyright (c) 2018, https://github.com/alexzhornyak
-	All rights reserved.
+Copyright (c) 2018, https://github.com/alexzhornyak
+All rights reserved.
 
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-	* Redistributions of source code must retain the above copyright notice, this
-	  list of conditions and the following disclaimer.
+ * Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
 
-	* Redistributions in binary form must reproduce the above copyright notice,
-	  this list of conditions and the following disclaimer in the documentation
-	  and/or other materials provided with the distribution.
+ * Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
 
-	* Neither the name of the copyright holder nor the names of its
-	  contributors may be used to endorse or promote products derived from
-	  this software without specific prior written permission.
+ * Neither the name of the copyright holder nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
 
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-	AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-	IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-	DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-	FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-	DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-	SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-	CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-	OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-	OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-***************************************************************************************/
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ***************************************************************************************/
 
 #include <vcl.h>
 #pragma hdrstop
@@ -37,6 +37,7 @@
 
 #include <set>
 #include <math.hpp>
+#include <IOUtils.hpp>
 
 #include "TreeClipboardEx.h"
 #include "Log4cpp_VCL.hpp"
@@ -49,6 +50,7 @@
 #include "KeyboardUtils.h"
 #include "UnitMaskedTextShape.h"
 #include "ImageUtils.h"
+#include "UnicodeStringHash.h"
 
 // ---------------------------------------------------------------------------
 
@@ -59,6 +61,8 @@ void RegisterTreeEditorEx() {
 
 	Classes::RegisterClassA(__classid(TTreeEditorEx));
 }
+
+#define LITERAL_REVERT_FROM_CACHE		L"Revert From Cache"
 
 void SetConnectionXYPointByIOType(TTreeConnection *AConnection, const Editorutils::TIOConnectionType AIOType,
 	const Editorutils::TDirectionConnectionType AIODirection, const int iPointIndex) {
@@ -128,7 +132,21 @@ m_LockAddSelectionUndo(false) {
 	this->Copy2->OnClick = Copy1Click;
 	this->Paste2->OnClick = Paste1Click;
 
-	// создаем Undo Redo менюшку
+	// Undo-Redo and restore last modified
+	Edit4->NewTopLine();
+	FActionEditorRestoreFromCache = new TAction(this);
+	FActionEditorRestoreFromCache->Caption = LITERAL_REVERT_FROM_CACHE;
+	FActionEditorRestoreFromCache->OnExecute = OnMenuRestoreFromCache;
+	FActionEditorRestoreFromCache->OnUpdate = OnActionRestoreFromCacheUpdate;
+	FActionEditorRestoreFromCache->Category = L"Edit";
+
+	FActionEditorRestoreFromCache->ActionList = ActionListEditor;
+
+	FMenuEditorRestoreFromCache = new TMenuItem(this);
+	FMenuEditorRestoreFromCache->Action = FActionEditorRestoreFromCache;
+
+	Edit4->Insert(0, FMenuEditorRestoreFromCache);
+
 	Edit4->NewTopLine();
 
 	FMenuEditorSelectionUndo = NewItem("Selection Undo", 0, false, true, 0, 0, "MenuEditorSelectionUndo");
@@ -260,6 +278,51 @@ void __fastcall TTreeEditorEx::TheTreeExit(TObject *Sender) {
 	if (ACustomTree) {
 		ACustomTree->Invalidate();
 	}
+}
+
+// ---------------------------------------------------------------------------
+UnicodeString __fastcall TTreeEditorEx::GetModifiedCacheFile(void)const {
+	if (this->CurrentFile.IsEmpty()) {
+		return L"";
+	}
+	std::wstringstream wss;
+	const UnicodeString sFileName = TPath::GetFileNameWithoutExtension(this->CurrentFile);
+	wss << std::hex << L"autosave_" << sFileName.c_str() << L"_" << boost::hash<std::wstring>()(this->CurrentFile.c_str());
+	const UnicodeString sHash = wss.str().c_str();
+	return TPath::Combine(SettingsData->GetCacheDir(), sHash);
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TTreeEditorEx::OnMenuRestoreFromCache(TObject *Sender) {
+	try {
+		const UnicodeString sCacheFile = this->GetModifiedCacheFile();
+		if (!sCacheFile.IsEmpty() && FileExists(sCacheFile)) {
+			std::auto_ptr<TMemoryStream>AMemoryStreamPtr(new TMemoryStream());
+			AMemoryStreamPtr->LoadFromFile(sCacheFile);
+			AddUndo(LITERAL_REVERT_FROM_CACHE, AMemoryStreamPtr.get(), false);
+
+			DoUndo();
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TTreeEditorEx::OnActionRestoreFromCacheUpdate(TObject *Sender) {
+	bool bEnabled = false;
+	const UnicodeString sFileCache = this->GetModifiedCacheFile();
+	UnicodeString sTimeStamp = L"";
+	if (!sFileCache.IsEmpty()) {
+		if (FileExists(sFileCache)) {
+			bEnabled = true;
+			const TDateTime dtLastWrite = TFile::GetLastWriteTime(sFileCache);
+			sTimeStamp = L" [" + dtLastWrite.FormatString("DD.MM.YYYY hh:mm:ss") + "]";
+		}
+	}
+	FActionEditorRestoreFromCache->Enabled = bEnabled;
+	FActionEditorRestoreFromCache->Caption = LITERAL_REVERT_FROM_CACHE + sTimeStamp;
 }
 
 // ---------------------------------------------------------------------------
@@ -525,12 +588,13 @@ void __fastcall TTreeEditorEx::UndoRedoSelectionClick(TObject *Sender) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TTreeEditorEx::AddUndo(const UnicodeString &sDescription, TMemoryStream *ATreeStream /* = NULL */ ) {
+void __fastcall TTreeEditorEx::AddUndo(const UnicodeString &sDescription, TMemoryStream *ATreeStream /* = NULL */,
+	bool bSaveCache /* = true */ ) {
 	if (TheTree && FIntermediateUndoStreamPtr.get()) {
 		SettingsData->ProfilerReset(__FUNCTION__);
 
 		if (FIntermediateUndoStreamPtr->Size && !ATreeStream) {
-			AddUndo("UndoRedo fixed", FIntermediateUndoStreamPtr.get());
+			AddUndo("UndoRedo fixed", FIntermediateUndoStreamPtr.get(), false);
 			FIntermediateUndoStreamPtr->Clear();
 		}
 
@@ -551,6 +615,18 @@ void __fastcall TTreeEditorEx::AddUndo(const UnicodeString &sDescription, TMemor
 		else {
 			ATreeStream->Position = 0;
 			ANewStream->LoadFromStream(ATreeStream);
+		}
+
+		if (bSaveCache && SettingsData->AutoSaveCache) {
+			try {
+				const UnicodeString sCacheFile = this->GetModifiedCacheFile();
+				if (!sCacheFile.IsEmpty()) {
+					ANewStream->SaveToFile(sCacheFile);
+				}
+			}
+			catch(Exception * E) {
+				LOG_ERROR(LOG_ERROR_MSG);
+			}
 		}
 
 		m_UndoQueue.push_front(std::make_pair(sDescription, ANewStream));

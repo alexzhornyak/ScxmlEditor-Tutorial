@@ -515,6 +515,15 @@ FActiveEditorDockPanel(0), FBreakpointSync(false) {
 	}
 
 	try {
+		if (!DirectoryExists(SettingsData->GetCacheDir())) {
+			ForceDirectories(SettingsData->GetCacheDir());
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+
+	try {
 		for (int i = 0; i < SettingsData->AutoCompleteItems->Count; i++) {
 			if (!SettingsData->AutoCompleteItems->Items[i]->KeywordHints->Count) {
 				const UnicodeString sFileName = TPath::Combine(SettingsData->AppPath,

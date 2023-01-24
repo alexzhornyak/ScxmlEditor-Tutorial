@@ -107,7 +107,12 @@ private:
 
 	TMenuItem *FMenuEditorUndo;
 	TMenuItem *FMenuEditorSelectionUndo;
+
+	TMenuItem *FMenuEditorRestoreFromCache;
+	TAction *FActionEditorRestoreFromCache;
+
 	TMenuItem *FMenuClone;
+
 	std::auto_ptr<TMemoryStream> FIntermediateUndoStreamPtr;
 
 	TUndoQueue m_UndoQueue;
@@ -168,6 +173,9 @@ private:
 
 	void __fastcall DoInvalidateFocusedTheTree(void);
 
+	void __fastcall OnMenuRestoreFromCache(TObject *Sender);
+	void __fastcall OnActionRestoreFromCacheUpdate(TObject *Sender);
+
 protected:
 
 	TTreeClipboardEx *FCliboardEditorEx;
@@ -185,7 +193,7 @@ protected:
 	virtual void __fastcall DoPaste(bool UseCursorPos);
 	virtual void __fastcall DoCut(void);
 	const unsigned int FMaxHistoryCount;
-	void __fastcall AddUndo(const UnicodeString &sDescription, TMemoryStream *ATreeStream = NULL);
+	void __fastcall AddUndo(const UnicodeString &sDescription, TMemoryStream *ATreeStream = NULL, bool bSaveCache = true);
 	void __fastcall AddSelectionUndo(const UnicodeString &ADescription, GUID* AGuid);
 	void __fastcall ExecuteUndo(System::TObject* Sender);
 	void __fastcall ExecuteRedo(System::TObject* Sender);
@@ -272,6 +280,8 @@ public:
 	void SetTemporarySelectedRectangle(const TTemporarySelectedRectangle &ATemporarySelectedRectangle) {
 		FTemporarySelectedRectangle = ATemporarySelectedRectangle;
 	}
+
+	UnicodeString __fastcall GetModifiedCacheFile(void) const;
 
 	TNotifyEvent OnTreeEditorModified;
 	virtual bool __fastcall IsModified(void);

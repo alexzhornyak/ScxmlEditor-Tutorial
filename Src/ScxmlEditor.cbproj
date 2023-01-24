@@ -869,9 +869,6 @@
 				<DependentOn>PersistentRect.h</DependentOn>
 				<BuildOrder>82</BuildOrder>
 			</CppCompile>
-			<None Include="AnsiHash.h">
-				<BuildOrder>175</BuildOrder>
-			</None>
 			<CppCompile Include="UnitTriggerShape.cpp">
 				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
 				<DependentOn>UnitTriggerShape.h</DependentOn>
@@ -1004,8 +1001,8 @@ IF "%_VAR_ALL_DEFINES_%" == "%_VAR_NOT_DEBUG_%" ( copy /y $(OUTPUTPATH) $(PROJEC
 						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
 						<VersionInfo Name="MajorVer">2</VersionInfo>
 						<VersionInfo Name="MinorVer">3</VersionInfo>
-						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">1708</VersionInfo>
+						<VersionInfo Name="Release">1</VersionInfo>
+						<VersionInfo Name="Build">1712</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -1017,7 +1014,7 @@ IF "%_VAR_ALL_DEFINES_%" == "%_VAR_NOT_DEBUG_%" ( copy /y $(OUTPUTPATH) $(PROJEC
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">alexander.zhornyak@gmail.com</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">Scxml State Charts Editor</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">2.3.0.1708</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.3.1.1712</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright">alexander.zhornyak@gmail.com</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>
