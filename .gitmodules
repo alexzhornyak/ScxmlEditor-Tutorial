@@ -1,0 +1,3 @@
+[submodule "Include"]
+	path = Include
+	url = https://github.com/alexzhornyak/QtScxmlMonitor.git
