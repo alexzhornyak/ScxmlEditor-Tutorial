@@ -58,14 +58,17 @@ Delayed transitions are not part of [SCXML]((https://alexzhornyak.github.io/SCXM
 ## Copy-Paste Transitions
 
 1. Select a transition that you want to be copied
+
 ![tr_copy](../Images/Transitions_Copy_Paste_1.png)
 
 2. Press **'Ctrl+C'**
 
 3. Select two states that would be a source and a target of the transition
+
 ![tr_sel](../Images/Transition_Copy_Src_Trg.png)
 
 4. Press **'Ctrl+V'**
+
 ![tr_paste](../Images/Transitions_Paste.png)
 
 5. Adjust transition layout if necessary
