@@ -135,7 +135,7 @@ Current binaries are compiled with single development licensies registered by th
     - Side toolbar
     - Tool (bookmarks) panel
     - Shapes panel
-    - Chart design panel
+    - [Chart design panel](Doc/ChartDesignPanel.md)
   - States and children (Shapes)
   - [Transitions (Connections)](Doc/Transitions.md)
     - [Smart Switch Transitions](Doc/SmartSwitchTransitions.md)
