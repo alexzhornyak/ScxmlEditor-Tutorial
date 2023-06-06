@@ -69,6 +69,8 @@ UnicodeString __fastcall TProjectPostBuild::GetMacros(void)const {
 		AMacrosPtr->Values["$(ProjectDir)"] = ExtractFileDir(FProject->FilePath);
 		AMacrosPtr->Values["$(ProjectName)"] = TPath::GetFileNameWithoutExtension(FProject->FilePath);
 		AMacrosPtr->Values["$(AppDir)"] = ExtractFileDir(Application->ExeName);
+		AMacrosPtr->Values["$(AppFilePath)"] = Application->ExeName;
+		AMacrosPtr->Values["$(AppHandle)"] = UnicodeString((int)Application->MainFormHandle);
 
 		if (FProject && FProject->ProjectRoot) {
 			const UnicodeString sFlatPath = ChangeFileExt(FProject->ProjectRoot->FilePath, ".flat.scxml");

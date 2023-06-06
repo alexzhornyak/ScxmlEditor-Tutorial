@@ -196,7 +196,8 @@ int __fastcall TScxmlAlignChildEx::YPosition(TTreeNodeShape* ANode, int ABrother
 
 	TChildScxmlBaseShape *AChildShape = dynamic_cast<TChildScxmlBaseShape*>(ANode);
 	TVisualScxmlBaseShape *AVisualParent = dynamic_cast<TVisualScxmlBaseShape*>(ANode->Parent);
-	if (AChildShape && AVisualParent && ABrotherIndex == 0 && AVisualParent->ChildrenAlignY == scayClusterTop) {
+	if (AChildShape && AVisualParent && ABrotherIndex == 0 &&
+		(AVisualParent->ChildrenAlignY == scayClusterTop || AVisualParent->ChildrenAlignY == scayAlwaysTop)) {
 		return AVisualParent->CalculateChildrenTop(AVisualParent->Y1) + VertMargin;
 	}
 	else
@@ -206,7 +207,8 @@ int __fastcall TScxmlAlignChildEx::YPosition(TTreeNodeShape* ANode, int ABrother
 // ---------------------------------------------------------------------------
 int __fastcall TScxmlAlignChildEx::GetStartConnectionTopOffset(TTreeNodeShape* ANodeFrom) {
 	TVisualScxmlBaseShape *AVisualFrom = dynamic_cast<TVisualScxmlBaseShape*>(ANodeFrom);
-	if (AVisualFrom && AVisualFrom->IsCluster() && AVisualFrom->ChildrenAlignY == scayClusterTop) {
+	if (AVisualFrom && ((AVisualFrom->IsCluster() && AVisualFrom->ChildrenAlignY == scayClusterTop)
+			|| AVisualFrom->ChildrenAlignY == scayAlwaysTop)) {
 		return AVisualFrom->GetClusterHeight();
 	}
 	return 0;

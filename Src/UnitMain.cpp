@@ -562,7 +562,9 @@ FActiveEditorDockPanel(0), FBreakpointSync(false) {
 
 	TransitionXMLEditor->Show();
 
-	HTMLPropInfo->Height = SettingsData->PropInspInfoHeight;
+	if (SettingsData->PropInspInfoHeight > HTMLPropInfo->Constraints->MinHeight) {
+		HTMLPropInfo->Height = SettingsData->PropInspInfoHeight;
+	}
 	PropSettingsInspector->Splitter = SettingsData->PropInspGutterWidth;
 
 	Application->HintShortPause = SettingsData->HintShortPause;
@@ -612,19 +614,22 @@ FActiveEditorDockPanel(0), FBreakpointSync(false) {
 	/* CMD start 'scxml' or 'sproj' */ try {
 		if (ParamCount() >= 1) {
 			const UnicodeString sFileName = ParamStr(1);
-			if (FileExists(sFileName)) {
-				const UnicodeString sExt = ExtractFileExt(sFileName);
-				if (SameText(sExt, TStateMachineProject::FileExt_)) {
-					DoOpenProject(sFileName);
-				}
-				else if (SameText(sExt, TStateMachineEditorUnit::FileExt_)) {
-					DoOpenUnit(sFileName);
+			/* 'command' is the reserved name for command options */
+			if (sFileName != SCXML_INTERPROCESS_COMMAND) {
+				if (FileExists(sFileName)) {
+					const UnicodeString sExt = ExtractFileExt(sFileName);
+					if (SameText(sExt, TStateMachineProject::FileExt_)) {
+						DoOpenProject(sFileName);
+					}
+					else if (SameText(sExt, TStateMachineEditorUnit::FileExt_)) {
+						DoOpenUnit(sFileName);
+					}
+					else
+						throw Exception("CMD arg ext [" + sExt + "] is not supported! File [" + sFileName + "]");
 				}
 				else
-					throw Exception("CMD arg ext [" + sExt + "] is not supported! File [" + sFileName + "]");
+					throw Exception("CMD arg file [" + sFileName + "] does not exist!");
 			}
-			else
-				throw Exception("CMD arg file [" + sFileName + "] does not exist!");
 		}
 	}
 	catch(Exception * E) {
@@ -3110,7 +3115,7 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 				DeleteFile(sTempFile);
 
 				try {
-					AScxmlActivePanel->SaveRawScxmlToFile(sTempFile);
+					AScxmlActivePanel->StateMachineEditor->SaveRawScxmlToFile(sTempFile);
 				}
 				catch(EStateMachineConnectionException * E) {
 					AScxmlActivePanel->ActivateZonePage();
@@ -3837,7 +3842,7 @@ void __fastcall TFormScxmlGui::actExportToRawScxmlExecute(TObject * Sender) {
 		if (AScxmlActivePanel) {
 			SaveDialog->Filter = TStateMachineEditorUnit::OpenDialogFilter;
 			if (SaveDialog->Execute(this->Handle)) {
-				AScxmlActivePanel->SaveRawScxmlToFile(SaveDialog->FileName);
+				AScxmlActivePanel->StateMachineEditor->SaveRawScxmlToFile(SaveDialog->FileName);
 			}
 		}
 	}
@@ -3853,7 +3858,7 @@ void __fastcall TFormScxmlGui::actExportToHPPExecute(TObject * Sender) {
 		if (AScxmlActivePanel) {
 			SaveDialog->Filter = L"HPP files(*.hpp)|*.hpp|All files(*.*)|*.*";
 			if (SaveDialog->Execute(this->Handle)) {
-				AScxmlActivePanel->SaveRawScxmlToHPP(SaveDialog->FileName);
+				AScxmlActivePanel->StateMachineEditor->SaveRawScxmlToHPP(SaveDialog->FileName);
 			}
 		}
 	}
@@ -4237,7 +4242,7 @@ void __fastcall TFormScxmlGui::actExportToDFMExecute(TObject * Sender) {
 		TStateMachineEditorUnit* AUnit = GetActiveUnit();
 		if (AUnit && AUnit->StateMachineDockPanel) {
 			const UnicodeString &sFilePath = AUnit->FilePath;
-			AUnit->StateMachineDockPanel->SaveScxmlToPas(ChangeFileExt(sFilePath, ".scxml.pas"));
+			AUnit->StateMachineDockPanel->StateMachineEditor->SaveScxmlToPas(ChangeFileExt(sFilePath, ".scxml.pas"));
 		}
 	}
 	catch(Exception * E) {
@@ -4440,8 +4445,47 @@ void __fastcall TFormScxmlGui::actExportAnsiCAccept(TObject * Sender) {
 		LOG_ERROR(LOG_ERROR_MSG);
 	}
 }
-// ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+void __fastcall TFormScxmlGui::OnMsgCopyData(TWMCopyData &msg) {
+	if (msg.CopyDataStruct && msg.CopyDataStruct->cbData == sizeof(INTERPROCESS_COPYDATA)) {
+		INTERPROCESS_COPYDATA *ACopyData = reinterpret_cast<INTERPROCESS_COPYDATA*>(msg.CopyDataStruct->lpData);
+		if (ACopyData) {
+			WLOG_INFO(L"MAIN_FORM> Copy data command:[%s] arg1:[%s] arg2:[%s] arg3:[%s]", //
+				ACopyData->wchCommand, ACopyData->wchArg1, ACopyData->wchArg2, ACopyData->wchArg3);
+
+			try {
+				/* Commands related to Active Editor */
+				TStateMachineDockPanel* ADockPanel = ActiveEditorDockPanel;
+				if (ADockPanel) {
+					ADockPanel->StateMachineEditor->ExecuteInterprocessCommand(ACopyData);
+				}
+
+				/* Commands related to Main Form */
+				if (SameText(ACopyData->wchCommand, L"SwitchLog")) {
+
+					const bool bClear = StrToBoolDef(ACopyData->wchArg2, false);
+
+					if (SameText(ACopyData->wchArg1, L"Debug")) {
+						this->SwitchToProgramLog(bClear);
+					}
+					else if (SameText(ACopyData->wchArg1, L"CMD")) {
+						this->SwitchToTesterLog(bClear);
+					}
+				}
+			}
+			catch(Exception * E) {
+				WLOG_ERROR(L"MAIN_FORM> %s", E->Message.c_str());
+			}
+
+		}
+	}
+	else {
+		WLOG_ERROR(L"Invalid WM_COPYDATA");
+	}
+}
+
+// ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::OnConvertedToQt(TMessage & msg) {
 	FConvertToQtSpawnPtr.reset();
 
@@ -5932,11 +5976,7 @@ void __fastcall TFormScxmlGui::actExportGraphDotAccept(TObject *Sender) {
 	try {
 		TStateMachineDockPanel* ADockPanel = ActiveEditorDockPanel;
 		if (ADockPanel) {
-			const UnicodeString sFileDot = actExportGraphDot->Dialog->FileName;
-			std::auto_ptr<TDialogWait>ADialogWaitPtr(new TDialogWait(this));
-			ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Exporting to DOT[%s] ...", ExtractFileName(sFileDot).c_str()));
-			Graphviz::ExportToDot(ADockPanel->StateMachineEditor->TheTree, sFileDot);
-			WLOG_INFO(L"Successfully saved <%s>", sFileDot.c_str());
+			ADockPanel->StateMachineEditor->SaveToDot(actExportGraphDot->Dialog->FileName);
 		}
 	}
 	catch(Exception * E) {
@@ -5949,16 +5989,7 @@ void __fastcall TFormScxmlGui::actExportGraphDotPlusPngAccept(TObject *Sender) {
 	try {
 		TStateMachineDockPanel* ADockPanel = ActiveEditorDockPanel;
 		if (ADockPanel) {
-			const UnicodeString sFileDot = actExportGraphDotPlusPng->Dialog->FileName;
-			std::auto_ptr<TDialogWait>ADialogWaitPtr(new TDialogWait(this));
-			ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Exporting to DOT[%s] ...", ExtractFileName(sFileDot).c_str()));
-			Graphviz::ExportToDot(ADockPanel->StateMachineEditor->TheTree, sFileDot);
-			WLOG_INFO(L"Successfully saved <%s>", sFileDot.c_str());
-
-			const UnicodeString sFilePng = ChangeFileExt(sFileDot, L".png");
-			ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Exporting to PNG[%s] ...", ExtractFileName(sFilePng).c_str()));
-			Graphviz::ConvertDotToPng(sFileDot, sFilePng);
-			WLOG_INFO(L"Successfully converted <%s> to <%s>", sFileDot.c_str(), sFilePng.c_str());
+			ADockPanel->StateMachineEditor->SaveToDotPlusPng(actExportGraphDotPlusPng->Dialog->FileName);
 		}
 	}
 	catch(Exception * E) {
@@ -6027,7 +6058,6 @@ void __fastcall TFormScxmlGui::actExportSVGAccept(TObject *Sender) {
 
 			ADockPanel->StateMachineEditor->SaveToSVG(sFile, ADockPanel->StateMachineEditor->RootScxml);
 
-			WLOG_INFO(L"Successfully saved <%s>", sFile.c_str());
 		}
 	}
 	catch(Exception * E) {

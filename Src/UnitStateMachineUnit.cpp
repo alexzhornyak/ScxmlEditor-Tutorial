@@ -129,6 +129,8 @@ UnicodeString __fastcall TUnitPostSave::GetMacros(void)const {
 	if (FUnit) {
 
 		AMacrosPtr->Values["$(AppDir)"] = ExtractFileDir(Application->ExeName);
+		AMacrosPtr->Values["$(AppFilePath)"] = Application->ExeName;
+		AMacrosPtr->Values["$(AppHandle)"] = UnicodeString((int)Application->MainFormHandle);
 
 		if (FUnit->StateMachineProject) {
 			AMacrosPtr->Values["$(ProjectDir)"] = ExtractFileDir(FUnit->StateMachineProject->FilePath);
@@ -139,6 +141,10 @@ UnicodeString __fastcall TUnitPostSave::GetMacros(void)const {
 		AMacrosPtr->Values["$(UnitFileName)"] = ExtractFileName(FUnit->FilePath);
 		AMacrosPtr->Values["$(UnitFileDir)"] = ExtractFileDir(FUnit->FilePath);
 		AMacrosPtr->Values["$(UnitName)"] = TPath::GetFileNameWithoutExtension(FUnit->FilePath);
+
+		if (FUnit->StateMachineDockPanel) {
+			AMacrosPtr->Values["$(UnitHandle)"] = UnicodeString((int)FUnit->StateMachineDockPanel->StateMachineEditor->Handle);
+		}
 	}
 
 	return AMacrosPtr->Text;
@@ -577,8 +583,6 @@ void __fastcall TStateMachineEditorUnit::DoSave(const Lmdtypes::TLMDString AFile
 			ASpawner.StartProcessInfinite();
 
 			DeleteFile(sTempFile);
-
-			FormScxmlGui->SwitchToTesterLog(false);
 		}
 	}
 	catch(Exception * E) {

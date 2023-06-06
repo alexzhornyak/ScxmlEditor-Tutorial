@@ -83,4 +83,15 @@ struct TMatchFind {
 	}
 };
 
+#define SCXML_INTERPROCESS_COMMAND			L"command"
+#define SCXML_INTERPROCESS_BUFFER_SIZE      4096
+
+struct INTERPROCESS_COPYDATA
+{
+	wchar_t wchCommand[SCXML_INTERPROCESS_BUFFER_SIZE];
+	wchar_t wchArg1[SCXML_INTERPROCESS_BUFFER_SIZE];
+	wchar_t wchArg2[SCXML_INTERPROCESS_BUFFER_SIZE];
+	wchar_t wchArg3[SCXML_INTERPROCESS_BUFFER_SIZE];
+};
+
 #endif

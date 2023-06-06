@@ -43,6 +43,7 @@
 #include "UnitScxmlShape.h"
 #include "UnitPropInspectorExtensions.h"
 #include "UnitDialogFileNotFound.h"
+#include "UnitSettings.h"
 
 // ---------------------------------------------------------------------------
 
@@ -168,12 +169,12 @@ __fastcall TParallelShape::TParallelShape(Classes::TComponent* AOwner) : TVisual
 
 // ---------------------------------------------------------------------------
 TColor __fastcall TParallelShape::GetHeadColor(void) {
-	return TColor(0x00CAFFCA);
+	return SettingsData->ThemeSettings->ParallelNormalColor;
 }
 
 // ---------------------------------------------------------------------------
 TColor __fastcall TParallelShape::GetNormalColor(void) {
-	return TColor(0x00CAFFCA);
+	return SettingsData->ThemeSettings->ParallelNormalColor;
 }
 
 // ---------------------------------------------------------------------------
@@ -542,12 +543,12 @@ void __fastcall TVirtualShape::OnGetPropEditorClass(TPersistent *AInstance, ILMD
 
 // ---------------------------------------------------------------------------
 TColor __fastcall TVirtualShape::GetHeadColor(void) {
-	return clGray;
+	return SettingsData->ThemeSettings->VirtualHeadColor;
 }
 
 // ---------------------------------------------------------------------------
 TColor __fastcall TVirtualShape::GetNormalColor(void) {
-	return clSilver;
+	return SettingsData->ThemeSettings->VirtualNormalColor;
 }
 
 // ---------------------------------------------------------------------------

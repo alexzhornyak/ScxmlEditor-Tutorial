@@ -48,6 +48,17 @@ Multiple self transitions may be quickly arranged by pressing **'Arrange Self-co
 
 ![Transitions_Self_Arrange](../Images/Transitions_Self_Arrange.gif)
 
+### Self Transitions Inside States
+It is available since ScxmlEditor 2.4 to arrange self transitions inside of state.
+
+![tr_inside](../Images/Transition_Self_Inside.png)
+
+1. Set option **`SelfConnectionInside`** to **`true`** in the property inspector
+2. Execute **`Arrange Self-Connections`** command from IDE Insight or right popup menu
+3. (Optionally) Align Self-Transition to left, top, right or bottom side of the state
+
+![tr_align](../Images/Transition_Self_Align.gif)
+
 ## Delayed transition
 A delayed transition is a transition that happens after a period of time, specifically being in a specific state for a certain amount of time.
 

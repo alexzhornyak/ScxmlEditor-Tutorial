@@ -98,6 +98,7 @@ __fastcall TSettingsData::TSettingsData(TComponent* Owner) : TSettingsBase(Owner
 
 	FScxmlMsgTypes = DEFAULT_SETTINGS_SCXML_MSG_TYPES;
 	FSkipCommentsInRawScxml = true;
+	FForceSaveDefaultScxmlValues = false;
 
 	FTestingShowCallStack = true;
 	FTestingSwitchToPanel = true;
@@ -149,6 +150,7 @@ __fastcall TSettingsData::TSettingsData(TComponent* Owner) : TSettingsBase(Owner
 
 	FTestSettings = new TTestSettings(tsbtApp);
 	FExportSvgSettings = new TExportSvgSettings();
+	FThemeSettings = new TThemeSettings();
 
 	FConnectionInvertedConditionMacro = new TStringList;
 
@@ -193,6 +195,7 @@ __fastcall TSettingsData::~TSettingsData() {
 	delete FLoggingProperties;
 	delete FTestSettings;
 	delete FExportSvgSettings;
+	delete FThemeSettings;
 	delete FConnectionInvertedConditionMacro;
 	delete FDefaultConnectionInvertedConditionMacro;
 	delete FRegistryItems;
@@ -269,6 +272,7 @@ void __fastcall TSettingsData::Assign(TPersistent* Source) {
 
 			FScxmlMsgTypes = ASettingsData->FScxmlMsgTypes;
 			FSkipCommentsInRawScxml = ASettingsData->FSkipCommentsInRawScxml;
+			FForceSaveDefaultScxmlValues = ASettingsData->FForceSaveDefaultScxmlValues;
 
 			FTestingShowCallStack = ASettingsData->FTestingShowCallStack;
 			FTestingSwitchToPanel = ASettingsData->FTestingSwitchToPanel;
@@ -294,6 +298,7 @@ void __fastcall TSettingsData::Assign(TPersistent* Source) {
 
 			FTestSettings->Assign(ASettingsData->FTestSettings);
 			FExportSvgSettings->Assign(ASettingsData->FExportSvgSettings);
+			FThemeSettings->Assign(ASettingsData->FThemeSettings);
 
 			FConnectionInvertedConditionMacro->Assign(ASettingsData->FConnectionInvertedConditionMacro);
 
@@ -421,6 +426,9 @@ void __fastcall TSettingsData::OnGetPropEditorClass(TPersistent *AInstance, ILMD
 		else if (sPropName == L"ExportSvgSettings") {
 			AEditorClass = __classid(TExportSvgSettingsPropEditor);
 		}
+		else if (sPropName == L"ThemeSettings") {
+			AEditorClass = __classid(TThemeSettingsPropEditor);
+		}
 		else if (sPropName == L"TestApplicationPresets") {
 			AEditorClass = __classid(TTestApplicationPresetesPropEditor);
 		}
@@ -472,6 +480,7 @@ void __fastcall TSettingsData::PropSettingsRegisterCategories(TLMDPropertyInspec
 	APropSettingsInspector->RegisterPropCategory(L"Visual", L"ChartFocusLineColor");
 	APropSettingsInspector->RegisterPropCategory(L"Visual", L"ChartActiveStateColor");
 	APropSettingsInspector->RegisterPropCategory(L"Visual", L"ChartTestCoverageColor");
+	APropSettingsInspector->RegisterPropCategory(L"Visual", L"ThemeSettings");
 
 	APropSettingsInspector->RegisterPropCategory(L"Scxml AutoLayout", L"AutoLayoutSplines");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml AutoLayout", L"AutoLayoutUseNativeLabelPos");
@@ -495,6 +504,7 @@ void __fastcall TSettingsData::PropSettingsRegisterCategories(TLMDPropertyInspec
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ValidateChildren");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ValidateXMLText");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ValidateEmptyTransitions");
+	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ForceSaveDefaultScxmlValues");
 
 	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"TestingShowCallStack");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"CallStackTypes");

@@ -34,10 +34,13 @@
 #define UnitSVGExporterH
 //---------------------------------------------------------------------------
 
+#include <TeeTree.hpp>
 #include "TreeSVGCanvas.hpp"
 
 class TTreeSVGCanvasEx: public TTreeSVGCanvas
 {
+	TRect FInitWindowRect;
+
 protected:
 	virtual System::UnicodeString __fastcall HeaderContents(void);
 public:
@@ -57,6 +60,8 @@ public:
 	virtual void __fastcall EndGroup(void);
 
 	virtual void __fastcall AddDesc(const UnicodeString &sDescription);
+
+	void __fastcall DrawPolyBezier(const TCurvePoints &tmpCurve, const int tmpNum);
 
 };
 

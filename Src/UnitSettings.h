@@ -48,6 +48,7 @@
 #include "UnitSettingsBinaryItems.h"
 #include "UnitSVGSettings.h"
 #include "UnitTestingApplicationsPresets.h"
+#include "UnitThemeSettings.h"
 //---------------------------------------------------------------------------
 
 #define DEFAULT_HIDE_WINDOWS_STATUS		(TTreeEditWindows() << teInspector << teFont << teFormat)
@@ -88,6 +89,9 @@ private:	// User declarations
 
 	TExportSvgSettings *	FExportSvgSettings;
 	inline void __fastcall SetExportSvgSettings(TExportSvgSettings *val) { FExportSvgSettings->Assign(val); }
+
+	TThemeSettings *	FThemeSettings;
+	inline void __fastcall SetThemeSettings(TThemeSettings *val) { FThemeSettings->Assign(val); }
 
 	TEditorSearchTypes FSearchTypes;
 	TEditorSearchDocumentType FSearchDocumentType;
@@ -185,7 +189,8 @@ private:	// User declarations
 	TScxmlMsgTypes FScxmlMsgTypes;
 	inline bool __fastcall IsScxmlMsgTypesStored(void) { return FScxmlMsgTypes!=DEFAULT_SETTINGS_SCXML_MSG_TYPES; }
 
-	bool FSkipCommentsInRawScxml;
+    bool FSkipCommentsInRawScxml;
+	bool FForceSaveDefaultScxmlValues;
 
 	bool FAviaExtensionEnabled;
 	bool FProfilingEnabled;
@@ -337,6 +342,7 @@ __published:	// PROPERTIES THAT ARE SEEN IN SETTINGS EDITOR
 	__property bool				ValidateChildren = {read=FValidateChildren, write=FValidateChildren, default=true};
 	__property bool				ValidateXMLText = {read=FValidateXMLText, write=FValidateXMLText, default=true};
 	__property bool				ValidateEmptyTransitions = {read=FValidateEmptyTransitions, write=FValidateEmptyTransitions, default=true};
+	__property bool 			ForceSaveDefaultScxmlValues = {read=FForceSaveDefaultScxmlValues, write=FForceSaveDefaultScxmlValues, default=false};
 
 	__property bool				ZoomHintsEnabled = {read=FZoomHintsEnabled, write=FZoomHintsEnabled, default=true};
 	__property int				ZoomHintsStartLevel = {read=FZoomHintsStartLevel, write=FZoomHintsStartLevel, default=90};
@@ -381,6 +387,8 @@ __published:	// PROPERTIES THAT ARE SEEN IN SETTINGS EDITOR
 	__property UnicodeString 	LuautilsLuacExe	= {read=GetLuautilsLuacExe, write=FLuautilsLuacExe, stored=IsLuautilsLuacExeStored};
 	__property UnicodeString 	LuautilsLuacSyntaxCheckParamsCMD = {read=GetLuautilsLuacSyntaxCheckParamsCMD, write=FLuautilsLuacSyntaxCheckParamsCMD, stored=IsLuautilsLuacSyntaxCheckParamsCMDStored};
 	__property UnicodeString 	LuautilsBinaryConverter	= {read=GetLuautilsBinaryConverter, write=FLuautilsBinaryConverter, stored=IsLuautilsBinaryConverterStored};
+
+	__property TThemeSettings *	ThemeSettings = {read=FThemeSettings, write=SetThemeSettings};
 
 	// SVG
 	__property TExportSvgSettings *	ExportSvgSettings = {read=FExportSvgSettings, write=SetExportSvgSettings};

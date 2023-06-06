@@ -26,5 +26,67 @@ Right-click a scxml file to display the context menu commands.
 
 ![](../Images/ProjectTree_UnitMenu.png)
 
+## Post Save Unit Actions
+It is available to execute post save cmd script after the scxml unit file was saved
+
+> NOTE: This option is available only in project mode!
+
+1. Select a unit in Project Tree
+2. Call **`Edit Post Save`** menu item
+
+![](../Images/PostSaveUnit.png)
+
+3. Edit post save script
+
+![](../Images/PostSaveUnit_Macro.png)
+
+### Post Save Unit Commands
+Commands that could be executed by state machine chart editor
+
+**Format:**
+
+```batch
+$(AppFilePath) command [Unit HWND] [Command] [Arg1|Arg2|Arg3]
+```
+
+**Example:**
+
+```batch
+$(AppFilePath) command $(UnitHandle) SaveToSVG $(UnitFileDir)\$(UnitName).svg
+```
+
+| Command | Arguments | Description |
+|---|---|---|
+| SaveToSVG | Arg1=FileName | Saves state chart to SVG |
+| SaveRawScxmlToFile | Arg1=FileName | Saves state chart to scxml without comments and metainformation |
+| SaveRawScxmlToHPP | Arg1=FileName | Saves state chart to scxml without comments and metainformation as C++ Header |
+| SaveScxmlToPas | Arg1=FileName | Saves state chart to DFM file |
+| SaveToDot | Arg1=FileName | Saves state chart to Graphviz DOT file |
+| SaveToDotPlusPng | Arg1=FileName | Saves state chart to Graphviz DOT and PNG files |
+| SaveToBMP | Arg1=FileName | Saves state chart to BMP file |
+| SaveToPNG | Arg1=FileName | Saves state chart to PNG file |
+
+### Post Save Application Commands
+Commands that could be executed by ScxmlEditor application
+
+**Format:**
+
+```batch
+$(AppFilePath) command [App HWND] [Command] [Arg1|Arg2|Arg3]
+```
+
+**Example:**
+
+```batch
+$(AppFilePath) command $(AppHandle) SwitchLog Debug True
+```
+
+| Command | Arguments | Description |
+|---|---|---|
+| SwitchLog | Arg1=Debug| Switches Log tab to Debug output |
+|  | Arg1=CMD | Switches Log tab to CMD output |
+|  | Arg2=True,False (Bool) | Clear output or not |
+
+
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
 |---|---|---|---|

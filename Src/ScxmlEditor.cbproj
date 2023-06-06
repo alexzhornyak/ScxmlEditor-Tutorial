@@ -1000,9 +1000,9 @@ IF "%_VAR_ALL_DEFINES_%" == "%_VAR_NOT_DEBUG_%" ( copy /y $(OUTPUTPATH) $(PROJEC
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
 						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
 						<VersionInfo Name="MajorVer">2</VersionInfo>
-						<VersionInfo Name="MinorVer">3</VersionInfo>
-						<VersionInfo Name="Release">1</VersionInfo>
-						<VersionInfo Name="Build">1712</VersionInfo>
+						<VersionInfo Name="MinorVer">4</VersionInfo>
+						<VersionInfo Name="Release">0</VersionInfo>
+						<VersionInfo Name="Build">1734</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -1014,7 +1014,7 @@ IF "%_VAR_ALL_DEFINES_%" == "%_VAR_NOT_DEBUG_%" ( copy /y $(OUTPUTPATH) $(PROJEC
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">alexander.zhornyak@gmail.com</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">Scxml State Charts Editor</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">2.3.1.1712</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.4.0.1734</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright">alexander.zhornyak@gmail.com</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>

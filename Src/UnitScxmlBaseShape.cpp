@@ -871,7 +871,7 @@ void __fastcall TScxmlBaseShape::PropsToAttributes(ILMDXmlElement * ANode) {
 		bool bDoSave = true;
 
 		// значения по умолчанию и те, которые не требуются, записывать не будем
-		if (!bRequiredOrDefault) {
+		if (!bRequiredOrDefault && !SettingsData->ForceSaveDefaultScxmlValues) {
 			PPropInfo APropInfo = GetPropInfo(this, sAttrName);
 			if (APropInfo) {
 				switch((*APropInfo->PropType)->Kind) {
@@ -1346,6 +1346,7 @@ FInitial(L""), FExamined(false), FSkipDebugging(false), FBreakpointSet(false) {
 	FAvailableTypes.insert(sctWatch);
 
 	FSelfConnectionTextOffsets = new TPersistentRect;
+	FSelfConnectionInside = false;
 
 	FParentOffsetStored = new TPersistentPoint;
 
@@ -1397,7 +1398,10 @@ void __fastcall TVisualScxmlBaseShape::OnGetPropEditorClass(TPersistent *AInstan
 // ---------------------------------------------------------------------------
 bool __fastcall TVisualScxmlBaseShape::OnFilterPropEvent(const UnicodeString & sPropName) {
 
-	if (sPropName == L"SelfConnectionTextOffsets" && !HasSelfConnections) {
+	std::auto_ptr<TStringList>ASelfConnStringList(new TStringList());
+	ASelfConnStringList->Add(L"SelfConnectionTextOffsets");
+	ASelfConnStringList->Add(L"SelfConnectionInside");
+	if (ASelfConnStringList->IndexOf(sPropName) != -1 && !HasSelfConnections) {
 		return false;
 	}
 
@@ -1420,6 +1424,11 @@ bool __fastcall TVisualScxmlBaseShape::OnFilterPropEvent(const UnicodeString & s
 	AStringList->Add("X1");
 	AStringList->Add("Y0");
 	AStringList->Add("Y1");
+
+	if (!this->IsCluster()) {
+		AStringList->Add("VertTextAlign");
+	}
+	AStringList->Add("HorizTextAlign");
 
 	const int iIndex = AStringList->IndexOf(sPropName);
 	const bool bShow = iIndex == -1 ? TScxmlBaseShape::OnFilterPropEvent(sPropName) : true;
@@ -1482,6 +1491,22 @@ UnicodeString __fastcall TVisualScxmlBaseShape::OnGetHTMLPropertyInfo(const Unic
 		;
 	}
 
+	if (sPropName == L"SelfConnectionInside") {
+		return L"Self-connections are distributed inside of a state\n" //
+		"Call 'Arrange Self-Connections' operation to see the result\n" //
+		;
+	}
+
+	if (sPropName == L"VertTextAlign") {
+		return L"Vertical text alignment\n" //
+		;
+	}
+
+	if (sPropName == L"HorizTextAlign") {
+		return L"Horizontal text alignment\n" //
+		;
+	}
+
 	if (sPropName == L"SkipDebugging") {
 		return //
 		"If it is set to <B>true</B>, then <B>OnEnter</B> and <B>OnExit</B> actions will not be applied to this shape during Debug Session.\n"
@@ -1507,6 +1532,7 @@ UnicodeString __fastcall TVisualScxmlBaseShape::OnGetHTMLPropertyInfo(const Unic
 		return //
 		L"<B>scayClusterTop</B> - children are aligned to the <b>top</b> corner of the shape in <b>cluster mode</b>\n" //
 		"<B>scayAlwaysBottom</B> - children are aligned to the <b>bottom</b> corner of the shape\n" //
+		"<B>scayAlwaysTop</B> - children are aligned to the <b>top</b> corner of the shape\n" //
 		;
 	}
 
@@ -1516,6 +1542,11 @@ UnicodeString __fastcall TVisualScxmlBaseShape::OnGetHTMLPropertyInfo(const Unic
 // ---------------------------------------------------------------------------
 void __fastcall TVisualScxmlBaseShape::SetSelfConnectionTextOffsets(TPersistentRect *val) {
 	FSelfConnectionTextOffsets->Assign(val);
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TVisualScxmlBaseShape::SetSelfConnectionInside(bool val) {
+	FSelfConnectionInside = val;
 }
 
 // ---------------------------------------------------------------------------
@@ -1670,6 +1701,7 @@ void __fastcall TVisualScxmlBaseShape::Assign(Classes::TPersistent * Source) {
 				FChildrenAlignX = ABaseShape->FChildrenAlignX;
 				FChildrenAlignY = ABaseShape->FChildrenAlignY;
 				FChildrenAlignXOffset = ABaseShape->FChildrenAlignXOffset;
+				FSelfConnectionInside = ABaseShape->FSelfConnectionInside;
 
 				SkipDebugging = ABaseShape->SkipDebugging; // чтобы сработал Update стиля
 
@@ -1689,17 +1721,17 @@ void __fastcall TVisualScxmlBaseShape::Assign(Classes::TPersistent * Source) {
 
 // ---------------------------------------------------------------------------
 TColor __fastcall TVisualScxmlBaseShape::GetNormalColor(void) {
-	return TColor(0x00FFD680);
+	return SettingsData->ThemeSettings->StateNormalColor;
 }
 
 // ---------------------------------------------------------------------------
 TColor __fastcall TVisualScxmlBaseShape::GetHeadColor(void) {
-	return TColor(0x00FFD680);
+	return SettingsData->ThemeSettings->StateNormalColor;
 }
 
 // ---------------------------------------------------------------------------
 TColor __fastcall TVisualScxmlBaseShape::GetClusterColor(void) {
-	return clWhite;
+	return SettingsData->ThemeSettings->StateClusterColor;
 }
 
 // ---------------------------------------------------------------------------
@@ -1720,6 +1752,11 @@ void __fastcall TVisualScxmlBaseShape::UpdateBreakpointView() {
 }
 
 // ---------------------------------------------------------------------------
+TVertTextAlign __fastcall TVisualScxmlBaseShape::GetVertTextAlign(void) {
+	return this->IsCluster() ? Teetree::vtaTop : TScxmlBaseShape::GetVertTextAlign();
+}
+
+// ---------------------------------------------------------------------------
 void __fastcall TVisualScxmlBaseShape::SetNormalAppearance(void) {
 	const bool bIsCluster = this->IsCluster();
 	if (bIsCluster) {
@@ -1729,12 +1766,6 @@ void __fastcall TVisualScxmlBaseShape::SetNormalAppearance(void) {
 		if (this->Color != GetClusterColor()) {
 			this->Color = GetClusterColor();
 		}
-		if (this->VertTextAlign != Teetree::vtaTop) {
-			this->VertTextAlign = Teetree::vtaTop;
-		}
-		if (this->Text->VertAlign != Teetree::vtaTop) {
-			this->Text->VertAlign = Teetree::vtaTop;
-		}
 	}
 	else {
 		if (this->Style != GetNormalStyle()) {
@@ -1743,34 +1774,28 @@ void __fastcall TVisualScxmlBaseShape::SetNormalAppearance(void) {
 		if (this->Color != GetNormalColor()) {
 			this->Color = GetNormalColor();
 		}
-		if (this->VertTextAlign != vtaCenter) {
-			this->VertTextAlign = vtaCenter;
-		}
-		if (this->Text->VertAlign != vtaCenter) {
-			this->Text->VertAlign = vtaCenter;
-		}
 	}
 
 	this->Transparent = bIsCluster && ClassType() != __classid(TScxmlShape);
 
-	if (this->Border->Style != psSolid) {
-		this->Border->Style = psSolid;
+	if (this->Border->Style != SettingsData->ThemeSettings->StateNormalBorderStyle) {
+		this->Border->Style = SettingsData->ThemeSettings->StateNormalBorderStyle;
 	}
 
 	if (FExamined) {
 		this->Border->Width = 3;
-		this->Border->Color = clBlue;
+		this->Border->Color = SettingsData->ThemeSettings->StateExaminedBorderColor;
 	}
 	else {
 
 		TColor ABorderColor = this->Border->Color;
 		int iBorderWidth = this->Border->Width;
 		if (GetIsInitial()) {
-			ABorderColor = TColor(0x000080FF);
+			ABorderColor = SettingsData->ThemeSettings->StateInitialBorderColor;
 			iBorderWidth = 2;
 		}
 		else {
-			ABorderColor = clBlack;
+			ABorderColor = SettingsData->ThemeSettings->StateNormalBorderColor;
 			iBorderWidth = 1;
 		}
 
@@ -1807,14 +1832,19 @@ void __fastcall TVisualScxmlBaseShape::SetNormalAppearance(void) {
 
 	UpdateBreakpointView();
 
+	TFontStyles AFontStyle = SettingsData->ThemeSettings->StateNormalFontStyle;
+	if (!bIsCluster && this->SelfConnectionInside) {
+		AFontStyle = SettingsData->ThemeSettings->StateSelfConnectionInsideFontStyle;
+	}
+
 	if (FEntered) {
-		if (this->Font->Style != TFontStyles() << fsBold) {
-			this->Font->Style = TFontStyles() << fsBold;
+		if (this->Font->Style != AFontStyle << fsBold) {
+			this->Font->Style = AFontStyle << fsBold;
 		}
 	}
 	else {
-		if (this->Font->Style != TFontStyles()) {
-			this->Font->Style = TFontStyles();
+		if (this->Font->Style != AFontStyle) {
+			this->Font->Style = AFontStyle;
 		}
 	}
 	if (this->Shadow->Visible != false) {
@@ -1985,7 +2015,7 @@ int __fastcall TVisualScxmlBaseShape::GetClusterHeight(void) {
 // ---------------------------------------------------------------------------
 int __fastcall TVisualScxmlBaseShape::CalculateChildrenTop(int iDefaultTop) {
 
-	return IsCluster() ? this->Top + GetClusterHeight() : iDefaultTop;
+	return(IsCluster() || this->ChildrenAlignY == scayAlwaysTop) ? this->Top + GetClusterHeight() : iDefaultTop;
 }
 
 // ---------------------------------------------------------------------------
@@ -2068,7 +2098,8 @@ int __fastcall TVisualScxmlBaseShape::MaxHeightExpandedChildsEx(void) {
 			}
 		}
 	}
-	return this->ChildrenAlignY == scayClusterTop ? CalculateChildrenTop(AdjustedRectangle.Bottom) : AdjustedRectangle.Bottom;
+	return(this->ChildrenAlignY == scayClusterTop || this->ChildrenAlignY == scayAlwaysTop) ? CalculateChildrenTop
+		(AdjustedRectangle.Bottom) : AdjustedRectangle.Bottom;
 }
 
 // ---------------------------------------------------------------------------
@@ -2162,6 +2193,26 @@ void __fastcall TChildScxmlBaseShape::Assign(Classes::TPersistent * Source) {
 	}
 	else
 		throw Exception(__FUNCTION__ "> Source can not be empty!");
+}
+
+// ---------------------------------------------------------------------------
+TColor __fastcall TChildScxmlBaseShape::GetNormalColor(void) {
+	return SettingsData->ThemeSettings->ChildNormalColor;
+}
+
+// ---------------------------------------------------------------------------
+TFontStyles __fastcall TChildScxmlBaseShape::GetNormalFontStyle() {
+	return SettingsData->ThemeSettings->ChildNormalFontStyle;
+}
+
+// ---------------------------------------------------------------------------
+TColor __fastcall TChildScxmlBaseShape::GetNormalBorderColor(void) {
+	return SettingsData->ThemeSettings->ChildNormalBorderColor;
+}
+
+// ---------------------------------------------------------------------------
+TPenStyle __fastcall TChildScxmlBaseShape::GetNormalBorderStyle(void) {
+	return SettingsData->ThemeSettings->ChildNormalBorderStyle;
 }
 
 // ---------------------------------------------------------------------------

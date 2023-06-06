@@ -13,7 +13,7 @@
 
 **[Video overview - v.2.2](https://youtu.be/30dyXAs-m1A)**
 
-# Scxml Editor 2.3
+# Scxml Editor 2.4
 Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](Images/Inheritance_TV_example.gif)
@@ -24,18 +24,19 @@ Powerful tool for creating, editing and debugging SCXML charts.
 [![Discord](Images/Discord.svg)](https://discord.gg/5XWDsbEXzn)
 
 ### Changelog
+**2.4:** [Post Save Commands](Doc/ProjectTree.md#post-save-unit-actions), [Self-Transitions Inside](Doc/Transitions.md#self-transitions-inside-states) <br>
 **2.3:** Highlight Transitions <br>
-**2.2.4:** [Import QtCreator state charts](Doc/ImportStateCharts.md) <br/>
-**2.2.3:** [Transition indexes bugfix](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/issues/66) <br/>
-**2.2.2:** [Option to override SmartTransitions](Doc/SmartSwitchTransitions.md#option-to-override-inverted-condition-since-scxmleditor-222) <br/>
-**2.2.1:** [Qt SVG Monitors Released](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md) <br/>
-**2.2:** [Invoke ID is sending by testing apps](Doc/DebugScxmlStateCharts.md#how-to-debug-multiple-invoked-state-machines) <br/>
-**2.1.10:** [New breakpoints interface](Doc/DebugScxmlStateCharts.md#breakpoints) <br/>
-**2.1.9:** [Better handling of virtual states](Doc/VisualStateChartSplitting.md#adding-onentry-onexit-datamodel-and-invoke-to-virtual-states) <br/>
-**2.1.8:** [Support of custom console testing applications](Doc/DebugScxmlStateCharts.md#custom-testing-application-setup) like [SCION command-line tool](https://gitlab.com/scion-scxml/cli) <br/>
-**2.1.7:** [SVG Export Settings](Doc/ExportScxmlToSVG.md#svg-export-settings) <br/>
-**2.1.6:** UScxmlTester with EcmaScript, In() predicate autocomplete, QtScxmlTester 5.9.1->5.15 <br/>
-**2.1.5:** [Refactored Qt external debugger](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md#qt-scxml-external-debugging-monitor) <br/>
+**2.2.4:** [Import QtCreator state charts](Doc/ImportStateCharts.md) <br>
+**2.2.3:** [Transition indexes bugfix](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/issues/66) <br>
+**2.2.2:** [Option to override SmartTransitions](Doc/SmartSwitchTransitions.md#option-to-override-inverted-condition-since-scxmleditor-222) <br>
+**2.2.1:** [Qt SVG Monitors Released](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md) <br>
+**2.2:** [Invoke ID is sending by testing apps](Doc/DebugScxmlStateCharts.md#how-to-debug-multiple-invoked-state-machines) <br>
+**2.1.10:** [New breakpoints interface](Doc/DebugScxmlStateCharts.md#breakpoints) <br>
+**2.1.9:** [Better handling of virtual states](Doc/VisualStateChartSplitting.md#adding-onentry-onexit-datamodel-and-invoke-to-virtual-states) <br>
+**2.1.8:** [Support of custom console testing applications](Doc/DebugScxmlStateCharts.md#custom-testing-application-setup) like [SCION command-line tool](https://gitlab.com/scion-scxml/cli) <br>
+**2.1.7:** [SVG Export Settings](Doc/ExportScxmlToSVG.md#svg-export-settings) <br>
+**2.1.6:** UScxmlTester with EcmaScript, In() predicate autocomplete, QtScxmlTester 5.9.1->5.15 <br>
+**2.1.5:** [Refactored Qt external debugger](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md#qt-scxml-external-debugging-monitor) <br>
 **2.1.4:** [Export SCXML to SVG](Doc/ExportScxmlToSVG.md), [Structure View](Doc/ScxmlStructureView.md)
 
 ## System requirements
@@ -47,15 +48,15 @@ Powerful tool for creating, editing and debugging SCXML charts.
 ## Installation
 You can find portable version as attached Zip in ScxmlEditor Github Release page
 
-Latest version: **[2.3.1.1712]**
+Latest version: **[2.4.0.1734]**
 
 ### Windows Installation
 #### First Install
 1. Download from latest Release page and unpack it in any target location
 2. Install **ScxmlEditor\vcredist_x86.exe** for **UscxmlTester**, **Graphviz**
-3. Install  **ScxmlEditor\vcredist_x64.exe** for **QtScxmlTester** <br/>
+3. Install  **ScxmlEditor\vcredist_x64.exe** for **QtScxmlTester** <br>
 (_You may skip steps 2 and 3 if you have previously installed MSVC 2015 Update 3 redistributable_)
-4. Install **ScxmlEditor\UScxmlTester\vcredist_x86_vc10.exe** for **UscxmlTester** with **EcmaScript** datamodel <br/>
+4. Install **ScxmlEditor\UScxmlTester\vcredist_x86_vc10.exe** for **UscxmlTester** with **EcmaScript** datamodel <br>
 (_You may skip step 4 if you have previously installed MSVC 2010 redistributable_)
 
 #### Update
@@ -123,6 +124,7 @@ Current binaries are compiled with single development licensies registered by th
   - Main menu
   - Main toolbar
   - [Project tree](Doc/ProjectTree.md)
+    - [Post Save Unit](Doc/ProjectTree.md#post-save-unit-actions)
   - [Property inspector](Doc/PropertyInspector.md)
   - [SCXML source code view and live editing](Doc/LiveScxmlEdit.md)
 - Projects
@@ -138,6 +140,7 @@ Current binaries are compiled with single development licensies registered by th
     - [Chart design panel](Doc/ChartDesignPanel.md)
   - States and children (Shapes)
   - [Transitions (Connections)](Doc/Transitions.md)
+    - [Self-Transitions](Doc/Transitions.md#self-transitions-connections)
     - [Smart Switch Transitions](Doc/SmartSwitchTransitions.md)
   - [Inheritance](Doc/Inheritance.md)
   - [DOT-based autolayout](Doc/DotBasedAutoLayout.md#dot-based-auto-layout)
@@ -193,14 +196,14 @@ Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all a
 ![StructureViewSearch](Images/StructureView_Search.png)
 
 ## [Debugging](Doc/DebugScxmlStateCharts.md)
-**ScxmlEditor** has an ability to receive and send string UDP commands: <br/>
+**ScxmlEditor** has an ability to receive and send string UDP commands: <br>
 ### Receive API:
 - `@@@` - clear highlighted states in all statecharts
 - `@@@ScxmlName` - clear highlighted states in statechart where [\<scxml\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/scxml.html) 'name' is equal `ScxmlName` 
-- `Type@ScxmlName@Msg@Id` - commands to highlight state or display message in **CallStack** panel <br/>
+- `Type@ScxmlName@Msg@Id` - commands to highlight state or display message in **CallStack** panel <br>
 **Description:**
-  `Type` - integer type of command: `1 - AfterEnter, 2 - BeforeEnter, 3 - AfterExit, 4 - BeforeExit, 5 - Step, 6 - BeforeExecContent, 7 - AfterExecContent, 8 - BeforeInvoke, 9 - AfterInvoke, 10 - BeforeUnInvoke, 11 - AfterUnInvoke, 12 - BeforeTakingTransition, 13 - AfterTakingTransition, 14 - StableConfiguration, 15 - BeforeProcessingEvent` <br/>
-  `ScxmlName` - name of [\<scxml\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/scxml.html) <br/>
+  `Type` - integer type of command: `1 - AfterEnter, 2 - BeforeEnter, 3 - AfterExit, 4 - BeforeExit, 5 - Step, 6 - BeforeExecContent, 7 - AfterExecContent, 8 - BeforeInvoke, 9 - AfterInvoke, 10 - BeforeUnInvoke, 11 - AfterUnInvoke, 12 - BeforeTakingTransition, 13 - AfterTakingTransition, 14 - StableConfiguration, 15 - BeforeProcessingEvent` <br>
+  `ScxmlName` - name of [\<scxml\>](https://alexzhornyak.github.io/SCXML-tutorial/Doc/scxml.html) <br>
   `Msg` - message which depends on type of command. For example: for **BeforeEnter** or **BeforeExit** - it is the id(name) of states, for **BeforeInvoke** or **BeforeUnInvoke** it is the name of invoked element, etc. </br>
   `Id` - [identifier of the invoked](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html#id) state machine (Since ScxmlEditor 2.2). Can be empty for root machines
 > **BeforeEnter** graphically highlight and **BeforeExit** unhighlight the corresponding states, other commands are displayed in **CallStack** panel
@@ -209,10 +212,10 @@ Press **'Ctrl+.'** to call **IDE Insight dialog** where you may search for all a
 > Message format: `FromState|TransitionIndex` where `TransitionIndex` is transition xml child index
 
 #### Example of commands:
-- `2@CalculatorStateMachine@operand1` - highlight state `operand1` in statechart **CalculatorStateMachine** <br/>
-- `4@CalculatorStateMachine@operand1` - unhighlight state `operand1` in statechart **CalculatorStateMachine** <br/>
-- `2@ScxmlSub1@isSub1@ID_SUB_1` - highlight state `isSub1` in statechart **ScxmlSub1** when [invoke Id](Doc/DebugScxmlStateCharts.md#how-to-debug-multiple-invoked-state-machines) is `ID_SUB_1` <br/>
-- `12@CalculatorStateMachine@operand1|0` - highlight the first transition from **operand1** state in statechart **CalculatorStateMachine** <br/>
+- `2@CalculatorStateMachine@operand1` - highlight state `operand1` in statechart **CalculatorStateMachine** <br>
+- `4@CalculatorStateMachine@operand1` - unhighlight state `operand1` in statechart **CalculatorStateMachine** <br>
+- `2@ScxmlSub1@isSub1@ID_SUB_1` - highlight state `isSub1` in statechart **ScxmlSub1** when [invoke Id](Doc/DebugScxmlStateCharts.md#how-to-debug-multiple-invoked-state-machines) is `ID_SUB_1` <br>
+- `12@CalculatorStateMachine@operand1|0` - highlight the first transition from **operand1** state in statechart **CalculatorStateMachine** <br>
 
 You can also [trace the execution of the chart](Doc/DebugScxmlStateCharts.md#trace-mode) and use [breakpoints](Doc/DebugScxmlStateCharts.md#breakpoints).
 

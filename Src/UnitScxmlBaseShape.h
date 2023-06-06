@@ -389,7 +389,7 @@ __published:
 };
 
 typedef enum { scaxLeft, scaxRight, scaxCenter } TShapeChildrenAlignX;
-typedef enum { scayClusterTop, scayAlwaysBottom } TShapeChildrenAlignY;
+typedef enum { scayClusterTop, scayAlwaysBottom, scayAlwaysTop } TShapeChildrenAlignY;
 
 //---------------------------------------------------------------------------
 class TVisualScxmlBaseShape : public TScxmlBaseShape {
@@ -414,6 +414,9 @@ private:
 	TPersistentRect *FSelfConnectionTextOffsets;
 	void __fastcall SetSelfConnectionTextOffsets(TPersistentRect *val);
 
+	bool FSelfConnectionInside;
+	void __fastcall SetSelfConnectionInside(bool val);
+
 	TPersistentPoint *FParentOffsetStored;
 	void __fastcall SetParentOffsetStored(TPersistentPoint *val);
 
@@ -433,6 +436,7 @@ protected:
 	virtual void __fastcall SetErrorAppearance(void);
 
 	virtual void __fastcall DrawShapeCanvas(Tecanvas::TCanvas3D* ACanvas, const Types::TRect &R); /* inherited */
+	virtual TVertTextAlign __fastcall GetVertTextAlign(void); /* inhrerited */
 
 	UnicodeString FInitial;
 	virtual UnicodeString __fastcall GetInitial(void);
@@ -510,12 +514,15 @@ public:
 __published:
 
 	__property TPersistentRect *SelfConnectionTextOffsets = {read=FSelfConnectionTextOffsets, write=SetSelfConnectionTextOffsets};
+	__property bool SelfConnectionInside = {read=FSelfConnectionInside, write=SetSelfConnectionInside, default=false};
 	__property TPersistentPoint *ParentOffsetStored = {read=FParentOffsetStored, write=SetParentOffsetStored};
 	__property ChildIndex;
 	__property TShapeChildrenAlignX ChildrenAlignX = {read=FChildrenAlignX, write=FChildrenAlignX, default=scaxLeft};
 	__property TShapeChildrenAlignY ChildrenAlignY = {read=FChildrenAlignY, write=FChildrenAlignY, default=scayClusterTop};
 	__property int ChildrenAlignXOffset = {read=FChildrenAlignXOffset, write=FChildrenAlignXOffset, default=0};
 	__property bool SkipDebugging = {read=FSkipDebugging, write=SetSkipDebugging, default=false};
+	__property VertTextAlign;
+	__property HorizTextAlign;
 
 };
 
@@ -547,7 +554,7 @@ protected:
 
 	inline virtual TColor __fastcall GetFinalColor(void) { return GetNormalColor(); }
 
-	inline virtual TColor __fastcall GetNormalColor(void) { return clWhite; }
+	virtual TColor __fastcall GetNormalColor(void);
 
 	virtual TColor __fastcall GetFinalFontColor(void);
 
@@ -555,16 +562,16 @@ protected:
 
 	inline virtual TFontStyles __fastcall GetFinalFontStyle(void) { return GetNormalFontStyle(); }
 
-	inline virtual TFontStyles __fastcall GetNormalFontStyle() { return TFontStyles(); }
+	inline virtual TFontStyles __fastcall GetNormalFontStyle();
 
 	inline virtual TColor __fastcall GetFinalBorderColor(void) { return GetNormalBorderColor(); }
 
 	// делаем цвет чуть светлее, чтобы текст читался крупнее
-	inline virtual TColor __fastcall GetNormalBorderColor(void) { return TColor(RGB(32, 32, 32)); }
+	virtual TColor __fastcall GetNormalBorderColor(void);
 
 	virtual TPenStyle __fastcall GetFinalBorderStyle(void);
 
-	inline virtual TPenStyle __fastcall GetNormalBorderStyle(void) { return psSolid; }
+	virtual TPenStyle __fastcall GetNormalBorderStyle(void);
 
 	// здесь дописываем и рисуем по уже сформированной канве
 	virtual void __fastcall DrawShapeCanvas(Tecanvas::TCanvas3D* ACanvas, const Types::TRect &R); /* inherited */

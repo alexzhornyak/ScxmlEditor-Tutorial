@@ -194,6 +194,7 @@ UnicodeString TTestSettings::GetExpandedCMD(UnicodeString sCMD, const UnicodeStr
 	sCMD = StringReplace(sCMD, L"$(UnitName)", sFileNameOnly, TReplaceFlags() << rfReplaceAll);
 
 	sCMD = StringReplace(sCMD, L"$(AppDir)", SettingsData->AppPath, TReplaceFlags() << rfReplaceAll);
+	sCMD = StringReplace(sCMD, L"$(AppFilePath)", Application->ExeName, TReplaceFlags() << rfReplaceAll);
 
 	return Unicodeutils::ExpandEnvironmentStringsDef(sCMD);
 }
@@ -254,6 +255,7 @@ void __fastcall TTestingCMDStringPropEditor::Edit(void) {
 			ADialogPtr->EditDocSystem->AppendLine(L"%APPDATA%=" + Unicodeutils::ExpandEnvironmentStringsDef("%APPDATA%"));
 
 			ADialogPtr->EditDocUser->AppendLine(L"$(AppDir)=" + SettingsData->AppPath);
+			ADialogPtr->EditDocUser->AppendLine(L"$(AppFilePath)=" + Application->ExeName);
 			ADialogPtr->EditDocUser->AppendLine(L"$(UnitFilePath)=Path\\To\\ActiveUnitFileName.scxml");
 			ADialogPtr->EditDocUser->AppendLine(L"$(UnitFileName)=ActiveUnitFileName.scxml");
 			ADialogPtr->EditDocUser->AppendLine(L"$(UnitFileDir)=Path\\To");

@@ -59,7 +59,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "UnitSVGExporter.h"
 #include "ScxmlShapes.hpp"
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 
 #pragma package(smart_init)
 
@@ -72,7 +72,7 @@ void RegisterStateMachineConnection() {
 	Classes::RegisterClassA(__classid(TParamTriggerItems));
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 UnicodeString ClipText(const UnicodeString &sText, TClipTextType AType, int iClipMax) {
 	if (sText.Length() > iClipMax) {
 		switch(AType) {
@@ -93,12 +93,12 @@ UnicodeString ClipText(const UnicodeString &sText, TClipTextType AType, int iCli
 	return sText;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 bool IsStateMachineConnectionClipboardFormat(const UnicodeString &sText) {
 	return sText.Pos(L"object TStateMachineConnection") == 1;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void PasteStateMachineConnectionFromText(TCustomTree *ADestTree, const UnicodeString &sText) {
 	try {
 		if (!ADestTree)
@@ -107,7 +107,7 @@ void PasteStateMachineConnectionFromText(TCustomTree *ADestTree, const UnicodeSt
 		std::auto_ptr<TStringList>AStringListPtr(new TStringList());
 		AStringListPtr->Text = sText;
 
-		// так как у нас будут новые родители
+		// так как у нас будут новые родители 
 		UnicodeString sFromShape = L"";
 		UnicodeString sToShape = L"";
 
@@ -134,10 +134,10 @@ void PasteStateMachineConnectionFromText(TCustomTree *ADestTree, const UnicodeSt
 		std::auto_ptr<TComponent>AClipboardComponentPtr(AOutStreamPtr->ReadComponent(NULL));
 		TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(AClipboardComponentPtr.get());
 		if (AConnection) {
-			// если выбрано соединение, тогда назначаем его тем, которое в буфере
+			// если выбрано соединение, тогда назначаем его тем, которое в буфере 
 			if (ADestTree->Connections->Selected) {
 
-				// стиль соединения должен остаться прежним
+				// стиль соединения должен остаться прежним 
 				TStateMachineConnection *ASelectedConnection = dynamic_cast<TStateMachineConnection*>(ADestTree->Connections->Selected);
 				if (ASelectedConnection) {
 					ASelectedConnection->AssignStateMachineConnection(AConnection);
@@ -164,7 +164,7 @@ void PasteStateMachineConnectionFromText(TCustomTree *ADestTree, const UnicodeSt
 
 						ANewConnection->Assign(AConnection);
 
-						// bug fix: какого-то хрена не назначаются точки при множественном назначении
+						// bug fix: какого-то хрена не назначаются точки при множественном назначении 
 						ANewConnection->Style = AConnection->Style;
 						ANewConnection->Points->Clear();
 
@@ -173,7 +173,7 @@ void PasteStateMachineConnectionFromText(TCustomTree *ADestTree, const UnicodeSt
 								AConnection->Points->Item[i].YStyle, AConnection->Points->Item[i].YValue);
 						}
 
-						// необходимо удалить временное соединение, чтобы его уже не было на момент формирования нового имени
+						// необходимо удалить временное соединение, чтобы его уже не было на момент формирования нового имени 
 						AClipboardComponentPtr.reset(0);
 
 						const Unique::TUniquePair AUniqueName = Unique::GetUniqueName(ADestTree->Owner, __classid(TStateMachineConnection));
@@ -200,7 +200,7 @@ void PasteStateMachineConnectionFromText(TCustomTree *ADestTree, const UnicodeSt
 						ANewConnection->ToShape = ADestTree->Selected->Items[1];
 
 						ANewConnection->Assign(AConnection);
-						// bug fix: какого-то хрена не назначаются точки при множественном назначении
+						// bug fix: какого-то хрена не назначаются точки при множественном назначении 
 						ANewConnection->Style = AConnection->Style;
 						ANewConnection->Points->Clear();
 
@@ -209,7 +209,7 @@ void PasteStateMachineConnectionFromText(TCustomTree *ADestTree, const UnicodeSt
 								AConnection->Points->Item[i].YStyle, AConnection->Points->Item[i].YValue);
 						}
 
-						// необходимо удалить временное соединение, чтобы его уже не было на момент формирования нового имени
+						// необходимо удалить временное соединение, чтобы его уже не было на момент формирования нового имени 
 						AClipboardComponentPtr.reset(0);
 
 						const Unique::TUniquePair AUniqueName = Unique::GetUniqueName(ADestTree->Owner, __classid(TStateMachineConnection));
@@ -219,7 +219,7 @@ void PasteStateMachineConnectionFromText(TCustomTree *ADestTree, const UnicodeSt
 
 						if (ANewConnection->AdjustableSides) {
 
-							ANewConnection->Draw(); // даём команду отрисовать, чтобы обновились все значения в точках
+							ANewConnection->Draw(); // даём команду отрисовать, чтобы обновились все значения в точках 
 
 							Editorutils::AdjustSidesConnection(ANewConnection);
 						}
@@ -237,17 +237,17 @@ void PasteStateMachineConnectionFromText(TCustomTree *ADestTree, const UnicodeSt
 	}
 }
 
-// ---------------------------------------------------------------------------
-// ----------------------- EStateMachineConnectionException ------------------
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
+// ----------------------- EStateMachineConnectionException ------------------ 
+// --------------------------------------------------------------------------- 
 __fastcall EStateMachineConnectionException::EStateMachineConnectionException(TStateMachineConnection *AStateMachineConnection,
 	const UnicodeString &sCategory, const UnicodeString &sMsg) : Exception(sMsg), FStateMachineConnection(AStateMachineConnection),
 FCategory(sCategory) {
 }
 
-// ---------------------------------------------------------------------------
-// ------------------------- TStateMachineConnection -------------------------
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
+// ------------------------- TStateMachineConnection ------------------------- 
+// --------------------------------------------------------------------------- 
 __fastcall TStateMachineConnection::TStateMachineConnection(Classes::TComponent* AOwner) : TTreeConnection(AOwner),
 FTransitionEditor(NULL), FXML(L""), FCondition(L""), FConditionBack(L""), FEvent(L""), FAdjustableSides(true),
 FContentTrigger(new TContentTrigger(this)), FParams(new TParamTriggerItems(this)), FGuid(new GUID), FSwitch(tstNONE) {
@@ -300,7 +300,7 @@ FContentTrigger(new TContentTrigger(this)), FParams(new TParamTriggerItems(this)
 	FSkipAutolayout = false;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 __fastcall TStateMachineConnection::~TStateMachineConnection(void) {
 	if (FTransitionEditor) {
 		delete FTransitionEditor;
@@ -328,7 +328,7 @@ __fastcall TStateMachineConnection::~TStateMachineConnection(void) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 bool __fastcall TStateMachineConnection::OnFilterPropEvent(const UnicodeString &sPropName) {
 	std::auto_ptr<TStringList>ABlackListPtr(new TStringList());
 	ABlackListPtr->CaseSensitive = true;
@@ -350,11 +350,11 @@ bool __fastcall TStateMachineConnection::OnFilterPropEvent(const UnicodeString &
 	return IsPublishedProp(__classid(TTreeConnection), sPropName) == false;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::OnGetPropCaptionColor(TObject *Sender, Lmdinspropinsp::TLMDPropertyInspectorItem *AItem,
 	TColor &AColor) {
 
-	// специальный случай
+	// специальный случай 
 	if (AItem->PropName == L"InheritanceResolver") {
 		AColor = clTeal;
 		return;
@@ -396,7 +396,7 @@ void __fastcall TStateMachineConnection::OnGetPropCaptionColor(TObject *Sender, 
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::OnGetPropEditorClass(TPersistent *AInstance, ILMDProperty *APropInfo,
 	TLMDPropEditorClass &AEditorClass) {
 	if (APropInfo) {
@@ -410,7 +410,7 @@ void __fastcall TStateMachineConnection::OnGetPropEditorClass(TPersistent *AInst
 		else if (sPropName == L"ContentTrigger") {
 			AEditorClass = __classid(TContentPropEditor);
 		}
-		// указываем флаг AviaExtensionEnabled иначе редактор отменит фильтр
+		// указываем флаг AviaExtensionEnabled иначе редактор отменит фильтр 
 		else if (SettingsData->AviaExtensionEnabled && sPropName == L"ProtocolControlBinding") {
 			AEditorClass = __classid(TProtocolControlBindingPropertyEditor);
 		}
@@ -432,7 +432,7 @@ void __fastcall TStateMachineConnection::OnGetPropEditorClass(TPersistent *AInst
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 UnicodeString __fastcall TStateMachineConnection::OnGetHTMLPropertyInfo(const UnicodeString &sPropName) {
 	if (sPropName == L"Event") {
 		return //
@@ -625,7 +625,7 @@ UnicodeString __fastcall TStateMachineConnection::OnGetHTMLPropertyInfo(const Un
 	return L"";
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetSwitch(TTransitionSwitchType val) {
 	FSwitch = val;
 
@@ -634,7 +634,7 @@ void __fastcall TStateMachineConnection::SetSwitch(TTransitionSwitchType val) {
 	UpdateTransitionText();
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetVerticalCentering(bool val) {
 	if (FVerticalCentering != val) {
 		FVerticalCentering = val;
@@ -646,7 +646,7 @@ void __fastcall TStateMachineConnection::SetVerticalCentering(bool val) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::UpdateDummyText(void) {
 	if (Tree) {
 		for (int i = 0; i < Tree->Shapes->Count; i++) {
@@ -658,7 +658,7 @@ void __fastcall TStateMachineConnection::UpdateDummyText(void) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::UpdateAppearance() {
 	if (!this->ComponentState.Contains(csLoading)) {
 
@@ -700,7 +700,7 @@ void __fastcall TStateMachineConnection::UpdateAppearance() {
 				this->Border->Style = psDash;
 				this->Border->Color = TColor(RGB(200, 0, 0));
 
-				// так как стрелки выглядят одинаково по размеру, то необходимо указать направление откуда
+				// так как стрелки выглядят одинаково по размеру, то необходимо указать направление откуда 
 				if (Locked || InheritanceMismatch) {
 					USHORT ushHue, ushLuminance, ushSaturation;
 					ColorToHLS(AFromBackColor, ushHue, ushLuminance, ushSaturation);
@@ -714,7 +714,7 @@ void __fastcall TStateMachineConnection::UpdateAppearance() {
 				this->Border->Style = psDash;
 				this->Border->Color = clGray;
 
-				// так как стрелки выглядят одинаково по размеру, то необходимо указать направление откуда
+				// так как стрелки выглядят одинаково по размеру, то необходимо указать направление откуда 
 				if (Locked || InheritanceMismatch) {
 					USHORT ushHue, ushLuminance, ushSaturation;
 					ColorToHLS(AFromBackColor, ushHue, ushLuminance, ushSaturation);
@@ -751,7 +751,7 @@ void __fastcall TStateMachineConnection::UpdateAppearance() {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 UnicodeString __fastcall TStateMachineConnection::GetTarget(void) {
 	if (this->ToShape) {
 		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(this->ToShape);
@@ -762,21 +762,21 @@ UnicodeString __fastcall TStateMachineConnection::GetTarget(void) {
 	return L"";
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetEvent(UnicodeString val) {
 	FEvent = val;
 
 	UpdateTransitionText();
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetCondition(UnicodeString val) {
 	FCondition = val.Trim();
 
 	UpdateTransitionText();
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetBreakpointSet(bool val) {
 	if (FBreakpointSet != val) {
 		FBreakpointSet = val;
@@ -786,21 +786,21 @@ void __fastcall TStateMachineConnection::SetBreakpointSet(bool val) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 UnicodeString __fastcall TStateMachineConnection::GetConditionBack(void) {
 	if (FConditionBack.IsEmpty()) {
 		try {
 			return GetConditionBackFromSettingsThrow(GetSyntaxSchemeThrow());
 		}
 		catch(Exception * E) {
-			// safe for inspector
+			// safe for inspector 
 		}
 	}
 
 	return FConditionBack;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 UnicodeString __fastcall TStateMachineConnection::GetSyntaxSchemeThrow(void) {
 	UnicodeString sSyntaxScheme = L"";
 	if (this->StateMachineEditor) {
@@ -812,7 +812,7 @@ UnicodeString __fastcall TStateMachineConnection::GetSyntaxSchemeThrow(void) {
 	return sSyntaxScheme;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 UnicodeString __fastcall TStateMachineConnection::GetConditionBackFromSettingsThrow(const UnicodeString &sSyntaxScheme) {
 
 	const UnicodeString sInvertedConditionMacro = SettingsData->ConnectionInvertedConditionMacro->Values[sSyntaxScheme];
@@ -823,30 +823,30 @@ UnicodeString __fastcall TStateMachineConnection::GetConditionBackFromSettingsTh
 	return sInvertedConditionMacro;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetConditionBack(UnicodeString val) {
 	FConditionBack = val.Trim();
 
 	UpdateTransitionText();
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetDescription(UnicodeString val) {
 	FDescription = val.Trim();
 
 	UpdateTransitionText();
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::Assign(Classes::TPersistent* Source) {
 	if (Source) {
 		TTreeConnection *AConnection = dynamic_cast<TTreeConnection*>(Source);
 		if (Source) {
-			// ********************************************* //
-			// сначала все назначения из базового класса !!! //
-			// ********************************************* //
+			// ********************************************* // 
+			// сначала все назначения из базового класса !!! // 
+			// ********************************************* // 
 			TTreeConnection::Assign(AConnection);
-			// ********************************************* //
+			// ********************************************* // 
 
 			TStateMachineConnection * ATreeConnection = dynamic_cast<TStateMachineConnection*>(Source);
 			if (ATreeConnection) {
@@ -861,7 +861,7 @@ void __fastcall TStateMachineConnection::Assign(Classes::TPersistent* Source) {
 		throw Exception(__FUNCTION__ "> Source can not be empty!");
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::AssignStateMachineConnection(TStateMachineConnection *AStateMachineConnection) {
 	if (AStateMachineConnection) {
 		FXML = AStateMachineConnection->FXML;
@@ -887,17 +887,17 @@ void __fastcall TStateMachineConnection::AssignStateMachineConnection(TStateMach
 		FSkipAutolayout = AStateMachineConnection->FSkipAutolayout;
 		FBreakpointSet = AStateMachineConnection->FBreakpointSet;
 
-		// здесь произойдет UpdateTransitionText
+		// здесь произойдет UpdateTransitionText 
 		FProtocolControlBinding->Assign(AStateMachineConnection->FProtocolControlBinding);
 
-		// параметры с применением Set
+		// параметры с применением Set 
 		InheritanceMismatch = AStateMachineConnection->InheritanceMismatch;
 
 		UpdateAppearance();
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 TStateMachineEditorUnit *__fastcall TStateMachineConnection::GetStateMachineEditorUnit(void) {
 	if (this->Tree) {
 		TStateMachineEditor * AStateMachineEditor = StateMachineEditor;
@@ -908,7 +908,7 @@ TStateMachineEditorUnit *__fastcall TStateMachineConnection::GetStateMachineEdit
 	return NULL;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 TStateMachineEditor * __fastcall TStateMachineConnection::GetStateMachineEditor(void) {
 	if (this->Tree) {
 		return dynamic_cast<TStateMachineEditor*>(this->Tree->Owner);
@@ -916,26 +916,26 @@ TStateMachineEditor * __fastcall TStateMachineConnection::GetStateMachineEditor(
 	return NULL;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::ShowEditor(void) {
 	if (!FTransitionEditor) {
 		FTransitionEditor = new TFormTransitionEditor(this, this);
 	}
 	FTransitionEditor->Show();
-	// восстанавливаем свёрнутое
+	// восстанавливаем свёрнутое 
 	if (FTransitionEditor->WindowState == wsMinimized) {
 		FTransitionEditor->WindowState = wsNormal;
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SaveEditor(void) {
 	if (FTransitionEditor) {
 		FTransitionEditor->ActionSave->Execute();
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::UpdateTransitionText(void) {
 	this->Text->Clear();
 	if ((FScxmlTransitionDisplayTypes.Contains(stdtEvent) || FScxmlTransitionDisplayTypes.Contains(stdtMAXSIZE)) && !FEvent.IsEmpty()) {
@@ -973,7 +973,7 @@ void __fastcall TStateMachineConnection::UpdateTransitionText(void) {
 			}
 		}
 		if (this->ClipOutXML) {
-			// обязательно Trim в этом месте, так как иначе будут добавлены '\r\n'
+			// обязательно Trim в этом месте, так как иначе будут добавлены '\r\n' 
 			this->Text->Add(ClipText(AXMLList->Text.Trim(), ClipTypeXML, ClipOutMax));
 		}
 		else {
@@ -996,29 +996,29 @@ void __fastcall TStateMachineConnection::UpdateTransitionText(void) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 bool __fastcall TStateMachineConnection::IsScxmlTransitionDisplayTypesStored(void) {
 	return !FScxmlTransitionDisplayTypes.Contains(stdtMAXSIZE);
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetScxmlTransitionDisplayTypes(TScxmlTransitionDisplayTypes ATypes) {
 	FScxmlTransitionDisplayTypes = ATypes << stdtEvent;
 
 	UpdateTransitionText();
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetXML(UnicodeString val) {
 	FXML = val.Trim();
 
 	UpdateTransitionText();
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::DoAppendExtraParamsAndChildren(Lmdxml::ILMDXmlElement *AElement,
 	Lmdxml::ILMDXmlElement *AParentNode) {
-	// дополнительные аттрибуты
+	// дополнительные аттрибуты 
 	std::auto_ptr<TStringList>AExtraParamsList(new TStringList());
 	AExtraParamsList->Text = this->ExtraParams;
 	for (int i = 0; i < AExtraParamsList->Count; i++) {
@@ -1051,10 +1051,10 @@ void __fastcall TStateMachineConnection::DoAppendExtraParamsAndChildren(Lmdxml::
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::AppendTransitionElement(Lmdxml::ILMDXmlElement *AParentNode) {
 	try {
-		// только интерфейс должен быть для пристыковки дальше !!!
+		// только интерфейс должен быть для пристыковки дальше !!! 
 		_di_ILMDXmlElement AElement = LMDCreateXmlElement("transition");
 
 		bool bTransitionIsEmpty = true;
@@ -1084,8 +1084,8 @@ void __fastcall TStateMachineConnection::AppendTransitionElement(Lmdxml::ILMDXml
 			}
 		}
 
-		if (this->Type != TScxmlTransitionType::external) {
-			AElement->SetAttr("type", "internal");
+		if (this->Type != TScxmlTransitionType::external || SettingsData->ForceSaveDefaultScxmlValues) {
+			AElement->SetAttr("type", this->Type == TScxmlTransitionType::external ? L"external" : L"internal");
 		}
 
 		DoAppendExtraParamsAndChildren(AElement, AParentNode);
@@ -1100,7 +1100,7 @@ void __fastcall TStateMachineConnection::AppendTransitionElement(Lmdxml::ILMDXml
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::AppendTransitionSwitchElement(Lmdxml::ILMDXmlElement *AParentNode, const UnicodeString &sTarget) {
 	try {
 		if (sTarget.IsEmpty())
@@ -1114,7 +1114,7 @@ void __fastcall TStateMachineConnection::AppendTransitionSwitchElement(Lmdxml::I
 				this->Name + L"> SWITCH Not applicable for SELF-CONNECTION!");
 		}
 
-		// только интерфейс должен быть для пристыковки дальше !!!
+		// только интерфейс должен быть для пристыковки дальше !!! 
 		_di_ILMDXmlElement AElement = LMDCreateXmlElement(L"transition");
 
 		switch(SWITCH) {
@@ -1163,7 +1163,7 @@ void __fastcall TStateMachineConnection::AppendTransitionSwitchElement(Lmdxml::I
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::MakeSelfConnection(void) {
 	try {
 		if (!this->IsSelfConnection)
@@ -1180,7 +1180,7 @@ void __fastcall TStateMachineConnection::MakeSelfConnection(void) {
 
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 TSelfConnectionInfo __fastcall TStateMachineConnection::GetSelfConnectionInfo() {
 	TSelfConnectionInfo AInfo;
 	memset(&AInfo, 0, sizeof(TSelfConnectionInfo));
@@ -1194,13 +1194,26 @@ TSelfConnectionInfo __fastcall TStateMachineConnection::GetSelfConnectionInfo() 
 
 		if (this->Points->Count() == 4) {
 
-			// пока ориентируемся по этой точке, предполагаем, что она параллельна со второй точкой
+			const int tmpAngle = RoundTo(RadToDeg(ArcTan2((this->Points->Item[2].X -this->Points->Item[0].X), //
+						(this->Points->Item[2].Y -this->Points->Item[0].Y))), 0);
+
+			WLOG_DEBUG(L"%d", tmpAngle);
+
+			//			throw Exception("Break"); 
+
+			// пока ориентируемся по этой точке, предполагаем, что она параллельна со второй точкой 
+			const int iStartPointX = this->Points->Item[0].X;
+			const int iStartPointY = this->Points->Item[0].Y;
+
 			const int iCheckPointX = this->Points->Item[1].X;
 			const int iCheckPointY = this->Points->Item[1].Y;
+			const int iCheckPointX2 = this->Points->Item[2].X;
+			const int iCheckPointY2 = this->Points->Item[2].Y;
 
-			// определение верха
-			if ((iCheckPointX >= this->FromShape->X0 && iCheckPointX <= this->FromShape->X1) && iCheckPointY <= this->FromShape->Y0) {
-				AInfo.Align = scaTop;
+			// определение верха 
+			if ((iCheckPointX2 > iStartPointX) && //
+				(iCheckPointY2 < iStartPointY && iCheckPointY < iStartPointY)) {
+				AInfo.Align = AVisShape->SelfConnectionInside ? scaBottom : scaTop;
 
 				switch(this->Points->Item[1].XStyle) {
 				case cpsFromRel:
@@ -1227,9 +1240,10 @@ TSelfConnectionInfo __fastcall TStateMachineConnection::GetSelfConnectionInfo() 
 				AInfo.TextOffset = AVisShape->SelfConnectionTextOffsets->Top;
 			}
 			else
-			// определение низа
-				if ((iCheckPointX >= this->FromShape->X0 && iCheckPointX <= this->FromShape->X1) && iCheckPointY >= this->FromShape->Y1) {
-				AInfo.Align = scaBottom;
+			// определение низа 
+				if ((iCheckPointX2 > iStartPointX) && //
+				(iCheckPointY2 > iStartPointY && iCheckPointY > iStartPointY)) {
+				AInfo.Align = AVisShape->SelfConnectionInside ? scaTop : scaBottom;
 
 				switch(this->Points->Item[1].XStyle) {
 				case cpsFromRel:
@@ -1256,9 +1270,10 @@ TSelfConnectionInfo __fastcall TStateMachineConnection::GetSelfConnectionInfo() 
 				AInfo.TextOffset = AVisShape->SelfConnectionTextOffsets->Bottom;
 			}
 			else
-			// определение влево
-				if ((iCheckPointY >= this->FromShape->Y0 && iCheckPointY <= this->FromShape->Y1) && iCheckPointX <= this->FromShape->X0) {
-				AInfo.Align = scaLeft;
+			// определение влево 
+				if ((iCheckPointY2 > iStartPointY) && //
+				(iCheckPointX2 < iStartPointX && iCheckPointX < iStartPointX)) {
+				AInfo.Align = AVisShape->SelfConnectionInside ? scaRight : scaLeft;
 
 				switch(this->Points->Item[1].YStyle) {
 				case cpsFromRel:
@@ -1285,9 +1300,10 @@ TSelfConnectionInfo __fastcall TStateMachineConnection::GetSelfConnectionInfo() 
 				AInfo.TextOffset = AVisShape->SelfConnectionTextOffsets->Left;
 			}
 			else
-			// определение вправо
-				if ((iCheckPointY >= this->FromShape->Y0 && iCheckPointY <= this->FromShape->Y1) && iCheckPointX >= this->FromShape->X1) {
-				AInfo.Align = scaRight;
+			// определение вправо 
+				if ((iCheckPointY2 > iStartPointY) && //
+				(iCheckPointX2 > iStartPointX && iCheckPointX > iStartPointX)) {
+				AInfo.Align = AVisShape->SelfConnectionInside ? scaLeft : scaRight;
 
 				switch(this->Points->Item[1].YStyle) {
 				case cpsFromRel:
@@ -1318,7 +1334,7 @@ TSelfConnectionInfo __fastcall TStateMachineConnection::GetSelfConnectionInfo() 
 	return AInfo;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 struct TCorner {
 	TCorner() {
 		iOffset = 0;
@@ -1331,57 +1347,67 @@ struct TCorner {
 	int iIndex;
 };
 
-// ---------------------------------------------------------------------------
-void GetSelfConnectionCorners(TTreeConnection * AConnection, const bool bIsSelf, TCorner &ATop, TCorner &ABottom, TCorner &ALeft,
-	TCorner &ARight) {
+// --------------------------------------------------------------------------- 
+void GetSelfConnectionCorners(TTreeConnection * AConnection, const bool bIsSelf, const bool bIsReverseOrder, TCorner &ATop,
+	TCorner &ABottom, TCorner &ALeft, TCorner &ARight) {
 	if (AConnection->FromShape == AConnection->ToShape) {
 		if (AConnection->Points->Count() == 4) {
-			// ориентируемся по первой точке, она является ключевой в Self-Connection
+
+			// ориентируемся по первой точке, она является ключевой в Self-Connection 
+			const int iStartPointX = AConnection->Points->Item[0].X;
+			const int iStartPointY = AConnection->Points->Item[0].Y;
+
 			const int iCheckPointX = AConnection->Points->Item[1].X;
 			const int iCheckPointY = AConnection->Points->Item[1].Y;
+			const int iCheckPointX2 = AConnection->Points->Item[2].X;
+			const int iCheckPointY2 = AConnection->Points->Item[2].Y;
 
-			// определение верха
-			if ((iCheckPointX >= AConnection->FromShape->X0 && iCheckPointX <= AConnection->FromShape->X1)
-				&& iCheckPointY <= AConnection->FromShape->Y0) {
+			// определение верха 
+			if ((iCheckPointX2 > iStartPointX) && //
+				(iCheckPointY2 < iStartPointY && iCheckPointY < iStartPointY)) {
 
 				if (!bIsSelf) {
-					ATop.iOffset = abs(AConnection->FromShape->Y0 - iCheckPointY);
+					const int iStartY = bIsReverseOrder ? AConnection->FromShape->Y1 : AConnection->FromShape->Y0;
+					ATop.iOffset = abs(iStartY - iCheckPointY);
 					ATop.iIndex++;
 				}
 
 				ATop.iCount++;
 			}
 
-			// определение низа
-			if ((iCheckPointX >= AConnection->FromShape->X0 && iCheckPointX <= AConnection->FromShape->X1)
-				&& iCheckPointY >= AConnection->FromShape->Y1) {
+			// определение низа 
+			if ((iCheckPointX2 > iStartPointX) && //
+				(iCheckPointY2 > iStartPointY && iCheckPointY > iStartPointY)) {
 
 				if (!bIsSelf) {
-					ABottom.iOffset = abs(AConnection->FromShape->Y1 - iCheckPointY);
+					const int iStartY = bIsReverseOrder ? AConnection->FromShape->Y0 : AConnection->FromShape->Y1;
+					ABottom.iOffset = abs(iStartY - iCheckPointY);
 					ABottom.iIndex++;
 				}
 
 				ABottom.iCount++;
 			}
 
-			// определение влево
-			if ((iCheckPointY >= AConnection->FromShape->Y0 && iCheckPointY <= AConnection->FromShape->Y1)
-				&& iCheckPointX <= AConnection->FromShape->X0) {
+			// определение влево 
+			if ((iCheckPointY2 > iStartPointY) && //
+				(iCheckPointX2 < iStartPointX && iCheckPointX < iStartPointX)) {
 
 				if (!bIsSelf) {
-					ALeft.iOffset = abs(AConnection->FromShape->X0 - iCheckPointX);
+					const int iStartX = bIsReverseOrder ? AConnection->FromShape->X1 : AConnection->FromShape->X0;
+					ALeft.iOffset = abs(iStartX - iCheckPointX);
 					ALeft.iIndex++;
 				}
 
 				ALeft.iCount++;
 			}
 
-			// определение вправо
-			if ((iCheckPointY >= AConnection->FromShape->Y0 && iCheckPointY <= AConnection->FromShape->Y1)
-				&& iCheckPointX >= AConnection->FromShape->X1) {
+			// определение вправо 
+			if ((iCheckPointY2 > iStartPointY) && //
+				(iCheckPointX2 > iStartPointX && iCheckPointX > iStartPointX)) {
 
 				if (!bIsSelf) {
-					ARight.iOffset = abs(AConnection->FromShape->X1 - iCheckPointX);
+					const int iStartX = bIsReverseOrder ? AConnection->FromShape->X0 : AConnection->FromShape->X1;
+					ARight.iOffset = abs(iStartX - iCheckPointX);
 					ARight.iIndex++;
 				}
 
@@ -1391,7 +1417,7 @@ void GetSelfConnectionCorners(TTreeConnection * AConnection, const bool bIsSelf,
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::AlignSelfConnection(const TSelfConnectionAlign AConnectionAlign,
 	const int iLengthOffsetBegin/* = 0*/, const int iLengthOffsetEnd/* = 0*/, const int iTextOffset/* = 0*/) {
 	try {
@@ -1405,9 +1431,9 @@ void __fastcall TStateMachineConnection::AlignSelfConnection(const TSelfConnecti
 
 		const int iCharHeight = this->Tree->Canvas->TextHeight(TeeCharForHeight);
 		const int iTextHeight = iTextLinesCount * iCharHeight + 6;
-		const int iSelfTextHeight =
-			(iTextHeight < SettingsData->ConnectionSelfDefaultHeight ? SettingsData->ConnectionSelfDefaultHeight : iTextHeight)
-			+ iTextOffset;
+		int iSelfTextHeight = (iTextHeight < SettingsData->ConnectionSelfDefaultHeight ?
+			SettingsData->ConnectionSelfDefaultHeight : iTextHeight) + iTextOffset;
+
 #if 0 // для глубокой отладки
 		WLOG_DEBUG(L"Self-connection:[%s] iTextLinesCount=%d iCharHeight=%d iTextHeight=%d iSelfTextHeight:[%d]", this->SimpleText.c_str(),
 			iTextLinesCount, iCharHeight, iTextHeight, iSelfTextHeight);
@@ -1417,12 +1443,20 @@ void __fastcall TStateMachineConnection::AlignSelfConnection(const TSelfConnecti
 
 		bool bFindSelf = false;
 
+		/* https://github.com/alexzhornyak/ScxmlEditor-Tutorial/issues/94 */
+		bool bReverse = false;
+
+		TVisualScxmlBaseShape * AVisualFrom = this->GetVisualFrom();
+		if (AVisualFrom) {
+			bReverse = AVisualFrom->SelfConnectionInside;
+		}
+
 		for (int i = 0; i < this->FromShape->Connections->Count; i++) {
 			if (this->FromShape->Connections->Items[i] == this) {
 				bFindSelf = true;
 			}
 
-			GetSelfConnectionCorners(this->FromShape->Connections->Items[i], bFindSelf, ATop, ABottom, ALeft, ARight);
+			GetSelfConnectionCorners(this->FromShape->Connections->Items[i], bFindSelf, bReverse, ATop, ABottom, ALeft, ARight);
 		}
 
 		this->Points->Clear();
@@ -1433,46 +1467,75 @@ void __fastcall TStateMachineConnection::AlignSelfConnection(const TSelfConnecti
 		int iQuoterWidth = iShapeWidth / 4;
 		int iQuoterHeight = iShapeHeight / 4;
 
-		switch(AConnectionAlign) {
-		case scaTop:
-			iQuoterWidth = iQuoterWidth / (ATop.iCount + 1) * (ATop.iIndex + 1);
-			iQuoterWidth = iQuoterWidth * 100 / iShapeWidth;
+		TSelfConnectionAlign AResultAlign = AConnectionAlign;
 
-			this->Points->Add(cpsFromPercent, 0 + iQuoterWidth + iLengthOffsetBegin, cpsFromPercent, 0);
-			this->Points->Add(cpsFromPercent, 0 + iLengthOffsetBegin, cpsFromRel, 0 - iSelfTextHeight - ATop.iOffset);
-			this->Points->Add(cpsFromPercent, 100 - iLengthOffsetEnd, cpsPrevious, 0);
-			this->Points->Add(cpsFromPercent, 100 - iQuoterWidth - iLengthOffsetEnd, cpsFromPercent, 0);
-			break;
-		case scaBottom:
-			iQuoterWidth = iQuoterWidth / (ABottom.iCount + 1) * (ABottom.iIndex + 1);
-			iQuoterWidth = iQuoterWidth * 100 / iShapeWidth;
-
-			this->Points->Add(cpsFromPercent, 0 + iQuoterWidth + iLengthOffsetBegin, cpsFromPercent, 100);
-			this->Points->Add(cpsFromPercent, 0 + iLengthOffsetBegin, cpsPrevious, iSelfTextHeight + ABottom.iOffset);
-			this->Points->Add(cpsFromPercent, 100 - iLengthOffsetEnd, cpsPrevious, 0);
-			this->Points->Add(cpsFromPercent, 100 - iQuoterWidth - iLengthOffsetEnd, cpsFromPercent, 100);
-			break;
-		case scaLeft:
-			iQuoterHeight = iQuoterHeight / (ALeft.iCount + 1) * (ALeft.iIndex + 1);
-			iQuoterHeight = iQuoterHeight * 100 / iShapeHeight;
-
-			this->Points->Add(cpsFromPercent, 0, cpsFromPercent, 0 + iQuoterHeight + iLengthOffsetBegin);
-			this->Points->Add(cpsFromRel, 0 - iSelfTextHeight - ALeft.iOffset, cpsFromPercent, 0 + iLengthOffsetBegin);
-			this->Points->Add(cpsPrevious, 0, cpsFromPercent, 100 - iLengthOffsetEnd);
-			this->Points->Add(cpsFromPercent, 0, cpsFromPercent, 100 - iQuoterHeight - iLengthOffsetEnd);
-			break;
-		case scaRight:
-			iQuoterHeight = iQuoterHeight / (ARight.iCount + 1) * (ARight.iIndex + 1);
-			iQuoterHeight = iQuoterHeight * 100 / iShapeHeight;
-
-			this->Points->Add(cpsFromPercent, 100, cpsFromPercent, 0 + iQuoterHeight + iLengthOffsetBegin);
-			this->Points->Add(cpsPrevious, iSelfTextHeight + ARight.iOffset, cpsFromPercent, 0 + iLengthOffsetBegin);
-			this->Points->Add(cpsPrevious, 0, cpsFromPercent, 100 - iLengthOffsetEnd);
-			this->Points->Add(cpsFromPercent, 100, cpsFromPercent, 100 - iQuoterHeight - iLengthOffsetEnd);
-			break;
+		if (bReverse) {
+			switch(AConnectionAlign) {
+			case scaTop:
+				AResultAlign = scaBottom;
+				break;
+			case scaBottom:
+				AResultAlign = scaTop;
+				break;
+			case scaLeft:
+				AResultAlign = scaRight;
+				break;
+			case scaRight:
+				AResultAlign = scaLeft;
+				break;
+			}
 		}
 
-		// для того, чтобы сформировались координаты X и Y
+		switch(AResultAlign) {
+		case scaTop: {
+				iQuoterWidth = iQuoterWidth / (ATop.iCount + 1) * (ATop.iIndex + 1);
+				iQuoterWidth = iQuoterWidth * 100 / iShapeWidth;
+
+				const int iStartY = bReverse ? 100 : 0;
+				const TConnectionPointStyle AMiddleStyleY = bReverse ? cpsPrevious : cpsFromRel;
+
+				this->Points->Add(cpsFromPercent, 0 + iQuoterWidth + iLengthOffsetBegin, cpsFromPercent, iStartY);
+				this->Points->Add(cpsFromPercent, 0 + iLengthOffsetBegin, AMiddleStyleY, 0 - iSelfTextHeight - ATop.iOffset);
+				this->Points->Add(cpsFromPercent, 100 - iLengthOffsetEnd, cpsPrevious, 0);
+				this->Points->Add(cpsFromPercent, 100 - iQuoterWidth - iLengthOffsetEnd, cpsFromPercent, iStartY);
+			}break;
+		case scaBottom: {
+				iQuoterWidth = iQuoterWidth / (ABottom.iCount + 1) * (ABottom.iIndex + 1);
+				iQuoterWidth = iQuoterWidth * 100 / iShapeWidth;
+
+				const int iStartY = bReverse ? 0 : 100;
+
+				this->Points->Add(cpsFromPercent, 0 + iQuoterWidth + iLengthOffsetBegin, cpsFromPercent, iStartY);
+				this->Points->Add(cpsFromPercent, 0 + iLengthOffsetBegin, cpsPrevious, iSelfTextHeight + ABottom.iOffset);
+				this->Points->Add(cpsFromPercent, 100 - iLengthOffsetEnd, cpsPrevious, 0);
+				this->Points->Add(cpsFromPercent, 100 - iQuoterWidth - iLengthOffsetEnd, cpsFromPercent, iStartY);
+			}break;
+		case scaLeft: {
+				iQuoterHeight = iQuoterHeight / (ALeft.iCount + 1) * (ALeft.iIndex + 1);
+				iQuoterHeight = iQuoterHeight * 100 / iShapeHeight;
+
+				const int iStartX = bReverse ? 100 : 0;
+				const TConnectionPointStyle AMiddleStyleX = bReverse ? cpsPrevious : cpsFromRel;
+
+				this->Points->Add(cpsFromPercent, iStartX, cpsFromPercent, 0 + iQuoterHeight + iLengthOffsetBegin);
+				this->Points->Add(AMiddleStyleX, 0 - iSelfTextHeight - ALeft.iOffset, cpsFromPercent, 0 + iLengthOffsetBegin);
+				this->Points->Add(cpsPrevious, 0, cpsFromPercent, 100 - iLengthOffsetEnd);
+				this->Points->Add(cpsFromPercent, iStartX, cpsFromPercent, 100 - iQuoterHeight - iLengthOffsetEnd);
+			}break;
+		case scaRight: {
+				iQuoterHeight = iQuoterHeight / (ARight.iCount + 1) * (ARight.iIndex + 1);
+				iQuoterHeight = iQuoterHeight * 100 / iShapeHeight;
+
+				const int iStartX = bReverse ? 0 : 100;
+
+				this->Points->Add(cpsFromPercent, iStartX, cpsFromPercent, 0 + iQuoterHeight + iLengthOffsetBegin);
+				this->Points->Add(cpsPrevious, iSelfTextHeight + ARight.iOffset, cpsFromPercent, 0 + iLengthOffsetBegin);
+				this->Points->Add(cpsPrevious, 0, cpsFromPercent, 100 - iLengthOffsetEnd);
+				this->Points->Add(cpsFromPercent, iStartX, cpsFromPercent, 100 - iQuoterHeight - iLengthOffsetEnd);
+			}break;
+		}
+
+		// для того, чтобы сформировались координаты X и Y 
 		Editorutils::CalculatePointsPosition(this);
 
 	}
@@ -1481,7 +1544,7 @@ void __fastcall TStateMachineConnection::AlignSelfConnection(const TSelfConnecti
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 bool __fastcall TStateMachineConnection::Draw(void) {
 
 	bool result = false;
@@ -1504,7 +1567,7 @@ bool __fastcall TStateMachineConnection::Draw(void) {
 			/* Process FromShape */ {
 				int iTransitionIterIndex = 0;
 
-				// 1) Smart Transitions
+				// 1) Smart Transitions 
 				Editorutils::TConnectionFromToMap AInConnections;
 				Editorutils::CollectInConnections(this->FromShape, AInConnections);
 
@@ -1516,7 +1579,7 @@ bool __fastcall TStateMachineConnection::Draw(void) {
 					}
 				}
 
-				// 2) Regular Transitions
+				// 2) Regular Transitions 
 				for (int k = 0; k < this->FromShape->Connections->Count; k++) {
 					TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(this->FromShape->Connections->Items[k]);
 					/* 'ExcludeFromSave==false' гарантирует VisualFrom и VisualTo */
@@ -1535,7 +1598,7 @@ bool __fastcall TStateMachineConnection::Draw(void) {
 
 			/* Process ToShape */
 			if (!this->IsSelfConnection && this->SWITCH != tstNONE) {
-				// 1) Smart Transitions
+				// 1) Smart Transitions 
 				Editorutils::TConnectionFromToMap AInConnections;
 				Editorutils::CollectInConnections(this->ToShape, AInConnections);
 
@@ -1566,12 +1629,12 @@ bool __fastcall TStateMachineConnection::Draw(void) {
 
 			result = true;
 
-			// раньше вызывалось только один раз,
-			// 26.04.2019 тестово устанавливаем постоянно
+			// раньше вызывалось только один раз, 
+			// 26.04.2019 тестово устанавливаем постоянно 
 			UpdateAppearance();
 
 			if (Visible()) {
-				// use manager to draw connection line(s)...
+				// use manager to draw connection line(s)... 
 				if (Style == csAuto) {
 					if (Tree && Tree->GlobalFormat.ChildManager) {
 						result = Tree->GlobalFormat.ChildManager->DrawConnection(this);
@@ -1593,7 +1656,7 @@ bool __fastcall TStateMachineConnection::Draw(void) {
 	return result;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::DoInternalDrawEx(void) {
 	TTreeEx *ATree = dynamic_cast<TTreeEx*>(Tree);
 	if (!ATree) {
@@ -1603,7 +1666,7 @@ void __fastcall TStateMachineConnection::DoInternalDrawEx(void) {
 
 	DoPreparePoints();
 
-	// не делаем 'const', так как для Curve может поменяться их кол-во
+	// не делаем 'const', так как для Curve может поменяться их кол-во 
 	int tmpNum = Points->Count();
 	if (!tmpNum)
 		return;
@@ -1620,7 +1683,7 @@ void __fastcall TStateMachineConnection::DoInternalDrawEx(void) {
 			TCurvePoints tmpCurve;
 			GetCurvePoints(tmpCurve);
 
-			// Curves need 4 points, or more than 4 in groups of 3
+			// Curves need 4 points, or more than 4 in groups of 3 
 			if (tmpNum > 4) {
 				while ((tmpNum - 4) % 3 != 0) {
 					tmpCurve[tmpNum] = tmpCurve[tmpNum - 1];
@@ -1628,7 +1691,14 @@ void __fastcall TStateMachineConnection::DoInternalDrawEx(void) {
 				}
 			}
 
-			PolyBezier(Tree->Canvas->Handle, tmpCurve, tmpNum);
+			/* fix: https://github.com/alexzhornyak/ScxmlEditor-Tutorial/issues/90 */
+			if (TTreeSVGCanvasEx * ATreeSVGCanvasEx = dynamic_cast<TTreeSVGCanvasEx*>(Tree->Canvas)) {
+				// Draw as SVG cubic bezier path 
+				ATreeSVGCanvasEx->DrawPolyBezier(tmpCurve, tmpNum);
+			}
+			else {
+				PolyBezier(Tree->Canvas->Handle, tmpCurve, tmpNum);
+			}
 
 			for (int i = 0; i < tmpNum; i++) {
 				ARealPoints.push_back(tmpCurve[i]);
@@ -1647,7 +1717,7 @@ void __fastcall TStateMachineConnection::DoInternalDrawEx(void) {
 					case csSides: {
 							const double dDistance = Editorutils::DistanceBetweenPoints(tmpX, tmpY, tmpX, Points->Item[i].Y);
 							if (dDistance <= 1.0f) {
-								// WLOG_DEBUG(L"Too small distance point=%d dist=%f", i, dDistance);
+								// WLOG_DEBUG(L"Too small distance point=%d dist=%f", i, dDistance); 
 								ARealPoints.push_back(TPoint(Points->Item[i].X, Points->Item[i].Y));
 							}
 							else {
@@ -1660,7 +1730,7 @@ void __fastcall TStateMachineConnection::DoInternalDrawEx(void) {
 					case csInvertedSides: {
 							const double dDistance = Editorutils::DistanceBetweenPoints(tmpX, tmpY, Points->Item[i].X, tmpY);
 							if (dDistance <= 1.0f) {
-								// WLOG_DEBUG(L"Too small distance point=%d dist=%f", i, dDistance);
+								// WLOG_DEBUG(L"Too small distance point=%d dist=%f", i, dDistance); 
 								ARealPoints.push_back(TPoint(Points->Item[i].X, Points->Item[i].Y));
 							}
 							else {
@@ -1684,7 +1754,7 @@ void __fastcall TStateMachineConnection::DoInternalDrawEx(void) {
 
 			}
 			else {
-				// в этом месте только одна точка может быть!
+				// в этом месте только одна точка может быть! 
 				ARealPoints.push_back(TPoint(Points->Item[0].X, Points->Item[0].Y));
 			}
 		}
@@ -1697,7 +1767,7 @@ void __fastcall TStateMachineConnection::DoInternalDrawEx(void) {
 		int tmpY1 = 0;
 
 		/* Draw Arrows */
-		// 1) Arrow From
+		// 1) Arrow From 
 		if (ARealPoints.size() > 1) {
 			tmpX1 = ARealPoints[1].x;
 			tmpY1 = ARealPoints[1].y;
@@ -1710,9 +1780,9 @@ void __fastcall TStateMachineConnection::DoInternalDrawEx(void) {
 			ArrowFrom->Draw(Points->Item[0], 270 - tmpAngle);
 		}
 
-		// 2) Arrow To
+		// 2) Arrow To 
 		tmpAngle = 0;
-		const int iLast = tmpNum - 1; // last point index
+		const int iLast = tmpNum - 1; // last point index 
 		if (iLast > 0) {
 			tmpX1 = Points->Item[iLast].X;
 			tmpY1 = Points->Item[iLast].Y;
@@ -1779,7 +1849,7 @@ void __fastcall TStateMachineConnection::DoInternalDrawEx(void) {
 
 		/* Отрисовка индексов соединений */
 		if (this->Points->Count() && this->FromShape) {
-			// проверяем сколько переходов типа Transition, если больше одного, тогда покажем нумерацию
+			// проверяем сколько переходов типа Transition, если больше одного, тогда покажем нумерацию 
 			int iStateConnectionsCount = 0;
 			int iIndex = 0;
 			for (int i = 0; i < this->FromShape->Connections->Count; i++) {
@@ -1803,7 +1873,7 @@ void __fastcall TStateMachineConnection::DoInternalDrawEx(void) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 TPoint __fastcall TStateMachineConnection::GetTextAbsolutePosWithoutCentering(void) {
 	int tmpX = 0;
 	int tmpY = 0;
@@ -1842,7 +1912,7 @@ TPoint __fastcall TStateMachineConnection::GetTextAbsolutePosWithoutCentering(vo
 	return Point(tmpX, tmpY);
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::CalculateTextPosWithoutDraw(void) {
 	if (!Tree)
 		return;
@@ -1856,7 +1926,7 @@ void __fastcall TStateMachineConnection::CalculateTextPosWithoutDraw(void) {
 
 	DoPreparePoints();
 
-	// не делаем 'const', так как для Curve может поменяться их кол-во
+	// не делаем 'const', так как для Curve может поменяться их кол-во 
 	int tmpNum = Points->Count();
 	if (!tmpNum)
 		return;
@@ -1897,7 +1967,7 @@ void __fastcall TStateMachineConnection::CalculateTextPosWithoutDraw(void) {
 
 			const int tmpH = Tree->Canvas->TextHeight(TeeCharForHeight);
 
-			// центруем, если текст только по Центру
+			// центруем, если текст только по Центру 
 			if (FVerticalCentering && !tmpAngle) {
 				ATextPos.y -= tmpH * tmpCount / 2;
 			}
@@ -1907,7 +1977,7 @@ void __fastcall TStateMachineConnection::CalculateTextPosWithoutDraw(void) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::DrawText(int Angle) {
 	if (!Tree)
 		return;
@@ -1933,7 +2003,7 @@ void __fastcall TStateMachineConnection::DrawText(int Angle) {
 
 		const int tmpH = Tree->Canvas->TextHeight(TeeCharForHeight);
 
-		// центруем, если текст только по Центру
+		// центруем, если текст только по Центру 
 		if (FVerticalCentering && !Angle) {
 			ATextPos.y -= tmpH * tmpCount / 2;
 		}
@@ -1942,7 +2012,7 @@ void __fastcall TStateMachineConnection::DrawText(int Angle) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::FillTextColorQueue(std::deque<TColor> &AColorQueue) {
 	if (!FEvent.IsEmpty()) {
 		AColorQueue.push_back(clBlack);
@@ -1997,13 +2067,13 @@ void __fastcall TStateMachineConnection::FillTextColorQueue(std::deque<TColor> &
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::DoDrawText(int tmpCount, int tmpX, int tmpOffX, int tmpY, int tmpOffY, int Angle, int tmpH) {
 
 	DoDrawTextInternal(true, tmpCount, tmpX, tmpOffX, tmpY, tmpOffY, Angle, tmpH);
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::DoDrawTextInternal(const bool bDraw, int tmpCount, int tmpX, int tmpOffX, int tmpY, int tmpOffY,
 	int Angle, int tmpH) {
 	std::deque<TColor>AColorQueue;
@@ -2052,7 +2122,7 @@ void __fastcall TStateMachineConnection::DoDrawTextInternal(const bool bDraw, in
 		const int iTextY = tmpY + tmpOffY;
 
 		if (bDraw) {
-			// если бэкграунд, тогда только просчитываем данные
+			// если бэкграунд, тогда только просчитываем данные 
 			if (bNeedToDrawBackground) {
 				AVecText.push_back(boost::make_tuple(Tree->Canvas->Font->Style.Contains(fsBold), Tree->Canvas->Font->Color, tmpS, iTextX,
 						iTextY));
@@ -2131,12 +2201,12 @@ void __fastcall TStateMachineConnection::DoDrawTextInternal(const bool bDraw, in
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 int __fastcall TStateMachineConnection::GetTransitionIndex(void) {
 	return Editorutils::GetConnectionIndex(this);
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetTransitionIndex(int val) {
 	if (Editorutils::SetConnectionIndex(this, val)) {
 		if (!this->ComponentState.Contains(csLoading) && !this->ComponentState.Contains(csReading)) {
@@ -2147,7 +2217,7 @@ void __fastcall TStateMachineConnection::SetTransitionIndex(int val) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetConnectionOverStyle(const TConnectionOverType AType) {
 	if (this->FromShape && this->ToShape) {
 
@@ -2161,14 +2231,14 @@ void __fastcall TStateMachineConnection::SetConnectionOverStyle(const TConnectio
 
 				this->Points->Clear();
 
-				// 1 точка: привязана к FromShape
+				// 1 точка: привязана к FromShape 
 				this->Points->Add(cpsFromPercent, 50, cpsFromPercent, 0);
 
-				// 2 точка: вне фигуры
+				// 2 точка: вне фигуры 
 				const int iPrevious = (this->FromShape->Y0 > this->ToShape->Y0) ? (-(this->FromShape->Y0 -this->ToShape->Y0) - 50) : -50;
 				this->Points->Add(cpsFromPercent, 50, cpsPrevious, iPrevious);
 
-				// 3 точка: привязана к ToShape
+				// 3 точка: привязана к ToShape 
 				this->Points->Add(cpsToPercent, 50, cpsToPercent, 0);
 
 				this->Text->VertAlign = TVertTextAlign::vtaBottom;
@@ -2254,7 +2324,7 @@ void __fastcall TStateMachineConnection::SetConnectionOverStyle(const TConnectio
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetInheritanceMismatch(bool val) {
 	if (StateMachineEditorUnit && StateMachineEditorUnit->IsInherited) {
 		FInheritanceMismatch = val;
@@ -2264,26 +2334,26 @@ void __fastcall TStateMachineConnection::SetInheritanceMismatch(bool val) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::SetSkipAutolayout(bool val) {
 	FSkipAutolayout = val;
 
-	//this->Brush->Style = FSkipDebugging ? bsCross : bsSolid;
+	//this->Brush->Style = FSkipDebugging ? bsCross : bsSolid; 
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::DoPreparePoints(void) {
 	const int tmpNum = Points->Count();
 
 	if (Style != csAuto) {
 		if (Style == csCurve) {
-			// If curve with less than 4 points, call Setup
+			// If curve with less than 4 points, call Setup 
 			if (tmpNum < 4) {
 				SetupPoints();
 			}
 		}
 		else {
-			// If line with less than 2 points, call Setup
+			// If line with less than 2 points, call Setup 
 			if (tmpNum < 2) {
 #ifdef _PANIC_DEBUG_
 				WLOG_DEBUG(L"%s> Setup points. Current point count:[%d]", this->SimpleText.c_str(), tmpNum);
@@ -2296,7 +2366,7 @@ void __fastcall TStateMachineConnection::DoPreparePoints(void) {
 
 				Editorutils::CalculatePointsPosition(this);
 
-				// убираем точки, которые накладываются друг на друга
+				// убираем точки, которые накладываются друг на друга 
 				for (int i = tmpNum - 2; i >= 0; i--) {
 					const double dDistanceToPrev = Editorutils::DistanceBetweenPoints(Points->Item[i].X, Points->Item[i].Y,
 						Points->Item[i + 1].X, Points->Item[i + 1].Y);
@@ -2324,7 +2394,7 @@ void __fastcall TStateMachineConnection::DoPreparePoints(void) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::DoPrepareIBounds(void) {
 	TRect tmpBounds(0, 0, 0, 0);
 	const int tmpNum = Points->Count();
@@ -2355,13 +2425,13 @@ void __fastcall TStateMachineConnection::DoPrepareIBounds(void) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::ForceCalculateBounds(void) {
 	UpdateAppearance();
 
 	DoPreparePoints();
 
-	// не делаем 'const', так как для Curve может поменяться их кол-во
+	// не делаем 'const', так как для Curve может поменяться их кол-во 
 	int tmpNum = Points->Count();
 	if (!tmpNum)
 		return;
@@ -2369,17 +2439,17 @@ void __fastcall TStateMachineConnection::ForceCalculateBounds(void) {
 	DoPrepareIBounds();
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 bool __fastcall TStateMachineConnection::IsPointInTextPolygon(const TPoint &pt) {
 	return PointInPolygon(pt, FDrawTextData.Polygon, 3);
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 bool __fastcall TStateMachineConnection::IsPointInTextPolygon(const int iX, const int iY) {
 	return IsPointInTextPolygon(TPoint(iX, iY));
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::AssignTextPolygonToPoints(TPointCollection * APoints) {
 	if (!APoints)
 		return;
@@ -2396,12 +2466,12 @@ void __fastcall TStateMachineConnection::AssignTextPolygonToPoints(TPointCollect
 	APoints->EndUpdate();
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 bool __fastcall TStateMachineConnection::IsTextEmpty(void) {
 	return !FText || FText->Text.IsEmpty();
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 UnicodeString __fastcall TStateMachineConnection::ToClipboardText(void) {
 	std::auto_ptr<TMemoryStream>AInStreamPtr(new TMemoryStream());
 	AInStreamPtr->WriteComponent(this);
@@ -2413,13 +2483,13 @@ UnicodeString __fastcall TStateMachineConnection::ToClipboardText(void) {
 	std::auto_ptr<TStringList>AConnectionListPtr(new TStringList());
 	AConnectionListPtr->LoadFromStream(AOutStreamPtr.get());
 	if (AConnectionListPtr->Count) {
-		AConnectionListPtr->Strings[0] = L"object " + ClassName(); // чтобы имя компонента не записывалось
+		AConnectionListPtr->Strings[0] = L"object " + ClassName(); // чтобы имя компонента не записывалось 
 		return AConnectionListPtr->Text;
 	}
 	return L"";
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 bool __fastcall TStateMachineConnection::IsEditorModified(void) {
 	if (FTransitionEditor) {
 		return FTransitionEditor->IsModified();
@@ -2427,7 +2497,7 @@ bool __fastcall TStateMachineConnection::IsEditorModified(void) {
 	return false;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 bool __fastcall TStateMachineConnection::IsEditorOpened(void) {
 	if (FTransitionEditor) {
 		return FTransitionEditor->Showing;
@@ -2435,17 +2505,17 @@ bool __fastcall TStateMachineConnection::IsEditorOpened(void) {
 	return false;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 TVisualScxmlBaseShape * __fastcall TStateMachineConnection::GetVisualFrom(void) {
 	return dynamic_cast<TVisualScxmlBaseShape*>(this->FromShape);
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 TVisualScxmlBaseShape * __fastcall TStateMachineConnection::GetVisualTo(void) {
 	return dynamic_cast<TVisualScxmlBaseShape*>(this->ToShape);
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 bool __fastcall TStateMachineConnection::GetExcludeFromSave(void) {
 	if (this->VisualFrom && this->VisualTo && !this->VisualFrom->ExcludeFromSave && !this->VisualTo->ExcludeFromSave) {
 		return false;
@@ -2454,7 +2524,7 @@ bool __fastcall TStateMachineConnection::GetExcludeFromSave(void) {
 	return true;
 }
 
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------- 
 void __fastcall TStateMachineConnection::FillEventNamesList(TStrings *AList) {
 	if (this->Tree) {
 		for (int i = 0; i < this->Tree->Shapes->Count; i++) {
@@ -2483,4 +2553,4 @@ void __fastcall TStateMachineConnection::FillEventNamesList(TStrings *AList) {
 	}
 }
 
-// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------       

@@ -118,7 +118,8 @@ __published:
 
 	void __fastcall TabControl1Change(System::TObject* Sender);
 
-    virtual void __fastcall EditAppearanceClick(System::TObject* Sender);
+	virtual void __fastcall EditAppearanceClick(System::TObject* Sender);
+	virtual void __fastcall Edit1Click(System::TObject* Sender);
 
 private:
     	/* VARIABLES */
@@ -322,6 +323,12 @@ private:
 	void __fastcall OnMenuChartVersion(System::TObject* Sender);
 	void __fastcall OnMenuChartStatistics(System::TObject* Sender);
 
+	void __fastcall OnEditNodeTreeShow(System::TObject* Sender);
+	void __fastcall ThemeStateColorMouseUp(System::TObject* Sender, Controls::TMouseButton Button, Classes::TShiftState Shift, int X, int Y);
+	void __fastcall ThemeStateClusterColorMouseUp(System::TObject* Sender, Controls::TMouseButton Button, Classes::TShiftState Shift, int X, int Y);
+	void __fastcall ThemeBorderNormalColorMouseUp(System::TObject* Sender, Controls::TMouseButton Button, Classes::TShiftState Shift, int X, int Y);
+	void __fastcall ThemeBorderClick(System::TObject* Sender);
+
 	void __fastcall CheckImageAdvancedDrawItem(TObject *Sender, TCanvas *ACanvas, const TRect &ARect, TOwnerDrawState State);
 
 	std::map<UnicodeString, int>FShapeImagesMap;
@@ -512,10 +519,14 @@ protected:
 	void __fastcall OnActionConnectionHighlightExecute(TObject *Sender);
 	void __fastcall OnActionConnectionHighlightUpdate(TObject *Sender);
 
+	void __fastcall ExecuteInterprocessCommand(INTERPROCESS_COPYDATA *ACopyData);
+
 	void __fastcall OnMsgDeleteTreeShape(TMessage &AMsg);
+	void __fastcall OnMsgCopyData(TWMCopyData &msg);
 
 	BEGIN_MESSAGE_MAP
 		VCL_MESSAGE_HANDLER(WM_SCXML_DELETE_TREE_SHAPE, TMessage, OnMsgDeleteTreeShape)
+		VCL_MESSAGE_HANDLER(WM_COPYDATA, TWMCopyData, OnMsgCopyData)
 	END_MESSAGE_MAP(TTreeEditorEx)
 
 public:
@@ -556,6 +567,16 @@ public:
 
 	void __fastcall SaveToSVG(TStringList *AOutputList, TTreeNodeShape *ARootShape = NULL);
 	void __fastcall SaveToSVG(const UnicodeString &sFileName, TTreeNodeShape *ARootShape = NULL);
+
+	void __fastcall SaveRawScxmlToFile(const UnicodeString &sFileName);
+	void __fastcall SaveRawScxmlToHPP(const UnicodeString &sFileName);
+	void __fastcall SaveScxmlToPas(const UnicodeString &sFileName);
+
+	void __fastcall SaveToDot(const UnicodeString &sFileName);
+	void __fastcall SaveToDotPlusPng(const UnicodeString &sFileName);
+
+	void __fastcall SaveToBMP(const UnicodeString &sFileName);
+	void __fastcall SaveToPNG(const UnicodeString &sFileName);
 
 	void __fastcall GetDataIDs(TStrings *AIDList);
 	void __fastcall GetStateNames(TStrings *AStateNamesList);
@@ -680,10 +701,6 @@ public:
 	void __fastcall ClearEnteredStates(void);
 
 	void __fastcall ClearAllBreakpoints(void);
-
-	void __fastcall SaveRawScxmlToFile(const UnicodeString &sFileName);
-	void __fastcall SaveRawScxmlToHPP(const UnicodeString &sFileName);
-	void __fastcall SaveScxmlToPas(const UnicodeString &sFileName);
 
 	void __fastcall UpdateCaption(void);
 	void __fastcall UpdateSyntaxView(void);

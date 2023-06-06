@@ -1743,6 +1743,8 @@ void __fastcall TStateMachineEditor::ConvertScxmlDataToDesign(const UnicodeStrin
 		FLockClearUndo = true;
 
 		LoadScxmlData(sScxmlData, CurrentFile);
+
+		this->MarkModified(1, "Manual Edit", true);
 	}
 	__finally {
 		FLockClearUndo = false;
@@ -7616,6 +7618,356 @@ void __fastcall TStateMachineEditor::EditAppearanceClick(System::TObject* Sender
 }
 
 // ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::Edit1Click(System::TObject* Sender) {
+	if (TheTree->Selected->Count() > 0) {
+
+		InternalEditTreeShapePage(this, TheTree->Selected->First(), stFormat, true, this->OnEditNodeTreeShow);
+
+		SetToolBars();
+		TeeModified(true, 1, "Shape appearance");
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnEditNodeTreeShow(System::TObject* Sender) {
+	TNodeTreeEditor * ANodeTreeEditor = dynamic_cast<TNodeTreeEditor*>(Sender);
+	if (ANodeTreeEditor) {
+		TTreeNodeShape *ASelected = GetSafeTreeListFirst(TheTree->Selected->Shapes);
+		if (ASelected) {
+			/* Setup Theme Colors */
+			if (TScxmlShape * AScxmlShape = dynamic_cast<TScxmlShape*>(ASelected)) {
+				ANodeTreeEditor->Shape4->Brush->Color = SettingsData->ThemeSettings->ScxmlNormalHeadColor;
+			}
+			else if (TParallelShape * AParallelShape = dynamic_cast<TParallelShape*>(ASelected)) {
+				ANodeTreeEditor->Shape4->Brush->Color = SettingsData->ThemeSettings->ParallelNormalColor;
+			}
+			else if (TVirtualShape * AVirtualShape = dynamic_cast<TVirtualShape*>(ASelected)) {
+				ANodeTreeEditor->Shape4->Brush->Color = SettingsData->ThemeSettings->VirtualNormalColor;
+			}
+			else if (TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(ASelected)) {
+				ANodeTreeEditor->Shape4->Brush->Color = SettingsData->ThemeSettings->StateNormalColor;
+				ANodeTreeEditor->Shape5->Brush->Color = SettingsData->ThemeSettings->StateNormalBorderColor;
+			}
+			else if (TChildScxmlBaseShape * AChildScxmlBaseShape = dynamic_cast<TChildScxmlBaseShape*>(ASelected)) {
+				ANodeTreeEditor->Shape4->Brush->Color = SettingsData->ThemeSettings->ChildNormalColor;
+				ANodeTreeEditor->Shape5->Brush->Color = SettingsData->ThemeSettings->ChildNormalBorderColor;
+			}
+
+			/* All Visual Shapes */
+			if (TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(ASelected)) {
+				ANodeTreeEditor->ShapeClusterColor->Brush->Color = SettingsData->ThemeSettings->StateClusterColor;
+				ANodeTreeEditor->ShapeClusterColor->Visible = true;
+				ANodeTreeEditor->LabelClusterColor->Visible = true;
+
+				/* Override Color Handlers */
+				ANodeTreeEditor->Shape4->OnMouseUp = this->ThemeStateColorMouseUp;
+				ANodeTreeEditor->Shape5->OnMouseUp = this->ThemeBorderNormalColorMouseUp;
+				ANodeTreeEditor->ShapeClusterColor->OnMouseUp = this->ThemeStateClusterColorMouseUp;
+				ANodeTreeEditor->Button1->OnClick = this->ThemeBorderClick;
+			}
+			else {
+				ANodeTreeEditor->ShapeClusterColor->Visible = false;
+				ANodeTreeEditor->LabelClusterColor->Visible = false;
+			}
+
+			/* All Child Shapes */
+			if (TChildScxmlBaseShape * AChildScxmlBaseShape = dynamic_cast<TChildScxmlBaseShape*>(ASelected)) {
+				/* Override Color Handlers */
+				ANodeTreeEditor->Shape4->OnMouseUp = this->ThemeStateColorMouseUp;
+				ANodeTreeEditor->Shape5->OnMouseUp = this->ThemeBorderNormalColorMouseUp;
+				ANodeTreeEditor->Button1->OnClick = this->ThemeBorderClick;
+			}
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::ThemeStateColorMouseUp(System::TObject* Sender, Controls::TMouseButton Button,
+	Classes::TShiftState Shift, int X, int Y) {
+
+	TShape * AShape = dynamic_cast<TShape*>(Sender);
+	if (AShape) {
+		TTreeNodeShape *ASelected = GetSafeTreeListFirst(TheTree->Selected->Shapes);
+		if (ASelected) {
+
+			TColor AOldColor = AShape->Brush->Color;
+			TColor ANewColor = EditColor(this, AOldColor);
+			if (AOldColor != ANewColor) {
+				AShape->Brush->Color = ANewColor;
+
+				if (TScxmlShape * AScxmlShape = dynamic_cast<TScxmlShape*>(ASelected)) {
+					SettingsData->ThemeSettings->ScxmlNormalHeadColor = ANewColor;
+				}
+				else if (TParallelShape * AParallelShape = dynamic_cast<TParallelShape*>(ASelected)) {
+					SettingsData->ThemeSettings->ParallelNormalColor = ANewColor;
+				}
+				else if (TVirtualShape * AVirtualShape = dynamic_cast<TVirtualShape*>(ASelected)) {
+					SettingsData->ThemeSettings->VirtualNormalColor = ANewColor;
+				}
+				else if (TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(ASelected)) {
+					SettingsData->ThemeSettings->StateNormalColor = ANewColor;
+				}
+				else if (TChildScxmlBaseShape * AChildScxmlBaseShape = dynamic_cast<TChildScxmlBaseShape*>(ASelected)) {
+					SettingsData->ThemeSettings->ChildNormalColor = ANewColor;
+				}
+			}
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::ThemeStateClusterColorMouseUp(System::TObject* Sender, Controls::TMouseButton Button,
+	Classes::TShiftState Shift, int X, int Y) {
+
+	TShape * AShape = dynamic_cast<TShape*>(Sender);
+	if (AShape) {
+		TTreeNodeShape *ASelected = GetSafeTreeListFirst(TheTree->Selected->Shapes);
+		if (ASelected) {
+
+			TColor AOldColor = AShape->Brush->Color;
+			TColor ANewColor = EditColor(this, AOldColor);
+			if (AOldColor != ANewColor) {
+				AShape->Brush->Color = ANewColor;
+
+				if (TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(ASelected)) {
+					SettingsData->ThemeSettings->StateClusterColor = ANewColor;
+				}
+			}
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::ThemeBorderNormalColorMouseUp(System::TObject* Sender, Controls::TMouseButton Button,
+	Classes::TShiftState Shift, int X, int Y) {
+
+	TShape * AShape = dynamic_cast<TShape*>(Sender);
+	if (AShape) {
+		TTreeNodeShape *ASelected = GetSafeTreeListFirst(TheTree->Selected->Shapes);
+		if (ASelected) {
+
+			TColor AOldColor = AShape->Brush->Color;
+			TColor ANewColor = EditColor(this, AOldColor);
+			if (AOldColor != ANewColor) {
+				AShape->Brush->Color = ANewColor;
+
+				if (TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(ASelected)) {
+					SettingsData->ThemeSettings->StateNormalBorderColor = ANewColor;
+				}
+				else if (TChildScxmlBaseShape * AChildScxmlBaseShape = dynamic_cast<TChildScxmlBaseShape*>(ASelected)) {
+					SettingsData->ThemeSettings->ChildNormalBorderColor = ANewColor;
+				}
+			}
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::ThemeBorderClick(System::TObject* Sender) {
+	TTreeNodeShape *ASelected = GetSafeTreeListFirst(TheTree->Selected->Shapes);
+	if (ASelected) {
+
+		std::auto_ptr<TChartPen>AChartPenPtr(new TChartPen((TNotifyEvent)NULL));
+		AChartPenPtr->Assign(ASelected->Border);
+
+		if (TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(ASelected)) {
+			AChartPenPtr->Color = SettingsData->ThemeSettings->StateNormalBorderColor;
+			AChartPenPtr->Style = SettingsData->ThemeSettings->StateNormalBorderStyle;
+		}
+		else if (TChildScxmlBaseShape * AChildScxmlBaseShape = dynamic_cast<TChildScxmlBaseShape*>(ASelected)) {
+			AChartPenPtr->Color = SettingsData->ThemeSettings->ChildNormalBorderColor;
+			AChartPenPtr->Style = SettingsData->ThemeSettings->ChildNormalBorderStyle;
+		}
+
+		if (EditChartPen(this, AChartPenPtr.get())) {
+			if (TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(ASelected)) {
+				SettingsData->ThemeSettings->StateNormalBorderColor = AChartPenPtr->Color;
+			}
+			else if (TChildScxmlBaseShape * AChildScxmlBaseShape = dynamic_cast<TChildScxmlBaseShape*>(ASelected)) {
+				SettingsData->ThemeSettings->ChildNormalBorderColor = AChartPenPtr->Color;
+			}
+			else {
+				for (int i = 1; i < TheTree->Selected->Count(); i++) {
+					TheTree->Selected->Items[i]->Border->Assign(AChartPenPtr.get());
+				}
+			}
+
+			TNodeTreeEditor * ANodeTreeEditor = dynamic_cast<TNodeTreeEditor*>(dynamic_cast<TComponent*>(Sender)->Owner);
+			if (ANodeTreeEditor) {
+				ANodeTreeEditor->Shape5->Brush->Color = AChartPenPtr->Color;
+			}
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::ExecuteInterprocessCommand(INTERPROCESS_COPYDATA *ACopyData) {
+	if (SameText(ACopyData->wchCommand, L"SaveToSVG")) {
+		this->SaveToSVG(ACopyData->wchArg1);
+	}
+	else if (SameText(ACopyData->wchCommand, L"SaveRawScxmlToFile")) {
+		this->SaveRawScxmlToFile(ACopyData->wchArg1);
+	}
+	else if (SameText(ACopyData->wchCommand, L"SaveRawScxmlToHPP")) {
+		this->SaveRawScxmlToHPP(ACopyData->wchArg1);
+	}
+	else if (SameText(ACopyData->wchCommand, L"SaveScxmlToPas")) {
+		this->SaveScxmlToPas(ACopyData->wchArg1);
+	}
+	else if (SameText(ACopyData->wchCommand, L"SaveToDot")) {
+		this->SaveToDot(ACopyData->wchArg1);
+	}
+	else if (SameText(ACopyData->wchCommand, L"SaveToDotPlusPng")) {
+		this->SaveToDotPlusPng(ACopyData->wchArg1);
+	}
+	else if (SameText(ACopyData->wchCommand, L"SaveToBMP")) {
+		this->SaveToBMP(ACopyData->wchArg1);
+	}
+	else if (SameText(ACopyData->wchCommand, L"SaveToPNG")) {
+		this->SaveToPNG(ACopyData->wchArg1);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMsgCopyData(TWMCopyData &msg) {
+	if (msg.CopyDataStruct && msg.CopyDataStruct->cbData == sizeof(INTERPROCESS_COPYDATA)) {
+		INTERPROCESS_COPYDATA *ACopyData = reinterpret_cast<INTERPROCESS_COPYDATA*>(msg.CopyDataStruct->lpData);
+		if (ACopyData) {
+			WLOG_INFO(L"EDITOR> Copy data command:[%s] arg1:[%s] arg2:[%s] arg3:[%s]", //
+				ACopyData->wchCommand, ACopyData->wchArg1, ACopyData->wchArg2, ACopyData->wchArg3);
+
+			try {
+				this->ExecuteInterprocessCommand(ACopyData);
+			}
+			catch(Exception * E) {
+				WLOG_ERROR(L"EDITOR_COMMAND> %s", E->Message.c_str());
+			}
+		}
+	}
+	else {
+		WLOG_ERROR(L"Invalid WM_COPYDATA");
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveToBMP(const UnicodeString &sFileName) {
+	TScxmlShape *AScxmlRootShape = this->RootScxml;
+	if (AScxmlRootShape) {
+		const int i_OFFSET = 3;
+
+		const int iOldHoriz = TheTree->View3DOptions->HorizOffset;
+		const int iOldVert = TheTree->View3DOptions->VertOffset;
+
+		const bool bWasFocusDisabled = TheTreeEx->DisableFocus;
+		TheTreeEx->DisableFocus = true;
+
+		try {
+			TheTreeEx->View3DOptions->HorizOffset = 0;
+			TheTreeEx->View3DOptions->VertOffset = 0;
+			const TRect ARectSource(0, 0, AScxmlRootShape->X1 + i_OFFSET, AScxmlRootShape->Y1 + i_OFFSET);
+
+			std::auto_ptr<Graphics::TBitmap>ABmpSourcePtr(TheTreeEx->TeeCreateBitmap(clWhite, ARectSource));
+
+			ABmpSourcePtr->SaveToFile(sFileName);
+		}
+		__finally {
+			TheTreeEx->DisableFocus = bWasFocusDisabled;
+			TheTreeEx->View3DOptions->HorizOffset = iOldHoriz;
+			TheTreeEx->View3DOptions->VertOffset = iOldVert;
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveToPNG(const UnicodeString &sFileName) {
+	TScxmlShape *AScxmlRootShape = this->RootScxml;
+	if (AScxmlRootShape) {
+		const int i_OFFSET = 3;
+
+		const int iOldHoriz = TheTree->View3DOptions->HorizOffset;
+		const int iOldVert = TheTree->View3DOptions->VertOffset;
+
+		const bool bWasFocusDisabled = TheTreeEx->DisableFocus;
+		TheTreeEx->DisableFocus = true;
+
+		try {
+			TheTreeEx->View3DOptions->HorizOffset = 0;
+			TheTreeEx->View3DOptions->VertOffset = 0;
+			const TRect ARectSource(0, 0, AScxmlRootShape->X1 + i_OFFSET, AScxmlRootShape->Y1 + i_OFFSET);
+
+			std::auto_ptr<Graphics::TBitmap>ABmpSourcePtr(TheTreeEx->TeeCreateBitmap(clWhite, ARectSource));
+
+			const UnicodeString sValue = SettingsData->TempRegistry->Values[this->Name + ".SpinPNGCompressionLevel"];
+
+			std::auto_ptr<TPngImage>APngImagePtr(new TPngImage());
+			APngImagePtr->Assign(ABmpSourcePtr.get());
+			APngImagePtr->CompressionLevel = sValue.ToIntDef(7);
+			APngImagePtr->SaveToFile(sFileName);
+		}
+		__finally {
+			TheTreeEx->DisableFocus = bWasFocusDisabled;
+			TheTreeEx->View3DOptions->HorizOffset = iOldHoriz;
+			TheTreeEx->View3DOptions->VertOffset = iOldVert;
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveRawScxmlToFile(const UnicodeString & sFileName) {
+	const Statemachine::TIterateSaveTypes ATypes = SettingsData->SkipCommentsInRawScxml == false ? Statemachine::MaxPossibleTypes() :
+		(Statemachine::MaxPossibleTypes() >> Statemachine::istComments);
+
+	Statemachine::SaveTreeToScxml(TheTree, sFileName, false, true, ATypes);
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveRawScxmlToHPP(const UnicodeString & sFileName) {
+	std::auto_ptr<TStringList>AStringList(new TStringList());
+	AStringList->Text = Statemachine::GetRawScxml(TheTree, SettingsData->SkipCommentsInRawScxml);
+
+	TStateMachineEditor::ConvertTextToHPP(AStringList.get(), TPath::GetFileNameWithoutExtension(sFileName));
+
+	AStringList->SaveToFile(sFileName);
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveScxmlToPas(const UnicodeString & sFileName) {
+	std::auto_ptr<TMemoryStream>AMemoryStreamPtr(new TMemoryStream());
+	SaveTreeToStream(TheTree, AMemoryStreamPtr.get());
+
+	std::auto_ptr<TMemoryStream>AOutStreamPtr(new TMemoryStream());
+
+	AMemoryStreamPtr->Position = 0;
+	ObjectBinaryToText(AMemoryStreamPtr.get(), AOutStreamPtr.get());
+	AOutStreamPtr->Position = 0;
+
+	AOutStreamPtr->SaveToFile(sFileName);
+
+	WLOG_INFO(L"Successfully saved <%s>!", sFileName.c_str());
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveToDot(const UnicodeString &sFileName) {
+	std::auto_ptr<TDialogWait>ADialogWaitPtr(new TDialogWait(this));
+	ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Exporting to DOT[%s] ...", ExtractFileName(sFileName).c_str()));
+	Graphviz::ExportToDot(TheTree, sFileName);
+	WLOG_INFO(L"Successfully saved <%s>", sFileName.c_str());
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveToDotPlusPng(const UnicodeString &sFileName) {
+	std::auto_ptr<TDialogWait>ADialogWaitPtr(new TDialogWait(this));
+	ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Exporting to DOT[%s] ...", ExtractFileName(sFileName).c_str()));
+	Graphviz::ExportToDot(TheTree, sFileName);
+	WLOG_INFO(L"Successfully saved <%s>", sFileName.c_str());
+
+	const UnicodeString sFilePng = ChangeFileExt(sFileName, L".png");
+	ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Exporting to PNG[%s] ...", ExtractFileName(sFilePng).c_str()));
+	Graphviz::ConvertDotToPng(sFileName, sFilePng);
+	WLOG_INFO(L"Successfully converted <%s> to <%s>", sFileName.c_str(), sFilePng.c_str());
+}
+
+// ---------------------------------------------------------------------------
 // --------------------  TStateMachineDockPanel  -----------------------------
 // ---------------------------------------------------------------------------
 __fastcall TStateMachineDockPanel::TStateMachineDockPanel(Classes::TComponent * AOwner, TStateMachineEditorUnit * AStateMachineEditorUnit)
@@ -8195,40 +8547,6 @@ UnicodeString __fastcall TStateMachineDockPanel::GetRawScxml() {
 // ---------------------------------------------------------------------------
 UnicodeString __fastcall TStateMachineDockPanel::GetRawScxmlForceComments() {
 	return Statemachine::GetRawScxml(FStateMachineEditor->TheTree, false /* do not skip comments */);
-}
-
-// ---------------------------------------------------------------------------
-void __fastcall TStateMachineDockPanel::SaveRawScxmlToFile(const UnicodeString & sFileName) {
-	const Statemachine::TIterateSaveTypes ATypes = SettingsData->SkipCommentsInRawScxml == false ? Statemachine::MaxPossibleTypes() :
-		(Statemachine::MaxPossibleTypes() >> Statemachine::istComments);
-
-	Statemachine::SaveTreeToScxml(FStateMachineEditor->TheTree, sFileName, false, true, ATypes);
-}
-
-// ---------------------------------------------------------------------------
-void __fastcall TStateMachineDockPanel::SaveRawScxmlToHPP(const UnicodeString & sFileName) {
-	std::auto_ptr<TStringList>AStringList(new TStringList());
-	AStringList->Text = RawScxml;
-
-	TStateMachineEditor::ConvertTextToHPP(AStringList.get(), TPath::GetFileNameWithoutExtension(sFileName));
-
-	AStringList->SaveToFile(sFileName);
-}
-
-// ---------------------------------------------------------------------------
-void __fastcall TStateMachineDockPanel::SaveScxmlToPas(const UnicodeString & sFileName) {
-	std::auto_ptr<TMemoryStream>AMemoryStreamPtr(new TMemoryStream());
-	SaveTreeToStream(FStateMachineEditor->TheTree, AMemoryStreamPtr.get());
-
-	std::auto_ptr<TMemoryStream>AOutStreamPtr(new TMemoryStream());
-
-	AMemoryStreamPtr->Position = 0;
-	ObjectBinaryToText(AMemoryStreamPtr.get(), AOutStreamPtr.get());
-	AOutStreamPtr->Position = 0;
-
-	AOutStreamPtr->SaveToFile(sFileName);
-
-	WLOG_INFO(L"Successfully saved <%s>!", sFileName.c_str());
 }
 
 // ---------------------------------------------------------------------------

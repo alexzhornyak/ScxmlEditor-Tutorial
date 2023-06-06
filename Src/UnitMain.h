@@ -678,6 +678,7 @@ protected:
 	void __fastcall OnDeleteObjects(TMessage &msg);
 	void __fastcall OnMsgAddOrOpenExistingUnit(TMessage &msg);
 	void __fastcall OnMsgUpdateDebugQueue(TMessage &msg);
+	void __fastcall OnMsgCopyData(TWMCopyData &msg);
 
 	BEGIN_MESSAGE_MAP
 		VCL_MESSAGE_HANDLER(WM_SCXML_STOP_DEBUGGING, TMessage, OnStopDebugging)
@@ -686,6 +687,7 @@ protected:
 		VCL_MESSAGE_HANDLER(WM_SCXML_DELETE_OBJECTS, TMessage, OnDeleteObjects)
 		VCL_MESSAGE_HANDLER(WM_SCXML_ADD_OR_OPEN_EXISTING_UNIT, TMessage, OnMsgAddOrOpenExistingUnit)
 		VCL_MESSAGE_HANDLER(WM_SCXML_UPDATE_DBG_MSG_QUEUE, TMessage, OnMsgUpdateDebugQueue)
+		VCL_MESSAGE_HANDLER(WM_COPYDATA, TWMCopyData, OnMsgCopyData)
 	END_MESSAGE_MAP(TForm)
 
 	TStateMachineEditorUnit* __fastcall GetActiveUnit();
