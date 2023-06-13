@@ -717,7 +717,7 @@ UnicodeString __fastcall TSettingsData::GetExternScriptEditorExtension(void) {
 
 // ---------------------------------------------------------------------------
 bool __fastcall TSettingsData::IsExternScriptEditorExtensionStored(void) {
-	return ExternScriptEditorExtension != L"%1";
+	return ExternScriptEditorExtension != L"lua";
 }
 
 // ---------------------------------------------------------------------------
