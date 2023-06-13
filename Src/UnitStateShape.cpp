@@ -1,34 +1,34 @@
 /***********************************************************************************
-	BSD 3-Clause License
+BSD 3-Clause License
 
-	Copyright (c) 2018, https://github.com/alexzhornyak
-	All rights reserved.
+Copyright (c) 2018, https://github.com/alexzhornyak
+All rights reserved.
 
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-	* Redistributions of source code must retain the above copyright notice, this
-	  list of conditions and the following disclaimer.
+ * Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
 
-	* Redistributions in binary form must reproduce the above copyright notice,
-	  this list of conditions and the following disclaimer in the documentation
-	  and/or other materials provided with the distribution.
+ * Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
 
-	* Neither the name of the copyright holder nor the names of its
-	  contributors may be used to endorse or promote products derived from
-	  this software without specific prior written permission.
+ * Neither the name of the copyright holder nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
 
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-	AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-	IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-	DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-	FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-	DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-	SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-	CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-	OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-	OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-***************************************************************************************/
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ ***************************************************************************************/
 
 #include <vcl.h>
 #pragma hdrstop
@@ -44,6 +44,7 @@
 #include "UnitPropInspectorExtensions.h"
 #include "UnitDialogFileNotFound.h"
 #include "UnitSettings.h"
+#include "UnitStringEditorEx.h"
 
 // ---------------------------------------------------------------------------
 
@@ -526,6 +527,9 @@ __fastcall TVirtualShape::TVirtualShape(Classes::TComponent* AOwner) : TVisualSc
 	FConvertibleTypes.insert(sctFinal);
 	FConvertibleTypes.insert(sctHistory);
 	FConvertibleTypes.insert(sctState);
+
+	FAlias = L"";
+	FAliasParams = L"";
 }
 
 // ---------------------------------------------------------------------------
@@ -539,6 +543,68 @@ void __fastcall TVirtualShape::OnGetPropEditorClass(TPersistent *AInstance, ILMD
 	if (sPropName == L"Src") {
 		AEditorClass = __classid(TVirtualSrcDialogPropEditor);
 	}
+	else if (sPropName == L"AliasParams") {
+		AEditorClass = __classid(TStringTextPairsEditor);
+	}
+}
+
+// ---------------------------------------------------------------------------
+bool __fastcall TVirtualShape::OnFilterPropEvent(const UnicodeString & sPropName) {
+	if (sPropName == L"AliasVar" || sPropName == L"AliasParams") {
+		return !this->Alias.IsEmpty();
+	}
+
+	return TVisualScxmlBaseShape::OnFilterPropEvent(sPropName);
+}
+
+// ---------------------------------------------------------------------------
+UnicodeString __fastcall TVirtualShape::OnGetHTMLPropertyInfo(const UnicodeString &sPropName) {
+	const UnicodeString sInfo = TVisualScxmlBaseShape::OnGetHTMLPropertyInfo(sPropName);
+	if (!sInfo.IsEmpty()) {
+		return sInfo;
+	}
+
+	if (sPropName == L"AliasVar") {
+		return //
+		L"Alias varaible that will be replaced by <b>Alias</b> value\n" //
+		"Can be changed in Application Settings: <b>VirtualAliasVariable</b>\n"//
+		;
+	}
+
+	if (sPropName == L"Alias") {
+		return //
+		L"Alias value that will be used for replacement of <b>AliasVar</b>\n" //
+		"<b>For example:<b>\n"//
+		"    State ID = State%1\n"//
+		"    AliasVar = %1\n"//
+		"    Alias = Test\n"//
+		"<b>Result:</b> StateTest\n"//
+		;
+	}
+
+	if (sPropName == L"AliasParams") {
+		return //
+		L"Format: <b>name</b>=<b>value</b>\n" //
+		"Param name will be replaced by value in virtual scxml\n"//
+		;
+	}
+
+	return L"";
+}
+
+// ---------------------------------------------------------------------------
+UnicodeString __fastcall TVirtualShape::GetAliasedText(UnicodeString sText) {
+	return StringReplace(sText, this->AliasVar, this->Alias, TReplaceFlags() << rfReplaceAll);
+}
+
+// ---------------------------------------------------------------------------
+UnicodeString __fastcall TVirtualShape::GetAliasedParamsText(UnicodeString sText) {
+	std::auto_ptr<TStringList>AParamsListPtr(new TStringList());
+	AParamsListPtr->Text = this->AliasParams.Trim();
+	for (int i = 0; i < AParamsListPtr->Count; i++) {
+		sText = StringReplace(sText, AParamsListPtr->Names[i], AParamsListPtr->ValueFromIndex[i], TReplaceFlags() << rfReplaceAll);
+	}
+	return sText;
 }
 
 // ---------------------------------------------------------------------------
@@ -565,6 +631,9 @@ void __fastcall TVirtualShape::Assign(Classes::TPersistent* Source) {
 			TVirtualShape * AVirtualShape = dynamic_cast<TVirtualShape*>(Source);
 			if (AVirtualShape) {
 				FSrc = AVirtualShape->FSrc;
+
+				FAlias = AVirtualShape->FAlias;
+				FAliasParams = AVirtualShape->FAliasParams;
 
 				UpdateView();
 			}
@@ -599,6 +668,11 @@ TStateMachineEditorUnit * __fastcall TVirtualShape::GetSrcUnit(void) {
 		}
 	}
 	return NULL;
+}
+
+// ---------------------------------------------------------------------------
+UnicodeString __fastcall TVirtualShape::GetAliasVar(void) {
+	return SettingsData->VirtualAliasVariable;
 }
 
 // ---------------------------------------------------------------------------
@@ -731,8 +805,12 @@ bool __fastcall TVirtualShape::EditSrc(void) {
 					ADockPanel->StateMachineEditor->MarkModified(1, "Virtual Root:" + ARootShape->SimpleText, true);
 				}
 				else {
-					if (AVisualRoot->SimpleText != this->SimpleText) {
-						WLOG_ERROR(L"VIRTUAL> Submachine root ID:[%s] mismatches to Parent:[%s]", AVisualRoot->SimpleText.c_str(),
+
+					const UnicodeString sVisRootID = this->Alias.IsEmpty() ? AVisualRoot->SimpleText : this->GetAliasedText
+						(AVisualRoot->SimpleText);
+
+					if (sVisRootID != this->SimpleText) {
+						WLOG_ERROR(L"VIRTUAL> Submachine root ID:[%s] mismatches to Parent:[%s]", sVisRootID.c_str(),
 							this->SimpleText.c_str());
 					}
 				}

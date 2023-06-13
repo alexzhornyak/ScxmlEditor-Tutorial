@@ -166,10 +166,17 @@ __published:
 //---------------------------- TVirtualShape -------------------------------
 class TVirtualShape : public TVisualScxmlBaseShape {
 __published:
-	void __fastcall OnGetPropEditorClass(TPersistent *AInstance, ILMDProperty *APropInfo,TLMDPropEditorClass &AEditorClass);
+	virtual void __fastcall OnGetPropEditorClass(TPersistent *AInstance, ILMDProperty *APropInfo,TLMDPropEditorClass &AEditorClass);
+	virtual bool __fastcall OnFilterPropEvent(const UnicodeString & sPropName);
+	virtual UnicodeString __fastcall OnGetHTMLPropertyInfo(const UnicodeString &sPropName);
 private:
 	UnicodeString FSrc;
 	void __fastcall SetSrc(UnicodeString val) { FSrc = val; UpdateView(); }
+
+	UnicodeString FAlias;
+	UnicodeString FAliasParams;
+	UnicodeString __fastcall GetAliasVar(void);
+
 protected:
 	virtual TColor __fastcall GetNormalColor(void);
 	virtual TColor __fastcall GetHeadColor(void);
@@ -200,10 +207,19 @@ public:
 
     bool __fastcall IsSrcValid();
 
+	UnicodeString __fastcall GetAliasedText(UnicodeString sText);
+	UnicodeString __fastcall GetAliasedParamsText(UnicodeString sText);
+
 __published:
+	/* SCXML properties */
 	__property UnicodeString Id = {read=GetSimpleText,write=SetStateId};
 	__property UnicodeString Src = {read=FSrc,write=SetSrc};
 	__property IsInitial;
+
+	/* Virtual Alias properties */
+	__property UnicodeString AliasVar = {read=GetAliasVar, stored=false};
+	__property UnicodeString Alias = {read=FAlias, write=FAlias};
+	__property UnicodeString AliasParams = {read=FAliasParams, write=FAliasParams};
 };
 
 #endif

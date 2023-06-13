@@ -404,6 +404,7 @@ __published:
 private:
 
 	bool FEntered;
+	UnicodeString FAliasID;
 	bool FExamined;
 	bool FBreakpointSet;
 	bool FSkipDebugging;
@@ -477,6 +478,8 @@ public:
 
 	static void __fastcall SetChildrenEntered(TNodeShapeList *AShapes, bool bVal, bool bRecursive=true);
 
+   	inline virtual void __fastcall SetAliasID(UnicodeString val) { FAliasID = val; }
+
 	// упорядочивание с учетом всех смещений
 	void __fastcall ArrangeSelfConnections(void);
 
@@ -513,6 +516,7 @@ public:
 
 __published:
 
+	__property UnicodeString AliasID = {read=FAliasID, stored=false};
 	__property TPersistentRect *SelfConnectionTextOffsets = {read=FSelfConnectionTextOffsets, write=SetSelfConnectionTextOffsets};
 	__property bool SelfConnectionInside = {read=FSelfConnectionInside, write=SetSelfConnectionInside, default=false};
 	__property TPersistentPoint *ParentOffsetStored = {read=FParentOffsetStored, write=SetParentOffsetStored};

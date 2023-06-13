@@ -2862,6 +2862,10 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 
 	TTestSettings *ATestSettings = SettingsData->ActiveTestSettings;
 
+	if (SettingsData->TestingDebugReceivedBuffer) {
+		WLOG_WARNING(L"PERFORMANCE! 'TestingDebugReceivedBuffer' option is enabled!");
+	}
+
 	try {
 
 		bool bHasErrors = false;
@@ -3439,9 +3443,11 @@ void __fastcall TFormScxmlGui::actIsTesterWorkingUpdate(TObject * Sender) {
 // ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::ParseReceivedUDPTesterCommand(const std::wstring & wstr) {
 	try {
-#if 0 // для глубокой отладки
-		WLOG_DEBUG(L"Received UDP:[%s]", wstr.c_str());
-#endif
+
+		/* PERFORMANCE WARNING !!! Only for deep debug */
+		if (SettingsData->TestingDebugReceivedBuffer) {
+			WLOG_DEBUG(L"Received UDP:[%s]", wstr.c_str());
+		}
 
 		/* Clear All command */
 		if (wstr.find(L"@@@") == 0) {
@@ -3617,7 +3623,7 @@ void __fastcall TFormScxmlGui::ParseReceivedUDPTesterCommand(const std::wstring 
 
 									std::pair<TStateMachineDockPanel*,
 									TTreeNodeShape*>AEnteredElements = ADockPanel->EnterStateNode(sMsg, true,
-										SettingsData->TestingAutoOpenUnit);
+										SettingsData->TestingAutoOpenUnit, L"");
 
 									ADockPanel = AEnteredElements.first;
 									AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(AEnteredElements.second);
@@ -3652,7 +3658,7 @@ void __fastcall TFormScxmlGui::ParseReceivedUDPTesterCommand(const std::wstring 
 
 									std::pair<TStateMachineDockPanel*,
 									TTreeNodeShape*>AEnteredElements = ADockPanel->EnterStateNode(sMsg, false,
-										SettingsData->TestingAutoOpenUnit);
+										SettingsData->TestingAutoOpenUnit, L"");
 
 									ADockPanel = AEnteredElements.first;
 									AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(AEnteredElements.second);
@@ -3661,7 +3667,7 @@ void __fastcall TFormScxmlGui::ParseReceivedUDPTesterCommand(const std::wstring 
 
 									std::pair<TStateMachineDockPanel*,
 									TTreeConnection*>AEnteredElements = ADockPanel->TakingTransition(sTransitionFrom, iTransitionID,
-										SettingsData->TestingAutoOpenUnit);
+										SettingsData->TestingAutoOpenUnit, L"");
 
 									ADockPanel = AEnteredElements.first;
 									AConnection = dynamic_cast<TStateMachineConnection*>(AEnteredElements.second);
@@ -5659,7 +5665,7 @@ void __fastcall TFormScxmlGui::actImportConfigurationAccept(TObject * Sender) {
 						if (ARootScxml->InvokeID.IsEmpty() || ARootScxml->InvokeID == sInvokeID) {
 							std::pair<TStateMachineDockPanel*,
 							TTreeNodeShape*>AEnteredElements = ADockPanel->EnterStateNode(sState, true,
-								true /* принудительно открываем все узлы */ );
+								true /* принудительно открываем все узлы */ , L"");
 
 							ADockPanel = AEnteredElements.first;
 							TVisualScxmlBaseShape * AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(AEnteredElements.second);

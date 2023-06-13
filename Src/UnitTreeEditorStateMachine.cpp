@@ -8551,16 +8551,37 @@ UnicodeString __fastcall TStateMachineDockPanel::GetRawScxmlForceComments() {
 
 // ---------------------------------------------------------------------------
 std::pair<TStateMachineDockPanel*, TTreeNodeShape *>__fastcall TStateMachineDockPanel::EnterStateNode(const UnicodeString & sId,
-	const bool bEntered, const bool bOpenClosedUnits) {
+	const bool bEntered, const bool bOpenClosedUnits, UnicodeString sAlias) {
 
 	std::pair<TStateMachineDockPanel*, TTreeNodeShape*>AEnteredElements = std::make_pair((TStateMachineDockPanel*)NULL,
 		(TTreeNodeShape*)NULL);
+
+	/* VIRTUAL ALIAS */
+	const bool bAliasUsed = !sAlias.IsEmpty();
+	if (bAliasUsed && StateMachineEditorUnit->IsVirtual) {
+		TScxmlShape *AScxmlShape = FStateMachineEditor->RootScxml;
+		if (AScxmlShape && !AScxmlShape->InvokeID.IsEmpty()) {
+			/* User can override alias with InvokeID */
+			sAlias = AScxmlShape->InvokeID;
+		}
+	}
 
 	for (int i = 0; i < FStateMachineEditor->TheTree->Shapes->Count; i++) {
 		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(FStateMachineEditor->TheTree->Shapes->Items[i]);
 		if (AShape && !AShape->SkipDebugging && !AShape->ExcludeFromSave) {
 
-			const bool b_NAME_MATCH = AShape->SimpleText == sId;
+			bool b_NAME_MATCH = false;
+			if (bAliasUsed) {
+				const UnicodeString sAliasID = StringReplace(AShape->SimpleText, SettingsData->VirtualAliasVariable, sAlias,
+					TReplaceFlags() << rfReplaceAll);
+				b_NAME_MATCH = sAliasID == sId;
+				if (b_NAME_MATCH) {
+					AShape->SetAliasID(sAliasID);
+				}
+			}
+			else {
+				b_NAME_MATCH = AShape->SimpleText == sId;
+			}
 
 			/* обычный режим */
 			if (b_NAME_MATCH) {
@@ -8638,9 +8659,10 @@ std::pair<TStateMachineDockPanel*, TTreeNodeShape *>__fastcall TStateMachineDock
 						}
 						TStateMachineDockPanel *ASrcDockPanel = ASrcUnit->StateMachineDockPanel;
 						if (ASrcDockPanel) {
-
 							std::pair<TStateMachineDockPanel*, TTreeNodeShape*>AVirtualEnteredElements = ASrcDockPanel->EnterStateNode(sId,
-								bEntered, bOpenClosedUnits);
+								bEntered, bOpenClosedUnits, //
+								StringReplace(AVirtualShape->Alias, SettingsData->VirtualAliasVariable, sAlias,
+									TReplaceFlags() << rfReplaceAll));
 
 							if (AVirtualEnteredElements.first && AVirtualEnteredElements.second) {
 								return AVirtualEnteredElements;
@@ -8666,6 +8688,7 @@ void __fastcall TStateMachineDockPanel::ClearEnteredStates(void) {
 		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(FStateMachineEditor->TheTree->Shapes->Items[i]);
 		if (AShape) {
 			AShape->Entered = false;
+			AShape->SetAliasID(L"");
 		}
 	}
 
@@ -8700,7 +8723,7 @@ void __fastcall TStateMachineDockPanel::ProcessTakenTransition(TStateMachineConn
 
 // ---------------------------------------------------------------------------
 std::pair<TStateMachineDockPanel*, TTreeConnection *>__fastcall TStateMachineDockPanel::TakingTransition(const UnicodeString &sFromShape,
-	const int iTransitionID, const bool bOpenClosedUnits) {
+	const int iTransitionID, const bool bOpenClosedUnits, UnicodeString sAlias) {
 
 	const UnicodeString sTransitionDescriptor = sFromShape + L"@" + UnicodeString(iTransitionID);
 
@@ -8719,11 +8742,29 @@ std::pair<TStateMachineDockPanel*, TTreeConnection *>__fastcall TStateMachineDoc
 		}
 	}
 
+    /* VIRTUAL ALIAS */
+	const bool bAliasUsed = !sAlias.IsEmpty();
+	if (bAliasUsed && StateMachineEditorUnit->IsVirtual) {
+		TScxmlShape *AScxmlShape = FStateMachineEditor->RootScxml;
+		if (AScxmlShape && !AScxmlShape->InvokeID.IsEmpty()) {
+			/* User can override alias with InvokeID */
+			sAlias = AScxmlShape->InvokeID;
+		}
+	}
+
 	for (int i = 0; i < FStateMachineEditor->TheTree->Shapes->Count; i++) {
 		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(FStateMachineEditor->TheTree->Shapes->Items[i]);
 		if (AShape && !AShape->SkipDebugging && !AShape->ExcludeFromSave) {
 
-			const bool b_NAME_MATCH = AShape->SimpleText == sFromShape;
+			bool b_NAME_MATCH = false;
+			if (bAliasUsed) {
+				const UnicodeString sAliasID = StringReplace(AShape->SimpleText, SettingsData->VirtualAliasVariable, sAlias,
+					TReplaceFlags() << rfReplaceAll);
+				b_NAME_MATCH = sAliasID == sFromShape;
+			}
+			else {
+				b_NAME_MATCH = AShape->SimpleText == sFromShape;
+			}
 
 			if (b_NAME_MATCH) {
 				TStateMachineConnection *ATakenConnection = NULL;
@@ -8796,7 +8837,9 @@ std::pair<TStateMachineDockPanel*, TTreeConnection *>__fastcall TStateMachineDoc
 
 							std::pair<TStateMachineDockPanel*,
 							TTreeConnection*>AVirtualEnteredElements = ASrcDockPanel->TakingTransition(sFromShape, iTransitionID,
-								bOpenClosedUnits);
+								bOpenClosedUnits, //
+								StringReplace(AVirtualShape->Alias, SettingsData->VirtualAliasVariable, sAlias,
+									TReplaceFlags() << rfReplaceAll));
 
 							if (AVirtualEnteredElements.first && AVirtualEnteredElements.second) {
 								return AVirtualEnteredElements;

@@ -154,10 +154,15 @@ private:	// User declarations
 	UnicodeString	__fastcall GetExternScriptEditorExtension(void);
 	bool 			__fastcall IsExternScriptEditorExtensionStored(void);
 
+	UnicodeString	FVirtualAliasVariable;
+	UnicodeString	__fastcall GetVirtualAliasVariable(void);
+	bool 			__fastcall IsVirtualAliasVariableStored(void);
+
 	TTreeEditWindows FHideWindows;
 	inline bool __fastcall IsHideWindowsStored(void) { return FHideWindows != DEFAULT_HIDE_WINDOWS_STATUS; }
 
 	bool FTestingShowCallStack;
+	bool FTestingDebugReceivedBuffer;
 	bool FTestingSwitchToPanel;
 	bool FTestingScrollChartToViewShape;
 	bool FTestingAutoOpenUnit;
@@ -325,6 +330,7 @@ __published:	// PROPERTIES THAT ARE SEEN IN SETTINGS EDITOR
 	__property bool CheckPositionOnLoadScxml = {read=FCheckPositionOnLoadScxml, write=FCheckPositionOnLoadScxml, default=true};
 	__property bool SaveCommentsAnywayOnLoad = {read=FSaveCommentsAnywayOnLoad, write=FSaveCommentsAnywayOnLoad, default=false};
 	__property bool ParserDoNotLoadQtEditorInfo = {read=FParserDoNotLoadQtEditorInfo, write=FParserDoNotLoadQtEditorInfo, default=true};
+	__property UnicodeString 	VirtualAliasVariable = {read=GetVirtualAliasVariable,write=FVirtualAliasVariable, stored=IsVirtualAliasVariableStored};
 
 	__property bool 			AviaExtensionEnabled = {read=FAviaExtensionEnabled, write=FAviaExtensionEnabled, default=false};
 	__property bool 			ProfilingEnabled = {read=FProfilingEnabled, write=FProfilingEnabled, default=false};
@@ -397,6 +403,7 @@ __published:	// PROPERTIES THAT ARE SEEN IN SETTINGS EDITOR
 	__property TTestSettings *	TestSettings = {read=FTestSettings, write=SetTestSettings};
 	__property TTestApplicationPresetItems *	TestApplicationPresets = {read=FTestApplicationPresets, write=SetTestApplicationPresets};
 
+	__property bool 			TestingDebugReceivedBuffer = {read=FTestingDebugReceivedBuffer, write=FTestingDebugReceivedBuffer, default=false};
 	__property bool 			TestingShowCallStack = {read=FTestingShowCallStack, write=FTestingShowCallStack, default=true};
 	__property bool				TestingSwitchToPanel = {read=FTestingSwitchToPanel, write=FTestingSwitchToPanel, default=true};
 	__property bool				TestingAutoOpenUnit = {read=FTestingAutoOpenUnit, write=FTestingAutoOpenUnit, default=true};

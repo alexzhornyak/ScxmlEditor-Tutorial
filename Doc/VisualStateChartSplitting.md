@@ -62,5 +62,70 @@ After run all entered states will be highlighted
 You may double click on virtual shape to switch to the its source unit
 ![debug2](../Images/VisualSplitting_Debug2.png)
 
+## Virtual Invoke
+Since ScxmlEditor 2.5 there is an option to include state chart parts multiple times
+
+**Inspired by discussion how could we avoid [invoke](https://alexzhornyak.github.io/SCXML-tutorial/Doc/invoke.html) element in systems that do not support it:**
+
+![](https://user-images.githubusercontent.com/18611095/245057732-cf87a403-c5a3-4771-9aa6-90dad7e6a606.png)
+
+**Let's take a look at the next example:**
+
+![](https://github.com/alexzhornyak/SCXML-tutorial/raw/master/Images/simple_tasks_example.gif)
+
+The principle is based on the fact that we find repeated prefixes in the state identifiers or other scxml attributes such as data identifiers or values. According to scxml standard we can not use states with the same names in one scxml chart, so we will use Alias which is filled with value assigned in parent Virtual State.
+
+1. Convert **`State_1`** to Virtual State
+   
+![](../Images/Virtual_ConvertTo.png)
+
+2. Replace state identifiers with Alias variable **`%1`**
+   
+![](../Images/Virtual_Replace.png)
+
+3. Set Virtual State Alias
+   
+![](../Images/Virtual_Alias.png)
+
+4. Set Aliases to other virtual states
+
+![](../Images/Virtual_AliasOthers.png)
+
+### Result
+ScxmlEditor will perform substition of Alias variable **`%1`** to Alias value which is set in Virtual State. So in target scxml file you will get different state identifiers
+
+```xml
+<state id="State_1" initial="Off_1">
+...
+<state id="State_2" initial="Off_2">
+...
+<state id="State_3" initial="Off_3">
+...
+<state id="State_4" initial="Off_4">
+    <onexit>
+        <cancel sendid="ID.Do.Timer"/>
+    </onexit>
+    <state id="Off_4">
+        <onentry>
+            <send delay="1s" event="Do.Timer" id="ID.Do.Timer"/>
+            <log expr="&quot;OFF &quot; .. 4" label="INFO"/>
+        </onentry>
+        <transition event="Do.Timer" target="On_4" type="external"/>
+    </state>
+    <state id="On_4">
+        <onentry>
+            <send delay="1s" event="Do.Timer" id="ID.Do.Timer"/>
+            <log expr="&quot;ON &quot; .. 4" label="INFO"/>
+        </onentry>
+        <transition event="Do.Timer" target="Off_4" type="external"/>
+    </state>
+    <transition event="Go.Next" target="State_3" type="external"/>
+</state>
+```
+
+| ![](../Images/Virtual_Invoke.gif) |
+|---|
+| |
+
 | [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
 |---|---|---|---|

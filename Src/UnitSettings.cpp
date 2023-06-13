@@ -87,6 +87,7 @@ __fastcall TSettingsData::TSettingsData(TComponent* Owner) : TSettingsBase(Owner
 	FExternScriptEditorFileName = L"";
 	FExternScriptEditorEnabled = false;
 	FExternScriptEditorExtension = L"";
+	FVirtualAliasVariable = L"";
 	FCheckPositionOnLoadScxml = true;
 	FSaveCommentsAnywayOnLoad = false;
 	FParserDoNotLoadQtEditorInfo = true;
@@ -101,6 +102,7 @@ __fastcall TSettingsData::TSettingsData(TComponent* Owner) : TSettingsBase(Owner
 	FForceSaveDefaultScxmlValues = false;
 
 	FTestingShowCallStack = true;
+	FTestingDebugReceivedBuffer = false;
 	FTestingSwitchToPanel = true;
 	FTestingScrollChartToViewShape = true;
 	FTestingAutoOpenUnit = true;
@@ -248,6 +250,7 @@ void __fastcall TSettingsData::Assign(TPersistent* Source) {
 			FExternScriptEditorFileName = ASettingsData->FExternScriptEditorFileName;
 			FExternScriptEditorEnabled = ASettingsData->FExternScriptEditorEnabled;
 			FExternScriptEditorExtension = ASettingsData->FExternScriptEditorExtension;
+			FVirtualAliasVariable = ASettingsData->FVirtualAliasVariable;
 
 			FHideWindows = ASettingsData->FHideWindows;
 
@@ -275,6 +278,7 @@ void __fastcall TSettingsData::Assign(TPersistent* Source) {
 			FForceSaveDefaultScxmlValues = ASettingsData->FForceSaveDefaultScxmlValues;
 
 			FTestingShowCallStack = ASettingsData->FTestingShowCallStack;
+			FTestingDebugReceivedBuffer = ASettingsData->FTestingDebugReceivedBuffer;
 			FTestingSwitchToPanel = ASettingsData->FTestingSwitchToPanel;
 			FTestingScrollChartToViewShape = ASettingsData->FTestingScrollChartToViewShape;
 			FTestingAutoOpenUnit = ASettingsData->FTestingAutoOpenUnit;
@@ -505,8 +509,10 @@ void __fastcall TSettingsData::PropSettingsRegisterCategories(TLMDPropertyInspec
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ValidateXMLText");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ValidateEmptyTransitions");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ForceSaveDefaultScxmlValues");
+	APropSettingsInspector->RegisterPropCategory(L"Extern editor", L"VirtualAliasVariable");
 
 	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"TestingShowCallStack");
+	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"TestingDebugReceivedBuffer");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"CallStackTypes");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"TestingStopOnExit");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"TestingSwitchToPanel");
@@ -711,7 +717,17 @@ UnicodeString __fastcall TSettingsData::GetExternScriptEditorExtension(void) {
 
 // ---------------------------------------------------------------------------
 bool __fastcall TSettingsData::IsExternScriptEditorExtensionStored(void) {
-	return ExternScriptEditorExtension != L"lua";
+	return ExternScriptEditorExtension != L"%1";
+}
+
+// ---------------------------------------------------------------------------
+UnicodeString __fastcall TSettingsData::GetVirtualAliasVariable(void) {
+	return FVirtualAliasVariable.IsEmpty() ? L"%1" : FVirtualAliasVariable.c_str();
+}
+
+// ---------------------------------------------------------------------------
+bool __fastcall TSettingsData::IsVirtualAliasVariableStored(void) {
+	return VirtualAliasVariable != L"%1";
 }
 
 // ---------------------------------------------------------------------------

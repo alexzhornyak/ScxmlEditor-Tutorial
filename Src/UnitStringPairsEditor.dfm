@@ -23,7 +23,6 @@ object FormStringPairsEditor: TFormStringPairsEditor
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 0
-    ExplicitWidth = 475
     object BtnCancel: TButton
       AlignWithMargins = True
       Left = 368
@@ -39,7 +38,6 @@ object FormStringPairsEditor: TFormStringPairsEditor
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
-      ExplicitLeft = 376
     end
     object BtnOk: TButton
       AlignWithMargins = True
@@ -56,7 +54,6 @@ object FormStringPairsEditor: TFormStringPairsEditor
       ParentShowHint = False
       ShowHint = False
       TabOrder = 1
-      ExplicitLeft = 296
     end
     object BtnDeleteRow: TButton
       AlignWithMargins = True
@@ -100,13 +97,8 @@ object FormStringPairsEditor: TFormStringPairsEditor
     Align = alClient
     TabOrder = 1
     OnChange = PageControl1Change
-    ExplicitWidth = 475
     object TabSheetTable: TTabSheet
       Caption = 'Table'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 467
-      ExplicitHeight = 0
       object GridPairs: TLMDGrid
         AlignWithMargins = True
         Left = 3
@@ -121,10 +113,6 @@ object FormStringPairsEditor: TFormStringPairsEditor
         Align = alClient
         TabOrder = 0
         Options = [opHeaderVertLine, opIndicatorHorzLine, opVertLine, opHorzLine, opRangeSelect, opDrawFocusSelected, opRowSizing, opColSizing, opRowMoving, opColMoving, opEditing, opTabs, opThumbTracking, opShowIndicator, opShowHeader, opConfirmDeleteRow, opCancelOnExit, opHighlightHeaders, opShowEmptyBanner, opShowColumnsChooser]
-        ExplicitLeft = 351
-        ExplicitTop = 24
-        ExplicitWidth = 362
-        ExplicitHeight = 273
         object LMDGridTextColumn1: TLMDGridTextColumn
           Width = 185
           Position = 0
@@ -150,10 +138,6 @@ object FormStringPairsEditor: TFormStringPairsEditor
     object TabSheetMemo: TTabSheet
       Caption = 'Notepad'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 467
-      ExplicitHeight = 0
       object MemoSource: TMemo
         AlignWithMargins = True
         Left = 3
@@ -172,7 +156,7 @@ object FormStringPairsEditor: TFormStringPairsEditor
     Left = 32
     Top = 64
     Bitmap = {
-      494C010108001800300010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108001800340010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

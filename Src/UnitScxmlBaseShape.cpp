@@ -1348,6 +1348,8 @@ FInitial(L""), FExamined(false), FSkipDebugging(false), FBreakpointSet(false) {
 	FSelfConnectionTextOffsets = new TPersistentRect;
 	FSelfConnectionInside = false;
 
+	FAliasID = L"";
+
 	FParentOffsetStored = new TPersistentPoint;
 
 	FChildrenAlignX = scaxLeft;
@@ -1408,6 +1410,10 @@ bool __fastcall TVisualScxmlBaseShape::OnFilterPropEvent(const UnicodeString & s
 	// для внутреннего сохранения
 	if (sPropName == L"ParentOffsetStored") {
 		return false;
+	}
+
+	if (sPropName == L"AliasID") {
+		return !this->AliasID.IsEmpty();
 	}
 
 	std::auto_ptr<TStringList>AChildrenPropsListPtr(new TStringList());
@@ -1499,6 +1505,11 @@ UnicodeString __fastcall TVisualScxmlBaseShape::OnGetHTMLPropertyInfo(const Unic
 
 	if (sPropName == L"VertTextAlign") {
 		return L"Vertical text alignment\n" //
+		;
+	}
+
+	if (sPropName == L"AliasID") {
+		return L"Displays interpreted name based on <b>Virtual State Alias</b>\n" //
 		;
 	}
 
@@ -1696,6 +1707,7 @@ void __fastcall TVisualScxmlBaseShape::Assign(Classes::TPersistent * Source) {
 				FErrorMap = ABaseShape->FErrorMap;
 				FInitial = ABaseShape->FInitial;
 				FEntered = ABaseShape->FEntered;
+				FAliasID = ABaseShape->FAliasID;
 				FExamined = ABaseShape->FExamined;
 				FBreakpointSet = ABaseShape->FBreakpointSet;
 				FChildrenAlignX = ABaseShape->FChildrenAlignX;
@@ -1906,13 +1918,25 @@ void __fastcall TVisualScxmlBaseShape::DrawShapeCanvas(Tecanvas::TCanvas3D * ACa
 			L"Excluded" + (ExcludeConditions.IsEmpty() ? UnicodeString(L"") : (L" [" + ExcludeConditions + L"]")));
 	}
 	else {
+		int iX = R.Left;
 		if (!FErrorMap.empty()) {
 			ACanvas->Font->Size = 8;
 			ACanvas->Font->Color = clRed;
 			ACanvas->Font->Style = TFontStyles();
 			ACanvas->BackMode = cbmTransparent; // без этого может задний фонт быть непрозрачным
 			ACanvas->TextAlign = TA_LEFT;
-			ACanvas->TextOut3D(R.Left, R.Top - 14, TeeTreeZ, L"Error: " + GetErrorDescription(FErrorMap.begin()->first));
+			const UnicodeString sText = L"Error: " + GetErrorDescription(FErrorMap.begin()->first);
+			ACanvas->TextOut3D(iX, R.Top - 14, TeeTreeZ, sText);
+			iX += ACanvas->TextWidth(sText) + 3;
+		}
+
+		if (!FAliasID.IsEmpty()) {
+			ACanvas->Font->Size = 8;
+			ACanvas->Font->Color = clBlue;
+			ACanvas->Font->Style = TFontStyles();
+			ACanvas->BackMode = cbmTransparent; // без этого может задний фонт быть непрозрачным
+			ACanvas->TextAlign = TA_LEFT;
+			ACanvas->TextOut3D(iX, R.Top - 14, TeeTreeZ, FAliasID);
 		}
 
 		if (TVisualScxmlBaseShape * AVisualParent = this->VisualParent) {

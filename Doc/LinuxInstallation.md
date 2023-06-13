@@ -16,7 +16,7 @@ sudo apt -y install wine
 sudo apt install ttf-mscorefonts-installer
 ```
 - Acknowledge the terms of the EULA in your terminal when prompted.
-3. [Download ScxmlEditor](https://www.dropbox.com/sh/fjzm9ejdrtra1c0/AAB_ASgIPRFLX57x7rWPEv3Ta?dl=0) and unpack it in any target location
+3. Download from latest Release page and unpack it in any target location
 4. Run program
 ```batch
 cd /path/to/ScxmlEditor

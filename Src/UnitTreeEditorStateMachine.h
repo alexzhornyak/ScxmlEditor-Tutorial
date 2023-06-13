@@ -691,11 +691,11 @@ public:
 	void __fastcall MarkModified(int iCategory, const UnicodeString &sMsg, bool bFillNodeTree);
 
 	std::pair<TStateMachineDockPanel*, TTreeNodeShape *> __fastcall EnterStateNode(const UnicodeString &sId, const bool bEntered,
-		const bool bOpenClosedUnits);
+		const bool bOpenClosedUnits, UnicodeString sAlias);
 
 	std::pair<TStateMachineDockPanel*, TTreeConnection *> __fastcall TakingTransition(
 		const UnicodeString &sFromShape, const int iTransitionID,
-		const bool bOpenClosedUnits
+		const bool bOpenClosedUnits, UnicodeString sAlias
 	);
 
 	void __fastcall ClearEnteredStates(void);
