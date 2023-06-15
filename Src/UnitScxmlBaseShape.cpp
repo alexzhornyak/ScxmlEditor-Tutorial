@@ -1347,6 +1347,7 @@ FInitial(L""), FExamined(false), FSkipDebugging(false), FBreakpointSet(false) {
 
 	FSelfConnectionTextOffsets = new TPersistentRect;
 	FSelfConnectionInside = false;
+	FAutoVertTextAlign = true;
 
 	FAliasID = L"";
 
@@ -1424,17 +1425,18 @@ bool __fastcall TVisualScxmlBaseShape::OnFilterPropEvent(const UnicodeString & s
 		return this->HasNonVisualChildren;
 	}
 
+	if (this->IsCluster()) {
+		if (sPropName == L"VertTextAlign" || sPropName == L"AutoVertTextAlign") {
+			return false;
+		}
+	}
+
 	std::auto_ptr<TStringList>AStringList(new TStringList());
 	AStringList->CaseSensitive = true;
 	AStringList->Add("X0");
 	AStringList->Add("X1");
 	AStringList->Add("Y0");
 	AStringList->Add("Y1");
-
-	if (!this->IsCluster()) {
-		AStringList->Add("VertTextAlign");
-	}
-	AStringList->Add("HorizTextAlign");
 
 	const int iIndex = AStringList->IndexOf(sPropName);
 	const bool bShow = iIndex == -1 ? TScxmlBaseShape::OnFilterPropEvent(sPropName) : true;
@@ -1500,6 +1502,11 @@ UnicodeString __fastcall TVisualScxmlBaseShape::OnGetHTMLPropertyInfo(const Unic
 	if (sPropName == L"SelfConnectionInside") {
 		return L"Self-connections are distributed inside of a state\n" //
 		"Call 'Arrange Self-Connections' operation to see the result\n" //
+		;
+	}
+
+	if (sPropName == L"AutoVertTextAlign") {
+		return L"If <b>AutoVertTextAlign == true</b> than atomic states has <b>Center</b> alignment always\n" //
 		;
 	}
 
@@ -1714,6 +1721,7 @@ void __fastcall TVisualScxmlBaseShape::Assign(Classes::TPersistent * Source) {
 				FChildrenAlignY = ABaseShape->FChildrenAlignY;
 				FChildrenAlignXOffset = ABaseShape->FChildrenAlignXOffset;
 				FSelfConnectionInside = ABaseShape->FSelfConnectionInside;
+				FAutoVertTextAlign = ABaseShape->FAutoVertTextAlign;
 
 				SkipDebugging = ABaseShape->SkipDebugging; // чтобы сработал Update стиля
 
@@ -1765,7 +1773,17 @@ void __fastcall TVisualScxmlBaseShape::UpdateBreakpointView() {
 
 // ---------------------------------------------------------------------------
 TVertTextAlign __fastcall TVisualScxmlBaseShape::GetVertTextAlign(void) {
-	return this->IsCluster() ? Teetree::vtaTop : TScxmlBaseShape::GetVertTextAlign();
+	return this->IsCluster() ? Teetree::vtaTop : (FAutoVertTextAlign ? Teetree::vtaCenter : TScxmlBaseShape::GetVertTextAlign());
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TVisualScxmlBaseShape::SetVertTextAlign(TVertTextAlign val) {
+	TScxmlBaseShape::SetVertTextAlign(val);
+
+	/* Only if property is set in extern editor */
+	if (!ComponentState.Contains(csLoading) && !ComponentState.Contains(csReading)) {
+		FAutoVertTextAlign = false;
+	}
 }
 
 // ---------------------------------------------------------------------------

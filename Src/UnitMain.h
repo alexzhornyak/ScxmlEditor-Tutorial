@@ -394,6 +394,9 @@ __published:	// IDE-managed Components
 	TToolButton *ToolButton34;
 	TAction *actTestCoverage;
 	TMenuItem *estCoverage1;
+	TMenuItem *MenuProjRename;
+	TAction *actRevert;
+	TMenuItem *Revert1;
 	void __fastcall LMDDockManager1WriteAppInfo(TObject *Sender, const ILMDXmlDocument *Xml);
 	void __fastcall LMDDockManager1BeforeRead(TObject *Sender, const ILMDXmlDocument *Xml);
 	void __fastcall ProjectManager1Open(TObject *Sender, bool AShowEditor, TLMDProjDocOpenContext *AContext);
@@ -580,9 +583,15 @@ __published:	// IDE-managed Components
 	void __fastcall HTMLRecentMouseEnterShape(TTreeNodeShape *Sender, TShiftState Shift, int X, int Y);
 	void __fastcall HTMLRecentMouseLeaveShape(TTreeNodeShape *Sender, TShiftState Shift, int X, int Y);
 	void __fastcall actTestCoverageExecute(TObject *Sender);
+	void __fastcall MenuProjRenameClick(TObject *Sender);
+	void __fastcall actRevertExecute(TObject *Sender);
+	void __fastcall actRevertUpdate(TObject *Sender);
 
 
 private:	// User declarations
+
+	void __fastcall InternalRevertSaveQuery(TObject * Sender, TLMDProjDocument * ADocument,
+		TLMDProjDocumentSaveQueryRes & ASave);
 
 	bool __fastcall ProjCloseQuery();
 

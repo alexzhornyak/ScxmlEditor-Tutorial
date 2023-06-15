@@ -822,43 +822,57 @@ void __fastcall TFormScxmlGui::ProjectManager1SaveQuery(TObject * Sender, TLMDPr
 }
 
 // ---------------------------------------------------------------------------
+void __fastcall TFormScxmlGui::InternalRevertSaveQuery(TObject * Sender, TLMDProjDocument * ADocument,
+	TLMDProjDocumentSaveQueryRes & ASave) {
+
+	/* Special case for revert operation */
+	ASave = sqrNo;
+
+}
+
+// ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::ProjectManager1SaveAs(TObject * Sender, TLMDProjDocument * ADocument, TLMDString & AFilePath, bool&ASave) {
 	bool bIsValid = false;
 
-	if (TStateMachineProject * AProject = dynamic_cast<TStateMachineProject*>(ADocument)) {
-		SaveDialog->Filter = TStateMachineProject::OpenDialogFilter;
-		SaveDialog->FileName = ChangeFileExt(AFilePath, TStateMachineProject::FileExt_);
-		bIsValid = true;
-	}
-	else if (TStateMachineEditorUnit * AUnit = dynamic_cast<TStateMachineEditorUnit*>(ADocument)) {
-		SaveDialog->Filter = TStateMachineEditorUnit::OpenDialogFilter;
-		SaveDialog->FileName = ChangeFileExt(AFilePath, TStateMachineEditorUnit::FileExt_);
-		bIsValid = true;
-	}
+	/* Execute these actions only if we are not in Replace Mode */
+	if (SaveDialog->Tag != 1) {
+		if (TStateMachineProject * AProject = dynamic_cast<TStateMachineProject*>(ADocument)) {
+			SaveDialog->Filter = TStateMachineProject::OpenDialogFilter;
+			SaveDialog->FileName = ChangeFileExt(AFilePath, TStateMachineProject::FileExt_);
+			bIsValid = true;
+		}
+		else if (TStateMachineEditorUnit * AUnit = dynamic_cast<TStateMachineEditorUnit*>(ADocument)) {
+			SaveDialog->Filter = TStateMachineEditorUnit::OpenDialogFilter;
+			SaveDialog->FileName = ChangeFileExt(AFilePath, TStateMachineEditorUnit::FileExt_);
+			bIsValid = true;
+		}
 
-	if (!bIsValid) {
-		return;
-	}
+		if (!bIsValid) {
+			return;
+		}
 
-	// при переименованиях показывает туда, куда запомнило последний раз,
-	// и часто надо очень долго искать путь
-	UnicodeString sInitialDir = ExtractFileDir(AFilePath);
+		// при переименованиях показывает туда, куда запомнило последний раз,
+		// и часто надо очень долго искать путь
+		UnicodeString sInitialDir = ExtractFileDir(AFilePath);
 
-	// если текущая директория не определена, попробуем взять у родительского элемента
-	if (sInitialDir.IsEmpty()) {
-		if (ADocument) {
-			TLMDProjDocument *AParentDocument = dynamic_cast<TLMDProjDocument*>(ADocument->Parent);
-			if (AParentDocument) {
-				sInitialDir = ExtractFileDir(AParentDocument->FilePath);
+		// если текущая директория не определена, попробуем взять у родительского элемента
+		if (sInitialDir.IsEmpty()) {
+			if (ADocument) {
+				TLMDProjDocument *AParentDocument = dynamic_cast<TLMDProjDocument*>(ADocument->Parent);
+				if (AParentDocument) {
+					sInitialDir = ExtractFileDir(AParentDocument->FilePath);
+				}
 			}
+		}
+
+		if (DirectoryExists(sInitialDir)) {
+			SaveDialog->InitialDir = sInitialDir;
 		}
 	}
 
-	if (DirectoryExists(sInitialDir)) {
-		SaveDialog->InitialDir = sInitialDir;
-	}
-
-	if (SaveDialog->Execute()) {
+	/* 'Tag' is used to overrede rename request */
+	if (SaveDialog->Tag == 1 || SaveDialog->Execute()) {
+		SaveDialog->Tag = 0;
 
 		// выдадим предупреждение пользователю, если расширение не совпадает с исходным
 		const UnicodeString sOldFileExt = ExtractFileExt(AFilePath);
@@ -967,9 +981,9 @@ void __fastcall TFormScxmlGui::actNewProjExecute(TObject * Sender) {
 
 				SetDockPanelStackCaption(0);
 			}
-			else {
+			else
 				throw Exception(L"Can not cast to <TStateMachineProject>");
-			}
+
 		}
 	}
 	catch(Exception * E) {
@@ -1293,6 +1307,64 @@ void __fastcall TFormScxmlGui::MenuProjCloneUnitClick(TObject * Sender) {
 	}
 }
 
+//---------------------------------------------------------------------------
+void __fastcall TFormScxmlGui::MenuProjRenameClick(TObject *Sender) {
+	try {
+		if (ProjectManagerView1->SelectedDoc) {
+
+			const UnicodeString sWasFile = ProjectManagerView1->SelectedDoc->FilePath;
+			const UnicodeString sWasFilePart = TPath::GetFileNameWithoutExtension(ProjectManagerView1->SelectedDoc->FilePath);
+			UnicodeString sFilePart = sWasFilePart;
+
+			std::auto_ptr<TStringList>AStringListPtr(new TStringList());
+			AStringListPtr->Add(L"You are about to " + StripHotkey(MenuProjRename->Caption).LowerCase());
+			AStringListPtr->Add(L"MODIFICATIONS WILL BE SAVED!");
+
+			if (InputQuery(L"RENAME", AStringListPtr->Text, sFilePart)) {
+				if (SameText(sWasFilePart, sFilePart)) {
+					WLOG_WARNING(L"Filename:[%s] was not changed!", sFilePart.c_str());
+					return;
+				}
+
+				const UnicodeString sExt = ExtractFileExt(ProjectManagerView1->SelectedDoc->FilePath);
+				const UnicodeString sFileDir = ExtractFileDir(ProjectManagerView1->SelectedDoc->FilePath);
+
+				SaveDialog->FileName = TPath::Combine(sFileDir, sFilePart + sExt);
+				SaveDialog->Tag = 1;
+
+				ProjectManager1->Save(ProjectManagerView1->SelectedDoc, true);
+
+				if (TStateMachineProject * AStateMachineProject = dynamic_cast<TStateMachineProject*>(ProjectManagerView1->SelectedDoc)) {
+					DeleteFile(sWasFile);
+					DeleteFile(sWasFile + L".checksum");
+					DeleteFile(sWasFile + L".props");
+					DeleteFile(sWasFile + L".xml");
+				}
+				else if (TStateMachineEditorUnit * AStateMachineEditorUnit = dynamic_cast<TStateMachineEditorUnit*>
+					(ProjectManagerView1->SelectedDoc)) {
+
+					TStateMachineProject* AStateMachineProject = this->StateMachineProject;
+					if (AStateMachineProject) {
+						AStateMachineProject->MarkModified();
+						AStateMachineProject->Save();
+					}
+
+					DeleteFile(sWasFile);
+					DeleteFile(TStateMachineEditorUnit::MakeBindingFileName(sWasFile));
+				}
+
+				UpdateCaption();
+			}
+		}
+
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+
+	SaveDialog->Tag = 0;
+}
+
 // ---------------------------------------------------------------------------
 
 void __fastcall TFormScxmlGui::actSaveProjectAsExecute(TObject * Sender) {
@@ -1542,9 +1614,36 @@ void __fastcall TFormScxmlGui::DoOpenProject(const UnicodeString & sFileName) {
 // ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::actOpenProjectExecute(TObject * Sender) {
 	try {
-		OpenDialog->Filter = TStateMachineProject::OpenDialogFilter;
-		if (ProjCloseQuery() && OpenDialog->Execute(this->Handle))
-			DoOpenProject(OpenDialog->FileName);
+		OpenDialog->Filter = TStateMachineProject::OpenDialogFilter + //
+		L"|" + TStateMachineEditorUnit::OpenDialogFilter + //
+		L"|All files (*.*)|*.*";
+		OpenDialog->FilterIndex = 0;
+		if (ProjCloseQuery() && OpenDialog->Execute(this->Handle)) {
+
+			const UnicodeString sExt = ExtractFileExt(OpenDialog->FileName);
+			if (SameText(sExt, TStateMachineEditorUnit::FileExt_)) {
+
+				const UnicodeString Caption = L"INFO";
+				const UnicodeString Text = L"Do you want to create a project with [" + ExtractFileName(OpenDialog->FileName) + "] ?";
+				if (MessageBoxW(this->Handle, Text.c_str(), Caption.c_str(), MB_ICONINFORMATION | MB_YESNO) == IDYES) {
+					DeleteAllProjects();
+
+					TStateMachineProject *AProject = dynamic_cast<TStateMachineProject*>(ProjectManager1->New(NULL,
+							__classid(TStateMachineProject)));
+					if (AProject) {
+						AddExistingUnit(AProject, OpenDialog->FileName, false);
+					}
+					else
+						throw Exception(L"Can not cast to <TStateMachineProject>");
+				}
+				else {
+					DoOpenUnit(OpenDialog->FileName);
+				}
+			}
+			else {
+				DoOpenProject(OpenDialog->FileName);
+			}
+		}
 	}
 	catch(Exception * E) {
 		LOG_ERROR(LOG_ERROR_MSG);
@@ -1871,6 +1970,12 @@ void __fastcall TFormScxmlGui::PopupProjViewPopup(TObject * Sender) {
 	MenuProjForceSaveUnit->Caption = AStateMachineProject ? L"Force Save Project" : L"Force Save Unit";
 
 	MenuProjViewClose->Enabled = ProjectManagerView1->SelectedDoc != NULL && ProjectManagerView1->SelectedDoc->Opened;
+
+	MenuProjRename->Visible = (AStateMachineEditorUnit && !AStateMachineEditorUnit->IsNew) || //
+	(AStateMachineProject && !AStateMachineProject->IsNew);
+	if (MenuProjRename->Visible) {
+		MenuProjRename->Caption = bIsStateMachineProject ? L"Rename Project" : L"Rename Unit";
+	}
 
 	MenuProjCloneUnit->Visible = bIsEnabledUnitInProject;
 	MenuProjViewRemove->Visible = bIsStateMachineUnit;
@@ -2371,6 +2476,7 @@ TLMDProjDocument * __fastcall TFormScxmlGui::AddExistingUnit(TLMDProjNode * APar
 void __fastcall TFormScxmlGui::actAddExistingExecute(TObject * Sender) {
 	try {
 		OpenDialog->Filter = TStateMachineEditor::GetOpenDialogFilter();
+		OpenDialog->FilterIndex = 0;
 		if (OpenDialog->Execute(this->Handle)) {
 
 			AddExistingUnit(GetActiveUnit(), OpenDialog->FileName, false);
@@ -2394,6 +2500,7 @@ TLMDProjDocument * __fastcall TFormScxmlGui::FindAndAddExistingUnit(TLMDProjNode
 			throw Exception("Base file [" + sFileName + "] is not found!");
 
 		OpenDialog->Filter = TStateMachineEditor::GetOpenDialogFilter();
+		OpenDialog->FilterIndex = 0;
 		OpenDialog->FileName = sTrueFileName;
 		if (OpenDialog->Execute(this->Handle)) {
 			sTrueFileName = OpenDialog->FileName;
@@ -2408,6 +2515,7 @@ void __fastcall TFormScxmlGui::MenuProjAddExistingClick(TObject * Sender) {
 	try {
 		if (ProjectManagerView1->SelectedDoc) {
 			OpenDialog->Filter = TStateMachineEditor::GetOpenDialogFilter();
+			OpenDialog->FilterIndex = 0;
 			if (OpenDialog->Execute(this->Handle)) {
 
 				AddExistingUnit(ProjectManagerView1->SelectedDoc, OpenDialog->FileName, false);
@@ -2447,6 +2555,7 @@ void __fastcall TFormScxmlGui::MenuProjAddExistingUnitWithAllNestedUnitsClick(TO
 	try {
 		if (ProjectManagerView1->SelectedDoc) {
 			OpenDialog->Filter = TStateMachineEditor::GetOpenDialogFilter();
+			OpenDialog->FilterIndex = 0;
 			if (OpenDialog->Execute(this->Handle)) {
 
 				TStateMachineEditorUnit *ANewUnit = dynamic_cast<TStateMachineEditorUnit*>
@@ -2810,9 +2919,9 @@ void __fastcall TFormScxmlGui::PropSettingsInspectorChange(TObject * Sender) {
 void __fastcall TFormScxmlGui::actOpenUnitExecute(TObject * Sender) {
 	try {
 		OpenDialog->Filter = TStateMachineEditor::GetOpenDialogFilter();
+		OpenDialog->FilterIndex = 0;
 		if (ProjCloseQuery() && OpenDialog->Execute(this->Handle))
 			DoOpenUnit(OpenDialog->FileName);
-
 	}
 	catch(Exception * E) {
 		LOG_ERROR(LOG_ERROR_MSG);
@@ -3375,7 +3484,7 @@ void __fastcall TFormScxmlGui::actStopExecute(TObject * Sender) {
 					if (APanel->OpenedDoc->Node) {
 						const UnicodeString sTempFile = APanel->OpenedDoc->Node->FilePath + "~";
 						if (FileExists(sTempFile)) {
-							if (!DeleteFileA(sTempFile))
+							if (!DeleteFile(sTempFile))
 								WLOG_WARNING(L"Can not delete <%s>", sTempFile.c_str());
 						}
 					}
@@ -6285,5 +6394,111 @@ void __fastcall TFormScxmlGui::HTMLRecentMouseLeaveShape(TTreeNodeShape *Sender,
 
 void __fastcall TFormScxmlGui::actTestCoverageExecute(TObject *Sender) {
 	// Do not remove this handler !
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TFormScxmlGui::actRevertExecute(TObject *Sender) {
+	TStateMachineProject * AStateMachineProject = this->StateMachineProject;
+	TStateMachineEditorUnit* AUnit = ActiveUnit;
+
+	UnicodeString sProjectFileName = L"";
+	UnicodeString sUnitFileName = L"";
+	if (AStateMachineProject) {
+		if (!AStateMachineProject->IsNew) {
+			sProjectFileName = AStateMachineProject->FilePath;
+		}
+	}
+	else {
+		if (AUnit && !AUnit->IsNew) {
+			sUnitFileName = AUnit->FilePath;
+		}
+	}
+
+	if (!sProjectFileName.IsEmpty() || !sUnitFileName.IsEmpty()) {
+
+		UnicodeString sText = UnicodeString().sprintf(L"Revert %s: %s?\nMODIFICATIONS WILL BE LOST!",
+			sProjectFileName.IsEmpty() ? L"unit" : L"project", //
+			ExtractFileName(sProjectFileName.IsEmpty() ? sUnitFileName : sProjectFileName).c_str());
+
+		if (MessageBoxW(this->Handle, sText.c_str(), L"WARNING", MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) != IDOK)
+			return;
+
+		try {
+
+			const int i_MAX_DISPLAY_WAIT_COUNT = 2;
+
+			UnicodeString sActiveUnit = L"";
+			if (AUnit && !AUnit->IsNew) {
+				sActiveUnit = AUnit->FileName;
+			}
+
+			std::vector<TStateMachineEditorUnit*>AVecUnits;
+			CollectAllEnabledUnits(this->ProjectManager1->Root, AVecUnits);
+			int iOpenCount = 0;
+			for (std::size_t i = 0; i < AVecUnits.size(); i++) {
+				if (AVecUnits[i]->Opened) {
+					iOpenCount++;
+
+					if (iOpenCount > i_MAX_DISPLAY_WAIT_COUNT) {
+
+						if (!DialogWait) {
+							DialogWait = new TDialogWait(this);
+						}
+
+						break;
+					}
+				}
+			}
+
+			if (DialogWait) {
+				DialogWait->ShowDialog("Closing all projects ...");
+			}
+
+			try {
+				/* this will cancel all user message dialogs */
+				ProjectManager1->OnSaveQuery = this->InternalRevertSaveQuery;
+
+				DeleteAllProjects();
+			}
+			__finally {
+				ProjectManager1->OnSaveQuery = this->ProjectManager1SaveQuery;
+			}
+
+			if (!sProjectFileName.IsEmpty()) {
+				DoOpenProject(sProjectFileName);
+
+				if (!sActiveUnit.IsEmpty()) {
+					AVecUnits.clear();
+					CollectAllEnabledUnits(this->ProjectManager1->Root, AVecUnits);
+					for (std::size_t i = 0; i < AVecUnits.size(); i++) {
+						if (SameText(AVecUnits[i]->FileName, sActiveUnit)) {
+							if (!AVecUnits[i]->Opened) {
+								AVecUnits[i]->Open(true);
+							}
+
+							break;
+						}
+					}
+				}
+			}
+			else if (!sUnitFileName.IsEmpty()) {
+				DoOpenUnit(sUnitFileName);
+			}
+		}
+		catch(Exception * E) {
+			LOG_ERROR(LOG_ERROR_MSG);
+		}
+
+		/* FINALIZE */
+		if (DialogWait) {
+			delete DialogWait;
+			DialogWait = NULL;
+		}
+	}
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TFormScxmlGui::actRevertUpdate(TObject *Sender) {
+	actRevert->Enabled = (ProjectManager1->Root != NULL) && !SettingsData->IsTesterWorking;
 }
 //---------------------------------------------------------------------------

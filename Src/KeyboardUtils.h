@@ -39,7 +39,8 @@ namespace Keyboardutils {
 	bool __fastcall IsControlPressed(void);
 	bool __fastcall IsShiftPressed(void);
 	bool __fastcall IsAltPressed(void);
-	bool __fastcall IsAnyKeyOrMousePressed();
+	bool __fastcall IsAnyKeyOrMousePressed(void);
+	bool __fastcall IsLeftMousePressed(void);
 
 }
 

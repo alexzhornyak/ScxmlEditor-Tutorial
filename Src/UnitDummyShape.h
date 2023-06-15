@@ -45,6 +45,14 @@ class TTextDummyShape : public TPolygonShape {
 private:
 	TStateMachineConnection *__fastcall GetStateMachineConnection(void);
 
+	void __fastcall OnClickSendEvent(TTreeNodeShape* Sender, Controls::TMouseButton Button, Classes::TShiftState Shift, int X, int Y);
+
+    void __fastcall UpdateAppearance(void);
+
+protected:
+
+	virtual void __fastcall DrawShapeCanvas(Tecanvas::TCanvas3D* ACanvas, const Types::TRect &R); /* inherited */
+
 public:
 	__fastcall TTextDummyShape(Classes::TComponent* AOwner);
 
@@ -56,9 +64,13 @@ public:
 		return rcNone;
 	}
 
+	DYNAMIC void __fastcall DrawHandles(void);
+
 	TTreeConnection *Connection;
 
 	void __fastcall UpdatePosition(void);
+
+	static bool IsClickSendEnabled(void);
 
 	__property TStateMachineConnection *StateMachineConnection = {read = GetStateMachineConnection};
 };

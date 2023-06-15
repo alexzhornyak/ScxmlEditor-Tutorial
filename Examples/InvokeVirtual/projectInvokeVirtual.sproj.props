@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<!--This document is generated automatically! Please, do not edit!-->
+<root>
+	<object Name="" ClassName="TProjectProperties">
+		<ProjectDefines/>
+		<TestSettings>
+			<Enabled>true</Enabled>
+			<ExeName>.\QtScxmlTester\QtScxmlTester.exe</ExeName>
+			<WorkDir>$(UnitFileDir)</WorkDir>
+			<CMDParams/>
+			<ScxmlMonitorLog>true</ScxmlMonitorLog>
+			<CaptureOutputRegExps/>
+		</TestSettings>
+		<Triggers/>
+		<ProjectPostBuild>
+			<PostBuildCMD/>
+			<UserMacros/>
+		</ProjectPostBuild>
+		<FilteredMsgs/>
+	</object>
+</root>

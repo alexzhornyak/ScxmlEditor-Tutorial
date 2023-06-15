@@ -60,6 +60,8 @@ typedef std::map <UnicodeString /*connection name*/,
 
 typedef enum { alsOrtho, alsPolyline } TAutoLayoutSpline;
 
+typedef enum { seNone, seDoubleClick, seClick } TTestSendEventMode;
+
 class TSettingsData: public TSettingsBase
 {
 __published:	// IDE-managed Components
@@ -165,6 +167,7 @@ private:	// User declarations
 	bool FTestingDebugReceivedBuffer;
 	bool FTestingSwitchToPanel;
 	bool FTestingScrollChartToViewShape;
+	TTestSendEventMode FTestingSendEventClickMode;
 	bool FTestingAutoOpenUnit;
 
 	bool FTranslateEveryChangeToScxmlView;
@@ -261,6 +264,9 @@ public:		// User declarations
 	void SendEvent(const UnicodeString &sMsg);
 
 	bool __fastcall IsTestCoverageEnabled(void);
+
+	/* Tester can send messages to testing applications */
+	bool __fastcall IsTesterWorkingInDebugMode(void);
 
 	void __fastcall FillCompletionList(Classes::TStrings* Items, const UnicodeString &LeftPart, const UnicodeString &sActiveSyntaxScheme);
 
@@ -403,12 +409,13 @@ __published:	// PROPERTIES THAT ARE SEEN IN SETTINGS EDITOR
 	__property TTestSettings *	TestSettings = {read=FTestSettings, write=SetTestSettings};
 	__property TTestApplicationPresetItems *	TestApplicationPresets = {read=FTestApplicationPresets, write=SetTestApplicationPresets};
 
-	__property bool 			TestingDebugReceivedBuffer = {read=FTestingDebugReceivedBuffer, write=FTestingDebugReceivedBuffer, default=false};
-	__property bool 			TestingShowCallStack = {read=FTestingShowCallStack, write=FTestingShowCallStack, default=true};
-	__property bool				TestingSwitchToPanel = {read=FTestingSwitchToPanel, write=FTestingSwitchToPanel, default=true};
-	__property bool				TestingAutoOpenUnit = {read=FTestingAutoOpenUnit, write=FTestingAutoOpenUnit, default=true};
-	__property bool				TestingScrollChartToViewShape = {read=FTestingScrollChartToViewShape, write=FTestingScrollChartToViewShape, default=true};
-	__property TScxmlMsgTypes 	CallStackTypes = {read=FScxmlMsgTypes, write=FScxmlMsgTypes,stored=IsScxmlMsgTypesStored};
+	__property bool 				TestingDebugReceivedBuffer = {read=FTestingDebugReceivedBuffer, write=FTestingDebugReceivedBuffer, default=false};
+	__property bool 				TestingShowCallStack = {read=FTestingShowCallStack, write=FTestingShowCallStack, default=true};
+	__property bool					TestingSwitchToPanel = {read=FTestingSwitchToPanel, write=FTestingSwitchToPanel, default=true};
+	__property bool					TestingAutoOpenUnit = {read=FTestingAutoOpenUnit, write=FTestingAutoOpenUnit, default=true};
+	__property bool					TestingScrollChartToViewShape = {read=FTestingScrollChartToViewShape, write=FTestingScrollChartToViewShape, default=true};
+	__property TTestSendEventMode	TestingSendEventClickMode = {read=FTestingSendEventClickMode, write=FTestingSendEventClickMode, default=seDoubleClick};
+	__property TScxmlMsgTypes 		CallStackTypes = {read=FScxmlMsgTypes, write=FScxmlMsgTypes,stored=IsScxmlMsgTypesStored};
 
 
 };

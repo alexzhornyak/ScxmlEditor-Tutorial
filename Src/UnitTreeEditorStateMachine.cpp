@@ -5178,9 +5178,16 @@ void __fastcall TStateMachineEditor::TheTreeMovingShape(Teetree::TTreeNodeShape 
 		return;
 	}
 
+	TTextDummyShape *ADummyShape = dynamic_cast<TTextDummyShape*>(Sender);
+
+	if (ADummyShape && TTextDummyShape::IsClickSendEnabled()) {
+		DeltaX = 0;
+		DeltaY = 0;
+		return;
+	}
+
 	TTreeEditorEx::TheTreeMovingShape(Sender, DeltaX, DeltaY);
 
-	TTextDummyShape *ADummyShape = dynamic_cast<TTextDummyShape*>(Sender);
 	if (ADummyShape && ADummyShape->Connection) {
 		ADummyShape->Connection->Text->HorizOffset = ADummyShape->Connection->Text->HorizOffset + DeltaX;
 		ADummyShape->Connection->Text->VertOffset = ADummyShape->Connection->Text->VertOffset + DeltaY;
@@ -6465,9 +6472,13 @@ void __fastcall TStateMachineEditor::TheTreeDblClickShape(Teetree::TTreeNodeShap
 			DoEditScxmlShapes(AScxmlBaseShape);
 		}
 		else if (TTextDummyShape * ADummy = TextDummyShape) {
-			TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(ADummy->Connection);
-			if (AStateMachineConnection) {
-				AStateMachineConnection->ShowEditor();
+
+			if (!TTextDummyShape::IsClickSendEnabled()) {
+
+				TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(ADummy->Connection);
+				if (AStateMachineConnection) {
+					AStateMachineConnection->ShowEditor();
+				}
 			}
 		}
 		else {
@@ -8742,7 +8753,7 @@ std::pair<TStateMachineDockPanel*, TTreeConnection *>__fastcall TStateMachineDoc
 		}
 	}
 
-    /* VIRTUAL ALIAS */
+	/* VIRTUAL ALIAS */
 	const bool bAliasUsed = !sAlias.IsEmpty();
 	if (bAliasUsed && StateMachineEditorUnit->IsVirtual) {
 		TScxmlShape *AScxmlShape = FStateMachineEditor->RootScxml;

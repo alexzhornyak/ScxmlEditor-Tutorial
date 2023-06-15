@@ -38,6 +38,8 @@
 
 class TFrameTrigger;
 
+TFrameTrigger *__fastcall FindTrigger(TWinControl *AParent, TContentTrigger *AContentTrigger, TParamTriggerItems *AParams);
+
 TFrameTrigger * __fastcall CreateTrigger(TWinControl *AParent, TContentTrigger *AContentTrigger, TParamTriggerItems *AParams);
 
 #endif

@@ -36,11 +36,13 @@
 
 #include "LMDDckSite.hpp"
 
-extern TForm *GlobalMainForm();
+extern TForm *GlobalMainForm(void);
 
-extern TLMDDockSite *GlobalDockSite();
+extern TLMDDockSite *GlobalDockSite(void);
 
-extern TLMDDockPanel *GlobalDockPanelRoot();
+extern TLMDDockPanel *GlobalDockPanelRoot(void);
+
+extern TScrollBox *GlobalScrollBoxTriggers(void);
 
 extern void __fastcall GlobalSendBallonMsg(const UnicodeString &sMessage, const TBalloonFlags AFlags);
 

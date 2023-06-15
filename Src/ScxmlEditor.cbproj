@@ -28,15 +28,11 @@
 			<BCC_MonitorGlobalAndStackData>true</BCC_MonitorGlobalAndStackData>
 			<DynamicRTL>true</DynamicRTL>
 			<BCC_MonitorInlinePtrAccess>true</BCC_MonitorInlinePtrAccess>
-			<BCC_IncludePath>$(BDS)\include\log4cpp\include;$(BCC_IncludePath)</BCC_IncludePath>
 			<Multithreaded>true</Multithreaded>
 			<ProjectType>CppVCLApplication</ProjectType>
-			<PackageImports>vclx.bpi;vcl.bpi;vclimg.bpi;dbrtl.bpi;Rave77VCL.bpi;bdertl.bpi;rtl.bpi;bcbie.bpi;vclactnband.bpi;xmlrtl.bpi;bcbsmp.bpi;vcldb.bpi;vcldbx.bpi;vcltouch.bpi;dsnap.bpi;dsnapcon.bpi;vclib.bpi;ibxpress.bpi;adortl.bpi;IndyCore.bpi;IndySystem.bpi;IndyProtocols.bpi;inet.bpi;intrawebdb_100_140.bpi;Intraweb_100_140.bpi;VclSmp.bpi;vclie.bpi;websnap.bpi;webdsnap.bpi;inetdb.bpi;inetdbbde.bpi;inetdbxpress.bpi;soaprtl.bpi;vclribbon.bpi;dbexpress.bpi;DbxCommonDriver.bpi;DataSnapIndy10ServerTransport.bpi;DataSnapProviderClient.bpi;DbxClientDriver.bpi;DataSnapServer.bpi;DBXInterBaseDriver.bpi;DBXMySQLDriver.bpi;dbxcds.bpi;DBXFirebirdDriver.bpi;DBXSybaseASEDriver.bpi;DBXSybaseASADriver.bpi;DBXOracleDriver.bpi;DBXMSSQLDriver.bpi;DBXInformixDriver.bpi;DBXDb2Driver.bpi;lmdrtl11rt_140.bpi;lmdrtlx11rt_140.bpi;lmdthemes11rt_140.bpi;lmdplugin11rt_140.bpi;lmdinspector11rt_140.bpi;lmdprint11rt_140.bpi;lmdcore11rt_140.bpi;lmdtools11rt_140.bpi;lmdtoolsdb11rt_140.bpi;lmdgrid11rt_140.bpi;lmddocking11rt_140.bpi;lmdrtf11rt_140.bpi;lmdrtfdb11rt_140.bpi;lmdshell11rt_140.bpi;lmdsys11rt_140.bpi;lmdtxtdb11rt_140.bpi;lmdtxt11rt_140.bpi;lmdparse11rt_140.bpi;lmdweb11rt_140.bpi;lmdsearch11rt_140.bpi;lmdsearchdb11rt_140.bpi;lmdbar11rt_140.bpi;lmddesign11rt_140.bpi;lmdscript11rt_140.bpi;lmdscriptimp11rt_140.bpi;lmdstorage11rt_140.bpi;lmdfx11rt_140.bpi;lmdchart11rt_140.bpi;lmdchartdb11rt_140.bpi;lmdide11rt_140.bpi;lmdsyntax11rt_140.bpi;lmdelcore11rt_140.bpi;lmdelpro11rt_140.bpi;lmdeldb11rt_140.bpi;RaizeComponentsVcl.bpi;RaizeComponentsVclDb.bpi;TeeWorld814.bpi;TeeImage814.bpi;TeeLanguage814.bpi;TeePro814.bpi;TeeGL814.bpi;TeeUI814.bpi;TeeDB814.bpi;Tee814.bpi;RegistryComponentEx.bpi;SynPDF_2010.bpi;PowerPDFDR.bpi;frx14.bpi;frxe14.bpi;frxTee14.bpi;frxDB14.bpi;frxADO14.bpi;frxBDE14.bpi</PackageImports>
 			<OutputExt>exe</OutputExt>
 			<AllPackageLibs>rtl.lib;vcl.lib;lmddocking11rt_140.lib;lmdrtl11rt_140.lib;lmdelcore11rt_140.lib;lmdrtlx11rt_140.lib;vclx.lib;TeePro814.lib;TeeUI814.lib;Tee814.lib;vclimg.lib;TeeLanguage814.lib;vcldb.lib;dbrtl.lib;adortl.lib;bdertl.lib;xmlrtl.lib;vclactnband.lib;VclSmp.lib;lmddesign11rt_140.lib;lmdinspector11rt_140.lib;lmdsyntax11rt_140.lib;lmdprint11rt_140.lib;lmdtools11rt_140.lib;lmdcore11rt_140.lib;lmdide11rt_140.lib;lmdscript11rt_140.lib;inet.lib;IndyCore.lib;IndySystem.lib;lmdshell11rt_140.lib;DbxCommonDriver.lib;dsnap.lib;TeeImage814.lib;lmdgrid11rt_140.lib</AllPackageLibs>
 			<DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
-			<IncludePath>XMLSerialize\;TreeEditor\GDIPlus\;E:\SDK_SOURCES\TeeChart Pro 8.06 Source\Sources\;TreeEditor\;E:\SDK_SOURCES\LMD2011_11\source\;Images\;$(CG_BOOST_ROOT)\boost\tr1\tr1;$(BDS)\include;$(BDS)\include\dinkumware;$(BDS)\include\vcl;$(CG_BOOST_ROOT);..\TeeTreeStatic;$(IncludePath)</IncludePath>
-			<ILINK_LibraryPath>XMLSerialize\;TreeEditor\GDIPlus\;E:\SDK_SOURCES\TeeChart Pro 8.06 Source\Sources\;TreeEditor\;E:\SDK_SOURCES\LMD2011_11\source\;Images\;$(BDS)\include\log4cpp\bcb5\log4cpp\;$(BDS)\lib\obj;..\TeeTreeStatic;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 			<BCC_wpar>false</BCC_wpar>
 			<BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
 			<BCC_ExtendedErrorInfo>true</BCC_ExtendedErrorInfo>
@@ -54,7 +50,6 @@
 			<BCC_DebugLineNumbers>true</BCC_DebugLineNumbers>
 			<TASM_DisplaySourceLines>true</TASM_DisplaySourceLines>
 			<BCC_StackFrames>true</BCC_StackFrames>
-			<ILINK_LibraryPath>$(BDS)\lib\debug;$(BDS)\include\MaZhor\XMLSerialize\Debug;..\TeeTreeStatic\Debug;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 			<ILINK_FullDebugInfo>true</ILINK_FullDebugInfo>
 			<TASM_Debugging>Full</TASM_Debugging>
 			<BCC_SourceDebuggingOn>true</BCC_SourceDebuggingOn>
@@ -62,127 +57,467 @@
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
 			<Defines>NDEBUG;$(Defines)</Defines>
 			<IntermediateOutputDir>Release</IntermediateOutputDir>
-			<ILINK_LibraryPath>$(BDS)\lib\release;$(BDS)\include\MaZhor\XMLSerialize\Release;..\TeeTreeStatic\Release;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 			<TASM_Debugging>None</TASM_Debugging>
 		</PropertyGroup>
 		<ItemGroup>
-			<CppCompile Include="UnitSpawnAndRedirect.cpp">
-				<DependentOn>UnitSpawnAndRedirect.h</DependentOn>
-				<BuildOrder>52</BuildOrder>
+			<DelphiCompile Include="uJSON.pas">
+				<VirtualFolder>{DD04B8D5-7C8F-44D5-940F-43D1AFAC89E1}</VirtualFolder>
+				<BuildOrder>0</BuildOrder>
+			</DelphiCompile>
+			<CppCompile Include="UnitDialogCollectOutputs.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>DialogCollectOutputs</Form>
+				<DependentOn>UnitDialogCollectOutputs.h</DependentOn>
+				<BuildOrder>56</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="UnitEditDocumentAppender.cpp">
+			<CppCompile Include="ScxmlEditor.cpp">
+				<BuildOrder>0</BuildOrder>
+			</CppCompile>
+			<None Include="SafeQueue.hpp">
+				<BuildOrder>101</BuildOrder>
+			</None>
+			<CppCompile Include="VISUAL_GLOBALS.cpp">
+				<DependentOn>VISUAL_GLOBALS.h</DependentOn>
+				<BuildOrder>85</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\if_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngIf</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitCompleteItems.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitCompleteItems.h</DependentOn>
+				<BuildOrder>61</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitPresetCondition.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>PresetCondition</Form>
+				<DependentOn>UnitPresetCondition.h</DependentOn>
+				<BuildOrder>57</BuildOrder>
+			</CppCompile>
+			<RcItem Include="complete_all_CPP.txt">
+				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>CompleteCPP</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitBallonAppender.cpp">
 				<VirtualFolder>{FB80F157-D4C9-4E1D-B9DD-C96495FE9E8A}</VirtualFolder>
-				<DependentOn>UnitEditDocumentAppender.h</DependentOn>
-				<BuildOrder>42</BuildOrder>
+				<DependentOn>UnitBallonAppender.h</DependentOn>
+				<BuildOrder>3</BuildOrder>
 			</CppCompile>
-			<None Include="TreeEditor\TreeNodeListAccess.h">
-				<BuildOrder>76</BuildOrder>
+			<None Include="UnicodeStringHash.h">
+				<BuildOrder>112</BuildOrder>
 			</None>
-			<CppCompile Include="SaveSimplePersistent.cpp">
+			<CppCompile Include="UnitSettingsEditor.cpp">
 				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>SaveSimplePersistent.h</DependentOn>
-				<BuildOrder>44</BuildOrder>
+				<Form>FormSettingsEditor</Form>
+				<DependentOn>UnitSettingsEditor.h</DependentOn>
+				<BuildOrder>16</BuildOrder>
 			</CppCompile>
-			<RcItem Include="Images\finalize_16_16.png">
+			<RcItem Include="Images\log_16_16.png">
 				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngFinalize</ResourceId>
+				<ResourceId>PngLog</ResourceId>
 			</RcItem>
-			<CppCompile Include="WildCardUtils.cpp">
-				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
-				<DependentOn>WildCardUtils.h</DependentOn>
-				<BuildOrder>69</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitDataModelStateShape.cpp">
-				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
-				<DependentOn>UnitDataModelStateShape.h</DependentOn>
-				<BuildOrder>29</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="TreeEditor\UnitTreeEditorUtils.cpp">
-				<DependentOn>TreeEditor\UnitTreeEditorUtils.h</DependentOn>
-				<BuildOrder>26</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitLineStringEditor.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<Form>LineStringEditor</Form>
-				<DependentOn>UnitLineStringEditor.h</DependentOn>
-				<BuildOrder>70</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitStateMachineConnection.cpp">
-				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
-				<DependentOn>UnitStateMachineConnection.h</DependentOn>
-				<BuildOrder>17</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\foreach_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngForeach</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitDialogDelayedTransition.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>DialogDelayedTransition</Form>
-				<DependentOn>UnitDialogDelayedTransition.h</DependentOn>
-				<BuildOrder>158</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitReplaceRefactorForm.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>ReplaceRefactor</Form>
-				<DependentOn>UnitReplaceRefactorForm.h</DependentOn>
-				<BuildOrder>47</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitProjectProperties.cpp">
-				<VirtualFolder>{2A06EE29-9254-4395-A334-E55EC8D6E08E}</VirtualFolder>
-				<DependentOn>UnitProjectProperties.h</DependentOn>
-				<BuildOrder>39</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitUniqueUtils.cpp">
-				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
-				<DependentOn>UnitUniqueUtils.h</DependentOn>
-				<BuildOrder>77</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitIdeInsight.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>DialogInsight</Form>
-				<DependentOn>UnitIdeInsight.h</DependentOn>
-				<BuildOrder>151</BuildOrder>
-			</CppCompile>
-			<None Include="UTF8NoBomEncoding.hpp">
-				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
-				<BuildOrder>153</BuildOrder>
-			</None>
-			<CppCompile Include="UnitFrameTransitionTypes.cpp">
+			<CppCompile Include="UnitTransitionEditor.cpp">
 				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
-				<Form>FrameTransitionTypes</Form>
-				<DesignClass>TFrame</DesignClass>
-				<DependentOn>UnitFrameTransitionTypes.h</DependentOn>
-				<BuildOrder>92</BuildOrder>
+				<Form>FormTransitionEditor</Form>
+				<DependentOn>UnitTransitionEditor.h</DependentOn>
+				<BuildOrder>21</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="UnitStateMachineUnit.cpp">
-				<VirtualFolder>{2A06EE29-9254-4395-A334-E55EC8D6E08E}</VirtualFolder>
-				<DependentOn>UnitStateMachineUnit.h</DependentOn>
-				<BuildOrder>13</BuildOrder>
+			<CppCompile Include="UnitProtocolBinding.cpp">
+				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
+				<DependentOn>UnitProtocolBinding.h</DependentOn>
+				<BuildOrder>43</BuildOrder>
 			</CppCompile>
-			<LibFiles Include="C:\Program Files (x86)\Embarcadero\RAD Studio\7.0\include\log4cpp\bcb5\log4cpp\log4cpp.lib">
-				<IgnorePath>true</IgnorePath>
+			<CppCompile Include="UnitDialogTreeSelect.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>DialogTreeSelect</Form>
+				<DependentOn>UnitDialogTreeSelect.h</DependentOn>
+				<BuildOrder>154</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSearchForm.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>FormSearch</Form>
+				<DependentOn>UnitSearchForm.h</DependentOn>
+				<BuildOrder>45</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitDialogRegExp.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>DialogRegExp</Form>
+				<DependentOn>UnitDialogRegExp.h</DependentOn>
+				<BuildOrder>88</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\error_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngError</ResourceId>
+			</RcItem>
+			<RcItem Include="Images\watch_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngWatch</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitDialogFileNotFound.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>DialogFileNotFound</Form>
+				<DependentOn>UnitDialogFileNotFound.h</DependentOn>
+				<BuildOrder>83</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitStringPairsEditor.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<Form>FormStringPairsEditor</Form>
+				<DependentOn>UnitStringPairsEditor.h</DependentOn>
+				<BuildOrder>20</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitCompleteKeywordHints.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitCompleteKeywordHints.h</DependentOn>
+				<BuildOrder>73</BuildOrder>
+			</CppCompile>
+			<ResFiles Include="ScxmlEditor.res">
+				<BuildOrder>1</BuildOrder>
+			</ResFiles>
+			<CppCompile Include="UnitStateMachineParser.cpp">
+				<VirtualFolder>{77869575-9746-4D08-9029-D5976209BDCB}</VirtualFolder>
+				<DependentOn>UnitStateMachineParser.h</DependentOn>
 				<BuildOrder>5</BuildOrder>
-			</LibFiles>
-			<CppCompile Include="UnitPropertyConfiguratorEx.cpp">
-				<VirtualFolder>{FB80F157-D4C9-4E1D-B9DD-C96495FE9E8A}</VirtualFolder>
-				<DependentOn>UnitPropertyConfiguratorEx.h</DependentOn>
-				<BuildOrder>14</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="XMLModel.cpp">
-				<VirtualFolder>{0650E864-B147-4BBC-AB48-6216FFC70CB4}</VirtualFolder>
-				<DependentOn>XMLModel.h</DependentOn>
-				<BuildOrder>53</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitTreeEditorForTransition.cpp">
-				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
-				<DependentOn>UnitTreeEditorForTransition.h</DependentOn>
-				<BuildOrder>67</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitSyntaxString.cpp">
+			<CppCompile Include="UnitSyntaxEditorForm.cpp">
 				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
-				<DependentOn>UnitSyntaxString.h</DependentOn>
-				<BuildOrder>35</BuildOrder>
+				<Form>FormSyntaxEditorForm</Form>
+				<DependentOn>UnitSyntaxEditorForm.h</DependentOn>
+				<BuildOrder>34</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSyntaxScxmlXMLView.cpp">
+				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
+				<DependentOn>UnitSyntaxScxmlXMLView.h</DependentOn>
+				<BuildOrder>60</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitReplaceForm.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>FormReplaceDlg</Form>
+				<DependentOn>UnitReplaceForm.h</DependentOn>
+				<BuildOrder>46</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitDialogSelectFromToShape.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>DialogSelectShape</Form>
+				<DependentOn>UnitDialogSelectFromToShape.h</DependentOn>
+				<BuildOrder>62</BuildOrder>
+			</CppCompile>
+			<None Include="ScxmlMsgTypes.h">
+				<BuildOrder>49</BuildOrder>
+			</None>
+			<RcItem Include="Images\data_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngData</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitWatchShape.cpp">
+				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
+				<DependentOn>UnitWatchShape.h</DependentOn>
+				<BuildOrder>87</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\assign_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngAssign</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitTransitionXMLEditor.cpp">
+				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
+				<DependentOn>UnitTransitionXMLEditor.h</DependentOn>
+				<BuildOrder>90</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\param_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngParam</ResourceId>
+			</RcItem>
+			<CppCompile Include="TreeEditor\TreeClipboardEx.cpp">
+				<DependentOn>TreeEditor\TreeClipboardEx.h</DependentOn>
+				<BuildOrder>11</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitFormCollectionEditor.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<Form>FormCollectionEditor</Form>
+				<DependentOn>UnitFormCollectionEditor.h</DependentOn>
+				<BuildOrder>38</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\statemachine_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngSessionState</ResourceId>
+			</RcItem>
+			<None Include="XMLSmartDefines.h">
+				<VirtualFolder>{0650E864-B147-4BBC-AB48-6216FFC70CB4}</VirtualFolder>
+				<BuildOrder>87</BuildOrder>
+			</None>
+			<CppCompile Include="UnitImagePreviewer.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>ImagePreviewer</Form>
+				<DependentOn>UnitImagePreviewer.h</DependentOn>
+				<BuildOrder>54</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSyntaxTextEditor.cpp">
+				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
+				<DependentOn>UnitSyntaxTextEditor.h</DependentOn>
+				<BuildOrder>64</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitMacroComposer.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>MacroComposer</Form>
+				<DependentOn>UnitMacroComposer.h</DependentOn>
+				<BuildOrder>48</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="TreeEditor\TreeEditorEx.cpp">
+				<DependentOn>TreeEditor\TreeEditorEx.h</DependentOn>
+				<BuildOrder>15</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSettings.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitSettings.h</DependentOn>
+				<BuildOrder>8</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\protocol_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngProtocol</ResourceId>
+			</RcItem>
+			<CppCompile Include="PersistentRect.cpp">
+				<DependentOn>PersistentRect.h</DependentOn>
+				<BuildOrder>82</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitDialogFilterProperty.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>DialogFilterProperty</Form>
+				<DependentOn>UnitDialogFilterProperty.h</DependentOn>
+				<BuildOrder>65</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitTriggerShape.cpp">
+				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
+				<DependentOn>UnitTriggerShape.h</DependentOn>
+				<BuildOrder>86</BuildOrder>
+			</CppCompile>
+			<None Include="ScxmlEditor.todo"/>
+			<CppCompile Include="UnitChildScxmlBaseShapes.cpp">
+				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
+				<DependentOn>UnitChildScxmlBaseShapes.h</DependentOn>
+				<BuildOrder>6</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitDialogQScxmlComiler.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>DialogQScxmlCompiler</Form>
+				<DependentOn>UnitDialogQScxmlComiler.h</DependentOn>
+				<BuildOrder>66</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitComboStringEditor.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<Form>ComboStringEditor</Form>
+				<DependentOn>UnitComboStringEditor.h</DependentOn>
+				<BuildOrder>174</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitGIFSettings.cpp">
+				<VirtualFolder>{D1B2E9AE-6F25-4924-9E29-2B3EDD4D77DB}</VirtualFolder>
+				<DependentOn>UnitGIFSettings.h</DependentOn>
+				<BuildOrder>80</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSVGExporter.cpp">
+				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
+				<DependentOn>UnitSVGExporter.h</DependentOn>
+				<BuildOrder>162</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\XMLText_Transition_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngTransitionXML</ResourceId>
+			</RcItem>
+			<CppCompile Include="TreeEditor\UnitTreeEx.cpp">
+				<DependentOn>TreeEditor\UnitTreeEx.h</DependentOn>
+				<BuildOrder>25</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="XMLSerialize\UnitXMLSerializeLoad.cpp">
+				<DependentOn>XMLSerialize\UnitXMLSerializeLoad.h</DependentOn>
+				<BuildOrder>179</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="XMLSerialize\UnitXMLSerialize.cpp">
+				<DependentOn>XMLSerialize\UnitXMLSerialize.h</DependentOn>
+				<BuildOrder>177</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="XMLSerialize\UnitXMLSerializeSave.cpp">
+				<DependentOn>XMLSerialize\UnitXMLSerializeSave.h</DependentOn>
+				<BuildOrder>181</BuildOrder>
+			</CppCompile>
+			<None Include="MConvertComponent.hpp">
+				<BuildOrder>185</BuildOrder>
+			</None>
+			<CppCompile Include="XMLSerialize\UnitXMLSerializeUtils.cpp">
+				<DependentOn>XMLSerialize\UnitXMLSerializeUtils.h</DependentOn>
+				<BuildOrder>183</BuildOrder>
+			</CppCompile>
+			<RcItem Include="complete_all_python.txt">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>CompletePython</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnicodeStringUtils.cpp">
+				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
+				<DependentOn>UnicodeStringUtils.h</DependentOn>
+				<BuildOrder>171</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSyntaxEditor.cpp">
+				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
+				<Form>FrameSyntaxEditor</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>UnitSyntaxEditor.h</DependentOn>
+				<BuildOrder>23</BuildOrder>
+			</CppCompile>
+			<RcItem Include="complete_debug.lua">
+				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>CompleteDebug</ResourceId>
+			</RcItem>
+			<None Include="TreeEditor\TreeEdNew.hpp">
+				<BuildOrder>23</BuildOrder>
+			</None>
+			<CppCompile Include="UnitCreateTriggers.cpp">
+				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
+				<DependentOn>UnitCreateTriggers.h</DependentOn>
+				<BuildOrder>173</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitTestingMsg.cpp">
+				<VirtualFolder>{2A06EE29-9254-4395-A334-E55EC8D6E08E}</VirtualFolder>
+				<DependentOn>UnitTestingMsg.h</DependentOn>
+				<BuildOrder>59</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\trigger_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngTrigger</ResourceId>
+			</RcItem>
+			<None Include="uJSON.hpp">
+				<VirtualFolder>{DD04B8D5-7C8F-44D5-940F-43D1AFAC89E1}</VirtualFolder>
+				<BuildOrder>132</BuildOrder>
+			</None>
+			<CppCompile Include="UnitGraphViz.cpp">
+				<VirtualFolder>{77869575-9746-4D08-9029-D5976209BDCB}</VirtualFolder>
+				<DependentOn>UnitGraphViz.h</DependentOn>
+				<BuildOrder>152</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitHTMLUtils.cpp">
+				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
+				<DependentOn>UnitHTMLUtils.h</DependentOn>
+				<BuildOrder>75</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitDialogCollectProperty.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>DialogCopyProperty</Form>
+				<DependentOn>UnitDialogCollectProperty.h</DependentOn>
+				<BuildOrder>63</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitStringsEditor.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<Form>StringEditorForm</Form>
+				<DependentOn>UnitStringsEditor.h</DependentOn>
+				<BuildOrder>22</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitStringEditorEx.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitStringEditorEx.h</DependentOn>
+				<BuildOrder>19</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitStateXInclude.cpp">
+				<VirtualFolder>{77869575-9746-4D08-9029-D5976209BDCB}</VirtualFolder>
+				<DependentOn>UnitStateXInclude.h</DependentOn>
+				<BuildOrder>7</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSyntaxFunctionList.cpp">
+				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
+				<DependentOn>UnitSyntaxFunctionList.h</DependentOn>
+				<BuildOrder>74</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSimpleReplaceDialog.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>SimpleReplaceDialog</Form>
+				<DependentOn>UnitSimpleReplaceDialog.h</DependentOn>
+				<BuildOrder>89</BuildOrder>
+			</CppCompile>
+			<None Include="ScxmlShapes.hpp">
+				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
+				<BuildOrder>43</BuildOrder>
+			</None>
+			<CppCompile Include="UrlUtils.cpp">
+				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
+				<DependentOn>UrlUtils.h</DependentOn>
+				<BuildOrder>156</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitPresetOnOff.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>PresetOnOff</Form>
+				<DependentOn>UnitPresetOnOff.h</DependentOn>
+				<BuildOrder>58</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="TreeEditor\UnitMaskedTextShape.cpp">
+				<DependentOn>TreeEditor\UnitMaskedTextShape.h</DependentOn>
+				<BuildOrder>161</BuildOrder>
+			</CppCompile>
+			<RcItem Include="ScxmlEditor.properties">
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>ResLogProperties</ResourceId>
+			</RcItem>
+			<None Include="TreeEditor\TeeDefs.inc"/>
+			<RcItem Include="Images\script_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngScript</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitPropInspectorExtensions.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitPropInspectorExtensions.h</DependentOn>
+				<BuildOrder>72</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\cancel_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngCancel</ResourceId>
+			</RcItem>
+			<RcItem Include="complete_string.lua">
+				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>CompleteString</ResourceId>
+			</RcItem>
+			<RcItem Include="Images\protocol_weak_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngProtocolWeak</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitDummyShape.cpp">
+				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
+				<DependentOn>UnitDummyShape.h</DependentOn>
+				<BuildOrder>147</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitHotKeysHelp.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>FormHotKeysHelp</Form>
+				<DependentOn>UnitHotKeysHelp.h</DependentOn>
+				<BuildOrder>68</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\send_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngSend</ResourceId>
+			</RcItem>
+			<RcItem Include="Images\virtual_folder_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngVirtualFolder</ResourceId>
+			</RcItem>
+			<RcItem Include="Images\comment_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngComment</ResourceId>
+			</RcItem>
+			<RcItem Include="Images\raise_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngRaise</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitListBoxAppender.cpp">
+				<VirtualFolder>{FB80F157-D4C9-4E1D-B9DD-C96495FE9E8A}</VirtualFolder>
+				<DependentOn>UnitListBoxAppender.h</DependentOn>
+				<BuildOrder>10</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitScxmlShape.cpp">
+				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
+				<DependentOn>UnitScxmlShape.h</DependentOn>
+				<BuildOrder>27</BuildOrder>
 			</CppCompile>
 			<RcItem Include="complete_basic.lua">
 				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
@@ -190,77 +525,28 @@
 				<ResourceType>RCData</ResourceType>
 				<ResourceId>CompleteBasic</ResourceId>
 			</RcItem>
+			<CppCompile Include="UnitSyntaxString.cpp">
+				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
+				<DependentOn>UnitSyntaxString.h</DependentOn>
+				<BuildOrder>35</BuildOrder>
+			</CppCompile>
 			<RcItem Include="Images\datamodel_16_16.png">
 				<ResourceType>RCData</ResourceType>
 				<ResourceId>PngDatamodel</ResourceId>
 			</RcItem>
-			<None Include="CursorConsts.h">
-				<BuildOrder>163</BuildOrder>
-			</None>
 			<CppCompile Include="UnitDModule.cpp">
 				<Form>DModule</Form>
 				<DesignClass>TDataModule</DesignClass>
 				<DependentOn>UnitDModule.h</DependentOn>
 				<BuildOrder>2</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="UnitScxmlShape.cpp">
-				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
-				<DependentOn>UnitScxmlShape.h</DependentOn>
-				<BuildOrder>27</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\virtual_folder_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngVirtualFolder</ResourceId>
-			</RcItem>
-			<RcItem Include="Images\send_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngSend</ResourceId>
-			</RcItem>
-			<RcItem Include="Images\comment_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngComment</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitListBoxAppender.cpp">
-				<VirtualFolder>{FB80F157-D4C9-4E1D-B9DD-C96495FE9E8A}</VirtualFolder>
-				<DependentOn>UnitListBoxAppender.h</DependentOn>
-				<BuildOrder>10</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\raise_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngRaise</ResourceId>
-			</RcItem>
-			<RcItem Include="Images\extracontent_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngExtraContent</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitSimpleHelp.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>FormSimpleHelp</Form>
-				<DependentOn>UnitSimpleHelp.h</DependentOn>
-				<BuildOrder>55</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitFrameSearchResults.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>FrameSearchResults</Form>
-				<DesignClass>TFrame</DesignClass>
-				<DependentOn>UnitFrameSearchResults.h</DependentOn>
-				<BuildOrder>78</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitCustomUtils.cpp">
-				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
-				<DependentOn>UnitCustomUtils.h</DependentOn>
-				<BuildOrder>9</BuildOrder>
-			</CppCompile>
-			<RcItem Include="complete_table.lua">
-				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
-				<ContainerId>ResourceItem</ContainerId>
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>CompleteTable</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitTriggers.cpp">
-				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
-				<DependentOn>UnitTriggers.h</DependentOn>
-				<BuildOrder>36</BuildOrder>
+			<None Include="CursorConsts.h">
+				<BuildOrder>163</BuildOrder>
+			</None>
+			<CppCompile Include="UnitPostBuildInterface.cpp">
+				<VirtualFolder>{2A06EE29-9254-4395-A334-E55EC8D6E08E}</VirtualFolder>
+				<DependentOn>UnitPostBuildInterface.h</DependentOn>
+				<BuildOrder>76</BuildOrder>
 			</CppCompile>
 			<RcItem Include="complete_all_js.txt">
 				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
@@ -268,15 +554,14 @@
 				<ResourceType>RCData</ResourceType>
 				<ResourceId>CompleteEcmascript</ResourceId>
 			</RcItem>
-			<CppCompile Include="UnitPostBuildInterface.cpp">
-				<VirtualFolder>{2A06EE29-9254-4395-A334-E55EC8D6E08E}</VirtualFolder>
-				<DependentOn>UnitPostBuildInterface.h</DependentOn>
-				<BuildOrder>76</BuildOrder>
-			</CppCompile>
 			<CppCompile Include="UnitTreeEditorStateMachine.cpp">
 				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
 				<DependentOn>UnitTreeEditorStateMachine.h</DependentOn>
 				<BuildOrder>12</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="TreeEditor\UnitTreeLoader.cpp">
+				<DependentOn>TreeEditor\UnitTreeLoader.h</DependentOn>
+				<BuildOrder>148</BuildOrder>
 			</CppCompile>
 			<RcItem Include="complete_utf8.lua">
 				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
@@ -284,168 +569,168 @@
 				<ResourceType>RCData</ResourceType>
 				<ResourceId>CompleteUtf8</ResourceId>
 			</RcItem>
-			<CppCompile Include="TreeEditor\UnitTreeLoader.cpp">
-				<DependentOn>TreeEditor\UnitTreeLoader.h</DependentOn>
-				<BuildOrder>148</BuildOrder>
+			<CppCompile Include="UnitTriggers.cpp">
+				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
+				<DependentOn>UnitTriggers.h</DependentOn>
+				<BuildOrder>36</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSimpleHelp.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>FormSimpleHelp</Form>
+				<DependentOn>UnitSimpleHelp.h</DependentOn>
+				<BuildOrder>55</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\extracontent_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngExtraContent</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitFrameSearchResults.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>FrameSearchResults</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>UnitFrameSearchResults.h</DependentOn>
+				<BuildOrder>78</BuildOrder>
+			</CppCompile>
+			<RcItem Include="complete_table.lua">
+				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
+				<ContainerId>ResourceItem</ContainerId>
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>CompleteTable</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitCustomUtils.cpp">
+				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
+				<DependentOn>UnitCustomUtils.h</DependentOn>
+				<BuildOrder>9</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitTreeEditorForTransition.cpp">
+				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
+				<DependentOn>UnitTreeEditorForTransition.h</DependentOn>
+				<BuildOrder>67</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="TreeEditor\UnitTreeEditorUtils.cpp">
+				<DependentOn>TreeEditor\UnitTreeEditorUtils.h</DependentOn>
+				<BuildOrder>26</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitDataModelStateShape.cpp">
+				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
+				<DependentOn>UnitDataModelStateShape.h</DependentOn>
+				<BuildOrder>29</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitLineStringEditor.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<Form>LineStringEditor</Form>
+				<DependentOn>UnitLineStringEditor.h</DependentOn>
+				<BuildOrder>70</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\foreach_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngForeach</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitStateMachineConnection.cpp">
+				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
+				<DependentOn>UnitStateMachineConnection.h</DependentOn>
+				<BuildOrder>17</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="WildCardUtils.cpp">
+				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
+				<DependentOn>WildCardUtils.h</DependentOn>
+				<BuildOrder>69</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitEditDocumentAppender.cpp">
+				<VirtualFolder>{FB80F157-D4C9-4E1D-B9DD-C96495FE9E8A}</VirtualFolder>
+				<DependentOn>UnitEditDocumentAppender.h</DependentOn>
+				<BuildOrder>42</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSpawnAndRedirect.cpp">
+				<DependentOn>UnitSpawnAndRedirect.h</DependentOn>
+				<BuildOrder>52</BuildOrder>
+			</CppCompile>
+			<None Include="TreeEditor\TreeNodeListAccess.h">
+				<BuildOrder>76</BuildOrder>
+			</None>
+			<RcItem Include="Images\finalize_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngFinalize</ResourceId>
+			</RcItem>
+			<CppCompile Include="SaveSimplePersistent.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>SaveSimplePersistent.h</DependentOn>
+				<BuildOrder>44</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitStateMachineUnit.cpp">
+				<VirtualFolder>{2A06EE29-9254-4395-A334-E55EC8D6E08E}</VirtualFolder>
+				<DependentOn>UnitStateMachineUnit.h</DependentOn>
+				<BuildOrder>13</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitFrameTransitionTypes.cpp">
+				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
+				<Form>FrameTransitionTypes</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>UnitFrameTransitionTypes.h</DependentOn>
+				<BuildOrder>92</BuildOrder>
+			</CppCompile>
+			<LibFiles Include="C:\Program Files (x86)\Embarcadero\RAD Studio\7.0\include\log4cpp\bcb5\log4cpp\log4cpp.lib">
+				<IgnorePath>true</IgnorePath>
+				<BuildOrder>5</BuildOrder>
+			</LibFiles>
+			<CppCompile Include="XMLModel.cpp">
+				<VirtualFolder>{0650E864-B147-4BBC-AB48-6216FFC70CB4}</VirtualFolder>
+				<DependentOn>XMLModel.h</DependentOn>
+				<BuildOrder>53</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitPropertyConfiguratorEx.cpp">
+				<VirtualFolder>{FB80F157-D4C9-4E1D-B9DD-C96495FE9E8A}</VirtualFolder>
+				<DependentOn>UnitPropertyConfiguratorEx.h</DependentOn>
+				<BuildOrder>14</BuildOrder>
+			</CppCompile>
+			<None Include="UTF8NoBomEncoding.hpp">
+				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
+				<BuildOrder>153</BuildOrder>
+			</None>
+			<CppCompile Include="UnitReplaceRefactorForm.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>ReplaceRefactor</Form>
+				<DependentOn>UnitReplaceRefactorForm.h</DependentOn>
+				<BuildOrder>47</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitDialogDelayedTransition.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>DialogDelayedTransition</Form>
+				<DependentOn>UnitDialogDelayedTransition.h</DependentOn>
+				<BuildOrder>158</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitProjectProperties.cpp">
+				<VirtualFolder>{2A06EE29-9254-4395-A334-E55EC8D6E08E}</VirtualFolder>
+				<DependentOn>UnitProjectProperties.h</DependentOn>
+				<BuildOrder>39</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitIdeInsight.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>DialogInsight</Form>
+				<DependentOn>UnitIdeInsight.h</DependentOn>
+				<BuildOrder>151</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitUniqueUtils.cpp">
+				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
+				<DependentOn>UnitUniqueUtils.h</DependentOn>
+				<BuildOrder>77</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="UnitSettingsBase.cpp">
 				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
 				<DependentOn>UnitSettingsBase.h</DependentOn>
 				<BuildOrder>4</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="UnitTestSettings.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitTestSettings.h</DependentOn>
-				<BuildOrder>71</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitCaptureOutputRegExps.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitCaptureOutputRegExps.h</DependentOn>
-				<BuildOrder>168</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitSVGSettings.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitSVGSettings.h</DependentOn>
-				<BuildOrder>167</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="XMLCalibrator.cpp">
-				<VirtualFolder>{0650E864-B147-4BBC-AB48-6216FFC70CB4}</VirtualFolder>
-				<DependentOn>XMLCalibrator.h</DependentOn>
-				<BuildOrder>50</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitSyntaxEditorEx.cpp">
-				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
-				<Form>FrameSyntaxEditorEx</Form>
-				<DesignClass>TFrame</DesignClass>
-				<DependentOn>UnitSyntaxEditorEx.h</DependentOn>
-				<BuildOrder>40</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitExternalCommunicationShapes.cpp">
-				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
-				<DependentOn>UnitExternalCommunicationShapes.h</DependentOn>
-				<BuildOrder>32</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="KeyboardUtils.cpp">
-				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
-				<DependentOn>KeyboardUtils.h</DependentOn>
-				<BuildOrder>159</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="TrayIconErrorPriority.cpp">
-				<DependentOn>TrayIconErrorPriority.h</DependentOn>
-				<BuildOrder>150</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="VectorDrawUtils.cpp">
-				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
-				<DependentOn>VectorDrawUtils.h</DependentOn>
-				<BuildOrder>166</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitInheritanceResolver.cpp">
-				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
-				<DependentOn>UnitInheritanceResolver.h</DependentOn>
-				<BuildOrder>149</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitTestingApplicationsPresets.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitTestingApplicationsPresets.h</DependentOn>
-				<BuildOrder>170</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitFrameTrigger.cpp">
-				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
-				<Form>FrameTrigger</Form>
-				<DesignClass>TFrame</DesignClass>
-				<DependentOn>UnitFrameTrigger.h</DependentOn>
-				<BuildOrder>176</BuildOrder>
-			</CppCompile>
-			<DelphiCompile Include="TreeEditor\PngFunctions.pas">
-				<BuildOrder>176</BuildOrder>
-			</DelphiCompile>
-			<None Include="ConvertEncodingTypes.h">
-				<BuildOrder>169</BuildOrder>
-			</None>
-			<CppCompile Include="UnitThemeSettings.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitThemeSettings.h</DependentOn>
-				<BuildOrder>181</BuildOrder>
-			</CppCompile>
-			<DelphiCompile Include="TreeEditor\TreeSVGCanvas.pas">
-				<BuildOrder>163</BuildOrder>
-			</DelphiCompile>
-			<RcItem Include="Images\onexit_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngOnExit</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitFrameGifMaker.cpp">
-				<VirtualFolder>{D1B2E9AE-6F25-4924-9E29-2B3EDD4D77DB}</VirtualFolder>
-				<Form>FrameGifMaker</Form>
-				<DesignClass>TFrame</DesignClass>
-				<DependentOn>UnitFrameGifMaker.h</DependentOn>
-				<BuildOrder>79</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\donedata_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngDoneData</ResourceId>
-			</RcItem>
-			<RcItem Include="complete_os.lua">
-				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
-				<ContainerId>ResourceItem</ContainerId>
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>CompleteOs</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitMain.cpp">
-				<Form>FormScxmlGui</Form>
-				<DependentOn>UnitMain.h</DependentOn>
-				<BuildOrder>1</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitSettingsBinaryItems.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitSettingsBinaryItems.h</DependentOn>
-				<BuildOrder>81</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="ImageUtils.cpp">
-				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
-				<DependentOn>ImageUtils.h</DependentOn>
-				<BuildOrder>165</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="PersistentPoint.cpp">
-				<DependentOn>PersistentPoint.h</DependentOn>
-				<BuildOrder>91</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\invoke_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngInvoke</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitProjectTriggers.cpp">
-				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
-				<DependentOn>UnitProjectTriggers.h</DependentOn>
-				<BuildOrder>41</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitProtocolBindingImportForm.cpp">
+			<CppCompile Include="UnitDialogWait.cpp">
 				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>BindingsImporter</Form>
-				<DependentOn>UnitProtocolBindingImportForm.h</DependentOn>
-				<BuildOrder>49</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="XMLCanserviceControls.cpp">
-				<VirtualFolder>{0650E864-B147-4BBC-AB48-6216FFC70CB4}</VirtualFolder>
-				<DependentOn>XMLCanserviceControls.h</DependentOn>
-				<BuildOrder>51</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitRegisterDefaultEditors.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitRegisterDefaultEditors.h</DependentOn>
-				<BuildOrder>18</BuildOrder>
+				<Form>DialogWait</Form>
+				<DependentOn>UnitDialogWait.h</DependentOn>
+				<BuildOrder>84</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="UnitDialogRegisterScxmlUnitsAndProjects.cpp">
 				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
 				<Form>DialogRegisterScxmlFiles</Form>
 				<DependentOn>UnitDialogRegisterScxmlUnitsAndProjects.h</DependentOn>
 				<BuildOrder>157</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitDialogWait.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>DialogWait</Form>
-				<DependentOn>UnitDialogWait.h</DependentOn>
-				<BuildOrder>84</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="UnitFrameScxmlLiveEdit.cpp">
 				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
@@ -454,40 +739,42 @@
 				<DependentOn>UnitFrameScxmlLiveEdit.h</DependentOn>
 				<BuildOrder>155</BuildOrder>
 			</CppCompile>
-			<RcItem Include="Images\setvalue_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngSetValue</ResourceId>
-			</RcItem>
 			<RcItem Include="Images\onenter_16_16.png">
 				<ResourceType>RCData</ResourceType>
 				<ResourceId>PngOnEntry</ResourceId>
 			</RcItem>
-			<RcItem Include="Images\content_16_16.png">
+			<RcItem Include="Images\setvalue_16_16.png">
 				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngContent</ResourceId>
+				<ResourceId>PngSetValue</ResourceId>
 			</RcItem>
-			<None Include="CommonConsts.h">
-				<BuildOrder>93</BuildOrder>
-			</None>
-			<None Include="Log4cpp_VCL.hpp">
-				<BuildOrder>6</BuildOrder>
-			</None>
-			<DelphiCompile Include="TreeEditor\TreeEdNew.pas">
-				<BuildOrder>1</BuildOrder>
-			</DelphiCompile>
-			<CppCompile Include="UnitStateShape.cpp">
-				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
-				<DependentOn>UnitStateShape.h</DependentOn>
-				<BuildOrder>28</BuildOrder>
+			<CppCompile Include="UnitRegisterDefaultEditors.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitRegisterDefaultEditors.h</DependentOn>
+				<BuildOrder>18</BuildOrder>
 			</CppCompile>
-			<RcItem Include="Images\PanningCursor.cur">
-				<ResourceType>Cursor</ResourceType>
-				<ResourceId>ResCurPan</ResourceId>
+			<RcItem Include="Images\invoke_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngInvoke</ResourceId>
 			</RcItem>
-			<CppCompile Include="UnitScxmlBaseShape.cpp">
-				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
-				<DependentOn>UnitScxmlBaseShape.h</DependentOn>
-				<BuildOrder>31</BuildOrder>
+			<CppCompile Include="PersistentPoint.cpp">
+				<DependentOn>PersistentPoint.h</DependentOn>
+				<BuildOrder>91</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitProjectTriggers.cpp">
+				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
+				<DependentOn>UnitProjectTriggers.h</DependentOn>
+				<BuildOrder>41</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="XMLCanserviceControls.cpp">
+				<VirtualFolder>{0650E864-B147-4BBC-AB48-6216FFC70CB4}</VirtualFolder>
+				<DependentOn>XMLCanserviceControls.h</DependentOn>
+				<BuildOrder>51</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitProtocolBindingImportForm.cpp">
+				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
+				<Form>BindingsImporter</Form>
+				<DependentOn>UnitProtocolBindingImportForm.h</DependentOn>
+				<BuildOrder>49</BuildOrder>
 			</CppCompile>
 			<RcItem Include="complete_math.lua">
 				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
@@ -495,493 +782,200 @@
 				<ResourceType>RCData</ResourceType>
 				<ResourceId>CompleteMath</ResourceId>
 			</RcItem>
+			<CppCompile Include="UnitScxmlBaseShape.cpp">
+				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
+				<DependentOn>UnitScxmlBaseShape.h</DependentOn>
+				<BuildOrder>31</BuildOrder>
+			</CppCompile>
 			<CppCompile Include="UnitSyntaxUtils.cpp">
 				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
 				<DependentOn>UnitSyntaxUtils.h</DependentOn>
 				<BuildOrder>24</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="TreeEditor\UnitTreeChildManagers.cpp">
+				<DependentOn>TreeEditor\UnitTreeChildManagers.h</DependentOn>
+				<BuildOrder>33</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="UnitExecutableShapes.cpp">
 				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
 				<DependentOn>UnitExecutableShapes.h</DependentOn>
 				<BuildOrder>30</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="TreeEditor\UnitTreeChildManagers.cpp">
-				<DependentOn>TreeEditor\UnitTreeChildManagers.h</DependentOn>
-				<BuildOrder>33</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\data_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngData</ResourceId>
+			<RcItem Include="Images\PanningCursor.cur">
+				<ResourceType>Cursor</ResourceType>
+				<ResourceId>ResCurPan</ResourceId>
 			</RcItem>
-			<None Include="ScxmlMsgTypes.h">
-				<BuildOrder>49</BuildOrder>
+			<None Include="CommonConsts.h">
+				<BuildOrder>93</BuildOrder>
 			</None>
-			<CppCompile Include="UnitWatchShape.cpp">
-				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
-				<DependentOn>UnitWatchShape.h</DependentOn>
-				<BuildOrder>87</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitTransitionXMLEditor.cpp">
-				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
-				<DependentOn>UnitTransitionXMLEditor.h</DependentOn>
-				<BuildOrder>90</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\assign_16_16.png">
+			<RcItem Include="Images\content_16_16.png">
 				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngAssign</ResourceId>
+				<ResourceId>PngContent</ResourceId>
 			</RcItem>
-			<CppCompile Include="UnitDialogSelectFromToShape.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>DialogSelectShape</Form>
-				<DependentOn>UnitDialogSelectFromToShape.h</DependentOn>
-				<BuildOrder>62</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitStateMachineParser.cpp">
-				<VirtualFolder>{77869575-9746-4D08-9029-D5976209BDCB}</VirtualFolder>
-				<DependentOn>UnitStateMachineParser.h</DependentOn>
-				<BuildOrder>5</BuildOrder>
-			</CppCompile>
-			<ResFiles Include="ScxmlEditor.res">
-				<BuildOrder>1</BuildOrder>
-			</ResFiles>
-			<CppCompile Include="UnitSyntaxEditorForm.cpp">
-				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
-				<Form>FormSyntaxEditorForm</Form>
-				<DependentOn>UnitSyntaxEditorForm.h</DependentOn>
-				<BuildOrder>34</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitReplaceForm.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>FormReplaceDlg</Form>
-				<DependentOn>UnitReplaceForm.h</DependentOn>
-				<BuildOrder>46</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitSyntaxScxmlXMLView.cpp">
-				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
-				<DependentOn>UnitSyntaxScxmlXMLView.h</DependentOn>
-				<BuildOrder>60</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitMacroComposer.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>MacroComposer</Form>
-				<DependentOn>UnitMacroComposer.h</DependentOn>
-				<BuildOrder>48</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitSyntaxTextEditor.cpp">
-				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
-				<DependentOn>UnitSyntaxTextEditor.h</DependentOn>
-				<BuildOrder>64</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="TreeEditor\TreeEditorEx.cpp">
-				<DependentOn>TreeEditor\TreeEditorEx.h</DependentOn>
-				<BuildOrder>15</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\protocol_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngProtocol</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitSettings.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitSettings.h</DependentOn>
-				<BuildOrder>8</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitImagePreviewer.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>ImagePreviewer</Form>
-				<DependentOn>UnitImagePreviewer.h</DependentOn>
-				<BuildOrder>54</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="TreeEditor\TreeClipboardEx.cpp">
-				<DependentOn>TreeEditor\TreeClipboardEx.h</DependentOn>
-				<BuildOrder>11</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\param_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngParam</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitFormCollectionEditor.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<Form>FormCollectionEditor</Form>
-				<DependentOn>UnitFormCollectionEditor.h</DependentOn>
-				<BuildOrder>38</BuildOrder>
-			</CppCompile>
-			<None Include="XMLSmartDefines.h">
-				<VirtualFolder>{0650E864-B147-4BBC-AB48-6216FFC70CB4}</VirtualFolder>
-				<BuildOrder>87</BuildOrder>
-			</None>
-			<RcItem Include="Images\statemachine_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngSessionState</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitCompleteKeywordHints.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitCompleteKeywordHints.h</DependentOn>
-				<BuildOrder>73</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitPresetCondition.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>PresetCondition</Form>
-				<DependentOn>UnitPresetCondition.h</DependentOn>
-				<BuildOrder>57</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitCompleteItems.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitCompleteItems.h</DependentOn>
-				<BuildOrder>61</BuildOrder>
-			</CppCompile>
-			<RcItem Include="complete_all_CPP.txt">
-				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
-				<ContainerId>ResourceItem</ContainerId>
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>CompleteCPP</ResourceId>
-			</RcItem>
-			<None Include="UnicodeStringHash.h">
-				<BuildOrder>112</BuildOrder>
-			</None>
-			<CppCompile Include="UnitBallonAppender.cpp">
-				<VirtualFolder>{FB80F157-D4C9-4E1D-B9DD-C96495FE9E8A}</VirtualFolder>
-				<DependentOn>UnitBallonAppender.h</DependentOn>
-				<BuildOrder>3</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\if_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngIf</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitDialogCollectOutputs.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>DialogCollectOutputs</Form>
-				<DependentOn>UnitDialogCollectOutputs.h</DependentOn>
-				<BuildOrder>56</BuildOrder>
-			</CppCompile>
-			<DelphiCompile Include="uJSON.pas">
-				<VirtualFolder>{DD04B8D5-7C8F-44D5-940F-43D1AFAC89E1}</VirtualFolder>
-				<BuildOrder>0</BuildOrder>
-			</DelphiCompile>
-			<CppCompile Include="ScxmlEditor.cpp">
-				<BuildOrder>0</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="VISUAL_GLOBALS.cpp">
-				<DependentOn>VISUAL_GLOBALS.h</DependentOn>
-				<BuildOrder>85</BuildOrder>
-			</CppCompile>
-			<None Include="SafeQueue.hpp">
-				<BuildOrder>101</BuildOrder>
-			</None>
-			<RcItem Include="Images\error_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngError</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitDialogRegExp.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>DialogRegExp</Form>
-				<DependentOn>UnitDialogRegExp.h</DependentOn>
-				<BuildOrder>88</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\watch_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngWatch</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitStringPairsEditor.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<Form>FormStringPairsEditor</Form>
-				<DependentOn>UnitStringPairsEditor.h</DependentOn>
-				<BuildOrder>20</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitDialogFileNotFound.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>DialogFileNotFound</Form>
-				<DependentOn>UnitDialogFileNotFound.h</DependentOn>
-				<BuildOrder>83</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitSearchForm.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>FormSearch</Form>
-				<DependentOn>UnitSearchForm.h</DependentOn>
-				<BuildOrder>45</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\log_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngLog</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitSettingsEditor.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<Form>FormSettingsEditor</Form>
-				<DependentOn>UnitSettingsEditor.h</DependentOn>
-				<BuildOrder>16</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitTransitionEditor.cpp">
-				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
-				<Form>FormTransitionEditor</Form>
-				<DependentOn>UnitTransitionEditor.h</DependentOn>
-				<BuildOrder>21</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitDialogTreeSelect.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>DialogTreeSelect</Form>
-				<DependentOn>UnitDialogTreeSelect.h</DependentOn>
-				<BuildOrder>154</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitProtocolBinding.cpp">
-				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
-				<DependentOn>UnitProtocolBinding.h</DependentOn>
-				<BuildOrder>43</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="PersistentRect.cpp">
-				<DependentOn>PersistentRect.h</DependentOn>
-				<BuildOrder>82</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitSyntaxFunctionList.cpp">
-				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
-				<DependentOn>UnitSyntaxFunctionList.h</DependentOn>
-				<BuildOrder>74</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitStateXInclude.cpp">
-				<VirtualFolder>{77869575-9746-4D08-9029-D5976209BDCB}</VirtualFolder>
-				<DependentOn>UnitStateXInclude.h</DependentOn>
-				<BuildOrder>7</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitSimpleReplaceDialog.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>SimpleReplaceDialog</Form>
-				<DependentOn>UnitSimpleReplaceDialog.h</DependentOn>
-				<BuildOrder>89</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UrlUtils.cpp">
-				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
-				<DependentOn>UrlUtils.h</DependentOn>
-				<BuildOrder>156</BuildOrder>
-			</CppCompile>
-			<None Include="ScxmlShapes.hpp">
-				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
-				<BuildOrder>43</BuildOrder>
-			</None>
-			<CppCompile Include="UnitStringEditorEx.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitStringEditorEx.h</DependentOn>
-				<BuildOrder>19</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitGraphViz.cpp">
-				<VirtualFolder>{77869575-9746-4D08-9029-D5976209BDCB}</VirtualFolder>
-				<DependentOn>UnitGraphViz.h</DependentOn>
-				<BuildOrder>152</BuildOrder>
-			</CppCompile>
-			<None Include="uJSON.hpp">
-				<VirtualFolder>{DD04B8D5-7C8F-44D5-940F-43D1AFAC89E1}</VirtualFolder>
-				<BuildOrder>132</BuildOrder>
-			</None>
-			<CppCompile Include="UnitHTMLUtils.cpp">
-				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
-				<DependentOn>UnitHTMLUtils.h</DependentOn>
-				<BuildOrder>75</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitStringsEditor.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<Form>StringEditorForm</Form>
-				<DependentOn>UnitStringsEditor.h</DependentOn>
-				<BuildOrder>22</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitDialogCollectProperty.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>DialogCopyProperty</Form>
-				<DependentOn>UnitDialogCollectProperty.h</DependentOn>
-				<BuildOrder>63</BuildOrder>
-			</CppCompile>
-			<RcItem Include="complete_string.lua">
-				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
-				<ContainerId>ResourceItem</ContainerId>
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>CompleteString</ResourceId>
-			</RcItem>
-			<RcItem Include="Images\cancel_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngCancel</ResourceId>
-			</RcItem>
-			<RcItem Include="Images\protocol_weak_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngProtocolWeak</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitHotKeysHelp.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>FormHotKeysHelp</Form>
-				<DependentOn>UnitHotKeysHelp.h</DependentOn>
-				<BuildOrder>68</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitDummyShape.cpp">
-				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
-				<DependentOn>UnitDummyShape.h</DependentOn>
-				<BuildOrder>147</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitPropInspectorExtensions.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<DependentOn>UnitPropInspectorExtensions.h</DependentOn>
-				<BuildOrder>72</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="TreeEditor\UnitMaskedTextShape.cpp">
-				<DependentOn>TreeEditor\UnitMaskedTextShape.h</DependentOn>
-				<BuildOrder>161</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitPresetOnOff.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>PresetOnOff</Form>
-				<DependentOn>UnitPresetOnOff.h</DependentOn>
-				<BuildOrder>58</BuildOrder>
-			</CppCompile>
-			<RcItem Include="ScxmlEditor.properties">
-				<ContainerId>ResourceItem</ContainerId>
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>ResLogProperties</ResourceId>
-			</RcItem>
-			<RcItem Include="Images\script_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngScript</ResourceId>
-			</RcItem>
-			<None Include="TreeEditor\TeeDefs.inc"/>
-			<RcItem Include="Images\trigger_16_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngTrigger</ResourceId>
-			</RcItem>
-			<CppCompile Include="UnitSVGExporter.cpp">
-				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
-				<DependentOn>UnitSVGExporter.h</DependentOn>
-				<BuildOrder>162</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitGIFSettings.cpp">
-				<VirtualFolder>{D1B2E9AE-6F25-4924-9E29-2B3EDD4D77DB}</VirtualFolder>
-				<DependentOn>UnitGIFSettings.h</DependentOn>
-				<BuildOrder>80</BuildOrder>
-			</CppCompile>
-			<RcItem Include="Images\XMLText_Transition_16.png">
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>PngTransitionXML</ResourceId>
-			</RcItem>
-			<CppCompile Include="XMLSerialize\UnitXMLSerializeLoad.cpp">
-				<DependentOn>XMLSerialize\UnitXMLSerializeLoad.h</DependentOn>
-				<BuildOrder>179</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="TreeEditor\UnitTreeEx.cpp">
-				<DependentOn>TreeEditor\UnitTreeEx.h</DependentOn>
-				<BuildOrder>25</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitComboStringEditor.cpp">
-				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
-				<Form>ComboStringEditor</Form>
-				<DependentOn>UnitComboStringEditor.h</DependentOn>
-				<BuildOrder>174</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitTriggerShape.cpp">
-				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
-				<DependentOn>UnitTriggerShape.h</DependentOn>
-				<BuildOrder>86</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitDialogFilterProperty.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>DialogFilterProperty</Form>
-				<DependentOn>UnitDialogFilterProperty.h</DependentOn>
-				<BuildOrder>65</BuildOrder>
-			</CppCompile>
-			<None Include="ScxmlEditor.todo"/>
-			<CppCompile Include="UnitDialogQScxmlComiler.cpp">
-				<VirtualFolder>{E1A250C9-C521-4E0B-8CCC-B4F0BA6807AE}</VirtualFolder>
-				<Form>DialogQScxmlCompiler</Form>
-				<DependentOn>UnitDialogQScxmlComiler.h</DependentOn>
-				<BuildOrder>66</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="UnitChildScxmlBaseShapes.cpp">
-				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
-				<DependentOn>UnitChildScxmlBaseShapes.h</DependentOn>
+			<None Include="Log4cpp_VCL.hpp">
 				<BuildOrder>6</BuildOrder>
+			</None>
+			<CppCompile Include="UnitStateShape.cpp">
+				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
+				<DependentOn>UnitStateShape.h</DependentOn>
+				<BuildOrder>28</BuildOrder>
 			</CppCompile>
-			<RcItem Include="complete_debug.lua">
+			<DelphiCompile Include="TreeEditor\TreeEdNew.pas">
+				<BuildOrder>1</BuildOrder>
+			</DelphiCompile>
+			<CppCompile Include="ImageUtils.cpp">
+				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
+				<DependentOn>ImageUtils.h</DependentOn>
+				<BuildOrder>165</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="TrayIconErrorPriority.cpp">
+				<DependentOn>TrayIconErrorPriority.h</DependentOn>
+				<BuildOrder>150</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="KeyboardUtils.cpp">
+				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
+				<DependentOn>KeyboardUtils.h</DependentOn>
+				<BuildOrder>159</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VectorDrawUtils.cpp">
+				<VirtualFolder>{E4AD2AE3-03AA-41A2-A9BB-742654628071}</VirtualFolder>
+				<DependentOn>VectorDrawUtils.h</DependentOn>
+				<BuildOrder>166</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitTestingApplicationsPresets.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitTestingApplicationsPresets.h</DependentOn>
+				<BuildOrder>170</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitInheritanceResolver.cpp">
+				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
+				<DependentOn>UnitInheritanceResolver.h</DependentOn>
+				<BuildOrder>149</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitExternalCommunicationShapes.cpp">
+				<VirtualFolder>{3ED913CC-E814-4B97-9965-C62D44844D4A}</VirtualFolder>
+				<DependentOn>UnitExternalCommunicationShapes.h</DependentOn>
+				<BuildOrder>32</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitCaptureOutputRegExps.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitCaptureOutputRegExps.h</DependentOn>
+				<BuildOrder>168</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitTestSettings.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitTestSettings.h</DependentOn>
+				<BuildOrder>71</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSVGSettings.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitSVGSettings.h</DependentOn>
+				<BuildOrder>167</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="UnitSyntaxEditorEx.cpp">
+				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
+				<Form>FrameSyntaxEditorEx</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>UnitSyntaxEditorEx.h</DependentOn>
+				<BuildOrder>40</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="XMLCalibrator.cpp">
+				<VirtualFolder>{0650E864-B147-4BBC-AB48-6216FFC70CB4}</VirtualFolder>
+				<DependentOn>XMLCalibrator.h</DependentOn>
+				<BuildOrder>50</BuildOrder>
+			</CppCompile>
+			<RcItem Include="Images\donedata_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngDoneData</ResourceId>
+			</RcItem>
+			<CppCompile Include="UnitFrameGifMaker.cpp">
+				<VirtualFolder>{D1B2E9AE-6F25-4924-9E29-2B3EDD4D77DB}</VirtualFolder>
+				<Form>FrameGifMaker</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>UnitFrameGifMaker.h</DependentOn>
+				<BuildOrder>79</BuildOrder>
+			</CppCompile>
+			<RcItem Include="complete_os.lua">
 				<VirtualFolder>{DDC5B6B9-EC97-47A2-868C-66F761D750D4}</VirtualFolder>
 				<ContainerId>ResourceItem</ContainerId>
 				<ResourceType>RCData</ResourceType>
-				<ResourceId>CompleteDebug</ResourceId>
+				<ResourceId>CompleteOs</ResourceId>
 			</RcItem>
-			<CppCompile Include="UnitSyntaxEditor.cpp">
-				<VirtualFolder>{048FD22A-DE5B-4EF3-86BB-1ECD6BB16672}</VirtualFolder>
-				<Form>FrameSyntaxEditor</Form>
-				<DesignClass>TFrame</DesignClass>
-				<DependentOn>UnitSyntaxEditor.h</DependentOn>
-				<BuildOrder>23</BuildOrder>
+			<CppCompile Include="UnitSettingsBinaryItems.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitSettingsBinaryItems.h</DependentOn>
+				<BuildOrder>81</BuildOrder>
 			</CppCompile>
-			<None Include="TreeEditor\TreeEdNew.hpp">
-				<BuildOrder>23</BuildOrder>
-			</None>
-			<CppCompile Include="UnitTestingMsg.cpp">
-				<VirtualFolder>{2A06EE29-9254-4395-A334-E55EC8D6E08E}</VirtualFolder>
-				<DependentOn>UnitTestingMsg.h</DependentOn>
-				<BuildOrder>59</BuildOrder>
+			<CppCompile Include="UnitMain.cpp">
+				<Form>FormScxmlGui</Form>
+				<DependentOn>UnitMain.h</DependentOn>
+				<BuildOrder>1</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="UnitCreateTriggers.cpp">
+			<RcItem Include="Images\onexit_16_16.png">
+				<ResourceType>RCData</ResourceType>
+				<ResourceId>PngOnExit</ResourceId>
+			</RcItem>
+			<DelphiCompile Include="TreeEditor\PngFunctions.pas">
+				<BuildOrder>176</BuildOrder>
+			</DelphiCompile>
+			<CppCompile Include="UnitFrameTrigger.cpp">
 				<VirtualFolder>{B0AC087A-C79A-45B2-B7CE-A3024F8BA121}</VirtualFolder>
-				<DependentOn>UnitCreateTriggers.h</DependentOn>
-				<BuildOrder>173</BuildOrder>
+				<Form>FrameTrigger</Form>
+				<DesignClass>TFrame</DesignClass>
+				<DependentOn>UnitFrameTrigger.h</DependentOn>
+				<BuildOrder>176</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="UnicodeStringUtils.cpp">
-				<VirtualFolder>{B0EFD661-0B78-4B63-890D-74D530814EF5}</VirtualFolder>
-				<DependentOn>UnicodeStringUtils.h</DependentOn>
-				<BuildOrder>171</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="XMLSerialize\UnitXMLSerializeSave.cpp">
-				<DependentOn>XMLSerialize\UnitXMLSerializeSave.h</DependentOn>
+			<None Include="ConvertEncodingTypes.h">
+				<BuildOrder>169</BuildOrder>
+			</None>
+			<DelphiCompile Include="TreeEditor\TreeSVGCanvas.pas">
+				<BuildOrder>163</BuildOrder>
+			</DelphiCompile>
+			<CppCompile Include="UnitThemeSettings.cpp">
+				<VirtualFolder>{D018F77A-D43C-46CD-A7AF-FC5ED0D3234F}</VirtualFolder>
+				<DependentOn>UnitThemeSettings.h</DependentOn>
 				<BuildOrder>181</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="XMLSerialize\UnitXMLSerialize.cpp">
-				<DependentOn>XMLSerialize\UnitXMLSerialize.h</DependentOn>
-				<BuildOrder>177</BuildOrder>
-			</CppCompile>
-			<None Include="MConvertComponent.hpp">
-				<BuildOrder>185</BuildOrder>
-			</None>
-			<RcItem Include="complete_all_python.txt">
-				<ContainerId>ResourceItem</ContainerId>
-				<ResourceType>RCData</ResourceType>
-				<ResourceId>CompletePython</ResourceId>
-			</RcItem>
-			<CppCompile Include="XMLSerialize\UnitXMLSerializeUtils.cpp">
-				<DependentOn>XMLSerialize\UnitXMLSerializeUtils.h</DependentOn>
-				<BuildOrder>183</BuildOrder>
-			</CppCompile>
-			<FormResources Include="UnitLineStringEditor.dfm"/>
-			<FormResources Include="UnitDialogDelayedTransition.dfm"/>
-			<FormResources Include="UnitReplaceRefactorForm.dfm"/>
-			<FormResources Include="UnitIdeInsight.dfm"/>
-			<FormResources Include="UnitFrameTransitionTypes.dfm"/>
-			<FormResources Include="UnitDModule.dfm"/>
-			<FormResources Include="UnitSimpleHelp.dfm"/>
-			<FormResources Include="UnitFrameSearchResults.dfm"/>
-			<FormResources Include="UnitSyntaxEditorEx.dfm"/>
-			<FormResources Include="UnitFrameTrigger.dfm"/>
-			<FormResources Include="UnitFrameGifMaker.dfm"/>
-			<FormResources Include="UnitMain.dfm"/>
-			<FormResources Include="UnitProtocolBindingImportForm.dfm"/>
-			<FormResources Include="UnitDialogRegisterScxmlUnitsAndProjects.dfm"/>
-			<FormResources Include="UnitDialogWait.dfm"/>
-			<FormResources Include="UnitFrameScxmlLiveEdit.dfm"/>
-			<FormResources Include="UnitDialogSelectFromToShape.dfm"/>
-			<FormResources Include="UnitSyntaxEditorForm.dfm"/>
-			<FormResources Include="UnitReplaceForm.dfm"/>
-			<FormResources Include="UnitMacroComposer.dfm"/>
-			<FormResources Include="UnitImagePreviewer.dfm"/>
-			<FormResources Include="UnitFormCollectionEditor.dfm"/>
-			<FormResources Include="UnitPresetCondition.dfm"/>
 			<FormResources Include="UnitDialogCollectOutputs.dfm"/>
-			<FormResources Include="UnitDialogRegExp.dfm"/>
-			<FormResources Include="UnitStringPairsEditor.dfm"/>
-			<FormResources Include="UnitDialogFileNotFound.dfm"/>
-			<FormResources Include="UnitSearchForm.dfm"/>
+			<FormResources Include="UnitPresetCondition.dfm"/>
 			<FormResources Include="UnitSettingsEditor.dfm"/>
 			<FormResources Include="UnitTransitionEditor.dfm"/>
 			<FormResources Include="UnitDialogTreeSelect.dfm"/>
-			<FormResources Include="UnitSimpleReplaceDialog.dfm"/>
-			<FormResources Include="UnitStringsEditor.dfm"/>
-			<FormResources Include="UnitDialogCollectProperty.dfm"/>
-			<FormResources Include="UnitHotKeysHelp.dfm"/>
-			<FormResources Include="UnitPresetOnOff.dfm"/>
-			<FormResources Include="UnitComboStringEditor.dfm"/>
+			<FormResources Include="UnitSearchForm.dfm"/>
+			<FormResources Include="UnitDialogRegExp.dfm"/>
+			<FormResources Include="UnitDialogFileNotFound.dfm"/>
+			<FormResources Include="UnitStringPairsEditor.dfm"/>
+			<FormResources Include="UnitSyntaxEditorForm.dfm"/>
+			<FormResources Include="UnitReplaceForm.dfm"/>
+			<FormResources Include="UnitDialogSelectFromToShape.dfm"/>
+			<FormResources Include="UnitFormCollectionEditor.dfm"/>
+			<FormResources Include="UnitImagePreviewer.dfm"/>
+			<FormResources Include="UnitMacroComposer.dfm"/>
 			<FormResources Include="UnitDialogFilterProperty.dfm"/>
 			<FormResources Include="UnitDialogQScxmlComiler.dfm"/>
+			<FormResources Include="UnitComboStringEditor.dfm"/>
 			<FormResources Include="UnitSyntaxEditor.dfm"/>
+			<FormResources Include="UnitDialogCollectProperty.dfm"/>
+			<FormResources Include="UnitStringsEditor.dfm"/>
+			<FormResources Include="UnitSimpleReplaceDialog.dfm"/>
+			<FormResources Include="UnitPresetOnOff.dfm"/>
+			<FormResources Include="UnitHotKeysHelp.dfm"/>
+			<FormResources Include="UnitDModule.dfm"/>
+			<FormResources Include="UnitSimpleHelp.dfm"/>
+			<FormResources Include="UnitFrameSearchResults.dfm"/>
+			<FormResources Include="UnitLineStringEditor.dfm"/>
+			<FormResources Include="UnitFrameTransitionTypes.dfm"/>
+			<FormResources Include="UnitReplaceRefactorForm.dfm"/>
+			<FormResources Include="UnitDialogDelayedTransition.dfm"/>
+			<FormResources Include="UnitIdeInsight.dfm"/>
+			<FormResources Include="UnitDialogWait.dfm"/>
+			<FormResources Include="UnitDialogRegisterScxmlUnitsAndProjects.dfm"/>
+			<FormResources Include="UnitFrameScxmlLiveEdit.dfm"/>
+			<FormResources Include="UnitProtocolBindingImportForm.dfm"/>
+			<FormResources Include="UnitSyntaxEditorEx.dfm"/>
+			<FormResources Include="UnitFrameGifMaker.dfm"/>
+			<FormResources Include="UnitMain.dfm"/>
+			<FormResources Include="UnitFrameTrigger.dfm"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -995,11 +989,6 @@
 			</BuildConfiguration>
 		</ItemGroup>
 		<Import Project="$(BDS)\Bin\CodeGear.Cpp.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Cpp.Targets')"/>
-		<PropertyGroup Condition="'$(FileToCompile)'==''">
-			<PostBuildEvent><![CDATA[set _VAR_ALL_DEFINES_=$(DEFINES)
-set _VAR_NOT_DEBUG_=%_VAR_ALL_DEFINES_:_DEBUG=%
-IF "%_VAR_ALL_DEFINES_%" == "%_VAR_NOT_DEBUG_%" ( copy /y $(OUTPUTPATH) $(PROJECTDIR)\Production\$(OUTPUTFILENAME) ) ELSE ( echo "Debug build" )]]></PostBuildEvent>
-		</PropertyGroup>
 		<ProjectExtensions>
 			<Borland.Personality>CPlusPlusBuilder.Personality.12</Borland.Personality>
 			<Borland.ProjectType>CppVCLApplication</Borland.ProjectType>
@@ -1013,8 +1002,8 @@ IF "%_VAR_ALL_DEFINES_%" == "%_VAR_NOT_DEBUG_%" ( copy /y $(OUTPUTPATH) $(PROJEC
 						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
 						<VersionInfo Name="MajorVer">2</VersionInfo>
 						<VersionInfo Name="MinorVer">5</VersionInfo>
-						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">1744</VersionInfo>
+						<VersionInfo Name="Release">1</VersionInfo>
+						<VersionInfo Name="Build">1750</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -1026,18 +1015,15 @@ IF "%_VAR_ALL_DEFINES_%" == "%_VAR_NOT_DEBUG_%" ( copy /y $(OUTPUTPATH) $(PROJEC
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">alexander.zhornyak@gmail.com</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">Scxml State Charts Editor</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">2.4.0.1734</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.5.1.1750</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright">alexander.zhornyak@gmail.com</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>
 						<VersionInfoKeys Name="OriginalFilename"/>
 						<VersionInfoKeys Name="ProductName">ScxmlEditor</VersionInfoKeys>
-						<VersionInfoKeys Name="ProductVersion">2.3.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">2.5.1.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
-					<Debugging>
-						<Debugging Name="DebugSourceDirs">E:\SDK_SOURCES\LMD2011_11\source\;D:\mazhor\AVIA_PROJECTS\TeeTreeStatic\</Debugging>
-					</Debugging>
 					<Parameters>
 						<Parameters Name="RunParams"/>
 						<Parameters Name="Launcher"/>

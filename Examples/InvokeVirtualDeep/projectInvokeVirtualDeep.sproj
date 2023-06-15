@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf8"?>
+<scxmlproject>
+	<scxmlunit path="parent.scxml" scxmlname="ScxmlInvokeSimple" build_root="1" virtual_dependencies="virtual_child.scxml
+virtual_child.scxml
+virtual_child.scxml
+virtual_child.scxml">
+		<scxmlunit path="virtual_child.scxml" scxmlname="ScxmlLevel1_%1" virtual="1" virtual_dependencies="virtual_child_2.scxml">
+			<scxmlunit path="virtual_child_2.scxml" scxmlname="ScxmlState_%1" virtual="1"/>
+		</scxmlunit>
+	</scxmlunit>
+</scxmlproject>

@@ -8,39 +8,43 @@ object FrameTrigger: TFrameTrigger
     AlignWithMargins = True
     Left = 3
     Top = 88
-    Width = 26
+    Width = 417
     Height = 13
     Align = alTop
     Caption = 'Track'
+    ExplicitWidth = 26
   end
   object LabelParams: TLabel
     AlignWithMargins = True
     Left = 3
     Top = 295
-    Width = 35
+    Width = 417
     Height = 13
     Align = alTop
     Caption = 'Params'
+    ExplicitWidth = 35
   end
   object LabelEdit: TLabel
     AlignWithMargins = True
     Left = 3
     Top = 152
-    Width = 18
+    Width = 417
     Height = 13
     Margins.Bottom = 0
     Align = alTop
     Caption = 'Edit'
+    ExplicitWidth = 18
   end
   object LabelCombo: TLabel
     AlignWithMargins = True
     Left = 3
     Top = 45
-    Width = 33
+    Width = 417
     Height = 13
     Margins.Bottom = 0
     Align = alTop
     Caption = 'Combo'
+    ExplicitWidth = 33
   end
   object Button1: TButton
     Left = 0
@@ -72,7 +76,6 @@ object FrameTrigger: TFrameTrigger
     Align = alTop
     TabOrder = 2
     OnChange = TrackBar1Change
-    ExplicitTop = 107
   end
   object ScrollBoxParams: TScrollBox
     Left = 0
@@ -81,7 +84,6 @@ object FrameTrigger: TFrameTrigger
     Height = 50
     Align = alTop
     TabOrder = 3
-    ExplicitTop = 263
   end
   object EditBtn1: TElButtonEdit
     AlignWithMargins = True
@@ -98,7 +100,6 @@ object FrameTrigger: TFrameTrigger
     TabOrder = 4
     Align = alTop
     OnKeyPress = EditBtnKeyPress
-    ExplicitTop = 155
   end
   object ComboBox1: TComboBox
     AlignWithMargins = True
@@ -123,15 +124,16 @@ object FrameTrigger: TFrameTrigger
     Caption = 'PanelMemo'
     ShowCaption = False
     TabOrder = 6
-    ExplicitTop = 232
     object LabelMemo: TLabel
       AlignWithMargins = True
       Left = 3
       Top = 3
-      Width = 28
-      Height = 13
+      Width = 387
+      Height = 19
       Align = alClient
       Caption = 'Memo'
+      ExplicitWidth = 28
+      ExplicitHeight = 13
     end
     object BtnMemo: TButton
       Left = 393
@@ -141,9 +143,6 @@ object FrameTrigger: TFrameTrigger
       Align = alRight
       TabOrder = 0
       OnClick = BtnMemoClick
-      ExplicitLeft = 392
-      ExplicitTop = 1
-      ExplicitHeight = 23
     end
   end
   object Memo1: TMemo

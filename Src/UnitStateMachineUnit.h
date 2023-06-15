@@ -113,7 +113,7 @@ protected:
 	virtual bool __fastcall GetEnabled(void);
 
 	// имя проекта меняем на ".bindings.xml"
-	UnicodeString __fastcall MakeBindingFileName(const UnicodeString &sFileOrigin);
+	static UnicodeString MakeBindingFileName(const UnicodeString &sFileOrigin);
 
 	friend class TFormScxmlGui;
 public:
@@ -129,6 +129,8 @@ public:
    TStateMachineDockPanel *StateMachineDockPanel;
 
    static const Lmdtypes::TLMDString FileExt_;
+
+   static const UnicodeString BindingsSuffix_;
 
    static const UnicodeString OpenDialogFilter;
 

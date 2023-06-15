@@ -105,6 +105,7 @@ __fastcall TSettingsData::TSettingsData(TComponent* Owner) : TSettingsBase(Owner
 	FTestingDebugReceivedBuffer = false;
 	FTestingSwitchToPanel = true;
 	FTestingScrollChartToViewShape = true;
+	FTestingSendEventClickMode = seDoubleClick;
 	FTestingAutoOpenUnit = true;
 
 	FTranslateEveryChangeToScxmlView = false;
@@ -281,6 +282,7 @@ void __fastcall TSettingsData::Assign(TPersistent* Source) {
 			FTestingDebugReceivedBuffer = ASettingsData->FTestingDebugReceivedBuffer;
 			FTestingSwitchToPanel = ASettingsData->FTestingSwitchToPanel;
 			FTestingScrollChartToViewShape = ASettingsData->FTestingScrollChartToViewShape;
+			FTestingSendEventClickMode = ASettingsData->FTestingSendEventClickMode;
 			FTestingAutoOpenUnit = ASettingsData->FTestingAutoOpenUnit;
 
 			FLuautilsLuacExe = ASettingsData->FLuautilsLuacExe;
@@ -518,6 +520,7 @@ void __fastcall TSettingsData::PropSettingsRegisterCategories(TLMDPropertyInspec
 	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"TestingSwitchToPanel");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"TestingScrollChartToViewShape");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"TestingAutoOpenUnit");
+	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"TestingSendEventClickMode");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"TestSettings");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml tester", L"TestApplicationPresets");
 
@@ -941,6 +944,14 @@ TTestSettings *__fastcall TSettingsData::GetActiveTestSettings(void) {
 bool __fastcall TSettingsData::IsTestCoverageEnabled(void) {
 	if (FormScxmlGui) {
 		return FormScxmlGui->actTestCoverage->Checked;
+	}
+	return false;
+}
+
+// ---------------------------------------------------------------------------
+bool __fastcall TSettingsData::IsTesterWorkingInDebugMode(void) {
+	if (FormScxmlGui) {
+		return IsTesterWorking && !FormScxmlGui->actExternTesting->Checked;
 	}
 	return false;
 }

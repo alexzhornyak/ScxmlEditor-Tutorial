@@ -104,10 +104,16 @@ private:	// User declarations
 
 	void __fastcall ScrollBoxParamsClickBtn(TObject *Sender);
 
+	/* used for On-Off events */
+	void __fastcall DoSendButtonDown(void);
+	void __fastcall DoSendButtonUp(void);
+
 public:		// User declarations
 	// Event имя должно передаваться отдельно
 	__fastcall TFrameTrigger(TComponent* Owner, TContentTrigger *AContentTrigger, TParamTriggerItems *AParams, const UnicodeString &sEventName);
 	virtual __fastcall ~TFrameTrigger();
+
+	bool __fastcall SendUniversalEvent(void);
 
 	__property UnicodeString 			EventName = { read=FEventName };
 

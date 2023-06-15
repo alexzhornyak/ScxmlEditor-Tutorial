@@ -49,6 +49,10 @@ namespace Keyboardutils {
 		return(GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 	}
 
+	bool __fastcall IsLeftMousePressed(void) {
+		return(GetAsyncKeyState(VK_LBUTTON) & 0x8000) != 0;
+	}
+
 	bool __fastcall IsAltPressed(void) {
 		return(GetAsyncKeyState(VK_MENU) & 0x8000) != 0;
 	}

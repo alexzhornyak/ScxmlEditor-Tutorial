@@ -408,6 +408,7 @@ private:
 	bool FExamined;
 	bool FBreakpointSet;
 	bool FSkipDebugging;
+	bool FAutoVertTextAlign;
 	TShapeChildrenAlignX FChildrenAlignX;
 	TShapeChildrenAlignY FChildrenAlignY;
     int FChildrenAlignXOffset;
@@ -438,6 +439,7 @@ protected:
 
 	virtual void __fastcall DrawShapeCanvas(Tecanvas::TCanvas3D* ACanvas, const Types::TRect &R); /* inherited */
 	virtual TVertTextAlign __fastcall GetVertTextAlign(void); /* inhrerited */
+	virtual void __fastcall SetVertTextAlign(TVertTextAlign val);  /* inhrerited */
 
 	UnicodeString FInitial;
 	virtual UnicodeString __fastcall GetInitial(void);
@@ -525,6 +527,7 @@ __published:
 	__property TShapeChildrenAlignY ChildrenAlignY = {read=FChildrenAlignY, write=FChildrenAlignY, default=scayClusterTop};
 	__property int ChildrenAlignXOffset = {read=FChildrenAlignXOffset, write=FChildrenAlignXOffset, default=0};
 	__property bool SkipDebugging = {read=FSkipDebugging, write=SetSkipDebugging, default=false};
+	__property bool AutoVertTextAlign = {read=FAutoVertTextAlign, write=FAutoVertTextAlign, default=true};
 	__property VertTextAlign;
 	__property HorizTextAlign;
 
