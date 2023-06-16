@@ -76,10 +76,10 @@ Triggers are used to submit events to the state machine
 ### Transition Triggers
 For simple events you can double click (or click depending on settings) on event name to trigger an event
 
-| ![](../Images/Triggers_WhereToClick.png) |
+| ![TriggerWhere](../Images/Triggers_WhereToClick.png) |
 |---|
 
-| ![](../Images/Triggers_DoubleClick.gif) |
+| ![TriggerDoubleClick](../Images/Triggers_DoubleClick.gif) |
 |---|
 
 ### GUI Triggers
