@@ -71,7 +71,18 @@ Since ScxmlEditor 2.3 there were added `5-Json`, `6-UserData`. Json is converted
 ```
 
 ## Triggers
+Triggers are used to submit events to the state machine
+
+### Transition Triggers
+For simple events you can double click (or click depending on settings) on event name to trigger an event
+
+| ![](../Images/Triggers_WhereToClick.png) |
+|---|
+| ![](../Images/Triggers_DoubleClick.gif) |
+
+### GUI Triggers
 Triggers will create a GUI elements for passing data to statechart
+
 - #### May be assigned as `trigger shapes` in statechart
 ![TriggerPanel](../Images/Debug_TriggerPanel.png)
 

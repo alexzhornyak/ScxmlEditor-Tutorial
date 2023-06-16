@@ -24,7 +24,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 [![Discord](Images/Discord.svg)](https://discord.gg/5XWDsbEXzn)
 
 ### Changelog
-**2.5.1:** Fast Triggers <br>
+**2.5.1:** [Fast Triggers](Doc/DebugScxmlStateCharts.md#transition-triggers) <br>
 **2.5:** [Virtual Invoke](Doc/VisualStateChartSplitting.md#virtual-invoke) <br>
 **2.4:** [Post Save Commands](Doc/ProjectTree.md#post-save-unit-actions), [Self-Transitions Inside](Doc/Transitions.md#self-transitions-inside-states) <br>
 **2.3:** Highlight Transitions <br>
