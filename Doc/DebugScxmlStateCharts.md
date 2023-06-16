@@ -78,11 +78,7 @@ For simple events you can double click (or click depending on settings) on event
 
 | ![TriggerWhere](../Images/Triggers_WhereToClick.png) |
 |---|
-| |
-
 | ![TriggerDoubleClick](../Images/Triggers_DoubleClick.gif) |
-|---|
-| |
 
 ### GUI Triggers
 Triggers will create a GUI elements for passing data to statechart
