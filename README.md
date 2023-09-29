@@ -13,7 +13,7 @@
 
 **[Video overview - v.2.2](https://youtu.be/30dyXAs-m1A)**
 
-# Scxml Editor 2.5.1
+# Scxml Editor 2.5.2
 Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](Images/Inheritance_TV_example.gif)
@@ -50,7 +50,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 ## Installation
 You can find portable version as attached Zip in ScxmlEditor Github Release page
 
-Latest version: **[2.5.1.1749]**
+Latest version: **[2.5.2.1753]**
 
 ### Windows Installation
 #### First Install
