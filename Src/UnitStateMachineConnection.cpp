@@ -868,6 +868,7 @@ void __fastcall TStateMachineConnection::AssignStateMachineConnection(TStateMach
 		FEvent = AStateMachineConnection->FEvent;
 		FCondition = AStateMachineConnection->FCondition;
 		FConditionBack = AStateMachineConnection->FConditionBack;
+		FType = AStateMachineConnection->FType;
 		FAdjustableSides = AStateMachineConnection->FAdjustableSides;
 		FContentTrigger->Assign(AStateMachineConnection->FContentTrigger);
 		FParams->Assign(AStateMachineConnection->FParams);

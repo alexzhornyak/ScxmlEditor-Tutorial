@@ -176,6 +176,8 @@ private:	// User declarations
 	bool FWarningOnBindingsNotFound;
 
 	bool FUseVectorImages;
+	bool FCompletionTimeoutEnabled;
+	int FCompletionTimeoutMsec;
 
 	bool FValidateInPredicate;
 	bool FValidateChildren;
@@ -387,6 +389,10 @@ __published:	// PROPERTIES THAT ARE SEEN IN SETTINGS EDITOR
 	__property TAutoCompleteItems *		AutoCompleteItems = {read=FAutoCompleteItems, write=SetAutoCompleteItems };
 	__property UnicodeString			ActiveSyntaxScheme = {read=GetActiveSyntaxScheme};
 	__property UnicodeString			WordSeparators = {read=GetWordSeparators};
+	__property bool						CompletionTimeoutEnabled = {read=FCompletionTimeoutEnabled, write=FCompletionTimeoutEnabled, default=true};
+
+	// bug in LMD: Completion Timeout is not exposed properly
+	//	__property int					CompletionTimeoutMsec = {read=FCompletionTimeoutMsec, write=FCompletionTimeoutMsec, default=50};
 
 
 	// extern editor

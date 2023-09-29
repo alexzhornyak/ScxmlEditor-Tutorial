@@ -536,7 +536,16 @@ void __fastcall TStateMachineEditorUnit::DoLoad(const Lmdtypes::TLMDString AFile
 
 // ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditorUnit::DoSave(const Lmdtypes::TLMDString AFilePath) {
-	SaveAssociatedFile("code", AFilePath, FilePath);
+	try {
+		SaveAssociatedFile("code", AFilePath, FilePath);
+	}
+	catch(Exception * E) {
+		// Fix: https://github.com/alexzhornyak/ScxmlEditor-Tutorial/issues/105
+		if (StateMachineDockPanel) {
+			StateMachineDockPanel->MarkModified(0, L"", false);
+		}
+		throw E;
+	}
 
 	const UnicodeString sFileName = ExtractFileName(AFilePath);
 

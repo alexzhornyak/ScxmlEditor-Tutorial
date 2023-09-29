@@ -128,6 +128,8 @@ __fastcall TSettingsData::TSettingsData(TComponent* Owner) : TSettingsBase(Owner
 	FWarningOnBindingsNotFound = true;
 
 	FUseVectorImages = false;
+	FCompletionTimeoutEnabled = true;
+	FCompletionTimeoutMsec = 50;
 
 	FValidateInPredicate = false;
 	FValidateChildren = true;
@@ -261,6 +263,8 @@ void __fastcall TSettingsData::Assign(TPersistent* Source) {
 			FWarningOnInheritanceMismatch = ASettingsData->FWarningOnInheritanceMismatch;
 			FWarningOnBindingsNotFound = ASettingsData->FWarningOnBindingsNotFound;
 			FUseVectorImages = ASettingsData->FUseVectorImages;
+			FCompletionTimeoutEnabled = ASettingsData->FCompletionTimeoutEnabled;
+			FCompletionTimeoutMsec = ASettingsData->FCompletionTimeoutMsec;
 			FValidateInPredicate = ASettingsData->FValidateInPredicate;
 			FValidateChildren = ASettingsData->FValidateChildren;
 			FValidateXMLText = ASettingsData->FValidateXMLText;
@@ -480,6 +484,8 @@ void __fastcall TSettingsData::PropSettingsRegisterCategories(TLMDPropertyInspec
 	APropSettingsInspector->RegisterPropCategory(L"Scxml editor", L"WarningOnInheritanceMismatch");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml editor", L"WarningOnBindingsNotFound");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml editor", L"UseVectorImages");
+	APropSettingsInspector->RegisterPropCategory(L"Scxml editor", L"CompletionTimeoutEnabled");
+	//	APropSettingsInspector->RegisterPropCategory(L"Scxml editor", L"CompletionTimeoutMsec");
 
 	APropSettingsInspector->RegisterPropCategory(L"Visual", L"ChartFocusEnabled");
 	APropSettingsInspector->RegisterPropCategory(L"Visual", L"ChartFocusLineWidth");
