@@ -1,4 +1,4 @@
-/***********************************************************************************
+/** *********************************************************************************
 BSD 3-Clause License
 
 Copyright (c) 2018, https://github.com/alexzhornyak
@@ -28,7 +28,7 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ***************************************************************************************/
+ ************************************************************************************** */
 
 #include <vcl.h>
 #pragma hdrstop
@@ -164,7 +164,8 @@ bool SortVisualShapesByLevel(TVisualScxmlBaseShape *i, TVisualScxmlBaseShape * j
 
 // ---------------------------------------------------------------------------
 void CollectPossibleParentsAndChildrenForExchange(TVisualScxmlBaseShape *AVisualShape,
-	std::vector<TVisualScxmlBaseShape*> &VecPossibleParents, std::vector<TVisualScxmlBaseShape*> &VecPossibleChildren,
+	std::vector<TVisualScxmlBaseShape*> &VecPossibleParents,
+	std::vector<TVisualScxmlBaseShape*> &VecPossibleChildren,
 	std::vector<TVisualScxmlBaseShape*> &VecPossibleLostChildren, int DeltaX = 0, int DeltaY = 0) {
 
 	// AVisualShape - это то, что мы тянем в этот момент
@@ -177,8 +178,8 @@ void CollectPossibleParentsAndChildrenForExchange(TVisualScxmlBaseShape *AVisual
 		OffsetRect(ASenderRect, DeltaX, DeltaY);
 
 		TRect OutRect;
-		const bool bShapeInsideParent = AVisualShape->VisualParent ? IntersectRect(OutRect, AVisualShape->VisualParent->Bounds(),
-			ASenderRect) : false;
+		const bool bShapeInsideParent = AVisualShape->VisualParent ? IntersectRect(OutRect,
+			AVisualShape->VisualParent->Bounds(), ASenderRect) : false;
 
 		for (int i = ATree->Shapes->Count - 1; i >= 0; i--) {
 			TVisualScxmlBaseShape * AExaminedShape = dynamic_cast<TVisualScxmlBaseShape*>(ATree->Shapes->Items[i]);
@@ -186,9 +187,11 @@ void CollectPossibleParentsAndChildrenForExchange(TVisualScxmlBaseShape *AVisual
 
 				if (AExaminedShape != AVisualShape) {
 					// нельзя для TScxmlShape назначать новых родителей
-					if (!AVisualShape->InheritsFrom(__classid(TScxmlShape)) && AExaminedShape != AVisualShape->VisualParent) {
+					if (!AVisualShape->InheritsFrom(__classid(TScxmlShape))
+						&& AExaminedShape != AVisualShape->VisualParent) {
 						const bool bLessParentLevel = AVisualShape->VisualParent ?
-							(bShapeInsideParent && AExaminedShape->Level() < AVisualShape->VisualParent->Level()) : false;
+							(bShapeInsideParent && AExaminedShape->Level()
+							< AVisualShape->VisualParent->Level()) : false;
 
 						if (Editorutils::RectInsideRect(AExaminedShape->Bounds(), ASenderRect) && !bLessParentLevel) {
 							VecPossibleParents.push_back(AExaminedShape);
@@ -196,8 +199,8 @@ void CollectPossibleParentsAndChildrenForExchange(TVisualScxmlBaseShape *AVisual
 					}
 
 					// TScxmlShape не может терять дочерних за пределами
-					if (!AVisualShape->InheritsFrom(__classid(TScxmlShape)) && (AExaminedShape->Parent == AVisualShape) && !IntersectRect
-						(OutRect, AExaminedShape->Bounds(), ASenderRect)) {
+					if (!AVisualShape->InheritsFrom(__classid(TScxmlShape)) && (AExaminedShape->Parent == AVisualShape)
+						&& !IntersectRect(OutRect, AExaminedShape->Bounds(), ASenderRect)) {
 						VecPossibleLostChildren.push_back(AExaminedShape);
 					}
 					else {
@@ -242,10 +245,11 @@ void AppendImageToTreeImagePool(TImageList *AImageList, const int iStoredIndex, 
 // ---------------------------------------------------------------------------
 // ----------------------------- TStateMachineEditor -------------------------
 // ---------------------------------------------------------------------------
-__fastcall TStateMachineEditor::TStateMachineEditor(TComponent * AOwner, TStateMachineEditorUnit * AStateMachineEditorUnit,
-	bool AUseGlobalPropInspector) : TTreeEditorEx(AOwner), FStateMachineEditorUnit(AStateMachineEditorUnit), FForbidInternalAdd(false),
-FPropSettingsInspector(NULL), FDesignObjects(NULL), FSyntaxEditorEx(new TFrameSyntaxEditorEx(this)),
-FEditDocRaw(new TLMDEditDocument(this)), FPropSplitter(NULL), FFormReplaceDlg(NULL) {
+__fastcall TStateMachineEditor::TStateMachineEditor(TComponent * AOwner,
+	TStateMachineEditorUnit * AStateMachineEditorUnit, bool AUseGlobalPropInspector) : TTreeEditorEx(AOwner),
+FStateMachineEditorUnit(AStateMachineEditorUnit), FForbidInternalAdd(false), FPropSettingsInspector(NULL),
+FDesignObjects(NULL), FSyntaxEditorEx(new TFrameSyntaxEditorEx(this)), FEditDocRaw(new TLMDEditDocument(this)),
+FPropSplitter(NULL), FFormReplaceDlg(NULL) {
 
 	FActiveDebugShape = NULL;
 	FActiveDebugConnection = NULL;
@@ -297,10 +301,10 @@ FEditDocRaw(new TLMDEditDocument(this)), FPropSplitter(NULL), FFormReplaceDlg(NU
 		FPropSettingsInspector->Font->Color = clWindowText;
 		FPropSettingsInspector->Font->Height = -11;
 
-		FPropSettingsInspector->Width = SettingsData->TempRegistry->Values[this->ClassName() + ".PropSettingsInspector.Width"].ToIntDef
-			(FPropSettingsInspector->Width);
-		FPropSettingsInspector->Splitter = SettingsData->TempRegistry->Values[this->ClassName() + ".PropSettingsInspector.Splitter"]
-			.ToIntDef(FPropSettingsInspector->Splitter);
+		FPropSettingsInspector->Width = SettingsData->TempRegistry->Values
+			[this->ClassName() + ".PropSettingsInspector.Width"].ToIntDef(FPropSettingsInspector->Width);
+		FPropSettingsInspector->Splitter = SettingsData->TempRegistry->Values
+			[this->ClassName() + ".PropSettingsInspector.Splitter"].ToIntDef(FPropSettingsInspector->Splitter);
 
 		FPropSplitter = new TSplitter(this);
 		FPropSplitter->Parent = this;
@@ -316,6 +320,12 @@ FEditDocRaw(new TLMDEditDocument(this)), FPropSplitter(NULL), FFormReplaceDlg(NU
 
 	this->Save1->OnClick = ButtonSaveClick;
 	this->New1->OnClick = ButtonNewClick;
+
+	ActionLockAxisX->OnExecute = OnActionLockAxisExecute;
+	ActionLockAxisY->OnExecute = OnActionLockAxisExecute;
+
+	ActionLockAxisX->OnUpdate = OnActionLockAxisUpdate;
+	ActionLockAxisY->OnUpdate = OnActionLockAxisUpdate;
 
 	MenuDummyTextReset->OnClick = OnMenuDummyTextReset;
 	MenuDummyTextEdit->OnClick = OnMenuDummyTextEdit;
@@ -345,6 +355,8 @@ FEditDocRaw(new TLMDEditDocument(this)), FPropSplitter(NULL), FFormReplaceDlg(NU
 
 	MenuChartVersion->OnClick = OnMenuChartVersion;
 	MenuChartStatistics->OnClick = OnMenuChartStatistics;
+
+	MenuResetToDefault->OnClick = OnMenuResetViewToDefault;
 
 	for (int i = 0; i < File1->Count; i++) {
 		File1->Items[i]->ShortCut = 0;
@@ -685,6 +697,48 @@ FEditDocRaw(new TLMDEditDocument(this)), FPropSplitter(NULL), FFormReplaceDlg(NU
 
 	PopupNode->Items->InsertNewLineAfter(FMenuSelectSiblings);
 	iMenuAddIndex++;
+
+	MenuSelectSimilar->OnClick = OnMenuSelectSimilar;
+
+	TMenuItem * AMenuSelectItemWithChildren2 = new TMenuItem(this);
+	AMenuSelectItemWithChildren2->ImageIndex = 144;
+	AMenuSelectItemWithChildren2->Caption = "Select with children";
+	AMenuSelectItemWithChildren2->OnClick = OnMenuSelectItemWithChildren;
+	MenuSelectSimilar->Parent->Insert(2, AMenuSelectItemWithChildren2);
+
+	TMenuItem * AMenuSelectChildren2 = new TMenuItem(this);
+	AMenuSelectChildren2->ImageIndex = 95;
+	AMenuSelectChildren2->Caption = "Select children only";
+	AMenuSelectChildren2->OnClick = OnMenuSelectChildren;
+	MenuSelectSimilar->Parent->Insert(3, AMenuSelectChildren2);
+
+	TMenuItem * AMenuSelectSiblings2 = new TMenuItem(this);
+	AMenuSelectSiblings2->ImageIndex = 96;
+	AMenuSelectSiblings2->Caption = "Select siblings";
+	AMenuSelectSiblings2->OnClick = OnMenuSelectSiblings;
+	MenuSelectSimilar->Parent->Insert(4, AMenuSelectSiblings2);
+
+	MenuSelectSimilar->Parent->InsertNewLineAfter(AMenuSelectSiblings2);
+
+	MenuSelectVisual->OnClick = OnMenuSelectVisual;
+	MenuSelectNonVisual->OnClick = OnMenuSelectNonVisual;
+
+	for (int i = sctScxml; i < TStateChildType::sctMAXSIZE; i++) {
+		const TStateChildType AStateType = TStateChildType(i);
+		const UnicodeString sName = TScxmlBaseShape::TypeToName(AStateType);
+
+		TMenuItem *AMenuSelectItem = new TMenuItem(this);
+		AMenuSelectItem->Caption = L"Select " + sName;
+		AMenuSelectItem->Tag = i;
+		AMenuSelectItem->OnClick = OnMenuSelectCategory;
+		MenuSelectCategory->Add(AMenuSelectItem);
+	}
+
+	MenuClearSelection->OnClick = OnMenuClearSelection;
+	MenuSelectAtomic->OnClick = OnMenuSelectAtomic;
+	MenuSelectCompound->OnClick = OnMenuSelectCompound;
+	MenuSelectStatesandParallel->OnClick = OnMenuSelectStatesandParallel;
+	MenuSelectExecutableContent->OnClick = OnMenuSelectExecutableContent;
 
 	FMenuCollapseAll = new TMenuItem(this);
 	FMenuCollapseAll->ImageIndex = 163;
@@ -1027,12 +1081,14 @@ FEditDocRaw(new TLMDEditDocument(this)), FPropSplitter(NULL), FFormReplaceDlg(NU
 		if (PageShapes->Pages[i]->Caption == L"SCXML") {
 
 			for (int k = 0; k < PageShapes->Pages[i]->ControlCount; k++) {
-				TScxmlSpeedButton *AScxmlSpeedButton = dynamic_cast<TScxmlSpeedButton*>(PageShapes->Pages[i]->Controls[k]);
+				TScxmlSpeedButton *AScxmlSpeedButton = dynamic_cast<TScxmlSpeedButton*>
+					(PageShapes->Pages[i]->Controls[k]);
 				if (AScxmlSpeedButton) {
 					TTreeTagShape *ATreeTagShape = reinterpret_cast<TTreeTagShape*>(AScxmlSpeedButton->Tag);
 					if (ATreeTagShape) {
 						if (ATreeTagShape->AClass == __classid(TVirtualShape)) {
-							AScxmlSpeedButton->Visible = StateMachineEditorUnit && StateMachineEditorUnit->StateMachineProject;
+							AScxmlSpeedButton->Visible = StateMachineEditorUnit &&
+								StateMachineEditorUnit->StateMachineProject;
 							break;
 						}
 					}
@@ -1060,13 +1116,13 @@ FEditDocRaw(new TLMDEditDocument(this)), FPropSplitter(NULL), FFormReplaceDlg(NU
 		AMenuIdeInsight->ImageIndex = -1;
 		this->MainMenu1->Items->Add(AMenuIdeInsight);
 
-		TRect ASettingsRect = Customutils::StrToRect(SettingsData->TempRegistry->Values[this->ClassName() + ".BoundsRect"],
-			this->BoundsRect);
+		TRect ASettingsRect = Customutils::StrToRect
+			(SettingsData->TempRegistry->Values[this->ClassName() + ".BoundsRect"], this->BoundsRect);
 		TRect AResultRect;
 		// проверяем, чтобы сохранённые в конфиге координаты не вылезли за пределы экрана
 		if (IntersectRect(AResultRect, ASettingsRect, Screen->DesktopRect)) {
-			SetWindowPos(this->Handle, NULL, ASettingsRect.left, ASettingsRect.top, ASettingsRect.Width(), ASettingsRect.Height(),
-				SWP_ASYNCWINDOWPOS);
+			SetWindowPos(this->Handle, NULL, ASettingsRect.left, ASettingsRect.top, ASettingsRect.Width(),
+				ASettingsRect.Height(), SWP_ASYNCWINDOWPOS);
 		}
 		else {
 			WLOG_WARNING(L"Config application rect <%s> does not intersect with desktop rect <%s>",
@@ -1087,12 +1143,15 @@ __fastcall TStateMachineEditor::~TStateMachineEditor() {
 	if (SettingsData) {
 
 		if (FPropSettingsInspector) {
-			SettingsData->TempRegistry->Values[this->ClassName() + ".PropSettingsInspector.Width"] = FPropSettingsInspector->Width;
-			SettingsData->TempRegistry->Values[this->ClassName() + ".PropSettingsInspector.Splitter"] = FPropSettingsInspector->Splitter;
+			SettingsData->TempRegistry->Values[this->ClassName() + ".PropSettingsInspector.Width"]
+				= FPropSettingsInspector->Width;
+			SettingsData->TempRegistry->Values[this->ClassName() + ".PropSettingsInspector.Splitter"]
+				= FPropSettingsInspector->Splitter;
 		}
 
 		if (IsStandalone) {
-			SettingsData->TempRegistry->Values[this->ClassName() + ".BoundsRect"] = Customutils::RectToStr(this->BoundsRect);
+			SettingsData->TempRegistry->Values[this->ClassName() + ".BoundsRect"] = Customutils::RectToStr
+				(this->BoundsRect);
 		}
 	}
 
@@ -1142,12 +1201,12 @@ void __fastcall TStateMachineEditor::AddAllShapeImages(void) {
 		this->AddShapeImageToMap<TWatchShape>();
 
 		FShapeImagesMap["scxml"] = 191; // this->AddVisualShapeImageToMap<TScxmlShape>();
-		FShapeImagesMap["state"] = 188; //this->AddVisualShapeImageToMap<TStateShape>();
-		FShapeImagesMap["parallel"] = 189; //this->AddVisualShapeImageToMap<TParallelShape>();
+		FShapeImagesMap["state"] = 188; // this->AddVisualShapeImageToMap<TStateShape>();
+		FShapeImagesMap["parallel"] = 189; // this->AddVisualShapeImageToMap<TParallelShape>();
 		this->AddVisualShapeImageToMap<TInitialShape>();
 		this->AddVisualShapeImageToMap<TFinalShape>();
 		this->AddVisualShapeImageToMap<THistoryShape>();
-		FShapeImagesMap["virtual"] = 190; //this->AddVisualShapeImageToMap<TVirtualShape>();
+		FShapeImagesMap["virtual"] = 190; // this->AddVisualShapeImageToMap<TVirtualShape>();
 	}
 	catch(Exception * E) {
 		LOG_ERROR(LOG_ERROR_MSG);
@@ -1173,8 +1232,8 @@ TStateMachineDockPanel * __fastcall TStateMachineEditor::GetStateMachineDockPane
 }
 
 // ---------------------------------------------------------------------------
-TPopupMenu * __fastcall TStateMachineEditor::GetPreparedPopupMenu(Teetree::TCustomTree* ATree, const int X, const int Y,
-	const int iXScreen, const int iYScreen) {
+TPopupMenu * __fastcall TStateMachineEditor::GetPreparedPopupMenu(Teetree::TCustomTree* ATree, const int X,
+	const int Y, const int iXScreen, const int iYScreen) {
 
 	SpeedNormal->Down = True;
 
@@ -1282,9 +1341,11 @@ void __fastcall TStateMachineEditor::OnMenuDummyTextAlign(System::TObject* Sende
 			const int iIndexFirst = iIndexLast - 1;
 
 			// устраняем баг в либе, когда перепутаны названия Лево-Право, Вверх-Вниз
-			const bool bTrueTop = ADummy->Connection->Points->Item[iIndexFirst].Y < ADummy->Connection->Points->Item[iIndexLast].Y;
+			const bool bTrueTop = ADummy->Connection->Points->Item[iIndexFirst].Y < ADummy->Connection->Points->Item
+				[iIndexLast].Y;
 
-			const bool bTrueLeft = ADummy->Connection->Points->Item[iIndexFirst].X < ADummy->Connection->Points->Item[iIndexLast].X;
+			const bool bTrueLeft = ADummy->Connection->Points->Item[iIndexFirst].X < ADummy->Connection->Points->Item
+				[iIndexLast].X;
 
 			switch(AMenuItem->Tag) {
 			case pptLeft:
@@ -1368,7 +1429,8 @@ void __fastcall TStateMachineEditor::OnMenuDummyTextRotate90Left(System::TObject
 		ADummy->StateMachineConnection->Draw();
 		ADummy->UpdatePosition();
 
-		TeeModified(true, 1, L"Connection[" + ADummy->StateMachineConnection->Name + "] Rotated to " + UnicodeString(iAngle) + "°!");
+		TeeModified(true, 1, L"Connection[" + ADummy->StateMachineConnection->Name + "] Rotated to " + UnicodeString
+			(iAngle) + "°!");
 	}
 }
 
@@ -1386,7 +1448,8 @@ void __fastcall TStateMachineEditor::OnMenuDummyTextRotate90Right(System::TObjec
 		ADummy->StateMachineConnection->Draw();
 		ADummy->UpdatePosition();
 
-		TeeModified(true, 1, L"Connection[" + ADummy->StateMachineConnection->Name + "] Rotated to " + UnicodeString(iAngle) + "°!");
+		TeeModified(true, 1, L"Connection[" + ADummy->StateMachineConnection->Name + "] Rotated to " + UnicodeString
+			(iAngle) + "°!");
 	}
 }
 
@@ -1407,7 +1470,8 @@ void __fastcall TStateMachineEditor::OnMenuDummyTextRotateCustom(System::TObject
 			ADummy->StateMachineConnection->Draw();
 			ADummy->UpdatePosition();
 
-			TeeModified(true, 1, L"Connection[" + ADummy->StateMachineConnection->Name + "] Rotated to " + UnicodeString(iAngle) + "°!");
+			TeeModified(true, 1, L"Connection[" + ADummy->StateMachineConnection->Name + "] Rotated to " + UnicodeString
+				(iAngle) + "°!");
 		}
 	}
 }
@@ -1456,12 +1520,15 @@ void __fastcall TStateMachineEditor::OnMenuChartStatistics(System::TObject* Send
 
 	FormScxmlGui->EditDocTester->Lines->Append("***** State Chart Statistics *****");
 
-	FormScxmlGui->EditDocTester->Lines->Append(UnicodeString().sprintf(L"TotalBounds Left=%d Top=%d Width=%d Height=%d",
-			TheTree->TotalBounds.left, TheTreeEx->TotalBounds.top, TheTree->TotalBounds.Width(), TheTreeEx->TotalBounds.Height()));
+	FormScxmlGui->EditDocTester->Lines->Append
+		(UnicodeString().sprintf(L"TotalBounds Left=%d Top=%d Width=%d Height=%d", TheTree->TotalBounds.left,
+			TheTreeEx->TotalBounds.top, TheTree->TotalBounds.Width(), TheTreeEx->TotalBounds.Height()));
 
-	FormScxmlGui->EditDocTester->Lines->Append(UnicodeString().sprintf(L"Total Shapes Count=%d", TheTree->Shapes->Count));
+	FormScxmlGui->EditDocTester->Lines->Append(UnicodeString().sprintf(L"Total Shapes Count=%d",
+			TheTree->Shapes->Count));
 
-	FormScxmlGui->EditDocTester->Lines->Append(UnicodeString().sprintf(L"Total Connections Count=%d", TheTree->Connections->Count));
+	FormScxmlGui->EditDocTester->Lines->Append(UnicodeString().sprintf(L"Total Connections Count=%d",
+			TheTree->Connections->Count));
 
 	FormScxmlGui->EditDocTester->Lines->Append("");
 
@@ -1482,13 +1549,15 @@ void __fastcall TStateMachineEditor::OnMenuChartStatistics(System::TObject* Send
 		}
 	}
 
-	FormScxmlGui->EditDocTester->Lines->Append("****** Total StateChart States=[" + UnicodeString(iTotalStates) + "] ******");
+	FormScxmlGui->EditDocTester->Lines->Append("****** Total StateChart States=[" + UnicodeString(iTotalStates)
+		+ "] ******");
 	for (std::size_t i = 0; i < ARRAYSIZE(__STATE_TYPES_VISUAL_SHAPES); i++) {
 		const TStateChildType AStateChildType = __STATE_TYPES_VISUAL_SHAPES[i];
 		const int iElementCount = AMapStats[AStateChildType];
 		if (iElementCount != 0) {
 			const UnicodeString sElement = TScxmlBaseShape::TypeToXMLNodeName(AStateChildType);
-			FormScxmlGui->EditDocTester->Lines->Append(UnicodeString().sprintf(L"\t* <%s>=%d", sElement.c_str(), iElementCount));
+			FormScxmlGui->EditDocTester->Lines->Append(UnicodeString().sprintf(L"\t* <%s>=%d", sElement.c_str(),
+					iElementCount));
 		}
 	}
 
@@ -1498,7 +1567,8 @@ void __fastcall TStateMachineEditor::OnMenuChartStatistics(System::TObject* Send
 	int iNotSelfConnectionsStats = 0;
 
 	for (int i = 0; i < TheTree->Connections->Count; i++) {
-		TStateMachineConnection *AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Items[i]);
+		TStateMachineConnection *AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+			(TheTree->Connections->Items[i]);
 		if (AStateMachineConnection) {
 			if (AStateMachineConnection->IsSelfConnection) {
 				iSelfConnectionsStats++;
@@ -1510,9 +1580,12 @@ void __fastcall TStateMachineEditor::OnMenuChartStatistics(System::TObject* Send
 	}
 
 	const int iTotalTransitions = iSelfConnectionsStats + iNotSelfConnectionsStats;
-	FormScxmlGui->EditDocTester->Lines->Append("****** Total StateChart Transitions=[" + UnicodeString(iTotalTransitions) + "] ******");
-	FormScxmlGui->EditDocTester->Lines->Append(UnicodeString().sprintf(L"\t* Self-Transitions=%d", iSelfConnectionsStats));
-	FormScxmlGui->EditDocTester->Lines->Append(UnicodeString().sprintf(L"\t* Other Transitions=%d", iNotSelfConnectionsStats));
+	FormScxmlGui->EditDocTester->Lines->Append("****** Total StateChart Transitions=[" + UnicodeString
+		(iTotalTransitions) + "] ******");
+	FormScxmlGui->EditDocTester->Lines->Append(UnicodeString().sprintf(L"\t* Self-Transitions=%d",
+			iSelfConnectionsStats));
+	FormScxmlGui->EditDocTester->Lines->Append(UnicodeString().sprintf(L"\t* Other Transitions=%d",
+			iNotSelfConnectionsStats));
 }
 
 // ---------------------------------------------------------------------------
@@ -1582,7 +1655,8 @@ void __fastcall TStateMachineEditor::PropSettingsInspectorChange(TObject *Sender
 // ---------------------------------------------------------------------------
 void TStateMachineEditor::ResetInheritance() {
 	for (int i = 0; i < TheTree->Connections->Count; i++) {
-		TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Items[i]);
+		TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+			(TheTree->Connections->Items[i]);
 		if (AStateMachineConnection) {
 			Statemachine::SetInheritance(AStateMachineConnection, false);
 		}
@@ -1600,7 +1674,8 @@ void TStateMachineEditor::ResetInheritance() {
 // ---------------------------------------------------------------------------
 void TStateMachineEditor::SetNewInheritance() {
 	for (int i = 0; i < TheTree->Connections->Count; i++) {
-		TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Items[i]);
+		TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+			(TheTree->Connections->Items[i]);
 		if (AStateMachineConnection) {
 			AStateMachineConnection->Locked = true;
 			AStateMachineConnection->InheritanceMismatch = false;
@@ -1702,7 +1777,8 @@ void __fastcall TStateMachineEditor::OnMenuConvertToRawClick(TObject *Sender) {
 					const UnicodeString Text = L"You have unsaved modifications!\n" //
 					"This operation may lead to lose them!\n" //
 					"Are you sure to continue?";
-					if (Application->MessageBoxA(Text.c_str(), Caption.c_str(), MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) != IDOK)
+					if (Application->MessageBoxA(Text.c_str(), Caption.c_str(),
+							MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) != IDOK)
 						return;
 				}
 #endif
@@ -1768,7 +1844,8 @@ void __fastcall TStateMachineEditor::OnMenuMakeSelfConnection(TObject *Sender) {
 	try {
 		TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(this->FirstSelected);
 		if (AVisualShape && //
-			STATE_TYPES_SELFCONNECTION_SHAPES.find(AVisualShape->StateChildType) != STATE_TYPES_SELFCONNECTION_SHAPES.end()) {
+			STATE_TYPES_SELFCONNECTION_SHAPES.find(AVisualShape->StateChildType)
+			!= STATE_TYPES_SELFCONNECTION_SHAPES.end()) {
 			TheTree->Selected->Clear();
 
 			TStateMachineConnection * ANewConnection = new TStateMachineConnection(this);
@@ -1802,7 +1879,8 @@ void __fastcall TStateMachineEditor::OnMenuClearConnectionClipboardMap(TObject *
 
 // ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditor::OnMenuTransitionCopy(TObject *Sender) {
-	TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+	TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+		(TheTree->Connections->Selected);
 	if (TheTree && AStateMachineConnection) {
 
 		const UnicodeString sClipboardText = AStateMachineConnection->ToClipboardText();
@@ -1849,7 +1927,7 @@ void __fastcall TStateMachineEditor::OnMenuPasteConnection(TObject *Sender) {
 }
 
 // ---------------------------------------------------------------------------
-TOperationResult __fastcall TStateMachineEditor::ReloadInheritedTree(bool bCheckWasModified/* = false*/) {
+TOperationResult __fastcall TStateMachineEditor::ReloadInheritedTree(bool bCheckWasModified /* = false */ ) {
 	TOperationResult AResult = oresSuccess;
 
 	try {
@@ -1862,11 +1940,14 @@ TOperationResult __fastcall TStateMachineEditor::ReloadInheritedTree(bool bCheck
 				}
 
 				const UnicodeString Caption = L"WARNING";
-				const UnicodeString Text = L"This operation will reload [" + StateMachineEditorUnit->DisplayName + "]!\n" //
+				const UnicodeString Text = L"This operation will reload [" + StateMachineEditorUnit->DisplayName +
+					"]!\n" //
 				"All unsaved modifications will be lost!\n" //
 				"Are you sure to continue?";
-				if (MessageBoxW(this->Handle, Text.c_str(), Caption.c_str(), MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) != IDOK) {
-					WLOG_ERROR(L"Inherited Unit:[%s] has unsaved modifications", StateMachineEditorUnit->DisplayName.c_str());
+				if (MessageBoxW(this->Handle, Text.c_str(), Caption.c_str(),
+						MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) != IDOK) {
+					WLOG_ERROR(L"Inherited Unit:[%s] has unsaved modifications",
+						StateMachineEditorUnit->DisplayName.c_str());
 					return oresCancel;
 				}
 			}
@@ -1920,9 +2001,11 @@ void __fastcall TStateMachineEditor::OnMenuInheritanceDumpDifference(TObject *Se
 
 			std::auto_ptr<TStringList>AMismatchListPtr(new TStringList());
 
-			if (TStateMachineConnection * ACheckConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected)) {
-				if (TStateMachineConnection * AOriginConnection = Editorutils::FindConnectionByName<TStateMachineConnection>
-					(AInheritedEditor->TheTree, ACheckConnection->Name)) {
+			if (TStateMachineConnection * ACheckConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected)) {
+				if (TStateMachineConnection * AOriginConnection =
+					Editorutils::FindConnectionByName<TStateMachineConnection>(AInheritedEditor->TheTree,
+						ACheckConnection->Name)) {
 
 					Unique::DeepCompareInheritedObjects(AOriginConnection, ACheckConnection,
 						ACheckConnection->InheritanceResolver->DefaultSkippedProps, AMismatchListPtr.get());
@@ -1941,8 +2024,8 @@ void __fastcall TStateMachineEditor::OnMenuInheritanceDumpDifference(TObject *Se
 			else {
 				for (int i = 0; i < TheTree->Selected->Count(); i++) {
 					if (TScxmlBaseShape * ACheckShape = dynamic_cast<TScxmlBaseShape*>(TheTree->Selected->Items[i])) {
-						if (TScxmlBaseShape * AOriginShape = Editorutils::FindShapeByName<TScxmlBaseShape>(AInheritedEditor->TheTree,
-								ACheckShape->Name)) {
+						if (TScxmlBaseShape * AOriginShape = Editorutils::FindShapeByName<TScxmlBaseShape>
+							(AInheritedEditor->TheTree, ACheckShape->Name)) {
 
 							Unique::DeepCompareInheritedObjects(AOriginShape, ACheckShape,
 								ACheckShape->InheritanceResolver->DefaultSkippedProps, AMismatchListPtr.get());
@@ -1973,7 +2056,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertRecursive(TObject *Sender) {
 		if (StateMachineEditorUnit && StateMachineEditorUnit->IsInherited) {
 			if (AreAllSelectedBrothers()) {
 
-				TStateMachineEditor *AInheritedEditor = FindStateMachineEditorByFileName(StateMachineEditorUnit->Inherited);
+				TStateMachineEditor *AInheritedEditor = FindStateMachineEditorByFileName
+					(StateMachineEditorUnit->Inherited);
 
 				if (!AInheritedEditor)
 					throw Exception("Can not find inherited module [" + StateMachineEditorUnit->Inherited + "]!");
@@ -2036,7 +2120,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertRecursive(TObject *Sender) {
 				if (AOutListPtr->Count) {
 					TheTree->Invalidate();
 					FillNodeTree(); // так как может поменяться родитель
-					TeeModified(True, 1, "Reverted shapes: [" + Customutils::ClippedText(AOutListPtr->CommaText, 50) + "]");
+					TeeModified(True, 1, "Reverted shapes: [" + Customutils::ClippedText(AOutListPtr->CommaText,
+							50) + "]");
 				}
 			}
 
@@ -2064,7 +2149,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertInOutConnections(TObject *Sende
 			for (int i = 0; i < TheTree->Selected->Count(); i++) {
 				TScxmlBaseShape * AScxmlBaseShape = dynamic_cast<TScxmlBaseShape*>(TheTree->Selected->Items[i]);
 				if (AScxmlBaseShape && AScxmlBaseShape->Locked) {
-					CollectInOutNamedConnections(AScxmlBaseShape, ANamedConnections, __classid(TStateMachineConnection));
+					CollectInOutNamedConnections(AScxmlBaseShape, ANamedConnections,
+						__classid(TStateMachineConnection));
 				}
 			}
 
@@ -2072,7 +2158,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertInOutConnections(TObject *Sende
 
 			if (AOutListPtr->Count) {
 				TheTree->Invalidate();
-				TeeModified(True, 1, "Reverted I/O connections:" + Customutils::ClippedText(AOutListPtr->CommaText, 50));
+				TeeModified(True, 1, "Reverted I/O connections:" + Customutils::ClippedText(AOutListPtr->CommaText,
+						50));
 			}
 		}
 
@@ -2120,7 +2207,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertInInheritedUnits(TObject *Sende
 			if (i == 0) {
 				std::auto_ptr<TDialogTreeSelect>ADialogTreeSelect(new TDialogTreeSelect(this));
 
-				const UnicodeString sLastSelected = SettingsData->TempRegistry->Values["MenuRevertInInheritedUnits.LastSelected"];
+				const UnicodeString sLastSelected = SettingsData->TempRegistry->Values
+					["MenuRevertInInheritedUnits.LastSelected"];
 
 				for (int n = 0; n < AInheritanceMenu->Count; n++) {
 					if (!AInheritanceMenu->Items[n]->IsLine()) {
@@ -2147,7 +2235,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertInInheritedUnits(TObject *Sende
 				else {
 					if (ADialogTreeSelect->ShowModal() == mrOk && ADialogTreeSelect->TreeView1->Selected) {
 						sInheritanceMenuCaption = ADialogTreeSelect->TreeView1->Selected->Text;
-						SettingsData->TempRegistry->Values["MenuRevertInInheritedUnits.LastSelected"] = sInheritanceMenuCaption;
+						SettingsData->TempRegistry->Values["MenuRevertInInheritedUnits.LastSelected"]
+							= sInheritanceMenuCaption;
 					}
 					else {
 						break;
@@ -2166,10 +2255,12 @@ void __fastcall TStateMachineEditor::OnMenuRevertInInheritedUnits(TObject *Sende
 
 				if (TheTree->Connections->Selected) {
 
-					TStateMachineConnection *ATargetConnection = Editorutils::FindConnectionByName<TStateMachineConnection>(ATargetTree,
+					TStateMachineConnection *ATargetConnection =
+						Editorutils::FindConnectionByName<TStateMachineConnection>(ATargetTree,
 						TheTree->Connections->Selected->Name);
 					if (ATargetConnection) {
-						AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->SelectConnection(ATargetConnection, true);
+						AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->SelectConnection(ATargetConnection,
+							true);
 					}
 				}
 				else {
@@ -2182,8 +2273,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertInInheritedUnits(TObject *Sende
 						TScxmlBaseShape *ATargetShape = Editorutils::FindShapeByName<TScxmlBaseShape>(ATargetTree,
 							TheTree->Selected->Items[k]->Name);
 						if (ATargetShape) {
-							AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->SelectMultipleShape(ATargetShape, k == 0,
-								k == iSelectedCount);
+							AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->SelectMultipleShape(ATargetShape,
+								k == 0, k == iSelectedCount);
 						}
 					}
 
@@ -2195,7 +2286,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertInInheritedUnits(TObject *Sende
 				AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->FTreeModifiedForInheritanceFlag = false;
 			}
 			else {
-				WLOG_WARNING(L"Menu:[%s] is not found in unit:[%s]", sInheritanceMenuCaption.c_str(), AVecUnits[i]->DisplayName.c_str());
+				WLOG_WARNING(L"Menu:[%s] is not found in unit:[%s]", sInheritanceMenuCaption.c_str(),
+					AVecUnits[i]->DisplayName.c_str());
 			}
 
 		}
@@ -2217,7 +2309,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertToInheritedProps(TObject *Sende
 				throw Exception("Can not find inherited module [" + StateMachineEditorUnit->Inherited + "]!");
 
 			if (TheTree->Connections->Selected) {
-				TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+				TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+					(TheTree->Connections->Selected);
 				if (AStateMachineConnection && AStateMachineConnection->Locked) {
 					TStateMachineConnection *ASource = Editorutils::FindConnectionByName<TStateMachineConnection>
 						(AInheritedEditor->TheTree, AStateMachineConnection->Name);
@@ -2226,7 +2319,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertToInheritedProps(TObject *Sende
 							AStateMachineConnection->InheritanceMismatch = true;
 						}
 						AStateMachineConnection->Locked = false;
-						throw Exception(L"INHERITANCE> [" + AStateMachineConnection->Name + "] Can not find origin connection!");
+						throw Exception(L"INHERITANCE> [" + AStateMachineConnection->Name +
+							"] Can not find origin connection!");
 					}
 
 					if (!ASource->FromShape || !ASource->ToShape) {
@@ -2234,7 +2328,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertToInheritedProps(TObject *Sende
 							AStateMachineConnection->InheritanceMismatch = true;
 						}
 						AStateMachineConnection->Locked = false;
-						throw Exception(L"INHERITANCE> [" + AStateMachineConnection->Name + "] FromShape==NULL and ToShape==NULL !");
+						throw Exception(L"INHERITANCE> [" + AStateMachineConnection->Name +
+							"] FromShape==NULL and ToShape==NULL !");
 
 					}
 
@@ -2244,8 +2339,9 @@ void __fastcall TStateMachineEditor::OnMenuRevertToInheritedProps(TObject *Sende
 							AStateMachineConnection->InheritanceMismatch = true;
 						}
 						AStateMachineConnection->Locked = false;
-						throw Exception(L"INHERITANCE> [" + AStateMachineConnection->Name + "] FromShape:[" + ASource->FromShape->Name +
-							"] is not found!");
+						throw Exception
+							(L"INHERITANCE> [" + AStateMachineConnection->Name + "] FromShape:[" +
+							ASource->FromShape->Name + "] is not found!");
 					}
 
 					TScxmlBaseShape *AToShape = FindShapeByName<TScxmlBaseShape>(TheTree, ASource->ToShape->Name);
@@ -2254,8 +2350,9 @@ void __fastcall TStateMachineEditor::OnMenuRevertToInheritedProps(TObject *Sende
 							AStateMachineConnection->InheritanceMismatch = true;
 						}
 						AStateMachineConnection->Locked = false;
-						throw Exception(L"INHERITANCE> [" + AStateMachineConnection->Name + "] ToShape:[" + ASource->ToShape->Name +
-							"] is not found!");
+						throw Exception
+							(L"INHERITANCE> [" + AStateMachineConnection->Name + "] ToShape:[" +
+							ASource->ToShape->Name + "] is not found!");
 					}
 
 					TConnectionPointArray AConnSelectedPoints;
@@ -2292,7 +2389,8 @@ void __fastcall TStateMachineEditor::OnMenuRevertToInheritedProps(TObject *Sende
 							throw Exception("Can not find base component [" + AScxmlBaseShape->Name + "]");
 						}
 
-						Statemachine::CheckAndFixInheritedParent(this, AScxmlBaseShape, dynamic_cast<TScxmlBaseShape*>(ASource));
+						Statemachine::CheckAndFixInheritedParent(this, AScxmlBaseShape,
+							dynamic_cast<TScxmlBaseShape*>(ASource));
 
 						AScxmlBaseShape->StoreInheritedVisualsParentOffsets();
 
@@ -2307,14 +2405,17 @@ void __fastcall TStateMachineEditor::OnMenuRevertToInheritedProps(TObject *Sende
 						Editorutils::TConnectionFromToMap AConnections;
 						Editorutils::CollectInOutConnections(AScxmlBaseShape, AConnections);
 
-						for (Editorutils::TConnectionFromToMap::iterator it = AConnections.begin(); it != AConnections.end(); ++it) {
-							TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(it->first);
+						for (Editorutils::TConnectionFromToMap::iterator it = AConnections.begin();
+							it != AConnections.end(); ++it) {
+							TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+								(it->first);
 							if (AStateMachineConnection && AStateMachineConnection->Locked) {
 								// пересчитываем точки, так как при сдвиге родителей их значения поменялись
 								Editorutils::CalculatePointsPosition(AStateMachineConnection);
 
 								Unique::CompareError ACompareError;
-								Unique::CompareInheritedConnection(AStateMachineConnection, AInheritedEditor->TheTree, ACompareError);
+								Unique::CompareInheritedConnection(AStateMachineConnection, AInheritedEditor->TheTree,
+									ACompareError);
 							}
 						}
 
@@ -2350,7 +2451,8 @@ void __fastcall TStateMachineEditor::OnMenuSetInheritance(TObject *Sender) {
 			const bool bSet = AMenuItem->Tag == 0;
 
 			if (TheTree->Connections->Selected) {
-				Statemachine::SetInheritance(dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected), bSet);
+				Statemachine::SetInheritance(dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected),
+					bSet);
 				AOutListPtr->Add(TheTree->Connections->Selected->SimpleText);
 			}
 			else {
@@ -2368,8 +2470,9 @@ void __fastcall TStateMachineEditor::OnMenuSetInheritance(TObject *Sender) {
 			if (AOutListPtr->Count) {
 
 				TheTree->Invalidate();
-				TeeModified(True, 1, (bIsInherited ? L"Inheritance " : L"Lock ") + (bSet ? UnicodeString("Set") : UnicodeString("Reset"))
-					+ ":" + Customutils::ClippedText(AOutListPtr->CommaText, 50));
+				TeeModified(True, 1, (bIsInherited ? L"Inheritance " : L"Lock ") +
+					(bSet ? UnicodeString("Set") : UnicodeString("Reset")) + ":" + Customutils::ClippedText
+					(AOutListPtr->CommaText, 50));
 				if (PropSettingsInspector) {
 					PropSettingsInspector->UpdateContent();
 				}
@@ -2402,9 +2505,11 @@ void __fastcall TStateMachineEditor::OnMenuRevertInheritedGeometry(TObject *Send
 
 					TScxmlBaseShape * ASourceShape = dynamic_cast<TScxmlBaseShape*>(ASource);
 					if (!ASourceShape)
-						throw Exception(L"Can not cast <" + ASource->Name + "> class:<" + ASource->ClassName() + "> to <TScxmlBaseShape>");
+						throw Exception(L"Can not cast <" + ASource->Name + "> class:<" + ASource->ClassName()
+						+ "> to <TScxmlBaseShape>");
 
-					Statemachine::CheckAndFixInheritedParent(this, AScxmlBaseShape, dynamic_cast<TScxmlBaseShape*>(ASource));
+					Statemachine::CheckAndFixInheritedParent(this, AScxmlBaseShape,
+						dynamic_cast<TScxmlBaseShape*>(ASource));
 
 					AScxmlBaseShape->StoreInheritedVisualsParentOffsets();
 
@@ -2423,14 +2528,17 @@ void __fastcall TStateMachineEditor::OnMenuRevertInheritedGeometry(TObject *Send
 					Editorutils::TConnectionFromToMap AConnections;
 					Editorutils::CollectInOutConnections(AScxmlBaseShape, AConnections);
 
-					for (Editorutils::TConnectionFromToMap::iterator it = AConnections.begin(); it != AConnections.end(); ++it) {
-						TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(it->first);
+					for (Editorutils::TConnectionFromToMap::iterator it = AConnections.begin();
+						it != AConnections.end(); ++it) {
+						TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+							(it->first);
 						if (AStateMachineConnection && AStateMachineConnection->Locked) {
 							// пересчитываем точки, так как при сдвиге родителей их значения поменялись
 							Editorutils::CalculatePointsPosition(AStateMachineConnection);
 
 							Unique::CompareError ACompareError;
-							Unique::CompareInheritedConnection(AStateMachineConnection, AInheritedEditor->TheTree, ACompareError);
+							Unique::CompareInheritedConnection(AStateMachineConnection, AInheritedEditor->TheTree,
+								ACompareError);
 						}
 					}
 				}
@@ -2460,7 +2568,8 @@ void __fastcall TStateMachineEditor::OnMenuInheritanceResolveFirstMismatch(TObje
 
 			std::auto_ptr<TStringList>AMismatchListPtr(new TStringList());
 
-			if (TStateMachineConnection * ACheckConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected)) {
+			if (TStateMachineConnection * ACheckConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected)) {
 				if (ACheckConnection->Locked) {
 
 					Unique::CompareError ACompareError;
@@ -2472,9 +2581,10 @@ void __fastcall TStateMachineEditor::OnMenuInheritanceResolveFirstMismatch(TObje
 						cecPropertyMismatch :
 					case Unique::
 						cecConnectionPointsMismatch : {
-							if (ACheckConnection->InheritanceResolver->ResolvedProps->IndexOf(ACompareError.PropName) == -1) {
-								WLOG_WARNING(L"INHERITANCE> Object:[%s] Prop:[%s] resolved!", ACompareError.ObjectName.c_str(),
-									ACompareError.PropName.c_str());
+							if (ACheckConnection->InheritanceResolver->ResolvedProps->IndexOf(ACompareError.PropName)
+								== -1) {
+								WLOG_WARNING(L"INHERITANCE> Object:[%s] Prop:[%s] resolved!",
+									ACompareError.ObjectName.c_str(), ACompareError.PropName.c_str());
 								AMismatchListPtr->Add(ACompareError.PropName);
 								ACheckConnection->InheritanceResolver->ResolvedProps->Add(ACompareError.PropName);
 								ACheckConnection->InheritanceMismatch = false;
@@ -2495,9 +2605,10 @@ void __fastcall TStateMachineEditor::OnMenuInheritanceResolveFirstMismatch(TObje
 							cecStringsTextMismatch :
 						case Unique::
 							cecPropertyMismatch : {
-								if (ACheckShape->InheritanceResolver->ResolvedProps->IndexOf(ACompareError.PropName) == -1) {
-									WLOG_WARNING(L"INHERITANCE> Object:[%s] Prop:[%s] resolved!", ACompareError.ObjectName.c_str(),
-										ACompareError.PropName.c_str());
+								if (ACheckShape->InheritanceResolver->ResolvedProps->IndexOf(ACompareError.PropName)
+									== -1) {
+									WLOG_WARNING(L"INHERITANCE> Object:[%s] Prop:[%s] resolved!",
+										ACompareError.ObjectName.c_str(), ACompareError.PropName.c_str());
 									AMismatchListPtr->Add(ACompareError.PropName);
 									ACheckShape->InheritanceResolver->ResolvedProps->Add(ACompareError.PropName);
 									ACheckShape->InheritanceMismatch = false;
@@ -2533,7 +2644,8 @@ void __fastcall TStateMachineEditor::OnMenuInheritanceResolveAllMismatches(TObje
 
 			std::auto_ptr<TStringList>AMismatchListPtr(new TStringList());
 
-			if (TStateMachineConnection * ACheckConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected)) {
+			if (TStateMachineConnection * ACheckConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected)) {
 				if (ACheckConnection->Locked) {
 
 					std::vector<Unique::CompareError>AVecErrors;
@@ -2552,8 +2664,8 @@ void __fastcall TStateMachineEditor::OnMenuInheritanceResolveAllMismatches(TObje
 						case Unique::
 							cecConnectionPointsMismatch : {
 								AResolvedListPtr->Add(AVecErrors[i].PropName);
-								WLOG_WARNING(L"INHERITANCE> Object:[%s] Prop:[%s] resolved!", AVecErrors[i].ObjectName.c_str(),
-									AVecErrors[i].PropName.c_str());
+								WLOG_WARNING(L"INHERITANCE> Object:[%s] Prop:[%s] resolved!",
+									AVecErrors[i].ObjectName.c_str(), AVecErrors[i].PropName.c_str());
 							}break;
 						}
 					}
@@ -2584,8 +2696,8 @@ void __fastcall TStateMachineEditor::OnMenuInheritanceResolveAllMismatches(TObje
 							case Unique::
 								cecPropertyMismatch : {
 									AResolvedListPtr->Add(AVecErrors[k].PropName);
-									WLOG_WARNING(L"INHERITANCE> Object:[%s] Prop:[%s] resolved!", AVecErrors[k].ObjectName.c_str(),
-										AVecErrors[k].PropName.c_str());
+									WLOG_WARNING(L"INHERITANCE> Object:[%s] Prop:[%s] resolved!",
+										AVecErrors[k].ObjectName.c_str(), AVecErrors[k].PropName.c_str());
 								}break;
 							}
 						}
@@ -2602,7 +2714,8 @@ void __fastcall TStateMachineEditor::OnMenuInheritanceResolveAllMismatches(TObje
 			if (AMismatchListPtr->Count) {
 				TheTree->Invalidate();
 				FillNodeTree(); // так как может поменяться родитель
-				TeeModified(True, 1, "Resolved Properties:" + Customutils::ClippedText(AMismatchListPtr->CommaText, 50));
+				TeeModified(True, 1, "Resolved Properties:" + Customutils::ClippedText(AMismatchListPtr->CommaText,
+						50));
 				if (PropSettingsInspector) {
 					PropSettingsInspector->UpdateContent();
 				}
@@ -2621,7 +2734,8 @@ void __fastcall TStateMachineEditor::OnMenuInheritanceResolveClearAll(TObject *S
 		TStateMachineEditor *AInheritedEditor = StateMachineDockPanel ? StateMachineDockPanel->InheritedEditor : NULL;
 		if (AInheritedEditor) {
 
-			if (TStateMachineConnection * ACheckConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected)) {
+			if (TStateMachineConnection * ACheckConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected)) {
 				if (ACheckConnection->Locked) {
 					ACheckConnection->InheritanceResolver->ResolvedProps->Clear();
 					ACheckConnection->InheritanceMismatch = false;
@@ -2739,7 +2853,8 @@ void __fastcall TStateMachineEditor::OnMenuSwapVisualBrothers(TObject *Sender) {
 				// объединяем контейнеры, чтобы исключить двойное переназначение связей
 				ASourceConnections.insert(ATargetConnections.begin(), ATargetConnections.end());
 
-				for (TConnectionFromToMap::iterator it = ASourceConnections.begin(); it != ASourceConnections.end(); ++it) {
+				for (TConnectionFromToMap::iterator it = ASourceConnections.begin(); it != ASourceConnections.end();
+					++it) {
 
 					TTreeNodeShape *AFromShape = boost::get<0>(it->second);
 					TTreeNodeShape *AToShape = boost::get<1>(it->second);
@@ -2828,15 +2943,16 @@ void __fastcall TStateMachineEditor::OnMenuExportAsImage(TObject *Sender) {
 				std::auto_ptr<TImagePreviewer>AImagePreviewerPtr(new TImagePreviewer(this, AShape));
 				/* предустановка значений */
 				if (AImagePreviewerPtr->CheckAutoGenerateFileName->Checked) {
-					AImagePreviewerPtr->EditDirectory->Text = StateMachineEditorUnit ? ExtractFileDir(StateMachineEditorUnit->FilePath)
-						: UnicodeString(L"");
+					AImagePreviewerPtr->EditDirectory->Text = StateMachineEditorUnit ? ExtractFileDir
+						(StateMachineEditorUnit->FilePath) : UnicodeString(L"");
 					AImagePreviewerPtr->EditFile->Text = StateMachineEditorUnit ? TPath::GetFileNameWithoutExtension
 						(StateMachineEditorUnit->FilePath) : UnicodeString(L"");
 				}
 				else {
 					AImagePreviewerPtr->EditDirectory->Text = SettingsData->TempRegistry->Values
 						[AImagePreviewerPtr->Name + ".EditDirectory.Text"];
-					AImagePreviewerPtr->EditFile->Text = SettingsData->TempRegistry->Values[AImagePreviewerPtr->Name + ".EditFile.Text"];
+					AImagePreviewerPtr->EditFile->Text = SettingsData->TempRegistry->Values
+						[AImagePreviewerPtr->Name + ".EditFile.Text"];
 				}
 
 				AImagePreviewerPtr->Image1->Picture->Bitmap->Assign(ABmpDest.get());
@@ -2847,7 +2963,8 @@ void __fastcall TStateMachineEditor::OnMenuExportAsImage(TObject *Sender) {
 				if (!AImagePreviewerPtr->CheckAutoGenerateFileName->Checked) {
 					SettingsData->TempRegistry->Values[AImagePreviewerPtr->Name + ".EditDirectory.Text"]
 						= AImagePreviewerPtr->EditDirectory->Text;
-					SettingsData->TempRegistry->Values[AImagePreviewerPtr->Name + ".EditFile.Text"] = AImagePreviewerPtr->EditFile->Text;
+					SettingsData->TempRegistry->Values[AImagePreviewerPtr->Name + ".EditFile.Text"]
+						= AImagePreviewerPtr->EditFile->Text;
 				}
 			}
 			__finally {
@@ -2899,7 +3016,8 @@ void __fastcall TStateMachineEditor::OnMenuCollectOutputs(TObject *Sender) {
 // ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditor::OnMenuArrangeSelfConnections(TObject *Sender) {
 	try {
-		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(GetSafeTreeListFirst(TheTree->Selected->Shapes));
+		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(GetSafeTreeListFirst(TheTree->Selected->Shapes));
 		if (AShape) {
 
 			AShape->ArrangeSelfConnections();
@@ -2963,7 +3081,8 @@ void ScanTextForOutputs(const UnicodeString &sText, TStrings *OutputsExistent, T
 	}
 }
 
-void ConvertShapeToListViewOutput(TTreeNodeShape *ACurrentShape, TStrings *OutputsExistent, TListView *AListViewOutputs) {
+void ConvertShapeToListViewOutput(TTreeNodeShape *ACurrentShape, TStrings *OutputsExistent,
+	TListView *AListViewOutputs) {
 	// TSendShape
 	{
 		TSendShape *AShape = dynamic_cast<TSendShape*>(ACurrentShape);
@@ -3017,8 +3136,8 @@ void ConvertShapeToListViewOutput(TTreeNodeShape *ACurrentShape, TStrings *Outpu
 		TDataChildShape *AShape = dynamic_cast<TDataChildShape*>(ACurrentShape);
 		if (AShape) {
 
-			ScanTextForOutputs(AShape->Expr.IsEmpty() ? AShape->XMLText->Text : AShape->Expr, OutputsExistent, AListViewOutputs,
-				AShape->Text->Text);
+			ScanTextForOutputs(AShape->Expr.IsEmpty() ? AShape->XMLText->Text : AShape->Expr, OutputsExistent,
+				AListViewOutputs, AShape->Text->Text);
 
 			return;
 		}
@@ -3034,7 +3153,8 @@ void ConvertShapeToListViewOutput(TTreeNodeShape *ACurrentShape, TStrings *Outpu
 	}
 }
 
-void ConvertShapeChildrenToListViewOutput(TTreeNodeShape *ACurrentShape, TStrings *OutputsExistent, TListView *AListViewOutputs) {
+void ConvertShapeChildrenToListViewOutput(TTreeNodeShape *ACurrentShape, TStrings *OutputsExistent,
+	TListView *AListViewOutputs) {
 	for (int i = 0; i < ACurrentShape->Children->Count; i++) {
 		ConvertShapeToListViewOutput(ACurrentShape->Children->Items[i], OutputsExistent, AListViewOutputs);
 
@@ -3116,7 +3236,8 @@ bool __fastcall TStateMachineEditor::CollectOutputs(TScxmlBaseShape *AParent) {
 	}
 
 	for (int i = 0; i < TheTree->Shapes->Count; i++) {
-		ConvertShapeToListViewOutput(TheTree->Shapes->Items[i], AOutputsExistentListPtr.get(), ADialogCollectOutputsPtr->ListViewOutputs);
+		ConvertShapeToListViewOutput(TheTree->Shapes->Items[i], AOutputsExistentListPtr.get(),
+			ADialogCollectOutputsPtr->ListViewOutputs);
 	}
 
 	if (ADialogCollectOutputsPtr->ShowModal() == mrOk) {
@@ -3131,7 +3252,8 @@ bool __fastcall TStateMachineEditor::CollectOutputs(TScxmlBaseShape *AParent) {
 					ANewBaseShape = AParent->AddStateChild(TStateChildType::sctComment, false);
 					TCommentShape * ACommentShape = dynamic_cast<TCommentShape*>(ANewBaseShape);
 					if (ACommentShape) {
-						ACommentShape->Comments->Text = ADialogCollectOutputsPtr->ListViewOutputs->Items->Item[i]->Caption;
+						ACommentShape->Comments->Text = ADialogCollectOutputsPtr->ListViewOutputs->Items->Item[i]
+							->Caption;
 					}
 				}
 				if (ADialogCollectOutputsPtr->CheckWeakBinding->Checked) {
@@ -3346,7 +3468,8 @@ void __fastcall TStateMachineEditor::OnMenuSelfConnectionAlign(TObject *Sender) 
 	try {
 		TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 		if (TheTree && AMenuItem) {
-			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected);
 			if (AConnection) {
 
 				const TSelfConnectionAlign AConnectionAlign = TSelfConnectionAlign(AMenuItem->Tag);
@@ -3357,7 +3480,8 @@ void __fastcall TStateMachineEditor::OnMenuSelfConnectionAlign(TObject *Sender) 
 					AConnection->AlignSelfConnection(AConnectionAlign);
 				}
 
-				TeeModified(true, 1, "Self-connection [" + AConnection->SimpleText + "] align set to [" + SelfConnectionAlignToString
+				TeeModified(true, 1,
+					"Self-connection [" + AConnection->SimpleText + "] align set to [" + SelfConnectionAlignToString
 					(AConnectionAlign) + "]");
 			}
 		}
@@ -3372,7 +3496,8 @@ void __fastcall TStateMachineEditor::OnMenuTransitionSwitch(TObject *Sender) {
 	try {
 		TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 		if (TheTree && AMenuItem) {
-			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected);
 			if (AConnection) {
 
 				if (AMenuItem == FMenuTransitionSwitchSimple) {
@@ -3384,8 +3509,8 @@ void __fastcall TStateMachineEditor::OnMenuTransitionSwitch(TObject *Sender) {
 				else
 					throw Exception(L"PROGRAM LOGIC ERROR!");
 
-				TeeModified(true, 1, "Transition [" + AConnection->SimpleText + "] SWITCH [" + TransitionSwitchTypeToString
-					(AConnection->SWITCH) + "]");
+				TeeModified(true, 1, "Transition [" + AConnection->SimpleText + "] SWITCH [" +
+					TransitionSwitchTypeToString(AConnection->SWITCH) + "]");
 
 				if (PropSettingsInspector) {
 					PropSettingsInspector->UpdateItems();
@@ -3429,7 +3554,8 @@ void __fastcall TStateMachineEditor::OnMenuTransitionTextAlign(TObject *Sender) 
 	try {
 		TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 		if (TheTree && AMenuItem) {
-			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected);
 			if (AConnection) {
 
 				bool bTrueTop = true;
@@ -3492,7 +3618,8 @@ void __fastcall TStateMachineEditor::OnMenuConnectionOver(TObject *Sender) {
 	try {
 		TComponent * AComponent = dynamic_cast<TComponent*>(Sender);
 		if (TheTree && AComponent) {
-			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected);
 			if (AConnection && AConnection->FromShape && AConnection->ToShape) {
 
 				AConnection->SetConnectionOverStyle(TConnectionOverType(AComponent->Tag));
@@ -3515,7 +3642,8 @@ void __fastcall TStateMachineEditor::OnMenuPointArrangeMirror(TObject *Sender) {
 	try {
 		TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 		if (TheTree && AMenuItem) {
-			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected);
 			if (AConnection && AConnection->IsSelfConnection) {
 
 				if (AConnection->Points->Count() == 4 && (PopupPoint->Tag == 1 || PopupPoint->Tag == 2)) {
@@ -3543,7 +3671,8 @@ void __fastcall TStateMachineEditor::OnMenuPointArrangeSingle(TObject *Sender) {
 	try {
 		TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 		if (TheTree && AMenuItem) {
-			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected);
 			if (AConnection && AConnection->IsSelfConnection) {
 
 				if (AConnection->Points->Count() == 4 && (PopupPoint->Tag == 1 || PopupPoint->Tag == 2)) {
@@ -3625,7 +3754,8 @@ TTreeNodeShape *FindNodeForFixedPoint(TTreeConnection *AConnection, const int iP
 	if (AConnection->FromShape && AConnection->ToShape) {
 
 		if (AConnection->FromShape != AConnection->ToShape) {
-			const TPoint ptSelected(AConnection->Points->Item[iPointIndex].XValue, AConnection->Points->Item[iPointIndex].YValue);
+			const TPoint ptSelected(AConnection->Points->Item[iPointIndex].XValue,
+				AConnection->Points->Item[iPointIndex].YValue);
 			if (Editorutils::PtInRectEx(AConnection->FromShape->Bounds(), ptSelected)) {
 				AShape = AConnection->FromShape;
 			}
@@ -3636,7 +3766,8 @@ TTreeNodeShape *FindNodeForFixedPoint(TTreeConnection *AConnection, const int iP
 
 				std::auto_ptr<TDialogSelectShape>ADialogSelectShapePtr(new TDialogSelectShape(AConnection->Owner));
 				if (ADialogSelectShapePtr->ShowModal() == mrOk) {
-					AShape = ADialogSelectShapePtr->RadioGroup1->ItemIndex == 0 ? AConnection->FromShape : AConnection->ToShape;
+					AShape = ADialogSelectShapePtr->RadioGroup1->ItemIndex == 0 ?
+						AConnection->FromShape : AConnection->ToShape;
 				}
 			}
 		}
@@ -3777,7 +3908,8 @@ void __fastcall TStateMachineEditor::TabControl1Change(System::TObject * Sender)
 				std::auto_ptr<TStringList>AStringList(new TStringList());
 				AStringList->Text = Statemachine::GetRawScxml(TheTree, SettingsData->SkipCommentsInRawScxml);
 
-				TStateMachineEditor::ConvertTextToHPP(AStringList.get(), TPath::GetFileNameWithoutExtension(this->CurrentFile));
+				TStateMachineEditor::ConvertTextToHPP(AStringList.get(),
+					TPath::GetFileNameWithoutExtension(this->CurrentFile));
 				FEditDocRaw->Lines->Text = AStringList->Text;
 			}break;
 		case 4: {
@@ -3808,7 +3940,8 @@ void __fastcall TStateMachineEditor::TabControl1Change(System::TObject * Sender)
 	}
 	catch(EStateMachineConnectionException * E) {
 		this->SelectConnection(E->StateMachineConnection, SCROLL_CHART_IN_VIEW);
-		this->SelectTemporaryRectangle(Editorutils::IncrementRectCopy(E->StateMachineConnection->GetBounds(), 15), "Error: " + E->Category);
+		this->SelectTemporaryRectangle(Editorutils::IncrementRectCopy(E->StateMachineConnection->GetBounds(), 15),
+			"Error: " + E->Category);
 		WLOG_ERROR(L"CHANGE VIEW> %s", E->Message.c_str());
 	}
 	catch(EScxmlBaseShapeException * E) {
@@ -3828,7 +3961,8 @@ void __fastcall TStateMachineEditor::TabControl1Change(System::TObject * Sender)
 // ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditor::ConvertTextToHPP(TStrings * AScxmlLines, const UnicodeString & sHeaderName) {
 	AScxmlLines->Text = StringReplace(AScxmlLines->Text, "\\", "\\\\", TReplaceFlags() << rfReplaceAll);
-	AScxmlLines->Text = StringReplace(AScxmlLines->Text, '"', UnicodeString("\\") + UnicodeString('"'), TReplaceFlags() << rfReplaceAll);
+	AScxmlLines->Text = StringReplace(AScxmlLines->Text, '"', UnicodeString("\\") + UnicodeString('"'),
+		TReplaceFlags() << rfReplaceAll);
 
 	for (int i = AScxmlLines->Count - 1; i >= 0; i--) {
 		if (!AScxmlLines->Strings[i].IsEmpty()) {
@@ -3891,7 +4025,8 @@ void __fastcall TStateMachineEditor::PopupNodePopup(System::TObject * Sender) {
 		TTreeNodeShape *ASelectedShape = GetSafeTreeListFirst(TheTree->Selected->Shapes);
 
 		const bool bSingleSelection = TheTree->Selected->Count() == 1;
-		const bool bIsVisualScxmlShape = ASelectedShape && ASelectedShape->InheritsFrom(__classid(TVisualScxmlBaseShape));
+		const bool bIsVisualScxmlShape = ASelectedShape && ASelectedShape->InheritsFrom
+			(__classid(TVisualScxmlBaseShape));
 		const bool bIsChildScxmlShape = ASelectedShape && ASelectedShape->InheritsFrom(__classid(TChildScxmlBaseShape));
 		const bool bAreAllVisual = AreAllSelectedOfInheritedClass(__classid(TVisualScxmlBaseShape));
 		const bool bAreAllBrothers = AreAllSelectedBrothers();
@@ -3900,8 +4035,8 @@ void __fastcall TStateMachineEditor::PopupNodePopup(System::TObject * Sender) {
 		const bool bIsBase = StateMachineEditorUnit && StateMachineEditorUnit->IsBase;
 
 		const bool bBindingAvailable = SettingsData->AviaExtensionEnabled && ASelectedShape &&
-			(ASelectedShape->InheritsFrom(__classid(TVisualScxmlBaseShape)) || ASelectedShape->InheritsFrom(__classid(TVirtualFolderShape))
-			);
+			(ASelectedShape->InheritsFrom(__classid(TVisualScxmlBaseShape)) || ASelectedShape->InheritsFrom
+			(__classid(TVirtualFolderShape)));
 
 		FMenuImportBindingsAndFolders->Visible = bBindingAvailable;
 		FMenuCollectOutputs->Visible = bBindingAvailable;
@@ -3942,13 +4077,16 @@ void __fastcall TStateMachineEditor::PopupNodePopup(System::TObject * Sender) {
 					}
 
 					/* особый случай, когда добавляем Virtual */
-					if (AStateType == sctVirtual && (!StateMachineEditorUnit || !StateMachineEditorUnit->StateMachineProject)) {
+					if (AStateType == sctVirtual &&
+						(!StateMachineEditorUnit || !StateMachineEditorUnit->StateMachineProject)) {
 						continue;
 					}
 
 					/* особый случай, когда в SCXML Virtual пытаемся добвлять элементы */
-					if (ABaseShape->StateChildType == sctScxml && StateMachineEditorUnit && StateMachineEditorUnit->IsVirtual) {
-						if (STATE_TYPES_VIRTUAL_SCXML_SHAPES.find(AStateType) != STATE_TYPES_VIRTUAL_SCXML_SHAPES.end()) {
+					if (ABaseShape->StateChildType == sctScxml && StateMachineEditorUnit &&
+						StateMachineEditorUnit->IsVirtual) {
+						if (STATE_TYPES_VIRTUAL_SCXML_SHAPES.find(AStateType) != STATE_TYPES_VIRTUAL_SCXML_SHAPES.end()
+							) {
 							continue;
 						}
 					}
@@ -3988,14 +4126,16 @@ void __fastcall TStateMachineEditor::PopupNodePopup(System::TObject * Sender) {
 			for (int i = 0; i < TStateChildType::sctMAXSIZE; i++) {
 				const TStateChildType AStateType = TStateChildType(i);
 
-				bool bForbiddenWithCluster = (AStateType == sctHistory || AStateType == sctFinal || AStateType == sctInitial)
+				bool bForbiddenWithCluster =
+					(AStateType == sctHistory || AStateType == sctFinal || AStateType == sctInitial)
 					&& AVisualShape->IsCluster();
 
 				if (AVisualShape->ConvertibleTypes.count(AStateType)
 					&& AVisualShape->VisualParent && AVisualShape->VisualParent->AvailableTypes.count(AStateType)
 					&& !bForbiddenWithCluster) {
 
-					if (AStateType == sctVirtual && (!StateMachineEditorUnit || !StateMachineEditorUnit->StateMachineProject)) {
+					if (AStateType == sctVirtual &&
+						(!StateMachineEditorUnit || !StateMachineEditorUnit->StateMachineProject)) {
 						continue;
 					}
 
@@ -4018,7 +4158,8 @@ void __fastcall TStateMachineEditor::PopupNodePopup(System::TObject * Sender) {
 			for (int i = 0; i < TStateChildType::sctMAXSIZE; i++) {
 				const TStateChildType AStateType = TStateChildType(i);
 
-				if (ABaseShape->ConvertibleTypes.count(AStateType) && ABaseShape->BaseParent->AvailableTypes.count(AStateType)) {
+				if (ABaseShape->ConvertibleTypes.count(AStateType) && ABaseShape->BaseParent->AvailableTypes.count
+					(AStateType)) {
 
 					TMenuItem *MenuAddSubChild = new TMenuItem(this);
 
@@ -4059,16 +4200,18 @@ void __fastcall TStateMachineEditor::PopupNodePopup(System::TObject * Sender) {
 		}
 		FMenuPasteConnection->Visible = FMenuPasteConnection->Count != 0;
 
-		FMenuTextAlign->Visible = AVisualShape && (AVisualShape->StateChildType == sctHistory || AVisualShape->StateChildType == sctFinal);
+		FMenuTextAlign->Visible = AVisualShape &&
+			(AVisualShape->StateChildType == sctHistory || AVisualShape->StateChildType == sctFinal);
 
-		FMenuMakeSelfConnection->Visible = bIsVisualScxmlShape && STATE_TYPES_SELFCONNECTION_SHAPES.find(AVisualShape->StateChildType)
-			!= STATE_TYPES_SELFCONNECTION_SHAPES.end();
+		FMenuMakeSelfConnection->Visible = bIsVisualScxmlShape && STATE_TYPES_SELFCONNECTION_SHAPES.find
+			(AVisualShape->StateChildType) != STATE_TYPES_SELFCONNECTION_SHAPES.end();
 		FMenuSetBreakpoint->Visible = bIsVisualScxmlShape;
 		FMenuSkipDebugging->Visible = bIsVisualScxmlShape;
 		FMenuArrangeSelfConnections->Visible = bShapeHasSelfConnections;
 
 		FMenuPresets->Visible = AVisualShape && STATE_TYPES_CLUSTERABLE_SHAPES.count(AVisualShape->StateChildType);
-		FMenuShapeTextAutoSize->Visible = AVisualShape && AVisualShape->StateChildType == sctState && !AVisualShape->IsCluster();
+		FMenuShapeTextAutoSize->Visible = AVisualShape && AVisualShape->StateChildType == sctState &&
+			!AVisualShape->IsCluster();
 
 		FMenuMoveBrotherUp->Visible = bIsChildScxmlShape;
 		FMenuMoveBrotherDown->Visible = bIsChildScxmlShape;
@@ -4086,9 +4229,11 @@ void __fastcall TStateMachineEditor::PopupNodePopup(System::TObject * Sender) {
 		FMenuChangeXMLTextType->Visible = ABaseShape && IsPublishedProp(ABaseShape, "XMLText") && bAreAllOfSameClass;
 		if (ABaseShape) {
 			for (int i = 0; i < FMenuChangeXMLTextType->Count; i++) {
-				FMenuChangeXMLTextType->Items[i]->Checked = FMenuChangeXMLTextType->Items[i]->Tag == ABaseShape->XMLText->Type;
+				FMenuChangeXMLTextType->Items[i]->Checked = FMenuChangeXMLTextType->Items[i]
+					->Tag == ABaseShape->XMLText->Type;
 				if (FMenuChangeXMLTextType->Items[i]->Checked) {
-					FMenuChangeXMLTextType->Caption = "XMLType [" + StripHotkey(FMenuChangeXMLTextType->Items[i]->Caption) + "]";
+					FMenuChangeXMLTextType->Caption = "XMLType [" + StripHotkey
+						(FMenuChangeXMLTextType->Items[i]->Caption) + "]";
 				}
 			}
 		}
@@ -4121,14 +4266,16 @@ void __fastcall TStateMachineEditor::PopupConnPopup(System::TObject * Sender) {
 		FMenuTransitionInheritanceResolveClearAll->Visible = bIsInherited;
 		FMenuTransitionRevertInInheritedUnits->Visible = bIsBase;
 
-		TStateMachineConnection* AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+		TStateMachineConnection* AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+			(TheTree->Connections->Selected);
 		FMenuEditTransition->Enabled = AStateMachineConnection != NULL;
 
-		FMenuSelfConnectionAlign->Visible = AStateMachineConnection != NULL && AStateMachineConnection->FromShape != NULL &&
-			AStateMachineConnection->FromShape == AStateMachineConnection->ToShape;
+		FMenuSelfConnectionAlign->Visible = AStateMachineConnection != NULL && AStateMachineConnection->FromShape !=
+			NULL && AStateMachineConnection->FromShape == AStateMachineConnection->ToShape;
 
-		const bool bTwoShapesConnected = AStateMachineConnection != NULL && AStateMachineConnection->FromShape != NULL &&
-			AStateMachineConnection->ToShape != NULL && AStateMachineConnection->FromShape != AStateMachineConnection->ToShape;
+		const bool bTwoShapesConnected = AStateMachineConnection != NULL && AStateMachineConnection->FromShape !=
+			NULL && AStateMachineConnection->ToShape != NULL && AStateMachineConnection->FromShape !=
+			AStateMachineConnection->ToShape;
 
 		FMenuTransitionSwitchSimple->Visible = bTwoShapesConnected;
 		FMenuTransitionSwitchInvertCondition->Visible = bTwoShapesConnected;
@@ -4139,8 +4286,10 @@ void __fastcall TStateMachineEditor::PopupConnPopup(System::TObject * Sender) {
 			FMenuTransitionSwitchSimple->Checked = AStateMachineConnection->SWITCH == tstSIMPLE;
 			FMenuTransitionSwitchInvertCondition->Checked = AStateMachineConnection->SWITCH == tstINVERT_CONDITION;
 
-			bTopBottomOver = abs(AStateMachineConnection->FromShape->XCenter() - AStateMachineConnection->ToShape->XCenter()) > 25.0f;
-			bLeftRightOver = abs(AStateMachineConnection->FromShape->YCenter() - AStateMachineConnection->ToShape->YCenter()) > 25.0f;
+			bTopBottomOver = abs(AStateMachineConnection->FromShape->XCenter()
+				- AStateMachineConnection->ToShape->XCenter()) > 25.0f;
+			bLeftRightOver = abs(AStateMachineConnection->FromShape->YCenter()
+				- AStateMachineConnection->ToShape->YCenter()) > 25.0f;
 
 			// направление иконок для Sides и InvertedSides
 			bool bLeft = true;
@@ -4160,7 +4309,8 @@ void __fastcall TStateMachineEditor::PopupConnPopup(System::TObject * Sender) {
 		}
 
 		FMenuTransitionEnableTrigger->Visible = AStateMachineConnection != NULL;
-		FMenuTransitionEnableTrigger->Checked = AStateMachineConnection && AStateMachineConnection->ContentTrigger->Enabled;
+		FMenuTransitionEnableTrigger->Checked = AStateMachineConnection &&
+			AStateMachineConnection->ContentTrigger->Enabled;
 
 		FMenuTransitionConvertTo->Visible = AStateMachineConnection != NULL;
 
@@ -4183,31 +4333,38 @@ void __fastcall TStateMachineEditor::PopupConnPopup(System::TObject * Sender) {
 				const int iIndexFirst = iIndexLast - 1;
 
 				// устраняем баг в либе, когда перепутаны названия Лево-Право, Вверх-Вниз
-				bTrueTop = AStateMachineConnection->Points->Item[iIndexFirst].Y < AStateMachineConnection->Points->Item[iIndexLast].Y;
-				bTrueLeft = AStateMachineConnection->Points->Item[iIndexFirst].X < AStateMachineConnection->Points->Item[iIndexLast].X;
+				bTrueTop = AStateMachineConnection->Points->Item[iIndexFirst].Y < AStateMachineConnection->Points->Item
+					[iIndexLast].Y;
+				bTrueLeft = AStateMachineConnection->Points->Item[iIndexFirst].X < AStateMachineConnection->Points->Item
+					[iIndexLast].X;
 			}
 
 			for (int i = 0; i < FMenuTransitionTextAlign->Count; i++) {
 				switch(FMenuTransitionTextAlign->Items[i]->Tag) {
 				case ctatCenterCenter:
-					FMenuTransitionTextAlign->Items[i]->Checked = AStateMachineConnection && AStateMachineConnection->Text->HorizAlign ==
-						htaCenter && AStateMachineConnection->Text->VertAlign == vtaCenter;
+					FMenuTransitionTextAlign->Items[i]->Checked = AStateMachineConnection &&
+						AStateMachineConnection->Text->HorizAlign == htaCenter &&
+						AStateMachineConnection->Text->VertAlign == vtaCenter;
 					break;
 				case ctatCenterTop:
-					FMenuTransitionTextAlign->Items[i]->Checked = AStateMachineConnection && AStateMachineConnection->Text->HorizAlign ==
-						htaCenter && AStateMachineConnection->Text->VertAlign == (bTrueTop ? vtaTop : vtaBottom);
+					FMenuTransitionTextAlign->Items[i]->Checked = AStateMachineConnection &&
+						AStateMachineConnection->Text->HorizAlign == htaCenter &&
+						AStateMachineConnection->Text->VertAlign == (bTrueTop ? vtaTop : vtaBottom);
 					break;
 				case ctatCenterBottom:
-					FMenuTransitionTextAlign->Items[i]->Checked = AStateMachineConnection && AStateMachineConnection->Text->HorizAlign ==
-						htaCenter && AStateMachineConnection->Text->VertAlign == (bTrueTop ? vtaBottom : vtaTop);
+					FMenuTransitionTextAlign->Items[i]->Checked = AStateMachineConnection &&
+						AStateMachineConnection->Text->HorizAlign == htaCenter &&
+						AStateMachineConnection->Text->VertAlign == (bTrueTop ? vtaBottom : vtaTop);
 					break;
 				case ctatLeftCenter:
-					FMenuTransitionTextAlign->Items[i]->Checked = AStateMachineConnection && AStateMachineConnection->Text->HorizAlign ==
-						(bTrueLeft ? htaLeft : htaRight) && AStateMachineConnection->Text->VertAlign == vtaCenter;
+					FMenuTransitionTextAlign->Items[i]->Checked = AStateMachineConnection &&
+						AStateMachineConnection->Text->HorizAlign == (bTrueLeft ? htaLeft : htaRight)
+						&& AStateMachineConnection->Text->VertAlign == vtaCenter;
 					break;
 				case ctatRightCenter:
-					FMenuTransitionTextAlign->Items[i]->Checked = AStateMachineConnection && AStateMachineConnection->Text->HorizAlign ==
-						(bTrueLeft ? htaRight : htaLeft) && AStateMachineConnection->Text->VertAlign == vtaCenter;
+					FMenuTransitionTextAlign->Items[i]->Checked = AStateMachineConnection &&
+						AStateMachineConnection->Text->HorizAlign == (bTrueLeft ? htaRight : htaLeft)
+						&& AStateMachineConnection->Text->VertAlign == vtaCenter;
 					break;
 				default:
 					FMenuTransitionTextAlign->Items[i]->Checked = false;
@@ -4232,7 +4389,8 @@ void __fastcall TStateMachineEditor::PopupPointPopup(System::TObject* Sender) {
 			}
 		}
 		else {
-			if (AConnection->Points->Count() > 1 && (PopupPoint->Tag == 0 || PopupPoint->Tag == (AConnection->Points->Count() - 1))) {
+			if (AConnection->Points->Count() > 1 && (PopupPoint->Tag == 0 || PopupPoint->Tag ==
+					(AConnection->Points->Count() - 1))) {
 				bAlignOpposites = true;
 			}
 		}
@@ -4249,7 +4407,8 @@ void __fastcall TStateMachineEditor::OnMenuIsInitialClick(TObject * Sender) {
 	try {
 		TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 		if (AMenuItem) {
-			TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(GetSafeTreeListFirst(TheTree->Selected->Shapes));
+			TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>
+				(GetSafeTreeListFirst(TheTree->Selected->Shapes));
 			if (AVisualShape && IsPublishedProp(AVisualShape, "IsInitial")) {
 
 				SetPropValue(AVisualShape, "IsInitial", AMenuItem->Checked);
@@ -4270,7 +4429,8 @@ void __fastcall TStateMachineEditor::OnMenuAddSubChildClick(TObject * Sender) {
 	try {
 		TMenuItem *AItem = dynamic_cast<TMenuItem*>(Sender);
 		if (AItem) {
-			TScxmlBaseShape *AParentShape = dynamic_cast<TScxmlBaseShape*>(GetSafeTreeListFirst(TheTree->Selected->Shapes));
+			TScxmlBaseShape *AParentShape = dynamic_cast<TScxmlBaseShape*>
+				(GetSafeTreeListFirst(TheTree->Selected->Shapes));
 			if (AParentShape) {
 				TheTree->Selected->Clear();
 
@@ -4339,7 +4499,8 @@ void __fastcall TStateMachineEditor::OnMenuTransitionEnableTriggerClick(TObject 
 	try {
 		TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 		if (AMenuItem) {
-			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected);
 			if (AConnection) {
 				AConnection->ContentTrigger->Enabled = !AConnection->ContentTrigger->Enabled;
 
@@ -4363,7 +4524,8 @@ void __fastcall TStateMachineEditor::OnMenuTransitionConvertToClick(TObject * Se
 	try {
 		TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 		if (AMenuItem) {
-			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+			TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected);
 			if (AConnection) {
 				try {
 					TVisualScxmlBaseShape * AFromShape = dynamic_cast<TVisualScxmlBaseShape*>(AConnection->FromShape);
@@ -4384,16 +4546,20 @@ void __fastcall TStateMachineEditor::OnMenuTransitionConvertToClick(TObject * Se
 
 								AConnection->Event = ADialogDelayedTransition->EditEvent->Text;
 
-								TOnEntryStateShape*AOnEntryShape = Editorutils::FindShapeByType<TOnEntryStateShape>(AFromShape);
+								TOnEntryStateShape*AOnEntryShape = Editorutils::FindShapeByType<TOnEntryStateShape>
+									(AFromShape);
 								if (!AOnEntryShape)
-									AOnEntryShape = dynamic_cast<TOnEntryStateShape*>(AFromShape->AddStateChild(sctOnentry, false));
+									AOnEntryShape = dynamic_cast<TOnEntryStateShape*>
+										(AFromShape->AddStateChild(sctOnentry, false));
 
 								if (!AOnEntryShape)
 									throw Exception("Can not create 'onentry'!");
 
-								TOnExitStateShape*AOnExitShape = Editorutils::FindShapeByType<TOnExitStateShape>(AFromShape);
+								TOnExitStateShape*AOnExitShape = Editorutils::FindShapeByType<TOnExitStateShape>
+									(AFromShape);
 								if (!AOnExitShape)
-									AOnExitShape = dynamic_cast<TOnExitStateShape*>(AFromShape->AddStateChild(sctOnexit, false));
+									AOnExitShape = dynamic_cast<TOnExitStateShape*>
+										(AFromShape->AddStateChild(sctOnexit, false));
 
 								if (!AOnExitShape)
 									throw Exception("Can not create 'onexit'!");
@@ -4402,11 +4568,13 @@ void __fastcall TStateMachineEditor::OnMenuTransitionConvertToClick(TObject * Se
 									AOnEntryShape->ChildIndex = AOnExitShape->ChildIndex;
 								}
 
-								TSendShape*ASendShape = dynamic_cast<TSendShape*>(AOnEntryShape->AddStateChild(sctSend, false));
+								TSendShape*ASendShape = dynamic_cast<TSendShape*>(AOnEntryShape->AddStateChild(sctSend,
+										false));
 								if (!ASendShape)
 									throw Exception("Can not create 'send'!");
 
-								TCancelShape*ACancelShape = dynamic_cast<TCancelShape*>(AOnExitShape->AddStateChild(sctCancel, false));
+								TCancelShape*ACancelShape = dynamic_cast<TCancelShape*>
+									(AOnExitShape->AddStateChild(sctCancel, false));
 								if (!ACancelShape)
 									throw Exception("Can not create 'cancel'!");
 
@@ -4512,7 +4680,7 @@ void __fastcall TStateMachineEditor::OnMenuConvertToClick(TObject * Sender) {
 									if (AScxmlShape) {
 										AScxmlShape->ScxmlName = L"Scxml" + AVirtualShape->SimpleText;
 										if (this->RootScxml) {
-											AScxmlShape->Datamodel = this->RootScxml->Datamodel;
+										AScxmlShape->Datamodel = this->RootScxml->Datamodel;
 										}
 										AScxmlShape->Selected = true;
 
@@ -4520,9 +4688,9 @@ void __fastcall TStateMachineEditor::OnMenuConvertToClick(TObject * Sender) {
 
 										TVisualScxmlBaseShape *AVisualRoot = AScxmlShape->FirstVisualChild;
 										if (AVisualRoot) {
-											AVisualRoot->MoveRelative(25, 25, true);
-											AScxmlShape->X1 = AVisualRoot->X1 + 50;
-											AScxmlShape->Y1 = AVisualRoot->Y1 + 50;
+										AVisualRoot->MoveRelative(25, 25, true);
+										AScxmlShape->X1 = AVisualRoot->X1 + 50;
+										AScxmlShape->Y1 = AVisualRoot->Y1 + 50;
 										}
 
 										ADockPanel->StateMachineEditor->MarkModified(1, "Virtual shapes created", true);
@@ -4532,8 +4700,8 @@ void __fastcall TStateMachineEditor::OnMenuConvertToClick(TObject * Sender) {
 
 							// удаляем само-соединения для виртуальной фигуры, так как они будут перенесены в виртуальный юнит
 							for (int i = AVirtualShape->Connections->Count - 1; i >= 0; i--) {
-								if (AVirtualShape->Connections->Items[i]->FromShape == AVirtualShape && AVirtualShape->Connections->Items[i]
-									->ToShape == AVirtualShape) {
+								if (AVirtualShape->Connections->Items[i]->FromShape == AVirtualShape &&
+									AVirtualShape->Connections->Items[i]->ToShape == AVirtualShape) {
 									delete AVirtualShape->Connections->Items[i];
 								}
 							}
@@ -4569,10 +4737,13 @@ void __fastcall TStateMachineEditor::OnMenuConvertToClick(TObject * Sender) {
 						const TStateChildType AStateChildType = TStateChildType(AMenuItem->Tag);
 
 						if (!AScxmlBaseShape->BaseParent->AvailableTypes.count(AStateChildType))
-							throw Exception(UnicodeString().sprintf(L"Element [%s] can not contain TStateChildType=[%d]",
+							throw Exception
+								(UnicodeString().sprintf
+							(L"Element [%s] can not contain TStateChildType=[%d]",
 								AScxmlBaseShape->BaseParent->ClassName().c_str(), AMenuItem->Tag));
 
-						TScxmlBaseShape *ABaseShape = AScxmlBaseShape->BaseParent->AddStateChild(AStateChildType, false);
+						TScxmlBaseShape *ABaseShape = AScxmlBaseShape->BaseParent->AddStateChild(AStateChildType,
+							false);
 						if (ABaseShape) {
 							std::auto_ptr<TTreePicture>ATreePicturePtr(new TTreePicture);
 							ATreePicturePtr->Assign(ABaseShape->Image);
@@ -4616,7 +4787,8 @@ void __fastcall TStateMachineEditor::OnMenuConvertToClick(TObject * Sender) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditor::OnMenuTransitionTextMoveClick(TObject * Sender) {
-	TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+	TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+		(TheTree->Connections->Selected);
 	if (AStateMachineConnection && !AStateMachineConnection->IsTextEmpty()) {
 		CreateDummyShape(this, TheTree, AStateMachineConnection);
 	}
@@ -4722,7 +4894,8 @@ void __fastcall TStateMachineEditor::OnMenuArrangeLayout(TObject *Sender) {
 void __fastcall TStateMachineEditor::OnMenuPresetCondition(TObject *Sender) {
 	TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 	if (AMenuItem && TheTree) {
-		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(GetSafeTreeListFirst(TheTree->Selected->Shapes));
+		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(GetSafeTreeListFirst(TheTree->Selected->Shapes));
 		if (AShape) {
 			AddShapesFromPresetCondition();
 		}
@@ -4733,7 +4906,8 @@ void __fastcall TStateMachineEditor::OnMenuPresetCondition(TObject *Sender) {
 void __fastcall TStateMachineEditor::OnMenuPresetOnOff(TObject *Sender) {
 	TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 	if (AMenuItem && TheTree) {
-		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(GetSafeTreeListFirst(TheTree->Selected->Shapes));
+		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(GetSafeTreeListFirst(TheTree->Selected->Shapes));
 		if (AShape) {
 			AddShapesFromPresetOnOff();
 		}
@@ -4744,7 +4918,8 @@ void __fastcall TStateMachineEditor::OnMenuPresetOnOff(TObject *Sender) {
 void __fastcall TStateMachineEditor::OnMenuShapeTextAutoSize(TObject *Sender) {
 	TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 	if (AMenuItem && TheTree) {
-		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(GetSafeTreeListFirst(TheTree->Selected->Shapes));
+		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(GetSafeTreeListFirst(TheTree->Selected->Shapes));
 		if (AShape && !AShape->IsCluster()) {
 
 			TheTree->Canvas->Font->Assign(AShape->Font);
@@ -4767,13 +4942,15 @@ void __fastcall TStateMachineEditor::OnMenuSetBreakpoint(TObject *Sender) {
 	if (AMenuItem && TheTree) {
 
 		if (TheTree->Connections->Selected) {
-			TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected);
+			TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Selected);
 			if (AStateMachineConnection) {
 				AStateMachineConnection->BreakpointSet = !AStateMachineConnection->BreakpointSet;
 			}
 		}
 		else {
-			TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(GetSafeTreeListFirst(TheTree->Selected->Shapes));
+			TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>
+				(GetSafeTreeListFirst(TheTree->Selected->Shapes));
 			if (AShape) {
 				AShape->BreakpointSet = !AShape->BreakpointSet;
 			}
@@ -4785,15 +4962,16 @@ void __fastcall TStateMachineEditor::OnMenuSetBreakpoint(TObject *Sender) {
 void __fastcall TStateMachineEditor::OnMenuSkipDebugging(TObject *Sender) {
 	TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 	if (AMenuItem && TheTree) {
-		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(GetSafeTreeListFirst(TheTree->Selected->Shapes));
+		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(GetSafeTreeListFirst(TheTree->Selected->Shapes));
 		if (AShape) {
 			AShape->SkipDebugging = !AShape->SkipDebugging;
 
 			if (PropSettingsInspector) {
 				PropSettingsInspector->UpdateContent();
 			}
-			TeeModified(true, 1, "Shape <" + AShape->SimpleText + "> SkipDebugging option is set to <" + BoolToStr(AShape->SkipDebugging,
-					true) + ">!");
+			TeeModified(true, 1, "Shape <" + AShape->SimpleText + "> SkipDebugging option is set to <" + BoolToStr
+				(AShape->SkipDebugging, true) + ">!");
 		}
 	}
 }
@@ -4833,7 +5011,8 @@ void __fastcall TStateMachineEditor::ResetTree(void) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::FinalizeLoadTree(const UnicodeString sEditorCaption, const TFinalizeScxmlType AFinalizeType) {
+void __fastcall TStateMachineEditor::FinalizeLoadTree(const UnicodeString sEditorCaption,
+	const TFinalizeScxmlType AFinalizeType) {
 	try {
 		SetTreeProperties();
 
@@ -4879,19 +5058,21 @@ void __fastcall TStateMachineEditor::FinalizeLoadTree(const UnicodeString sEdito
 		// предупреждения по игнору дебага
 		for (int i = 0; i < TheTree->Items->Count; i++) {
 			/* визуальные фигуры */
-			if (TVisualScxmlBaseShape * AVisualBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(TheTree->Items->Items[i])) {
+			if (TVisualScxmlBaseShape * AVisualBaseShape = dynamic_cast<TVisualScxmlBaseShape*>
+				(TheTree->Items->Items[i])) {
 				// предупреждение, что исключено из отладки
 				if (AVisualBaseShape->SkipDebugging) {
-					WLOG_WARNING(L"Shape:[%s] Statemachine:[%s] is skipped for DEBUGGING!", AVisualBaseShape->SimpleText.c_str(),
-						ScxmlName.c_str());
+					WLOG_WARNING(L"Shape:[%s] Statemachine:[%s] is skipped for DEBUGGING!",
+						AVisualBaseShape->SimpleText.c_str(), ScxmlName.c_str());
 				}
 			}
 			/* дочерние элементы */
-			else if (TChildScxmlBaseShape * AChildScxmlBaseShape = dynamic_cast<TChildScxmlBaseShape*>(TheTree->Items->Items[i])) {
+			else if (TChildScxmlBaseShape * AChildScxmlBaseShape = dynamic_cast<TChildScxmlBaseShape*>
+				(TheTree->Items->Items[i])) {
 				// bugfix: могут не прорисовываться связи у дочерних элементов
 				if (AChildScxmlBaseShape->Parent && !AChildScxmlBaseShape->Parents->Count) {
-					WLOG_WARNING(L"Connection:[%s] Statemachine:[%s] is not connected to parent!", AChildScxmlBaseShape->Name.c_str(),
-						ScxmlName.c_str());
+					WLOG_WARNING(L"Connection:[%s] Statemachine:[%s] is not connected to parent!",
+						AChildScxmlBaseShape->Name.c_str(), ScxmlName.c_str());
 					AChildScxmlBaseShape->Parent->AddConnection(AChildScxmlBaseShape);
 				}
 			}
@@ -5005,7 +5186,8 @@ void __fastcall TStateMachineEditor::ButtonSaveClick(System::TObject * Sender) {
 			// тогда он просто их проигнорирует, поэтому необходимо предварительно протестить на валидность
 			// поэтому тестово записываем XML
 			try {
-				const Statemachine::TIterateSaveTypes ATypes = Statemachine::MaxPossibleTypes() >> Statemachine::istComments;
+				const Statemachine::TIterateSaveTypes ATypes = Statemachine::MaxPossibleTypes()
+					>> Statemachine::istComments;
 
 				// только формируем текст
 				std::auto_ptr<TStringStream>AStreamPtr(new TStringStream(L"", TEncoding::UTF8, false));
@@ -5020,7 +5202,8 @@ void __fastcall TStateMachineEditor::ButtonSaveClick(System::TObject * Sender) {
 
 				const UnicodeString Caption = L"SCXML contains errors!";
 				const UnicodeString Text = L"Your modifications may be lost! Are you sure to close?";
-				if (MessageBoxW(this->Handle, Text.c_str(), Caption.c_str(), MB_OKCANCEL | MB_ICONERROR | MB_DEFBUTTON2) == IDOK) {
+				if (MessageBoxW(this->Handle, Text.c_str(), Caption.c_str(),
+						MB_OKCANCEL | MB_ICONERROR | MB_DEFBUTTON2) == IDOK) {
 					this->TeeModified(false);
 					this->ModalResult = mrOk;
 				}
@@ -5047,6 +5230,59 @@ void __fastcall TStateMachineEditor::ButtonNewClick(System::TObject * Sender) {
 }
 
 // ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuResetViewToDefault(TObject *Sender) {
+	TTreeEditWindows HideWindows = TTreeEditWindows() << teEditors << teFont << teFormat;
+
+	this->TreeHideEditorPanels(HideWindows);
+
+	TheTree->Shapes->Visible = true;
+	TheTree->Connections->Visible = true;
+	TheTree->CrossBox->Visible = true;
+	TheTree->ShowImages = true;
+	TheTree->ShowText = true;
+	TheTree->CrossBox->Visible = true;
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnActionLockAxisExecute(TObject *Sender) {
+	TAction *AnAction = dynamic_cast<TAction*>(Sender);
+	if (AnAction) {
+		TTreeEx *ATree = this->TheTreeEx;
+		if (ATree) {
+
+			if (AnAction == ActionLockAxisX) {
+				ATree->DragAxis = ATree->DragAxis == axisX ? axisAll : axisX;
+			}
+			else {
+				ATree->DragAxis = ATree->DragAxis == axisY ? axisAll : axisY;
+			}
+
+			ATree->Invalidate();
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnActionLockAxisUpdate(TObject *Sender) {
+	TAction *AnAction = dynamic_cast<TAction*>(Sender);
+	if (AnAction) {
+		TTreeEx *ATree = this->TheTreeEx;
+		if (ATree) {
+			if (AnAction == ActionLockAxisX) {
+				ActionLockAxisX->Checked = ATree->DragAxis == axisX;
+				BtnConstraintX->Down = ActionLockAxisX->Checked;
+				BtnConstraintX->Font->Style = ActionLockAxisX->Checked ? (TFontStyles() << fsBold) : TFontStyles();
+			}
+			else {
+				ActionLockAxisY->Checked = ATree->DragAxis == axisY;
+				BtnConstraintY->Down = ActionLockAxisY->Checked;
+				BtnConstraintY->Font->Style = ActionLockAxisY->Checked ? (TFontStyles() << fsBold) : TFontStyles();
+			}
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditor::Saveas1Click(System::TObject * Sender) {
 	try {
 		if (FStateMachineEditorUnit) {
@@ -5065,7 +5301,155 @@ void __fastcall TStateMachineEditor::Saveas1Click(System::TObject * Sender) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::TheTreeOnAddingConnection(TTreeNodeShape * Node1, TTreeNodeShape * Node2, bool&Add) {
+void __fastcall TStateMachineEditor::OnMenuClearSelection(TObject *Sender) {
+	TheTree->Selected->Clear();
+	TheTree->Connections->Selected = NULL;
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuSelectSimilar(TObject *Sender) {
+	try {
+		std::set<TMetaClass*>AMetaTypes;
+		for (int i = 0; i < TheTree->Selected->Count(); i++) {
+			AMetaTypes.insert(TheTree->Selected->Items[i]->ClassType());
+		}
+
+		for (int i = 0; i < TheTree->Items->Count; i++) {
+			if (AMetaTypes.find(TheTree->Items->Items[i]->ClassType()) != AMetaTypes.end()) {
+				TheTree->Items->Items[i]->Selected = true;
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuSelectVisual(TObject *Sender) {
+	try {
+		for (int i = 0; i < TheTree->Items->Count; i++) {
+			if (TVisualScxmlBaseShape * AVisualBaseShape = dynamic_cast<TVisualScxmlBaseShape*>
+				(TheTree->Items->Items[i])) {
+				AVisualBaseShape->Selected = true;
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuSelectNonVisual(TObject *Sender) {
+	try {
+		for (int i = 0; i < TheTree->Items->Count; i++) {
+			if (TChildScxmlBaseShape * AShape = dynamic_cast<TChildScxmlBaseShape*>(TheTree->Items->Items[i])) {
+				AShape->Selected = true;
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuSelectCategory(TObject *Sender) {
+	try {
+		TMenuItem *AMenuItem = dynamic_cast<TMenuItem*>(Sender);
+		if (AMenuItem) {
+			for (int i = 0; i < TheTree->Items->Count; i++) {
+				if (TScxmlBaseShape * AShape = dynamic_cast<TScxmlBaseShape*>(TheTree->Items->Items[i])) {
+					if (AShape->StateChildType == TStateChildType(AMenuItem->Tag)) {
+						AShape->Selected = true;
+					}
+				}
+			}
+		}
+
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuSelectAtomic(TObject *Sender) {
+	try {
+		for (int i = 0; i < TheTree->Items->Count; i++) {
+			if (TVisualScxmlBaseShape * AVisualBaseShape = dynamic_cast<TVisualScxmlBaseShape*>
+				(TheTree->Items->Items[i])) {
+				if (!AVisualBaseShape->IsCluster()) {
+					AVisualBaseShape->Selected = true;
+				}
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuSelectCompound(TObject *Sender) {
+	try {
+		for (int i = 0; i < TheTree->Items->Count; i++) {
+			if (TVisualScxmlBaseShape * AVisualBaseShape = dynamic_cast<TVisualScxmlBaseShape*>
+				(TheTree->Items->Items[i])) {
+				if (AVisualBaseShape->IsCluster()) {
+					AVisualBaseShape->Selected = true;
+				}
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuSelectStatesandParallel(TObject *Sender) {
+	try {
+		std::set<TStateChildType>ATypes;
+		ATypes.insert(sctState);
+		ATypes.insert(sctParallel);
+		ATypes.insert(sctVirtual);
+
+		for (int i = 0; i < TheTree->Items->Count; i++) {
+			if (TVisualScxmlBaseShape * AVisualBaseShape = dynamic_cast<TVisualScxmlBaseShape*>
+				(TheTree->Items->Items[i])) {
+				if (ATypes.find(TStateChildType(AVisualBaseShape->StateChildType)) != ATypes.end()) {
+					AVisualBaseShape->Selected = true;
+				}
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuSelectExecutableContent(TObject *Sender) {
+	try {
+		for (int i = 0; i < TheTree->Items->Count; i++) {
+			if (TScxmlBaseShape * AShape = dynamic_cast<TScxmlBaseShape*>(TheTree->Items->Items[i])) {
+				if (STATE_TYPES_EXECUTABLE_CONTENT.find(TStateChildType(AShape->StateChildType))
+					!= STATE_TYPES_EXECUTABLE_CONTENT.end()) {
+					AShape->Selected = true;
+				}
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::TheTreeOnAddingConnection(TTreeNodeShape * Node1, TTreeNodeShape * Node2,
+	bool&Add) {
 #ifdef _PANIC_DEBUG_
 	WLOG_DEBUG(L"Adding node1 [%s] to node2 [%s], forbidden=%s", Node1->SimpleText.c_str(), Node2->SimpleText.c_str(),
 		FForbidInternalAdd ? L"true" : L"false");
@@ -5096,8 +5480,8 @@ void __fastcall TStateMachineEditor::OnShapeMoveResized() {
 			std::vector<TVisualScxmlBaseShape*>VecPossibleChildren;
 			std::vector<TVisualScxmlBaseShape*>VecPossibleLostChildren;
 
-			CollectPossibleParentsAndChildrenForExchange(AVisualShape, VecPossibleParents, VecPossibleChildren, VecPossibleLostChildren, 0,
-				0);
+			CollectPossibleParentsAndChildrenForExchange(AVisualShape, VecPossibleParents, VecPossibleChildren,
+				VecPossibleLostChildren, 0, 0);
 
 			if (!VecPossibleParents.empty()) {
 				bNeedToFillNodeTree = true;
@@ -5154,8 +5538,8 @@ void __fastcall TStateMachineEditor::ExamChangeParent(Teetree::TTreeNodeShape * 
 		std::vector<TVisualScxmlBaseShape*>VecPossibleChildren;
 		std::vector<TVisualScxmlBaseShape*>VecPossibleLostChildren;
 
-		CollectPossibleParentsAndChildrenForExchange(AVisualShape, VecPossibleParents, VecPossibleChildren, VecPossibleLostChildren,
-			DeltaX, DeltaY);
+		CollectPossibleParentsAndChildrenForExchange(AVisualShape, VecPossibleParents, VecPossibleChildren,
+			VecPossibleLostChildren, DeltaX, DeltaY);
 
 		if (!VecPossibleParents.empty()) {
 			VecPossibleParents.back()->Examined = true;
@@ -5186,6 +5570,16 @@ void __fastcall TStateMachineEditor::TheTreeMovingShape(Teetree::TTreeNodeShape 
 		return;
 	}
 
+	TTreeEx *ATreeEx = this->TheTreeEx;
+	if (ATreeEx) {
+		if (ATreeEx->DragAxis == axisY) {
+			DeltaX = 0;
+		}
+		else if (ATreeEx->DragAxis == axisX) {
+			DeltaY = 0;
+		}
+	}
+
 	TTreeEditorEx::TheTreeMovingShape(Sender, DeltaX, DeltaY);
 
 	if (ADummyShape && ADummyShape->Connection) {
@@ -5198,8 +5592,8 @@ void __fastcall TStateMachineEditor::TheTreeMovingShape(Teetree::TTreeNodeShape 
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::TheTreeResizingShape(Teetree::TTreeNodeShape * Sender, Teetree::TTreeShapeHandle ACorner, int&DeltaX,
-	int&DeltaY) {
+void __fastcall TStateMachineEditor::TheTreeResizingShape(Teetree::TTreeNodeShape * Sender,
+	Teetree::TTreeShapeHandle ACorner, int&DeltaX, int&DeltaY) {
 
 	// запрещаем изменение размера дочерних фигур
 	if (TChildScxmlBaseShape * AChildScxmlBaseShape = dynamic_cast<TChildScxmlBaseShape*>(Sender)) {
@@ -5214,7 +5608,8 @@ void __fastcall TStateMachineEditor::TheTreeResizingShape(Teetree::TTreeNodeShap
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::TheTreeKeyDown(System::TObject* Sender, System::Word &Key, Classes::TShiftState Shift) {
+void __fastcall TStateMachineEditor::TheTreeKeyDown(System::TObject* Sender, System::Word &Key,
+	Classes::TShiftState Shift) {
 	try {
 
 		if (FFrameTransitionTypes && FFrameTransitionTypes->Visible) {
@@ -5244,8 +5639,8 @@ void __fastcall TStateMachineEditor::TheTreeKeyDown(System::TObject* Sender, Sys
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::TheTreeMouseDown(System::TObject* Sender, Controls::TMouseButton Button, Classes::TShiftState Shift,
-	int X, int Y) {
+void __fastcall TStateMachineEditor::TheTreeMouseDown(System::TObject* Sender, Controls::TMouseButton Button,
+	Classes::TShiftState Shift, int X, int Y) {
 
 	int iChartX = X;
 	int iChartY = Y;
@@ -5256,16 +5651,18 @@ void __fastcall TStateMachineEditor::TheTreeMouseDown(System::TObject* Sender, C
 
 	TTreeEditorEx::TheTreeMouseDown(Sender, Button, Shift, X, Y);
 
-	if (!this->TheTree->CancelMouse && !this->TheTree->Connecting && Button == mbLeft/* && Shift == (TShiftState() << ssLeft)*/) {
+	if (!this->TheTree->CancelMouse && !this->TheTree->Connecting && Button ==
+		mbLeft /* && Shift == (TShiftState() << ssLeft) */ ) {
 		// ЗДЕСЬ ИЗМЕНЯТСЯ 'X', 'Y' !!!
 		TheTree->Canvas->Calculate2DPosition(iChartX, iChartY, TeeTreeZ);
 
 		// выделяем текст на соединении
 		if (TheTree->View3DOptions->ZoomFloat > 50) {
 			for (int i = 0; i < TheTree->Connections->Count; i++) {
-				TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Items[i]);
-				if (AStateMachineConnection && !AStateMachineConnection->IsTextEmpty() && Intersect(AStateMachineConnection->GetBounds(),
-						TheTreeEx->Bounds2D)) {
+				TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+					(TheTree->Connections->Items[i]);
+				if (AStateMachineConnection && !AStateMachineConnection->IsTextEmpty() && Intersect
+					(AStateMachineConnection->GetBounds(), TheTreeEx->Bounds2D)) {
 
 					if (AStateMachineConnection->IsPointInTextPolygon(iChartX, iChartY)) {
 						CreateDummyShape(this, TheTree, AStateMachineConnection);
@@ -5279,8 +5676,8 @@ void __fastcall TStateMachineEditor::TheTreeMouseDown(System::TObject* Sender, C
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::TheTreeMouseUp(System::TObject* Sender, Controls::TMouseButton Button, Classes::TShiftState Shift,
-	int X, int Y) {
+void __fastcall TStateMachineEditor::TheTreeMouseUp(System::TObject* Sender, Controls::TMouseButton Button,
+	Classes::TShiftState Shift, int X, int Y) {
 
 	// пока что нужны только в одном месте, преобразуем там,
 	// но если понадобится в нескольких местах, то перенести 'Calculate2DPosition' сюда
@@ -5291,9 +5688,10 @@ void __fastcall TStateMachineEditor::TheTreeMouseUp(System::TObject* Sender, Con
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::TheTreeDragOver(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept) {
-	const bool bSelectionDragReady = TheTree->Selected->Count() && AreAllSelectedOfInheritedClass(__classid(TChildScxmlBaseShape))
-		&& AreAllSelectedBrothers();
+void __fastcall TStateMachineEditor::TheTreeDragOver(TObject *Sender, TObject *Source, int X, int Y, TDragState State,
+	bool &Accept) {
+	const bool bSelectionDragReady = TheTree->Selected->Count() && AreAllSelectedOfInheritedClass
+		(__classid(TChildScxmlBaseShape)) && AreAllSelectedBrothers();
 
 	TChildScxmlBaseShape * ATargetShape = dynamic_cast<TChildScxmlBaseShape*>(TheTree->ClickedShape(X, Y));
 
@@ -5306,8 +5704,8 @@ void __fastcall TStateMachineEditor::TheTreeDragOver(TObject *Sender, TObject *S
 // ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditor::TheTreeDragDrop(TObject *Sender, TObject *Source, int X, int Y) {
 	try {
-		const bool bSelectionDragReady = TheTree->Selected->Count() && AreAllSelectedOfInheritedClass(__classid(TChildScxmlBaseShape))
-			&& AreAllSelectedBrothers();
+		const bool bSelectionDragReady = TheTree->Selected->Count() && AreAllSelectedOfInheritedClass
+			(__classid(TChildScxmlBaseShape)) && AreAllSelectedBrothers();
 
 		if (bSelectionDragReady) {
 
@@ -5332,14 +5730,16 @@ void __fastcall TStateMachineEditor::TheTreeDragDrop(TObject *Sender, TObject *S
 						continue;
 
 					// 1) если снизу вверх
-					const bool bDirectionLess = static_cast<int>(AShapes.size()) < ATargetShape->Parent->Children->Items[i]->BrotherIndex;
+					const bool bDirectionLess = static_cast<int>(AShapes.size()) < ATargetShape->Parent->Children->Items
+						[i]->BrotherIndex;
 					if (bDirectionLess) {
 						AShapes.push_back(ATargetShape->Parent->Children->Items[i]);
 					}
 
 					// вставляем отсортированные фигуры из выделения
 					if (ATargetShape->Parent->Children->Items[i] == ATargetShape) {
-						for (std::map<int, TTreeNodeShape*>::iterator it = ASortSelections.begin(); it != ASortSelections.end(); ++it) {
+						for (std::map<int, TTreeNodeShape*>::iterator it = ASortSelections.begin();
+							it != ASortSelections.end(); ++it) {
 							AShapes.push_back(it->second);
 						}
 					}
@@ -5377,8 +5777,8 @@ void __fastcall TStateMachineEditor::TheTreeDeletingConnection(Teetree::TTreeCon
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::TheTreeMouseWheelEvent(System::TObject* Sender, Classes::TShiftState Shift, int WheelDelta,
-	const Types::TPoint &MousePos, bool &Handled) {
+void __fastcall TStateMachineEditor::TheTreeMouseWheelEvent(System::TObject* Sender, Classes::TShiftState Shift,
+	int WheelDelta, const Types::TPoint &MousePos, bool &Handled) {
 
 	if (FFrameTransitionTypes && FFrameTransitionTypes->Visible) {
 		FFrameTransitionTypes->Visible = false;
@@ -5429,11 +5829,12 @@ void __fastcall TStateMachineEditor::SetNewTreeSettings(void) {
 // ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditor::LoadEditorParametersEx(void) {
 	if (IsStandalone) {
-		const TTreeEditWindows AHideWindows(SettingsData->TempRegistry->Values[this->ClassName() + ".HideWindows"].ToIntDef
-			(DEFAULT_HIDE_WINDOWS_STATUS.ToInt()));
+		const TTreeEditWindows AHideWindows(SettingsData->TempRegistry->Values[this->ClassName() + ".HideWindows"]
+			.ToIntDef(DEFAULT_HIDE_WINDOWS_STATUS.ToInt()));
 		TreeHideEditorPanels(AHideWindows);
 
-		PanelNodes->Width = SettingsData->TempRegistry->Values[this->ClassName() + ".PanelNodes.Width"].ToIntDef(PanelNodes->Width);
+		PanelNodes->Width = SettingsData->TempRegistry->Values[this->ClassName() + ".PanelNodes.Width"].ToIntDef
+			(PanelNodes->Width);
 	}
 	else {
 		TreeHideEditorPanels(SettingsData->HideWindows);
@@ -5583,7 +5984,8 @@ void __fastcall TStateMachineEditor::SpeedLinkClick(System::TObject * Sender) {
 		// if user clicked on two nodes, link them...
 		// разрешаем связывать только Scxml фигуры
 		if (TheTree->ConnectingShape1 && TheTree->ConnectingShape2 && TheTree->ConnectingShape1->InheritsFrom
-			(__classid(TVisualScxmlBaseShape)) && TheTree->ConnectingShape2->InheritsFrom(__classid(TVisualScxmlBaseShape))) {
+			(__classid(TVisualScxmlBaseShape)) && TheTree->ConnectingShape2->InheritsFrom
+			(__classid(TVisualScxmlBaseShape))) {
 
 			// самостоятельное определение связи,
 			// иначе множественные невозможны
@@ -5627,10 +6029,12 @@ void __fastcall TStateMachineEditor::SpeedLinkClick(System::TObject * Sender) {
 			FTreeNewConnectionToolbarFlag = true;
 		}
 
-		const UnicodeString sFrom = ANewConnection->FromShape ? ANewConnection->FromShape->SimpleText : UnicodeString(L"");
+		const UnicodeString sFrom = ANewConnection->FromShape ? ANewConnection->FromShape->SimpleText : UnicodeString
+			(L"");
 		const UnicodeString sTo = ANewConnection->ToShape ? ANewConnection->ToShape->SimpleText : UnicodeString(L"");
 		FillNodeTree();
-		TeeModified(True, 1, UnicodeString().sprintf(L"Connecting shape[%s] with shape[%s]", sFrom.c_str(), sTo.c_str()));
+		TeeModified(True, 1, UnicodeString().sprintf(L"Connecting shape[%s] with shape[%s]", sFrom.c_str(),
+				sTo.c_str()));
 	}
 	else {
 		// эта операция сотрет индикацию связывания, если ничего не создано
@@ -5816,7 +6220,8 @@ void __fastcall TStateMachineEditor::CheckInheritedMismatches() {
 		/* Check Inherited Connections */
 		for (int i = 0; i < TheTree->Connections->Count; i++) {
 
-			if (TStateMachineConnection * ACheckConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Items[i])) {
+			if (TStateMachineConnection * ACheckConnection = dynamic_cast<TStateMachineConnection*>
+				(TheTree->Connections->Items[i])) {
 
 				// значит не наследованное соединение, пропускаем
 				if (!ACheckConnection->Locked && !ACheckConnection->InheritanceMismatch)
@@ -5829,8 +6234,8 @@ void __fastcall TStateMachineEditor::CheckInheritedMismatches() {
 					TMatchFind AMatch;
 					AMatch.sLeft = ACompareError.Mismatch;
 
-					FrameSearchResults->AddMatchNode(this->UnitFileName, ACheckConnection->Name, ACheckConnection->SimpleText,
-						ACompareError.PropName, AMatch);
+					FrameSearchResults->AddMatchNode(this->UnitFileName, ACheckConnection->Name,
+						ACheckConnection->SimpleText, ACompareError.PropName, AMatch);
 				}
 			}
 		}
@@ -5840,21 +6245,24 @@ void __fastcall TStateMachineEditor::CheckInheritedMismatches() {
 	TheTree->Invalidate();
 
 	if (!FormScxmlGui->DockPanelSearch->Parent) {
-		FormScxmlGui->LMDDockSite1->DockControl(FormScxmlGui->DockPanelSearch, FormScxmlGui->LMDDockSite1->RootZone, alBottom);
+		FormScxmlGui->LMDDockSite1->DockControl(FormScxmlGui->DockPanelSearch, FormScxmlGui->LMDDockSite1->RootZone,
+			alBottom);
 		WLOG_DEBUG(L"Dock panel [%s] is undocked! Dock alBottom!", FormScxmlGui->DockPanelSearch->Caption.c_str());
 	}
 	FormScxmlGui->DockPanelSearch->Show();
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::DoCheckInheritanceAndMarkVisibly(bool &bRequireInvalidateTree, int &iNotFoundBaseCount) {
+void __fastcall TStateMachineEditor::DoCheckInheritanceAndMarkVisibly(bool &bRequireInvalidateTree,
+	int &iNotFoundBaseCount) {
 	TStateMachineEditor *AInheritedEditor = StateMachineDockPanel ? StateMachineDockPanel->InheritedEditor : NULL;
 	if (AInheritedEditor) {
 		// Для глубокой отладки
 		// WLOG_DEBUG(L"Check inheritance match=%s Zoom=%f", UnitFileName.c_str(), TheTree->View3DOptions->ZoomFloat);
 
 		/* Check Inherited Shapes */
-		for (std::set<TScxmlBaseShape*>::iterator it = FInheritanceCheckShapes.begin(); it != FInheritanceCheckShapes.end(); ++it) {
+		for (std::set<TScxmlBaseShape*>::iterator it = FInheritanceCheckShapes.begin();
+			it != FInheritanceCheckShapes.end(); ++it) {
 			if (TScxmlBaseShape * ACheckShape = (*it)) {
 				// PERFORMANCE WARNING! Убрать, если упадет быстродействие
 				// проверка, существует ли фигура
@@ -5930,8 +6338,10 @@ void __fastcall TStateMachineEditor::DoOnEditorApplicationEventsIdle(TObject *Se
 				}
 				else {
 					for (int i = 0; i < TheTree->Selected->Count(); i++) {
-						if (TTextDummyShape * ADummyShape = dynamic_cast<TTextDummyShape*>(TheTree->Selected->Items[i])) {
-							if (this != TransitionXMLEditor && TheTree->Connections->IndexOf(ADummyShape->Connection) != -1) {
+						if (TTextDummyShape * ADummyShape = dynamic_cast<TTextDummyShape*>(TheTree->Selected->Items[i])
+							) {
+							if (this != TransitionXMLEditor && TheTree->Connections->IndexOf(ADummyShape->Connection)
+								!= -1) {
 								ASetSelections.insert(ADummyShape->Connection);
 								bIsConnectionSelected = true;
 							}
@@ -6021,7 +6431,8 @@ void __fastcall TStateMachineEditor::DoOnEditorApplicationEventsIdle(TObject *Se
 
 		// если не находимся в режиме тестирования
 		// если в данный момент ничего не нажато и не было предварительно движение колесом
-		if (!SettingsData->IsTesterWorking && !Keyboardutils::IsAnyKeyOrMousePressed() && !FMouseWheelEventTimedFlag.first) {
+		if (!SettingsData->IsTesterWorking && !Keyboardutils::IsAnyKeyOrMousePressed()
+			&& !FMouseWheelEventTimedFlag.first) {
 
 			const double d_CHECK_MINIMUM_ZOOM = 60.0f;
 			const __int64 i_CHECK_MINIMUM_UPDATE_TIME_MSEC = 250;
@@ -6073,13 +6484,14 @@ void __fastcall TStateMachineEditor::DoOnEditorApplicationEventsIdle(TObject *Se
 				StateMachineEditorUnit->StateMachineProject->CollectInheritedUnits(AVecUnits);
 
 				for (std::size_t i = 0; i < AVecUnits.size(); i++) {
-					if (AVecUnits[i] != StateMachineEditorUnit && SameText(AVecUnits[i]->Inherited, StateMachineEditorUnit->FileName)) {
+					if (AVecUnits[i] != StateMachineEditorUnit && SameText(AVecUnits[i]->Inherited,
+							StateMachineEditorUnit->FileName)) {
 						if (AVecUnits[i]->Opened) {
-							if (AVecUnits[i]->StateMachineDockPanel && AVecUnits[i]->StateMachineDockPanel->StateMachineEditor) {
+							if (AVecUnits[i]->StateMachineDockPanel && AVecUnits[i]
+								->StateMachineDockPanel->StateMachineEditor) {
 								if (AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->IsModified()) {
 									WLOG_ERROR(
-										L"INHERITANCE> You have unsaved modifications in inherited:[%s] from base:[%s]! It may lead to conflicts!"
-										, AVecUnits[i]->FileName.c_str(), StateMachineEditorUnit->FileName.c_str());
+										L"INHERITANCE> You have unsaved modifications in inherited:[%s] from base:[%s]! It may lead to conflicts!", AVecUnits[i]->FileName.c_str(), StateMachineEditorUnit->FileName.c_str());
 								}
 								else {
 									AVecUnits[i]->StateMachineDockPanel->MarkReloadInheritance();
@@ -6104,8 +6516,8 @@ void __fastcall TStateMachineEditor::DoOnEditorApplicationEventsIdle(TObject *Se
 						if (!AVecUnits[i]->Opened) {
 
 							const UnicodeString sMsg = UnicodeString().sprintf
-								(L"Virtual unit [%s] requires parent [%s] to be opened also!", StateMachineEditorUnit->FileName.c_str(),
-								AVecUnits[i]->FileName.c_str());
+								(L"Virtual unit [%s] requires parent [%s] to be opened also!",
+								StateMachineEditorUnit->FileName.c_str(), AVecUnits[i]->FileName.c_str());
 
 							WLOG_INFO(L"%s", sMsg.c_str());
 
@@ -6162,7 +6574,8 @@ void __fastcall TStateMachineEditor::DoOnEditorApplicationEventsIdle(TObject *Se
 
 		for (int i = 0; i < TheTree->Items->Count; i++) {
 			// если родитель был визуальным проверим детей
-			if (TVisualScxmlBaseShape * AVisualBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(TheTree->Items->Items[i])) {
+			if (TVisualScxmlBaseShape * AVisualBaseShape = dynamic_cast<TVisualScxmlBaseShape*>
+				(TheTree->Items->Items[i])) {
 				AVisualBaseShape->UpdateStateChildren();
 			}
 		}
@@ -6170,7 +6583,8 @@ void __fastcall TStateMachineEditor::DoOnEditorApplicationEventsIdle(TObject *Se
 
 	// обновляем надписи в NodeTree, если фигуры были отмечены
 	if (NodeTheTree->Checked) {
-		for (std::set<TCustomTreeElement*>::iterator it = FUpdateNodeTreeElements.begin(); it != FUpdateNodeTreeElements.end(); ++it) {
+		for (std::set<TCustomTreeElement*>::iterator it = FUpdateNodeTreeElements.begin();
+			it != FUpdateNodeTreeElements.end(); ++it) {
 			UpdateNodeTreeElement(*it);
 		}
 	}
@@ -6206,9 +6620,11 @@ void __fastcall TStateMachineEditor::GetStateNames(TStrings *AStateNamesList) {
 	if (AStateNamesList) {
 		AStateNamesList->Clear();
 		for (int i = 0; i < TheTree->Items->Count; i++) {
-			if (TVisualScxmlBaseShape * AVisualBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(TheTree->Items->Items[i])) {
-				if (!AVisualBaseShape->ExcludeFromSave && !AVisualBaseShape->SimpleText.IsEmpty() && STATE_TYPES_SELFCONNECTION_SHAPES.find
-					(AVisualBaseShape->StateChildType) != STATE_TYPES_SELFCONNECTION_SHAPES.end()) {
+			if (TVisualScxmlBaseShape * AVisualBaseShape = dynamic_cast<TVisualScxmlBaseShape*>
+				(TheTree->Items->Items[i])) {
+				if (!AVisualBaseShape->ExcludeFromSave && !AVisualBaseShape->SimpleText.IsEmpty()
+					&& STATE_TYPES_SELFCONNECTION_SHAPES.find(AVisualBaseShape->StateChildType)
+					!= STATE_TYPES_SELFCONNECTION_SHAPES.end()) {
 					AStateNamesList->Add(AVisualBaseShape->SimpleText);
 				}
 			}
@@ -6228,7 +6644,8 @@ void __fastcall TStateMachineEditor::CreateConnectionToolBar(TStateMachineConnec
 
 		if (AConnection->Points->Count() >= 2) {
 			const int iLast = AConnection->Points->Count() - 1;
-			if (!EnsureInView(TPoint(AConnection->Points->Item[iLast].X, AConnection->Points->Item[iLast].Y), TheTreeEx->Bounds2D)) {
+			if (!EnsureInView(TPoint(AConnection->Points->Item[iLast].X, AConnection->Points->Item[iLast].Y),
+					TheTreeEx->Bounds2D)) {
 				TheTreeEx->Refresh();
 			}
 		}
@@ -6285,10 +6702,14 @@ void __fastcall TStateMachineEditor::CreateConnectionToolBar(TStateMachineConnec
 		APixelsBottomRight.x += AOffsetToParent.x;
 		APixelsBottomRight.y += AOffsetToParent.y;
 
-		const int iDistanceTL = Editorutils::DistanceBetweenPoints(APixelsTopLeft.x, APixelsTopLeft.y, APtCursor.x, APtCursor.y);
-		const int iDistanceTR = Editorutils::DistanceBetweenPoints(APixelsTopRight.x, APixelsTopRight.y, APtCursor.x, APtCursor.y);
-		const int iDistanceBL = Editorutils::DistanceBetweenPoints(APixelsBottomLeft.x, APixelsBottomLeft.y, APtCursor.x, APtCursor.y);
-		const int iDistanceBR = Editorutils::DistanceBetweenPoints(APixelsBottomRight.x, APixelsBottomRight.y, APtCursor.x, APtCursor.y);
+		const int iDistanceTL = Editorutils::DistanceBetweenPoints(APixelsTopLeft.x, APixelsTopLeft.y, APtCursor.x,
+			APtCursor.y);
+		const int iDistanceTR = Editorutils::DistanceBetweenPoints(APixelsTopRight.x, APixelsTopRight.y, APtCursor.x,
+			APtCursor.y);
+		const int iDistanceBL = Editorutils::DistanceBetweenPoints(APixelsBottomLeft.x, APixelsBottomLeft.y,
+			APtCursor.x, APtCursor.y);
+		const int iDistanceBR = Editorutils::DistanceBetweenPoints(APixelsBottomRight.x, APixelsBottomRight.y,
+			APtCursor.x, APtCursor.y);
 
 		int iXPos = APixelsTopLeft.x;
 		int iYPos = APixelsTopLeft.y - FFrameTransitionTypes->Height;
@@ -6301,7 +6722,8 @@ void __fastcall TStateMachineEditor::CreateConnectionToolBar(TStateMachineConnec
 			const bool bToLeft = AConnection->Points->Item[0].X > AConnection->Points->Item[iLast].X;
 			const bool bToTop = AConnection->Points->Item[0].Y > AConnection->Points->Item[iLast].Y;
 
-			FFrameTransitionTypes->BtnAlignSides->ImageIndex = bToLeft ? i_SIDES_LEFT_DIRECTION : i_SIDES_RIGHT_DIRECTION;
+			FFrameTransitionTypes->BtnAlignSides->ImageIndex = bToLeft ?
+				i_SIDES_LEFT_DIRECTION : i_SIDES_RIGHT_DIRECTION;
 			FFrameTransitionTypes->BtnAlignInvertedSides->ImageIndex = bToTop ?
 				i_INVERTED_SIDES_TOP_DIRECTION : i_INVERTED_SIDES_BOTTOM_DIRECTION;
 		}
@@ -6338,14 +6760,16 @@ void __fastcall TStateMachineEditor::CreateConnectionToolBar(TStateMachineConnec
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::SelectShape(TTreeNodeShape * AShape, const bool bScrollInView /* = SCROLL_CHART_IN_VIEW */ ) {
+void __fastcall TStateMachineEditor::SelectShape(TTreeNodeShape * AShape,
+	const bool bScrollInView /* = SCROLL_CHART_IN_VIEW */ ) {
 	ClearDesignObjects();
 
 	TTreeEditorEx::SelectShape(AShape, bScrollInView);
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::SelectMultipleShape(TTreeNodeShape *AShape, const bool bClear, const bool bScrollInView) {
+void __fastcall TStateMachineEditor::SelectMultipleShape(TTreeNodeShape *AShape, const bool bClear,
+	const bool bScrollInView) {
 	if (bClear) {
 		ClearDesignObjects();
 
@@ -6458,8 +6882,8 @@ void __fastcall TStateMachineEditor::TeeModified(bool YesNo /* = true */ , int A
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::TheTreeDblClickShape(Teetree::TTreeNodeShape * Sender, Controls::TMouseButton Button,
-	Classes::TShiftState Shift, int X, int Y) {
+void __fastcall TStateMachineEditor::TheTreeDblClickShape(Teetree::TTreeNodeShape * Sender,
+	Controls::TMouseButton Button, Classes::TShiftState Shift, int X, int Y) {
 
 	if (TheTree->Designing && (TheTree->Selected->Count() > 0) && !TheTree->Connections->Clicked(X, Y)) {
 
@@ -6475,7 +6899,8 @@ void __fastcall TStateMachineEditor::TheTreeDblClickShape(Teetree::TTreeNodeShap
 
 			if (!TTextDummyShape::IsClickSendEnabled()) {
 
-				TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(ADummy->Connection);
+				TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+					(ADummy->Connection);
 				if (AStateMachineConnection) {
 					AStateMachineConnection->ShowEditor();
 				}
@@ -6524,10 +6949,12 @@ void __fastcall TStateMachineEditor::TheTreeAfterDraw(System::TObject * Sender) 
 			TheTree->Canvas->RectangleWithZ(TRect(iBounds2D.left, iBounds2D.top, iBounds2D.right, 0), TeeTreeZ);
 		}
 		if (iBounds2D.right > ATreeEx->Page->Width) {
-			TheTree->Canvas->RectangleWithZ(TRect(ATreeEx->Page->Width, 0, iBounds2D.right, ATreeEx->Page->Height), TeeTreeZ);
+			TheTree->Canvas->RectangleWithZ(TRect(ATreeEx->Page->Width, 0, iBounds2D.right, ATreeEx->Page->Height),
+				TeeTreeZ);
 		}
 		if (iBounds2D.bottom > ATreeEx->Page->Height) {
-			TheTree->Canvas->RectangleWithZ(TRect(0, ATreeEx->Page->Height, iBounds2D.right, iBounds2D.bottom), TeeTreeZ);
+			TheTree->Canvas->RectangleWithZ(TRect(0, ATreeEx->Page->Height, iBounds2D.right, iBounds2D.bottom),
+				TeeTreeZ);
 		}
 
 		/* при маленьких зумах невозможно ничего прочитать, поэтому делает подсказки */
@@ -6546,7 +6973,8 @@ void __fastcall TStateMachineEditor::TheTreeAfterDraw(System::TObject * Sender) 
 
 			for (int i = 0; i < ATreeEx->Shapes->Count; i++) {
 
-				TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(ATreeEx->Shapes->Items[i]);
+				TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>
+					(ATreeEx->Shapes->Items[i]);
 				if (AVisualScxmlBaseShape) {
 
 					const TRect R = AVisualScxmlBaseShape->Bounds();
@@ -6559,7 +6987,8 @@ void __fastcall TStateMachineEditor::TheTreeAfterDraw(System::TObject * Sender) 
 						const int iTextWidth = ATreeEx->Canvas->TextWidth(AVisualScxmlBaseShape->SimpleText);
 						const int iTextHeight = ATreeEx->Canvas->TextHeight(AVisualScxmlBaseShape->SimpleText);
 
-						const TRect ACaptionRect(R.Left - 3, R.Top - 3, R.Left + iTextWidth + 6, R.Top + iTextHeight + 6);
+						const TRect ACaptionRect(R.Left - 3, R.Top - 3, R.Left + iTextWidth + 6,
+							R.Top + iTextHeight + 6);
 
 						bool bOverlapped = false;
 						for (std::deque<TRect>::iterator it = ARects.begin(); it != ARects.end(); ++it) {
@@ -6599,12 +7028,13 @@ void __fastcall TStateMachineEditor::TheTreeAfterDraw(System::TObject * Sender) 
 
 				const int i_SELECT_SHAPES_THRESHOLD = 75;
 				// проверим размеры соединения, если очень короткое, то не выделяем, иначе нагромождение
-				if ((AConnectionRect.Width() > i_SELECT_SHAPES_THRESHOLD || AConnectionRect.Height() > i_SELECT_SHAPES_THRESHOLD) && //
+				if ((AConnectionRect.Width() > i_SELECT_SHAPES_THRESHOLD || AConnectionRect.Height()
+						> i_SELECT_SHAPES_THRESHOLD) && //
 					// само-соединения не показываем
 					AConnection->ToShape != AConnection->FromShape) {
 					if (AConnection->FromShape) {
-						const TRect AShapeRect(AConnection->FromShape->X0, AConnection->FromShape->Y0, AConnection->FromShape->X1,
-							AConnection->FromShape->Y1);
+						const TRect AShapeRect(AConnection->FromShape->X0, AConnection->FromShape->Y0,
+							AConnection->FromShape->X1, AConnection->FromShape->Y1);
 						const TRect ARect = Editorutils::IncrementRectCopy(AShapeRect, 15);
 
 						TheTree->Canvas->Pen->Color = TColor(RGB(0, 190, 190));
@@ -6617,15 +7047,16 @@ void __fastcall TStateMachineEditor::TheTreeAfterDraw(System::TObject * Sender) 
 						TheTree->Canvas->Brush->Style = bTextIsUnreadable ? bsSolid : bsClear;
 						// корректируем размер шрифта, чтобы читался на мелком зуме
 						TheTree->Canvas->Font->Size = (double)AConnection->FromShape->Font->Size * (double)
-							SettingsData->ZoomHintsFontSizeEnlargePercents / (double)TheTree->View3DOptions->Zoom;
+							SettingsData->ZoomHintsFontSizeEnlargePercents / (double)
+							TheTree->View3DOptions->Zoom;
 						TheTree->Canvas->Font->Style = TFontStyles() << fsBold;
 						TheTree->Canvas->Font->Color = clTeal;
 						TheTree->Canvas->TextOut3D(ARect.Left + 2, ARect.Top + 2, TeeTreeZ, L"From");
 					}
 
 					if (AConnection->ToShape && AConnection->ToShape != AConnection->FromShape) {
-						const TRect AShapeRect(AConnection->ToShape->X0, AConnection->ToShape->Y0, AConnection->ToShape->X1,
-							AConnection->ToShape->Y1);
+						const TRect AShapeRect(AConnection->ToShape->X0, AConnection->ToShape->Y0,
+							AConnection->ToShape->X1, AConnection->ToShape->Y1);
 						const TRect ARect = Editorutils::IncrementRectCopy(AShapeRect, 15);
 
 						TheTree->Canvas->Brush->Style = bsSolid;
@@ -6662,8 +7093,8 @@ void __fastcall TStateMachineEditor::TheTreeAfterDraw(System::TObject * Sender) 
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::TheTreeDblClickConnection(Teetree::TTreeConnection* Sender, Controls::TMouseButton Button,
-	Classes::TShiftState Shift, int X, int Y) {
+void __fastcall TStateMachineEditor::TheTreeDblClickConnection(Teetree::TTreeConnection* Sender,
+	Controls::TMouseButton Button, Classes::TShiftState Shift, int X, int Y) {
 	if (TheTree) {
 		TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(Sender);
 		if (AConnection) {
@@ -6673,7 +7104,8 @@ void __fastcall TStateMachineEditor::TheTreeDblClickConnection(Teetree::TTreeCon
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::TheTreeSelectingConnectionOnMouseUp(Teetree::TTreeConnection * Sender, bool&CanSelect) {
+void __fastcall TStateMachineEditor::TheTreeSelectingConnectionOnMouseUp(Teetree::TTreeConnection * Sender,
+	bool&CanSelect) {
 	CanSelect = Sender != NULL && Sender->ClassType() == __classid(TStateMachineConnection);
 }
 
@@ -6755,7 +7187,8 @@ void __fastcall TStateMachineEditor::DoAddFillNodePicture(TTreeNodeShape *AToSha
 		AToShape->Font->Style = AToShape->Font->Style << fsBold;
 	}
 	else if (TStateMachineConnection * AConnection = dynamic_cast<TStateMachineConnection*>(AFromElement)) {
-		AToShape->ImageIndex = TTreeNodeImageIndex(AConnection->IsSelfConnection ? g_TransitionSelfIndex : g_TransitionSimpleIndex);
+		AToShape->ImageIndex = TTreeNodeImageIndex
+			(AConnection->IsSelfConnection ? g_TransitionSelfIndex : g_TransitionSimpleIndex);
 		AToShape->Font->Color = clNavy;
 	}
 	else {
@@ -6764,7 +7197,8 @@ void __fastcall TStateMachineEditor::DoAddFillNodePicture(TTreeNodeShape *AToSha
 }
 
 // ---------------------------------------------------------------------------
-TTreeNodeShape * __fastcall TStateMachineEditor::DoProcessAddFillNode(TTreeNodeShape *AToNode, TCustomTreeElement * AFromElement) {
+TTreeNodeShape * __fastcall TStateMachineEditor::DoProcessAddFillNode(TTreeNodeShape *AToNode,
+	TCustomTreeElement * AFromElement) {
 	TTextDummyShape * ATextDummyShape = dynamic_cast<TTextDummyShape*>(AFromElement);
 	if (!ATextDummyShape) {
 
@@ -6837,8 +7271,8 @@ void __fastcall TStateMachineEditor::OnSearchShapeTimer(TObject * Sender) {
 }
 
 // ---------------------------------------------------------------------------
-bool __fastcall TStateMachineEditor::FindAndSelect(const UnicodeString & sWhat, const TEditorSearchTypes ATypes, bool bFromBeginning,
-	const bool bSelectAndStop) {
+bool __fastcall TStateMachineEditor::FindAndSelect(const UnicodeString & sWhat, const TEditorSearchTypes ATypes,
+	bool bFromBeginning, const bool bSelectAndStop) {
 	if (bFromBeginning) {
 		m_i_found = 0;
 		m_i_connect_found = 0;
@@ -6848,7 +7282,8 @@ bool __fastcall TStateMachineEditor::FindAndSelect(const UnicodeString & sWhat, 
 		FormSearch->HTMLSearchAddInfo->Caption = L"";
 	}
 
-	UnicodeString sFindText = (ATypes.Contains(estCaseSensitive) || ATypes.Contains(estUseRegexp)) ? sWhat : sWhat.UpperCase();
+	UnicodeString sFindText = (ATypes.Contains(estCaseSensitive) || ATypes.Contains(estUseRegexp))
+		? sWhat : sWhat.UpperCase();
 	if (ATypes.Contains(estTrim)) {
 		sFindText = sFindText.Trim();
 	}
@@ -6869,8 +7304,8 @@ bool __fastcall TStateMachineEditor::FindAndSelect(const UnicodeString & sWhat, 
 			TTreeNodeShape *AShape = TheTree->Shape[i];
 
 			if (FormSearch && IsWindowVisible(FormSearch->Handle)) {
-				FormSearch->LabelInfo->Caption = UnicodeString().sprintf(L"[%d] of [%d] Shape[%s]", i, TheTree->Shapes->Count,
-					AShape->SimpleText.c_str());
+				FormSearch->LabelInfo->Caption = UnicodeString().sprintf(L"[%d] of [%d] Shape[%s]", i,
+					TheTree->Shapes->Count, AShape->SimpleText.c_str());
 				Application->ProcessMessages();
 			}
 			else
@@ -6890,14 +7325,15 @@ bool __fastcall TStateMachineEditor::FindAndSelect(const UnicodeString & sWhat, 
 				bFind = StrMatchWhat(AShape->Text->Text, sFindText, ATypes, AMatchOut);
 				if (bFind) {
 					if (FormSearch && IsWindowVisible(FormSearch->Handle)) {
-						FormSearch->HTMLSearchAddInfo->Caption = UnicodeString().sprintf(L"Match in <B>State</B> text [%s]",
-							AMatchOut.sHTMLOut.c_str());
+						FormSearch->HTMLSearchAddInfo->Caption = UnicodeString().sprintf
+							(L"Match in <B>State</B> text [%s]", AMatchOut.sHTMLOut.c_str());
 					}
 					else
 						break;
 
 					if (!bSelectAndStop) {
-						FrameSearchResults->AddMatchNode(this->UnitFileName, AShape->Name, AShape->SimpleText, "Text", AMatchOut);
+						FrameSearchResults->AddMatchNode(this->UnitFileName, AShape->Name, AShape->SimpleText, "Text",
+							AMatchOut);
 
 						bFind = false;
 					}
@@ -6921,8 +7357,8 @@ bool __fastcall TStateMachineEditor::FindAndSelect(const UnicodeString & sWhat, 
 					bFind = StrMatchWhat(sValue, sFindText, ATypes, AMatchOut);
 					if (bFind) {
 						if (FormSearch && IsWindowVisible(FormSearch->Handle)) {
-							FormSearch->HTMLSearchAddInfo->Caption = UnicodeString().sprintf(L"Match in prop[<B>%s</B>] val[%s]",
-								sName.c_str(), AMatchOut.sHTMLOut.c_str());
+							FormSearch->HTMLSearchAddInfo->Caption = UnicodeString().sprintf
+								(L"Match in prop[<B>%s</B>] val[%s]", sName.c_str(), AMatchOut.sHTMLOut.c_str());
 						}
 						else
 							break;
@@ -6931,7 +7367,8 @@ bool __fastcall TStateMachineEditor::FindAndSelect(const UnicodeString & sWhat, 
 							break; // выход из поиска по свойствам
 						}
 						else {
-							FrameSearchResults->AddMatchNode(this->UnitFileName, AShape->Name, AShape->SimpleText, sName, AMatchOut);
+							FrameSearchResults->AddMatchNode(this->UnitFileName, AShape->Name, AShape->SimpleText,
+								sName, AMatchOut);
 						}
 					}
 					Application->ProcessMessages();
@@ -6964,8 +7401,8 @@ bool __fastcall TStateMachineEditor::FindAndSelect(const UnicodeString & sWhat, 
 			TTreeConnection *AConnection = TheTree->Connections->Items[i];
 			if (AConnection->InheritsFrom(__classid(TStateMachineConnection))) {
 				if (FormSearch && IsWindowVisible(FormSearch->Handle)) {
-					FormSearch->LabelInfo->Caption = UnicodeString().sprintf(L"[%d] of [%d] Transition[%s] ", i, TheTree->Shapes->Count,
-						AConnection->SimpleText.c_str());
+					FormSearch->LabelInfo->Caption = UnicodeString().sprintf(L"[%d] of [%d] Transition[%s] ", i,
+						TheTree->Shapes->Count, AConnection->SimpleText.c_str());
 					Application->ProcessMessages();
 				}
 				else
@@ -6983,14 +7420,14 @@ bool __fastcall TStateMachineEditor::FindAndSelect(const UnicodeString & sWhat, 
 					bFind = StrMatchWhat(AConnection->Text->Text, sFindText, ATypes, AMatchOut);
 					if (bFind) {
 						if (FormSearch && IsWindowVisible(FormSearch->Handle)) {
-							FormSearch->HTMLSearchAddInfo->Caption = UnicodeString().sprintf(L"Match in <B>Transition</B> text [%s]",
-								AMatchOut.sHTMLOut.c_str());
+							FormSearch->HTMLSearchAddInfo->Caption = UnicodeString().sprintf
+								(L"Match in <B>Transition</B> text [%s]", AMatchOut.sHTMLOut.c_str());
 						}
 						else
 							break;
 						if (!bSelectAndStop) {
-							FrameSearchResults->AddMatchNode(this->UnitFileName, AConnection->Name, AConnection->SimpleText, L"Text",
-								AMatchOut);
+							FrameSearchResults->AddMatchNode(this->UnitFileName, AConnection->Name,
+								AConnection->SimpleText, L"Text", AMatchOut);
 
 							bFind = false;
 						}
@@ -7015,8 +7452,8 @@ bool __fastcall TStateMachineEditor::FindAndSelect(const UnicodeString & sWhat, 
 						bFind = StrMatchWhat(sValue, sFindText, ATypes, AMatchOut);
 						if (bFind) {
 							if (FormSearch && IsWindowVisible(FormSearch->Handle)) {
-								FormSearch->HTMLSearchAddInfo->Caption = UnicodeString().sprintf(L"Match in prop[<B>%s</B>] val[%s]",
-									sName.c_str(), AMatchOut.sHTMLOut.c_str());
+								FormSearch->HTMLSearchAddInfo->Caption = UnicodeString().sprintf
+									(L"Match in prop[<B>%s</B>] val[%s]", sName.c_str(), AMatchOut.sHTMLOut.c_str());
 							}
 							else
 								break;
@@ -7025,8 +7462,8 @@ bool __fastcall TStateMachineEditor::FindAndSelect(const UnicodeString & sWhat, 
 								break; // выход из поиска по свойствам
 							}
 							else {
-								FrameSearchResults->AddMatchNode(this->UnitFileName, AConnection->Name, AConnection->SimpleText, sName,
-									AMatchOut);
+								FrameSearchResults->AddMatchNode(this->UnitFileName, AConnection->Name,
+									AConnection->SimpleText, sName, AMatchOut);
 
 								bFind = false;
 							}
@@ -7229,8 +7666,8 @@ void __fastcall TStateMachineEditor::AddShapesFromPresetOnOff() {
 
 			const UnicodeString sBackCondition = UnicodeString().sprintf(L"GetGlobal(\"%s\")~=%s",
 				APresetPtr->EditScxmlEvent->Text.c_str(), APresetPtr->EditEqualValue->Text.c_str());
-			const UnicodeString sToCondition = UnicodeString().sprintf(L"GetGlobal(\"%s\")==%s", APresetPtr->EditScxmlEvent->Text.c_str(),
-				APresetPtr->EditEqualValue->Text.c_str());
+			const UnicodeString sToCondition = UnicodeString().sprintf(L"GetGlobal(\"%s\")==%s",
+				APresetPtr->EditScxmlEvent->Text.c_str(), APresetPtr->EditEqualValue->Text.c_str());
 
 			TStateShape *ARootShape = dynamic_cast<TStateShape*>(AShape->AddStateChild(sctState, true));
 			AssertCreatedShape(ARootShape);
@@ -7390,7 +7827,7 @@ UnicodeString __fastcall TStateMachineEditor::GetSyntaxScheme() {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::SaveToSVG(TStringList *AOutputList, TTreeNodeShape *ARootShape/*=NULL*/) {
+void __fastcall TStateMachineEditor::SaveToSVG(TStringList *AOutputList, TTreeNodeShape *ARootShape /* =NULL */ ) {
 	if (AOutputList) {
 
 		TRect ACaptureRect(0, 0, 0, 0);
@@ -7426,7 +7863,8 @@ void __fastcall TStateMachineEditor::SaveToSVG(TStringList *AOutputList, TTreeNo
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::SaveToSVG(const UnicodeString &sFileName, TTreeNodeShape *ARootShape /*= NULL*/) {
+void __fastcall TStateMachineEditor::SaveToSVG(const UnicodeString &sFileName,
+	TTreeNodeShape *ARootShape /* = NULL */ ) {
 	std::auto_ptr<TStringList>AOutputPtr(new TStringList());
 
 	SaveToSVG(AOutputPtr.get(), ARootShape);
@@ -7444,8 +7882,8 @@ bool __fastcall TStateMachineEditor::IsNodeTreeSelectionDragReady() {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::NodeTreeMouseDown(System::TObject* Sender, Controls::TMouseButton Button, Classes::TShiftState Shift,
-	int X, int Y) {
+void __fastcall TStateMachineEditor::NodeTreeMouseDown(System::TObject* Sender, Controls::TMouseButton Button,
+	Classes::TShiftState Shift, int X, int Y) {
 
 	/* Drag 'n Drop */
 	if (!NodeTree->CancelMouse && Button == mbLeft) {
@@ -7457,14 +7895,16 @@ void __fastcall TStateMachineEditor::NodeTreeMouseDown(System::TObject* Sender, 
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::NodeTreeDragOver(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept) {
+void __fastcall TStateMachineEditor::NodeTreeDragOver(TObject *Sender, TObject *Source, int X, int Y, TDragState State,
+	bool &Accept) {
 	Accept = false;
 
 	if (IsNodeTreeSelectionDragReady()) {
 		TCustomTreeElement *ATarget = NodeTreeShapeToTreeElement(NodeTree->ClickedShape(X, Y));
 		if (ATarget) {
 			if (TheTree->Connections->Selected) {
-				if (TStateMachineConnection * ASourceConnection = dynamic_cast<TStateMachineConnection*>(TheTree->Connections->Selected)) {
+				if (TStateMachineConnection * ASourceConnection = dynamic_cast<TStateMachineConnection*>
+					(TheTree->Connections->Selected)) {
 					TStateMachineConnection * ATargetConnection = dynamic_cast<TStateMachineConnection*>(ATarget);
 					if (ATargetConnection && ASourceConnection != ATargetConnection) {
 						Accept = ATargetConnection->FromShape == TheTree->Connections->Selected->FromShape;
@@ -7525,14 +7965,17 @@ void __fastcall TStateMachineEditor::NodeTreeDragDrop(TObject *Sender, TObject *
 									const int iIndex1 = TheTree->Connections->IndexOf(ASourceConnection);
 									const int iIndex2 = TheTree->Connections->IndexOf(ATargetConnection);
 
-									TConnectionListAccess *AListAccess = reinterpret_cast<TConnectionListAccess*>(TheTree->Connections);
+									TConnectionListAccess *AListAccess = reinterpret_cast<TConnectionListAccess*>
+										(TheTree->Connections);
 									AListAccess->Exchange(iIndex1, iIndex2);
 								}
 
 								// теперь в списке у состояния
 								{
-									const int iIndex1 = ATargetConnection->FromShape->Connections->IndexOf(ASourceConnection);
-									const int iIndex2 = ATargetConnection->FromShape->Connections->IndexOf(ATargetConnection);
+									const int iIndex1 = ATargetConnection->FromShape->Connections->IndexOf
+										(ASourceConnection);
+									const int iIndex2 = ATargetConnection->FromShape->Connections->IndexOf
+										(ATargetConnection);
 
 									TConnectionListAccess *ATreeList = reinterpret_cast<TConnectionListAccess*>
 										(ATargetConnection->FromShape->Connections);
@@ -7551,7 +7994,8 @@ void __fastcall TStateMachineEditor::NodeTreeDragDrop(TObject *Sender, TObject *
 
 					TScxmlBaseShape * ATargetShape = dynamic_cast<TScxmlBaseShape*>(ATarget);
 					TScxmlBaseShape * AFirstSourceShape = FirstSelected;
-					if (ATargetShape && AFirstSourceShape && (ATargetShape != AFirstSourceShape) && ATargetShape->Parent && //
+					if (ATargetShape && AFirstSourceShape && (ATargetShape != AFirstSourceShape)
+						&& ATargetShape->Parent && //
 						(ATargetShape->Parent == AFirstSourceShape->Parent)) {
 
 						/* Visual Shapes */
@@ -7715,7 +8159,8 @@ void __fastcall TStateMachineEditor::ThemeStateColorMouseUp(System::TObject* Sen
 				else if (TVirtualShape * AVirtualShape = dynamic_cast<TVirtualShape*>(ASelected)) {
 					SettingsData->ThemeSettings->VirtualNormalColor = ANewColor;
 				}
-				else if (TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(ASelected)) {
+				else if (TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(ASelected)
+					) {
 					SettingsData->ThemeSettings->StateNormalColor = ANewColor;
 				}
 				else if (TChildScxmlBaseShape * AChildScxmlBaseShape = dynamic_cast<TChildScxmlBaseShape*>(ASelected)) {
@@ -7727,8 +8172,8 @@ void __fastcall TStateMachineEditor::ThemeStateColorMouseUp(System::TObject* Sen
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::ThemeStateClusterColorMouseUp(System::TObject* Sender, Controls::TMouseButton Button,
-	Classes::TShiftState Shift, int X, int Y) {
+void __fastcall TStateMachineEditor::ThemeStateClusterColorMouseUp(System::TObject* Sender,
+	Controls::TMouseButton Button, Classes::TShiftState Shift, int X, int Y) {
 
 	TShape * AShape = dynamic_cast<TShape*>(Sender);
 	if (AShape) {
@@ -7749,8 +8194,8 @@ void __fastcall TStateMachineEditor::ThemeStateClusterColorMouseUp(System::TObje
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineEditor::ThemeBorderNormalColorMouseUp(System::TObject* Sender, Controls::TMouseButton Button,
-	Classes::TShiftState Shift, int X, int Y) {
+void __fastcall TStateMachineEditor::ThemeBorderNormalColorMouseUp(System::TObject* Sender,
+	Controls::TMouseButton Button, Classes::TShiftState Shift, int X, int Y) {
 
 	TShape * AShape = dynamic_cast<TShape*>(Sender);
 	if (AShape) {
@@ -7803,7 +8248,8 @@ void __fastcall TStateMachineEditor::ThemeBorderClick(System::TObject* Sender) {
 				}
 			}
 
-			TNodeTreeEditor * ANodeTreeEditor = dynamic_cast<TNodeTreeEditor*>(dynamic_cast<TComponent*>(Sender)->Owner);
+			TNodeTreeEditor * ANodeTreeEditor = dynamic_cast<TNodeTreeEditor*>
+				(dynamic_cast<TComponent*>(Sender)->Owner);
 			if (ANodeTreeEditor) {
 				ANodeTreeEditor->Shape5->Brush->Color = AChartPenPtr->Color;
 			}
@@ -7925,8 +8371,8 @@ void __fastcall TStateMachineEditor::SaveToPNG(const UnicodeString &sFileName) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditor::SaveRawScxmlToFile(const UnicodeString & sFileName) {
-	const Statemachine::TIterateSaveTypes ATypes = SettingsData->SkipCommentsInRawScxml == false ? Statemachine::MaxPossibleTypes() :
-		(Statemachine::MaxPossibleTypes() >> Statemachine::istComments);
+	const Statemachine::TIterateSaveTypes ATypes = SettingsData->SkipCommentsInRawScxml == false ?
+		Statemachine::MaxPossibleTypes() : (Statemachine::MaxPossibleTypes() >> Statemachine::istComments);
 
 	Statemachine::SaveTreeToScxml(TheTree, sFileName, false, true, ATypes);
 }
@@ -7960,7 +8406,8 @@ void __fastcall TStateMachineEditor::SaveScxmlToPas(const UnicodeString & sFileN
 // ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditor::SaveToDot(const UnicodeString &sFileName) {
 	std::auto_ptr<TDialogWait>ADialogWaitPtr(new TDialogWait(this));
-	ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Exporting to DOT[%s] ...", ExtractFileName(sFileName).c_str()));
+	ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Exporting to DOT[%s] ...",
+			ExtractFileName(sFileName).c_str()));
 	Graphviz::ExportToDot(TheTree, sFileName);
 	WLOG_INFO(L"Successfully saved <%s>", sFileName.c_str());
 }
@@ -7968,7 +8415,8 @@ void __fastcall TStateMachineEditor::SaveToDot(const UnicodeString &sFileName) {
 // ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditor::SaveToDotPlusPng(const UnicodeString &sFileName) {
 	std::auto_ptr<TDialogWait>ADialogWaitPtr(new TDialogWait(this));
-	ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Exporting to DOT[%s] ...", ExtractFileName(sFileName).c_str()));
+	ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Exporting to DOT[%s] ...",
+			ExtractFileName(sFileName).c_str()));
 	Graphviz::ExportToDot(TheTree, sFileName);
 	WLOG_INFO(L"Successfully saved <%s>", sFileName.c_str());
 
@@ -7981,9 +8429,9 @@ void __fastcall TStateMachineEditor::SaveToDotPlusPng(const UnicodeString &sFile
 // ---------------------------------------------------------------------------
 // --------------------  TStateMachineDockPanel  -----------------------------
 // ---------------------------------------------------------------------------
-__fastcall TStateMachineDockPanel::TStateMachineDockPanel(Classes::TComponent * AOwner, TStateMachineEditorUnit * AStateMachineEditorUnit)
-	: TLMDDockPanel(AOwner), FExitTime(Now()), FStateMachineEditor(NULL), FMainPanel(NULL),
-FStateMachineEditorUnit(AStateMachineEditorUnit) {
+__fastcall TStateMachineDockPanel::TStateMachineDockPanel(Classes::TComponent * AOwner,
+	TStateMachineEditorUnit * AStateMachineEditorUnit) : TLMDDockPanel(AOwner), FExitTime(Now()),
+FStateMachineEditor(NULL), FMainPanel(NULL), FStateMachineEditorUnit(AStateMachineEditorUnit) {
 
 	if (!FormScxmlGui)
 		throw Exception(L"PROGRAM LOGIC ERROR> Can not get pointer [MainForm]!");
@@ -8015,7 +8463,7 @@ FStateMachineEditorUnit(AStateMachineEditorUnit) {
 	FToolBar = new TToolBar(this);
 	FToolBar->Parent = FMainPanel;
 
-	FStateMachineEditor = new TStateMachineEditor(this, FStateMachineEditorUnit, true /*AppPropInsp*/);
+	FStateMachineEditor = new TStateMachineEditor(this, FStateMachineEditorUnit, true /* AppPropInsp */ );
 	FStateMachineEditor->Left = 0;
 	FStateMachineEditor->Top = 0;
 
@@ -8078,7 +8526,8 @@ void __fastcall TStateMachineDockPanel::OpenedDocOpening(TObject * Sender, TLMDP
 			AScxmlShape->AutoPosition->Left = false;
 			AScxmlShape->AutoPosition->Top = false;
 			AScxmlShape->SetDefaultSize();
-			const Unique::TUniquePair AUniqueName = Unique::GetUniqueName(FStateMachineEditor, AScxmlShape->ClassType());
+			const Unique::TUniquePair AUniqueName = Unique::GetUniqueName(FStateMachineEditor,
+				AScxmlShape->ClassType());
 			AScxmlShape->Name = AUniqueName.second;
 			AScxmlShape->ScxmlName = GetUniqueScxmlName(StateMachineEditorUnit);
 			AScxmlShape->Tree = FStateMachineEditor->TheTree;
@@ -8189,8 +8638,8 @@ void __fastcall TStateMachineDockPanel::UpdateSyntaxView(void) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineDockPanel::OnMouseActivateEvent(System::TObject* Sender, TMouseButton Button, Classes::TShiftState Shift,
-	int X, int Y, int HitTest, TMouseActivate &MouseActivate) {
+void __fastcall TStateMachineDockPanel::OnMouseActivateEvent(System::TObject* Sender, TMouseButton Button,
+	Classes::TShiftState Shift, int X, int Y, int HitTest, TMouseActivate &MouseActivate) {
 
 	FormScxmlGui->FixDockPanelActiveState(this);
 
@@ -8243,7 +8692,8 @@ void __fastcall TStateMachineDockPanel::OnStateMachineDockPanelEnter(TObject * S
 
 			// известить дальше по цепочке наследования
 			FStateMachineEditor->MarkModifiedForInherited();
-			WLOG_WARNING(L"INHERITANCE> Reloading chart:[%s] because parent:[%s] was modified!", StateMachineEditorUnit->FileName.c_str(),
+			WLOG_WARNING(L"INHERITANCE> Reloading chart:[%s] because parent:[%s] was modified!",
+				StateMachineEditorUnit->FileName.c_str(),
 				StateMachineEditorUnit->Inherited.c_str());
 
 			// помечаем, что осталось в панели
@@ -8349,7 +8799,8 @@ UnicodeString __fastcall TStateMachineDockPanel::GetInvokeID() {
 void __fastcall TStateMachineDockPanel::CollectShapeBindings(TCustomTree * ATree, ILMDXmlElement * ANodeContainer) {
 
 	for (int i = 0; i < ATree->Connections->Count; i++) {
-		TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(ATree->Connections->Items[i]);
+		TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+			(ATree->Connections->Items[i]);
 		if (AStateMachineConnection) {
 			if (AStateMachineConnection->ProtocolControlBinding->Active) {
 				AStateMachineConnection->ProtocolControlBinding->ToXML(ANodeContainer);
@@ -8387,7 +8838,8 @@ void __fastcall TStateMachineDockPanel::CollectShapeBindings(TCustomTree * ATree
 			else if (ATree->Shapes->Items[i]->ClassType() == __classid(TContentShape)) {
 				TContentShape *AShape = dynamic_cast<TContentShape*>(ATree->Shapes->Items[i]);
 				if (AShape && AShape->XMLText->Type == xttSCXML) {
-					std::auto_ptr<TStateMachineEditor>AStateMachineEditorForm(new TStateMachineEditor(Application, NULL, false));
+					std::auto_ptr<TStateMachineEditor>AStateMachineEditorForm(new TStateMachineEditor(Application,
+							NULL, false));
 					if (AShape->XMLText->IsScxmlGui) {
 						if (AShape->XMLText->ScxmlStream->Size) {
 							AStateMachineEditorForm->LoadScxmlStream(AShape->XMLText->ScxmlStream, "Scxml editor");
@@ -8407,8 +8859,8 @@ void __fastcall TStateMachineDockPanel::CollectShapeBindings(TCustomTree * ATree
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TStateMachineDockPanel::OpenedDocOnSave(System::TObject * Sender, const Lmdtypes::TLMDString AFileIdent,
-	Classes::TStream * AFileStream, bool&AHandled) {
+void __fastcall TStateMachineDockPanel::OpenedDocOnSave(System::TObject * Sender,
+	const Lmdtypes::TLMDString AFileIdent, Classes::TStream * AFileStream, bool&AHandled) {
 
 	SettingsData->ProfilerReset(__FUNCTION__);
 
@@ -8424,7 +8876,8 @@ void __fastcall TStateMachineDockPanel::OpenedDocOnSave(System::TObject * Sender
 			/* Сохраняем всё, что в док.панельных редакторах */
 			for (int i = 0; i < FormScxmlGui->ComponentCount; i++) {
 				TSyntaxDockPanel * ASyntaxDockPanel = dynamic_cast<TSyntaxDockPanel*>(FormScxmlGui->Components[i]);
-				if (ASyntaxDockPanel && Customutils::ComponentIsPresentInPath(this, ASyntaxDockPanel->SyntaxForm->LinkInstancePropPath)) {
+				if (ASyntaxDockPanel && Customutils::ComponentIsPresentInPath(this,
+						ASyntaxDockPanel->SyntaxForm->LinkInstancePropPath)) {
 					ASyntaxDockPanel->SyntaxForm->ActionSave->Execute();
 				}
 			}
@@ -8521,14 +8974,15 @@ void __fastcall TStateMachineDockPanel::OpenedDocOnSave(System::TObject * Sender
 	catch(EStateMachineConnectionException * E) {
 		ActivateZonePage();
 		FStateMachineEditor->SelectConnection(E->StateMachineConnection, SCROLL_CHART_IN_VIEW);
-		FStateMachineEditor->SelectTemporaryRectangle(Editorutils::IncrementRectCopy(E->StateMachineConnection->GetBounds(), 15),
-			"Error: " + E->Category);
+		FStateMachineEditor->SelectTemporaryRectangle
+			(Editorutils::IncrementRectCopy(E->StateMachineConnection->GetBounds(), 15), "Error: " + E->Category);
 		WLOG_ERROR(L"SAVE UNIT[%s]> %s", FStateMachineEditorUnit->DisplayName.c_str(), E->Message.c_str());
 	}
 	catch(EScxmlBaseShapeException * E) {
 		ActivateZonePage();
 		FStateMachineEditor->SelectShape(E->Shape, SCROLL_CHART_IN_VIEW);
-		FStateMachineEditor->SelectTemporaryRectangle(Editorutils::IncrementRectCopy(E->Shape->Bounds(), 15), "Error: " + E->Category);
+		FStateMachineEditor->SelectTemporaryRectangle(Editorutils::IncrementRectCopy(E->Shape->Bounds(), 15),
+			"Error: " + E->Category);
 		WLOG_ERROR(L"SAVE UNIT[%s]> %s", FStateMachineEditorUnit->DisplayName.c_str(), E->Message.c_str());
 	}
 	catch(EScxmlDuplicateStateIDException * E) {
@@ -8557,12 +9011,12 @@ UnicodeString __fastcall TStateMachineDockPanel::GetRawScxml() {
 
 // ---------------------------------------------------------------------------
 UnicodeString __fastcall TStateMachineDockPanel::GetRawScxmlForceComments() {
-	return Statemachine::GetRawScxml(FStateMachineEditor->TheTree, false /* do not skip comments */);
+	return Statemachine::GetRawScxml(FStateMachineEditor->TheTree, false /* do not skip comments */ );
 }
 
 // ---------------------------------------------------------------------------
-std::pair<TStateMachineDockPanel*, TTreeNodeShape *>__fastcall TStateMachineDockPanel::EnterStateNode(const UnicodeString & sId,
-	const bool bEntered, const bool bOpenClosedUnits, UnicodeString sAlias) {
+std::pair<TStateMachineDockPanel*, TTreeNodeShape *>__fastcall TStateMachineDockPanel::EnterStateNode
+	(const UnicodeString & sId, const bool bEntered, const bool bOpenClosedUnits, UnicodeString sAlias) {
 
 	std::pair<TStateMachineDockPanel*, TTreeNodeShape*>AEnteredElements = std::make_pair((TStateMachineDockPanel*)NULL,
 		(TTreeNodeShape*)NULL);
@@ -8578,13 +9032,14 @@ std::pair<TStateMachineDockPanel*, TTreeNodeShape *>__fastcall TStateMachineDock
 	}
 
 	for (int i = 0; i < FStateMachineEditor->TheTree->Shapes->Count; i++) {
-		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(FStateMachineEditor->TheTree->Shapes->Items[i]);
+		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(FStateMachineEditor->TheTree->Shapes->Items[i]);
 		if (AShape && !AShape->SkipDebugging && !AShape->ExcludeFromSave) {
 
 			bool b_NAME_MATCH = false;
 			if (bAliasUsed) {
-				const UnicodeString sAliasID = StringReplace(AShape->SimpleText, SettingsData->VirtualAliasVariable, sAlias,
-					TReplaceFlags() << rfReplaceAll);
+				const UnicodeString sAliasID = StringReplace(AShape->SimpleText, SettingsData->VirtualAliasVariable,
+					sAlias, TReplaceFlags() << rfReplaceAll);
 				b_NAME_MATCH = sAliasID == sId;
 				if (b_NAME_MATCH) {
 					AShape->SetAliasID(sAliasID);
@@ -8619,7 +9074,8 @@ std::pair<TStateMachineDockPanel*, TTreeNodeShape *>__fastcall TStateMachineDock
 						{
 
 							ATreeEx->Refresh();
-							TPoint P = ATreeEx->Canvas->Calculate3DPosition(AShape->XCenter(), AShape->YCenter(), TeeTreeZ);
+							TPoint P = ATreeEx->Canvas->Calculate3DPosition(AShape->XCenter(), AShape->YCenter(),
+								TeeTreeZ);
 
 							int iTmpX = ATreeEx->ChartXCenter;
 							int iTmpY = ATreeEx->ChartYCenter;
@@ -8648,7 +9104,8 @@ std::pair<TStateMachineDockPanel*, TTreeNodeShape *>__fastcall TStateMachineDock
 
 				if (AWasActiveDebugShape != FStateMachineEditor->FActiveDebugShape) {
 
-					if (AWasActiveDebugShape && FStateMachineEditor->TheTree->Items->IndexOf(AWasActiveDebugShape) != -1) {
+					if (AWasActiveDebugShape && FStateMachineEditor->TheTree->Items->IndexOf(AWasActiveDebugShape)
+						!= -1) {
 						AWasActiveDebugShape->UpdateAppearance();
 					}
 
@@ -8670,8 +9127,9 @@ std::pair<TStateMachineDockPanel*, TTreeNodeShape *>__fastcall TStateMachineDock
 						}
 						TStateMachineDockPanel *ASrcDockPanel = ASrcUnit->StateMachineDockPanel;
 						if (ASrcDockPanel) {
-							std::pair<TStateMachineDockPanel*, TTreeNodeShape*>AVirtualEnteredElements = ASrcDockPanel->EnterStateNode(sId,
-								bEntered, bOpenClosedUnits, //
+							std::pair<TStateMachineDockPanel*,
+							TTreeNodeShape*>AVirtualEnteredElements = ASrcDockPanel->EnterStateNode(sId, bEntered,
+								bOpenClosedUnits, //
 								StringReplace(AVirtualShape->Alias, SettingsData->VirtualAliasVariable, sAlias,
 									TReplaceFlags() << rfReplaceAll));
 
@@ -8696,7 +9154,8 @@ void __fastcall TStateMachineDockPanel::ClearEnteredStates(void) {
 	const Editorutils::TreeUpdateLock ATreeLock(FStateMachineEditor->TheTree);
 
 	for (int i = 0; i < FStateMachineEditor->TheTree->Shapes->Count; i++) {
-		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(FStateMachineEditor->TheTree->Shapes->Items[i]);
+		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(FStateMachineEditor->TheTree->Shapes->Items[i]);
 		if (AShape) {
 			AShape->Entered = false;
 			AShape->SetAliasID(L"");
@@ -8724,7 +9183,8 @@ void __fastcall TStateMachineDockPanel::ProcessTakenTransition(TStateMachineConn
 
 		FStateMachineEditor->FEnteredStateMachineConnections.insert(AConnection);
 
-		if (AWasActiveDebugConnection && FStateMachineEditor->TheTree->Items->IndexOf(AWasActiveDebugConnection) != -1) {
+		if (AWasActiveDebugConnection && FStateMachineEditor->TheTree->Items->IndexOf(AWasActiveDebugConnection) != -1)
+		{
 			AWasActiveDebugConnection->UpdateAppearance();
 		}
 
@@ -8733,12 +9193,13 @@ void __fastcall TStateMachineDockPanel::ProcessTakenTransition(TStateMachineConn
 }
 
 // ---------------------------------------------------------------------------
-std::pair<TStateMachineDockPanel*, TTreeConnection *>__fastcall TStateMachineDockPanel::TakingTransition(const UnicodeString &sFromShape,
-	const int iTransitionID, const bool bOpenClosedUnits, UnicodeString sAlias) {
+std::pair<TStateMachineDockPanel*, TTreeConnection *>__fastcall TStateMachineDockPanel::TakingTransition
+	(const UnicodeString &sFromShape, const int iTransitionID, const bool bOpenClosedUnits, UnicodeString sAlias) {
 
 	const UnicodeString sTransitionDescriptor = sFromShape + L"@" + UnicodeString(iTransitionID);
 
-	std::map<UnicodeString, TStateMachineConnection*>::iterator it = FTakingTransitionCacheMap.find(sTransitionDescriptor);
+	std::map<UnicodeString, TStateMachineConnection*>::iterator it = FTakingTransitionCacheMap.find
+		(sTransitionDescriptor);
 	if (it != FTakingTransitionCacheMap.end()) {
 		if (FStateMachineEditor->TheTree->Connections->IndexOf(it->second) != -1) {
 			std::pair<TStateMachineDockPanel*, TTreeConnection*>AEnteredElements = std::make_pair(this, it->second);
@@ -8764,13 +9225,14 @@ std::pair<TStateMachineDockPanel*, TTreeConnection *>__fastcall TStateMachineDoc
 	}
 
 	for (int i = 0; i < FStateMachineEditor->TheTree->Shapes->Count; i++) {
-		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(FStateMachineEditor->TheTree->Shapes->Items[i]);
+		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(FStateMachineEditor->TheTree->Shapes->Items[i]);
 		if (AShape && !AShape->SkipDebugging && !AShape->ExcludeFromSave) {
 
 			bool b_NAME_MATCH = false;
 			if (bAliasUsed) {
-				const UnicodeString sAliasID = StringReplace(AShape->SimpleText, SettingsData->VirtualAliasVariable, sAlias,
-					TReplaceFlags() << rfReplaceAll);
+				const UnicodeString sAliasID = StringReplace(AShape->SimpleText, SettingsData->VirtualAliasVariable,
+					sAlias, TReplaceFlags() << rfReplaceAll);
 				b_NAME_MATCH = sAliasID == sFromShape;
 			}
 			else {
@@ -8786,7 +9248,8 @@ std::pair<TStateMachineDockPanel*, TTreeConnection *>__fastcall TStateMachineDoc
 				Editorutils::TConnectionFromToMap AInConnections;
 				Editorutils::CollectInConnections(AShape, AInConnections);
 
-				for (Editorutils::TConnectionFromToMap::iterator it = AInConnections.begin(); it != AInConnections.end(); ++it) {
+				for (Editorutils::TConnectionFromToMap::iterator it = AInConnections.begin();
+					it != AInConnections.end(); ++it) {
 					TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(it->first);
 					/* 'ExcludeFromSave==false' гарантирует VisualFrom и VisualTo */
 					if (AConnection && !AConnection->ExcludeFromSave && AConnection->SWITCH != tstNONE) {
@@ -8803,7 +9266,8 @@ std::pair<TStateMachineDockPanel*, TTreeConnection *>__fastcall TStateMachineDoc
 				// 2) Regular Transitions
 				if (!ATakenConnection) {
 					for (int k = 0; k < AShape->Connections->Count; k++) {
-						TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(AShape->Connections->Items[k]);
+						TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>
+							(AShape->Connections->Items[k]);
 						/* 'ExcludeFromSave==false' гарантирует VisualFrom и VisualTo */
 						if (AConnection && !AConnection->ExcludeFromSave) {
 
@@ -8822,7 +9286,8 @@ std::pair<TStateMachineDockPanel*, TTreeConnection *>__fastcall TStateMachineDoc
 
 					FTakingTransitionCacheMap.insert(std::make_pair(sTransitionDescriptor, ATakenConnection));
 
-					std::pair<TStateMachineDockPanel*, TTreeConnection*>AEnteredElements = std::make_pair(this, ATakenConnection);
+					std::pair<TStateMachineDockPanel*, TTreeConnection*>AEnteredElements = std::make_pair(this,
+						ATakenConnection);
 
 					this->ProcessTakenTransition(ATakenConnection);
 
@@ -8847,8 +9312,8 @@ std::pair<TStateMachineDockPanel*, TTreeConnection *>__fastcall TStateMachineDoc
 						if (ASrcDockPanel) {
 
 							std::pair<TStateMachineDockPanel*,
-							TTreeConnection*>AVirtualEnteredElements = ASrcDockPanel->TakingTransition(sFromShape, iTransitionID,
-								bOpenClosedUnits, //
+							TTreeConnection*>AVirtualEnteredElements = ASrcDockPanel->TakingTransition
+								(sFromShape, iTransitionID, bOpenClosedUnits, //
 								StringReplace(AVirtualShape->Alias, SettingsData->VirtualAliasVariable, sAlias,
 									TReplaceFlags() << rfReplaceAll));
 
@@ -8874,14 +9339,16 @@ void __fastcall TStateMachineDockPanel::ClearAllBreakpoints(void) {
 	const Editorutils::TreeUpdateLock ATreeLock(FStateMachineEditor->TheTree);
 
 	for (int i = 0; i < FStateMachineEditor->TheTree->Shapes->Count; i++) {
-		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>(FStateMachineEditor->TheTree->Shapes->Items[i]);
+		TVisualScxmlBaseShape *AShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(FStateMachineEditor->TheTree->Shapes->Items[i]);
 		if (AShape) {
 			AShape->BreakpointSet = false;
 		}
 	}
 
 	for (int i = 0; i < FStateMachineEditor->TheTree->Connections->Count; i++) {
-		TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(FStateMachineEditor->TheTree->Connections->Items[i]);
+		TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>
+			(FStateMachineEditor->TheTree->Connections->Items[i]);
 		if (AConnection) {
 			AConnection->BreakpointSet = false;
 		}
@@ -9025,7 +9492,8 @@ TCustomTree * __fastcall GlobalActiveEditorTree() {
 }
 
 // ---------------------------------------------------------------------------
-boost::tuple<TComponent *, TStateMachineEditor *, TStateMachineDockPanel *>ParseInstancePropPath(const UnicodeString &sInstancePropPath) {
+boost::tuple<TComponent *, TStateMachineEditor *,
+TStateMachineDockPanel *>ParseInstancePropPath(const UnicodeString &sInstancePropPath) {
 	TComponent *AInstance = Application;
 
 	TStateMachineEditor *AEditor = NULL;
@@ -9040,7 +9508,8 @@ boost::tuple<TComponent *, TStateMachineEditor *, TStateMachineDockPanel *>Parse
 		AInstance = AInstance->FindComponent(AStringListPtr->Strings[i]);
 
 		if (!AInstance)
-			throw Exception(UnicodeString().sprintf(L"Instance [%s] no more longer valid!", AStringListPtr->Strings[i].c_str()));
+			throw Exception(UnicodeString().sprintf(L"Instance [%s] no more longer valid!",
+				AStringListPtr->Strings[i].c_str()));
 
 		// запоминаем последний редактора
 		TStateMachineEditor * AStateMachineEditor = dynamic_cast<TStateMachineEditor*>(AInstance);

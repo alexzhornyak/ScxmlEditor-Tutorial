@@ -495,10 +495,27 @@ protected:
 	virtual void __fastcall OnConnectionStyleChanged(TTreeConnection *AConnection);
 	virtual void __fastcall OnMenuClone(TObject *Sender);
 
+	void __fastcall OnMenuResetViewToDefault(TObject *Sender);
+
+	void __fastcall OnMenuClearSelection(TObject *Sender);
+
+	void __fastcall OnMenuSelectSimilar(TObject *Sender);
+	void __fastcall OnMenuSelectVisual(TObject *Sender);
+	void __fastcall OnMenuSelectNonVisual(TObject *Sender);
+	void __fastcall OnMenuSelectCategory(TObject *Sender);
+	void __fastcall OnMenuSelectAtomic(TObject *Sender);
+	void __fastcall OnMenuSelectCompound(TObject *Sender);
+	void __fastcall OnMenuSelectStatesandParallel(TObject *Sender);
+	void __fastcall OnMenuSelectExecutableContent(TObject *Sender);
+
 	void __fastcall EnqueeScxmlShapeForInheritanceCheck(TScxmlBaseShape *AShape);
 	void __fastcall EnqueeScxmlConnectionForInheritanceCheck(TStateMachineConnection *AConnection);
 
 	void __fastcall HandleExceptionDuplicateStateID(EScxmlDuplicateStateIDException * E);
+
+	void __fastcall OnActionLockAxisExecute(TObject *Sender);
+
+	void __fastcall OnActionLockAxisUpdate(TObject *Sender);
 
 	void __fastcall ExamChangeParent(Teetree::TTreeNodeShape* Sender, int DeltaX, int DeltaY);
 	UnicodeString __fastcall GetScxmlName(void);

@@ -316,6 +316,7 @@ public:
 	virtual TScxmlBaseShape * __fastcall AddStateChild(TStateChildType AChildType, bool bCheckBounds);
 
 	static TStateChildType __fastcall XMLNodeNameToType(const UnicodeString &sNodeName);
+	static UnicodeString __fastcall TypeToName(const TStateChildType AType);
 	static UnicodeString __fastcall TypeToXMLNodeName(const TStateChildType AType);
 
 	virtual UnicodeString __fastcall XMLAttrNameToPropName(UnicodeString sAttrName);

@@ -1,4 +1,4 @@
-/***********************************************************************************
+/** *********************************************************************************
 BSD 3-Clause License
 
 Copyright (c) 2018, https://github.com/alexzhornyak
@@ -28,7 +28,7 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ***************************************************************************************/
+ ************************************************************************************** */
 
 #include <vcl.h>
 #pragma hdrstop
@@ -108,9 +108,9 @@ std::map<TMetaClass*, int>g_MapImageIndexes;
 // ---------------------------------------------------------------------------
 // ---------------------------- TTreeEditorEx --------------------------------
 // ---------------------------------------------------------------------------
-__fastcall TTreeEditorEx::TTreeEditorEx(TComponent *AOwner) : TTreeEditorNew(AOwner), FMaxHistoryCount(256), FResizingFlag(false),
-FMovingFlag(false), FIntermediateUndoStreamPtr(new TMemoryStream), FOnDownSelectedConn(NULL), FKeyboardKey(0), FFullScreenForm(NULL),
-m_LockAddSelectionUndo(false) {
+__fastcall TTreeEditorEx::TTreeEditorEx(TComponent *AOwner) : TTreeEditorNew(AOwner), FMaxHistoryCount(256),
+FResizingFlag(false), FMovingFlag(false), FIntermediateUndoStreamPtr(new TMemoryStream), FOnDownSelectedConn(NULL),
+FKeyboardKey(0), FFullScreenForm(NULL), m_LockAddSelectionUndo(false) {
 	FCliboardEditorEx = new TTreeClipboardEx(PanelTree);
 
 	FTreeEnsureSelectedInView = false;
@@ -124,9 +124,9 @@ m_LockAddSelectionUndo(false) {
 	m_selection_it = m_SelectionQueue.end();
 
 	/* DEBUGGING */
-	//	 FCliboardEditorEx->Parent = this;
-	//	 FCliboardEditorEx->Align = alTop;
-	//	 FCliboardEditorEx->Visible = true;
+	// FCliboardEditorEx->Parent = this;
+	// FCliboardEditorEx->Align = alTop;
+	// FCliboardEditorEx->Visible = true;
 
 	this->Cut2->OnClick = Cut1Click;
 	this->Copy2->OnClick = Copy1Click;
@@ -287,7 +287,8 @@ UnicodeString __fastcall TTreeEditorEx::GetModifiedCacheFile(void)const {
 	}
 	std::wstringstream wss;
 	const UnicodeString sFileName = TPath::GetFileNameWithoutExtension(this->CurrentFile);
-	wss << std::hex << L"autosave_" << sFileName.c_str() << L"_" << boost::hash<std::wstring>()(this->CurrentFile.c_str());
+	wss << std::hex << L"autosave_" << sFileName.c_str() << L"_" << boost::hash<std::wstring>()
+		(this->CurrentFile.c_str());
 	const UnicodeString sHash = wss.str().c_str();
 	return TPath::Combine(SettingsData->GetCacheDir(), sHash);
 }
@@ -335,7 +336,8 @@ void __fastcall TTreeEditorEx::ActionAlignToLeftExecute(System::TObject* Sender)
 
 			int iOffset = 0;
 			if (CheckUseAlignOffset->Checked) {
-				iOffset = SpinAlignOffset->Value - (TheTree->Selected->Items[i]->Y0 - TheTree->Selected->Items[i - 1]->Y1);
+				iOffset = SpinAlignOffset->Value -
+					(TheTree->Selected->Items[i]->Y0 - TheTree->Selected->Items[i - 1]->Y1);
 			}
 
 			TheTree->Selected->Items[i]->MoveRelative(tmp - TheTree->Selected->Items[i]->X0, iOffset, bMoveChilds);
@@ -359,7 +361,8 @@ void __fastcall TTreeEditorEx::ActionAlignToRightExecute(System::TObject* Sender
 
 			int iOffset = 0;
 			if (CheckUseAlignOffset->Checked) {
-				iOffset = SpinAlignOffset->Value - (TheTree->Selected->Items[i]->Y0 - TheTree->Selected->Items[i - 1]->Y1);
+				iOffset = SpinAlignOffset->Value -
+					(TheTree->Selected->Items[i]->Y0 - TheTree->Selected->Items[i - 1]->Y1);
 			}
 
 			TheTree->Selected->Items[i]->MoveRelative(tmp - TheTree->Selected->Items[i]->X1, iOffset, bMoveChilds);
@@ -383,7 +386,8 @@ void __fastcall TTreeEditorEx::ActionAlignToTopExecute(System::TObject* Sender) 
 
 			int iOffset = 0;
 			if (CheckUseAlignOffset->Checked) {
-				iOffset = SpinAlignOffset->Value - (TheTree->Selected->Items[i]->X0 - TheTree->Selected->Items[i - 1]->X1);
+				iOffset = SpinAlignOffset->Value -
+					(TheTree->Selected->Items[i]->X0 - TheTree->Selected->Items[i - 1]->X1);
 			}
 
 			TheTree->Selected->Items[i]->MoveRelative(iOffset, tmp - TheTree->Selected->Items[i]->Y0, bMoveChilds);
@@ -408,7 +412,8 @@ void __fastcall TTreeEditorEx::ActionAlignToBottomExecute(System::TObject* Sende
 
 			int iOffset = 0;
 			if (CheckUseAlignOffset->Checked) {
-				iOffset = SpinAlignOffset->Value - (TheTree->Selected->Items[i]->X0 - TheTree->Selected->Items[i - 1]->X1);
+				iOffset = SpinAlignOffset->Value -
+					(TheTree->Selected->Items[i]->X0 - TheTree->Selected->Items[i - 1]->X1);
 			}
 
 			TheTree->Selected->Items[i]->MoveRelative(iOffset, tmp - TheTree->Selected->Items[i]->Y1, bMoveChilds);
@@ -432,10 +437,12 @@ void __fastcall TTreeEditorEx::ActionAlignHorCenterExecute(System::TObject* Send
 
 			int iOffset = 0;
 			if (CheckUseAlignOffset->Checked) {
-				iOffset = SpinAlignOffset->Value - (TheTree->Selected->Items[i]->Y0 - TheTree->Selected->Items[i - 1]->Y1);
+				iOffset = SpinAlignOffset->Value -
+					(TheTree->Selected->Items[i]->Y0 - TheTree->Selected->Items[i - 1]->Y1);
 			}
 
-			TheTree->Selected->Items[i]->MoveRelative(tmp - TheTree->Selected->Items[i]->XCenter(), iOffset, bMoveChilds);
+			TheTree->Selected->Items[i]->MoveRelative(tmp - TheTree->Selected->Items[i]->XCenter(), iOffset,
+				bMoveChilds);
 		}
 
 		if (OnShapesAlign) {
@@ -456,10 +463,12 @@ void __fastcall TTreeEditorEx::ActionAlignVertCenterExecute(System::TObject* Sen
 
 			int iOffset = 0;
 			if (CheckUseAlignOffset->Checked) {
-				iOffset = SpinAlignOffset->Value - (TheTree->Selected->Items[i]->X0 - TheTree->Selected->Items[i - 1]->X1);
+				iOffset = SpinAlignOffset->Value -
+					(TheTree->Selected->Items[i]->X0 - TheTree->Selected->Items[i - 1]->X1);
 			}
 
-			TheTree->Selected->Items[i]->MoveRelative(iOffset, tmp - TheTree->Selected->Items[i]->YCenter(), bMoveChilds);
+			TheTree->Selected->Items[i]->MoveRelative(iOffset, tmp - TheTree->Selected->Items[i]->YCenter(),
+				bMoveChilds);
 
 		}
 
@@ -588,7 +597,7 @@ void __fastcall TTreeEditorEx::UndoRedoSelectionClick(TObject *Sender) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TTreeEditorEx::AddUndo(const UnicodeString &sDescription, TMemoryStream *ATreeStream /* = NULL */,
+void __fastcall TTreeEditorEx::AddUndo(const UnicodeString &sDescription, TMemoryStream *ATreeStream /* = NULL */ ,
 	bool bSaveCache /* = true */ ) {
 	if (TheTree && FIntermediateUndoStreamPtr.get()) {
 		SettingsData->ProfilerReset(__FUNCTION__);
@@ -650,7 +659,8 @@ void __fastcall TTreeEditorEx::AddSelectionUndo(const UnicodeString &ADescriptio
 		// проверим, что предыдущее выделение не эта же фигура
 		const bool bPreviousSelectionIsTheSame = m_SelectionQueue.size() && m_SelectionQueue.begin()->second == AGuid;
 		// текущее выделение не эта фигура
-		const bool bCurrentSelectionIsTheSame = m_selection_it != m_SelectionQueue.end() && m_selection_it->second == AGuid;
+		const bool bCurrentSelectionIsTheSame = m_selection_it != m_SelectionQueue.end()
+			&& m_selection_it->second == AGuid;
 		if (!bPreviousSelectionIsTheSame && !bCurrentSelectionIsTheSame) {
 			m_SelectionQueue.push_front(std::make_pair(ADescription, AGuid));
 			m_selection_it = m_SelectionQueue.begin();
@@ -766,8 +776,9 @@ void __fastcall TTreeEditorEx::DoUndo(void) {
 // ---------------------------------------------------------------------------
 void __fastcall TTreeEditorEx::CheckForMissedSelectionElements() {
 	for (TSelectionQueue::iterator i = m_SelectionQueue.begin(); i != m_SelectionQueue.end();
-		/*NOTE: no incrementation of the iterator here*/) {
-		if (Editorutils::IndexOfShapeByGuid(TheTree, i->second) == -1 && Editorutils::IndexOfConnectionByGuid(TheTree, i->second) == -1) {
+		/* NOTE: no incrementation of the iterator here */ ) {
+		if (Editorutils::IndexOfShapeByGuid(TheTree, i->second) == -1 && Editorutils::IndexOfConnectionByGuid(TheTree,
+				i->second) == -1) {
 
 			bool bRequireChange = false;
 			if (m_selection_it == i) {
@@ -870,7 +881,8 @@ void __fastcall TTreeEditorEx::DoAddFillNodePicture(TTreeNodeShape *AToShape, TC
 }
 
 // ---------------------------------------------------------------------------
-TTreeNodeShape * __fastcall TTreeEditorEx::DoProcessAddFillNode(TTreeNodeShape *AToNode, TCustomTreeElement * AFromElement) {
+TTreeNodeShape * __fastcall TTreeEditorEx::DoProcessAddFillNode(TTreeNodeShape *AToNode,
+	TCustomTreeElement * AFromElement) {
 	if (AFromElement) {
 		TTreeNodeShape *tmpNode = NodeTree->AddShape(0, 0, NodeTreeText(AFromElement), AToNode);
 
@@ -1288,7 +1300,8 @@ void __fastcall TTreeEditorEx::TheTreeKeyDown(System::TObject* Sender, System::W
 						TScxmlBaseShape * AScxmlBaseShape = dynamic_cast<TScxmlBaseShape*>(TheTree->Selected->First());
 						if (AScxmlBaseShape) {
 							SetBookmark(FBookmarkButtons.at(iIndex),
-								FBookmarkButtons.at(iIndex)->Tag == reinterpret_cast<int>(AScxmlBaseShape->Guid) ? NULL : AScxmlBaseShape);
+								FBookmarkButtons.at(iIndex)->Tag == reinterpret_cast<int>(AScxmlBaseShape->Guid)
+								? NULL : AScxmlBaseShape);
 						}
 						else
 							LOG_ERROR_SS << "Only scxml shapes are avialable!";
@@ -1304,11 +1317,19 @@ void __fastcall TTreeEditorEx::TheTreeKeyDown(System::TObject* Sender, System::W
 
 		}break;
 
-	case 'X':
-		if (Shift == Classes::TShiftState() << ssCtrl) {
-			Cut1Click(Cut1);
-		}
-		break;
+	case 'X': {
+			if (Shift == Classes::TShiftState() << ssCtrl) {
+				Cut1Click(Cut1);
+			}
+			else if (Shift == Classes::TShiftState()) {
+				ActionLockAxisX->Execute();
+			}
+		}break;
+	case 'Y': {
+			if (Shift == Classes::TShiftState()) {
+				ActionLockAxisY->Execute();
+			}
+		}break;
 	case 'V':
 		if (Shift == Classes::TShiftState() << ssCtrl) {
 			DoPaste(true);
@@ -1654,8 +1675,8 @@ void __fastcall TTreeEditorEx::ForceResetTemporarySelected(void) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TTreeEditorEx::TheTreeMouseDown(System::TObject* Sender, Controls::TMouseButton Button, Classes::TShiftState Shift, int X,
-	int Y) {
+void __fastcall TTreeEditorEx::TheTreeMouseDown(System::TObject* Sender, Controls::TMouseButton Button,
+	Classes::TShiftState Shift, int X, int Y) {
 	FMouseShift = Shift;
 	// стираем временный прямоугольник
 	ForceResetTemporarySelected();
@@ -1684,8 +1705,8 @@ void __fastcall TTreeEditorEx::TheTreeMouseDown(System::TObject* Sender, Control
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TTreeEditorEx::TheTreeMouseUp(System::TObject* Sender, Controls::TMouseButton Button, Classes::TShiftState Shift, int X,
-	int Y) {
+void __fastcall TTreeEditorEx::TheTreeMouseUp(System::TObject* Sender, Controls::TMouseButton Button,
+	Classes::TShiftState Shift, int X, int Y) {
 
 	FMouseShift = TShiftState();
 
@@ -1709,9 +1730,10 @@ void __fastcall TTreeEditorEx::TheTreeMouseUp(System::TObject* Sender, Controls:
 				else {
 					for (int i = 0; i < TheTree->Connections->Selected->Points->Count(); i++) {
 						if (TheTree->Connections->Selected->Points->Item[i].XStyle != FConnSelectedPoints[i]
-							.XStyle || TheTree->Connections->Selected->Points->Item[i].YStyle != FConnSelectedPoints[i]
-							.YStyle || TheTree->Connections->Selected->Points->Item[i].XValue != FConnSelectedPoints[i]
-							.XValue || TheTree->Connections->Selected->Points->Item[i].YValue != FConnSelectedPoints[i].YValue) {
+							.XStyle || TheTree->Connections->Selected->Points->Item[i].YStyle != FConnSelectedPoints
+							[i].YStyle || TheTree->Connections->Selected->Points->Item[i].XValue != FConnSelectedPoints
+							[i].XValue || TheTree->Connections->Selected->Points->Item[i].YValue != FConnSelectedPoints
+							[i].YValue) {
 							bPointsChanged = true;
 
 							bMediumPointMoved = i != 0 && i != TheTree->Connections->Selected->Points->Count() - 1;
@@ -1745,16 +1767,18 @@ void __fastcall TTreeEditorEx::TheTreeMouseUp(System::TObject* Sender, Controls:
 
 								const TRect ARect = ASelectedConnection->ToShape->Bounds();
 
-								const bool bIsInOutsideRect = Editorutils::IsPointInOutsideOffsetRect(AConnectionPoint, ARect, iOffset);
+								const bool bIsInOutsideRect = Editorutils::IsPointInOutsideOffsetRect(AConnectionPoint,
+									ARect, iOffset);
 
 								// WLOG_DEBUG(L"Point (xV=%d,yV=%d)(x=%d,y=%d) ToShape(l=%d,t=%d,r=%d,b=%d) IsInPrevRect=%s", APoint.XValue,
-								// 	APoint.YValue, APoint.X, APoint.Y, ARect.Left, ARect.Top, ARect.Right, ARect.Bottom,
-								// 	bIsInOutsideRect ? L"true" : L"false");
+								// APoint.YValue, APoint.X, APoint.Y, ARect.Left, ARect.Top, ARect.Right, ARect.Bottom,
+								// bIsInOutsideRect ? L"true" : L"false");
 
 								if (ASelectedConnection->ToShape != AShape && !bIsInOutsideRect) {
 									ASelectedConnection->ToShape = AShape;
 
-									if (ASelectedConnection->Style == csSides || ASelectedConnection->Style == csInvertedSides) {
+									if (ASelectedConnection->Style == csSides || ASelectedConnection->Style ==
+										csInvertedSides) {
 										ASelectedConnection->Points->ChangeXStyle(iPointIndex, cpsToRel);
 										ASelectedConnection->Points->ChangeYStyle(iPointIndex, cpsToRel);
 										ASelectedConnection->Draw();
@@ -1767,8 +1791,8 @@ void __fastcall TTreeEditorEx::TheTreeMouseUp(System::TObject* Sender, Controls:
 
 									bIsReconnected = true;
 
-									sModifiedDesc = "Reconnected " + ASelectedConnection->FromShape->SimpleText + " to " +
-										ASelectedConnection->ToShape->SimpleText;
+									sModifiedDesc = "Reconnected " + ASelectedConnection->FromShape->SimpleText +
+										" to " + ASelectedConnection->ToShape->SimpleText;
 								}
 								else {
 									if (ASelectedConnection->Style == csLine) {
@@ -1780,16 +1804,18 @@ void __fastcall TTreeEditorEx::TheTreeMouseUp(System::TObject* Sender, Controls:
 
 								const TRect ARect = ASelectedConnection->FromShape->Bounds();
 
-								const bool bIsInOutsideRect = Editorutils::IsPointInOutsideOffsetRect(AConnectionPoint, ARect, iOffset);
+								const bool bIsInOutsideRect = Editorutils::IsPointInOutsideOffsetRect(AConnectionPoint,
+									ARect, iOffset);
 
 								// WLOG_DEBUG(L"Point (xV=%d,yV=%d)(x=%d,y=%d) ToShape(l=%d,t=%d,r=%d,b=%d) IsInPrevRect=%s", APoint.XValue,
-								// 	APoint.YValue, APoint.X, APoint.Y, ARect.Left, ARect.Top, ARect.Right, ARect.Bottom,
-								// 	bIsInOutsideRect ? L"true" : L"false");
+								// APoint.YValue, APoint.X, APoint.Y, ARect.Left, ARect.Top, ARect.Right, ARect.Bottom,
+								// bIsInOutsideRect ? L"true" : L"false");
 
 								if (ASelectedConnection->FromShape != AShape && !bIsInOutsideRect) {
 									ASelectedConnection->FromShape = AShape;
 
-									if (ASelectedConnection->Style == csSides || ASelectedConnection->Style == csInvertedSides) {
+									if (ASelectedConnection->Style == csSides || ASelectedConnection->Style ==
+										csInvertedSides) {
 										ASelectedConnection->Points->ChangeXStyle(iPointIndex, cpsFromRel);
 										ASelectedConnection->Points->ChangeYStyle(iPointIndex, cpsFromRel);
 										ASelectedConnection->Draw();
@@ -1802,8 +1828,8 @@ void __fastcall TTreeEditorEx::TheTreeMouseUp(System::TObject* Sender, Controls:
 
 									bIsReconnected = true;
 
-									sModifiedDesc = "Reconnected " + ASelectedConnection->FromShape->SimpleText + " to " +
-										ASelectedConnection->ToShape->SimpleText;
+									sModifiedDesc = "Reconnected " + ASelectedConnection->FromShape->SimpleText +
+										" to " + ASelectedConnection->ToShape->SimpleText;
 								}
 								else {
 									if (ASelectedConnection->Style == csLine) {
@@ -1834,8 +1860,8 @@ void __fastcall TTreeEditorEx::TheTreeMouseUp(System::TObject* Sender, Controls:
 		}break;
 	case mbRight: {
 			// раньше определялось по 'CancelMouse', но были замечены ошибки в работе, поэтому ориентируюсь по Panning
-			const bool bCancel = TheTree->View3DOptions->HorizOffset != FHorizOffsetFix || TheTree->View3DOptions->VertOffset !=
-				FVertOffsetFix;
+			const bool bCancel = TheTree->View3DOptions->HorizOffset != FHorizOffsetFix ||
+				TheTree->View3DOptions->VertOffset != FVertOffsetFix;
 
 			if (!bCancel && !TheTree->Connecting && TheTree->Designing) {
 				if (Shift == TShiftState()) {
@@ -1862,8 +1888,17 @@ void MoveShapeWithMovingLayout(Teetree::TTreeNodeShape* Sender, const int DeltaX
 	std::set<TTreeConnection*> &AConnections) {
 	if (Sender && Sender->Parent) {
 
+		/* This callback is called for every shape in the selection, so we should handle only the first one */
+		int iSelIndex = -1;
+		int iShapeSelIndex = -1;
+
 		for (int i = 0; i < Sender->Parent->Children->Count; i++) {
 			TTreeNodeShape *AChildShape = Sender->Parent->Children->Items[i];
+
+			if (AChildShape->Selected) {
+				iSelIndex++;
+			}
+
 			if (AChildShape != Sender) {
 				if (DeltaY > 0) {
 					if (AChildShape->Y0 > Sender->Y1 - DeltaY) {
@@ -1893,26 +1928,37 @@ void MoveShapeWithMovingLayout(Teetree::TTreeNodeShape* Sender, const int DeltaX
 					AConnections.insert(AChildShape->Connections->Items[k]);
 				}
 			}
+			else {
+				iShapeSelIndex = iSelIndex;
+			}
 		}
 
-		if (DeltaX < 0) {
-			Sender->Parent->X0 = Sender->Parent->X0 + DeltaX;
-		}
-		if (DeltaX > 0) {
-			Sender->Parent->X1 = Sender->Parent->X1 + DeltaX;
-		}
-		if (DeltaY < 0) {
-			Sender->Parent->Y0 = Sender->Parent->Y0 + DeltaY;
-		}
-		if (DeltaY > 0) {
-			Sender->Parent->Y1 = Sender->Parent->Y1 + DeltaY;
-		}
+		if (iShapeSelIndex == 0) {
+			if (DeltaX < 0) {
+				const int iNewX = Sender->Parent->X0 + DeltaX;
+				if (iNewX > 0) {
+					Sender->Parent->X0 = iNewX;
+				}
+			}
+			if (DeltaX > 0) {
+				Sender->Parent->X1 = Sender->Parent->X1 + DeltaX;
+			}
+			if (DeltaY < 0) {
+				const int iNewY = Sender->Parent->Y0 + DeltaY;
+				if (iNewY > 0) {
+					Sender->Parent->Y0 = iNewY;
+				}
+			}
+			if (DeltaY > 0) {
+				Sender->Parent->Y1 = Sender->Parent->Y1 + DeltaY;
+			}
 
-		for (int k = 0; k < Sender->Parent->Connections->Count; k++) {
-			AConnections.insert(Sender->Parent->Connections->Items[k]);
-		}
+			for (int k = 0; k < Sender->Parent->Connections->Count; k++) {
+				AConnections.insert(Sender->Parent->Connections->Items[k]);
+			}
 
-		MoveShapeWithMovingLayout(Sender->Parent, DeltaX, DeltaY, AConnections);
+			MoveShapeWithMovingLayout(Sender->Parent, DeltaX, DeltaY, AConnections);
+		}
 	}
 }
 
@@ -1923,7 +1969,7 @@ void __fastcall TTreeEditorEx::TheTreeMovingShape(Teetree::TTreeNodeShape* Sende
 
 	FMovingFlag = true;
 
-	if (IsShiftPressed()) {
+	if (IsShiftPressed() && !IsAltPressed() && !IsControlPressed()) {
 		std::set<TTreeConnection*>AConnections;
 		MoveShapeWithMovingLayout(Sender, DeltaX, DeltaY, AConnections);
 		for (std::set<TTreeConnection*>::iterator it = AConnections.begin(); it != AConnections.end(); ++it) {
@@ -1937,17 +1983,26 @@ void ResizeShapeWithMovingLayout(Teetree::TTreeNodeShape* Sender, const int Delt
 	std::set<TTreeConnection*> &AConnections) {
 	if (Sender && Sender->Parent) {
 
+		/* This callback is called for every shape in the selection, so we should handle only the first one */
+		int iSelIndex = -1;
+		int iShapeSelIndex = -1;
+
 		for (int i = 0; i < Sender->Parent->Children->Count; i++) {
 			TTreeNodeShape *AChildShape = Sender->Parent->Children->Items[i];
+
+			if (AChildShape->Selected) {
+				iSelIndex++;
+			}
+
 			if (AChildShape != Sender) {
 				if (DeltaY != 0) {
-					if (AChildShape->Y0 > Sender->Y1 - DeltaY /* край на момент сдвига */) {
+					if (AChildShape->Y0 > Sender->Y1 - DeltaY /* край на момент сдвига */ ) {
 						AChildShape->MoveRelative(0, DeltaY, true);
 					}
 				}
 
 				if (DeltaX != 0) {
-					if (AChildShape->X0 > Sender->X1 - DeltaX /* край на момент сдвига */) {
+					if (AChildShape->X0 > Sender->X1 - DeltaX /* край на момент сдвига */ ) {
 						AChildShape->MoveRelative(DeltaX, 0, true);
 					}
 				}
@@ -1956,22 +2011,27 @@ void ResizeShapeWithMovingLayout(Teetree::TTreeNodeShape* Sender, const int Delt
 					AConnections.insert(AChildShape->Connections->Items[k]);
 				}
 			}
+			else {
+				iShapeSelIndex = iSelIndex;
+			}
 		}
 
-		Sender->Parent->X1 = Sender->Parent->X1 + DeltaX;
-		Sender->Parent->Y1 = Sender->Parent->Y1 + DeltaY;
+		if (iShapeSelIndex == 0) {
+			Sender->Parent->X1 = Sender->Parent->X1 + DeltaX;
+			Sender->Parent->Y1 = Sender->Parent->Y1 + DeltaY;
 
-		for (int k = 0; k < Sender->Parent->Connections->Count; k++) {
-			AConnections.insert(Sender->Parent->Connections->Items[k]);
+			for (int k = 0; k < Sender->Parent->Connections->Count; k++) {
+				AConnections.insert(Sender->Parent->Connections->Items[k]);
+			}
+
+			ResizeShapeWithMovingLayout(Sender->Parent, DeltaX, DeltaY, AConnections);
 		}
-
-		ResizeShapeWithMovingLayout(Sender->Parent, DeltaX, DeltaY, AConnections);
 	}
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TTreeEditorEx::TheTreeResizingShape(Teetree::TTreeNodeShape* Sender, Teetree::TTreeShapeHandle ACorner, int &DeltaX,
-	int &DeltaY) {
+void __fastcall TTreeEditorEx::TheTreeResizingShape(Teetree::TTreeNodeShape* Sender, Teetree::TTreeShapeHandle ACorner,
+	int &DeltaX, int &DeltaY) {
 	// В РОДИТЕЛЬСКОМ КЛАССЕ в этом методе вызывается TeeModified, что тормозит программу
 	// TTreeEditorNew::TheTreeResizingShape(Sender, ACorner, DeltaX, DeltaY);
 
@@ -1979,7 +2039,7 @@ void __fastcall TTreeEditorEx::TheTreeResizingShape(Teetree::TTreeNodeShape* Sen
 
 	FResizingFlag = true;
 
-	if (IsShiftPressed()) {
+	if (IsShiftPressed() && !IsAltPressed()) {
 		std::set<TTreeConnection*>AConnections;
 		ResizeShapeWithMovingLayout(Sender, DeltaX, DeltaY, AConnections);
 		for (std::set<TTreeConnection*>::iterator it = AConnections.begin(); it != AConnections.end(); ++it) {
@@ -1996,7 +2056,8 @@ void __fastcall TTreeEditorEx::AdjustConnectionsOfSelectedShapes() {
 
 			TTreeNodeShape *AShape = TheTree->Selected->Items[i];
 
-			if (TheTree->Connections->Items[k]->FromShape == AShape || TheTree->Connections->Items[k]->ToShape == AShape) {
+			if (TheTree->Connections->Items[k]->FromShape == AShape || TheTree->Connections->Items[k]
+				->ToShape == AShape) {
 				Editorutils::AdjustSidesConnection(TheTree->Connections->Items[k]);
 				Editorutils::ProtectConnectionToBeInSamePoints(TheTree->Connections->Items[k]);
 				break;
@@ -2008,7 +2069,8 @@ void __fastcall TTreeEditorEx::AdjustConnectionsOfSelectedShapes() {
 // ---------------------------------------------------------------------------
 void __fastcall TTreeEditorEx::OnShapeMoveResized() {
 	if (TheTree->Selected->Count()) {
-		const UnicodeString sMsg = UnicodeString(FMovingFlag ? L"[Moved]" : L"") + UnicodeString(FResizingFlag ? L"[Resized]" : L"");
+		const UnicodeString sMsg = UnicodeString(FMovingFlag ? L"[Moved]" : L"") + UnicodeString
+			(FResizingFlag ? L"[Resized]" : L"");
 		const UnicodeString sShapeText = TheTree->Selected->First()->SimpleText;
 
 		AdjustConnectionsOfSelectedShapes();
@@ -2018,7 +2080,8 @@ void __fastcall TTreeEditorEx::OnShapeMoveResized() {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TTreeEditorEx::ShapeMoveResizeModified(const System::Word AKey, const int AMouseButton, const Classes::TShiftState AShift) {
+void __fastcall TTreeEditorEx::ShapeMoveResizeModified(const System::Word AKey, const int AMouseButton,
+	const Classes::TShiftState AShift) {
 	if (FMovingFlag || FResizingFlag) {
 		OnShapeMoveResized();
 
@@ -2039,8 +2102,8 @@ void __fastcall TTreeEditorEx::ShapeMoveResizeModified(const System::Word AKey, 
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TTreeEditorEx::MenuHideWindow(const TTreeEditWindows HideWindows, const TTreeEditWindow AOption, TMenuItem * AMenu,
-	TNotifyEvent AProc) {
+void __fastcall TTreeEditorEx::MenuHideWindow(const TTreeEditWindows HideWindows, const TTreeEditWindow AOption,
+	TMenuItem * AMenu, TNotifyEvent AProc) {
 	if (HideWindows.Contains(AOption)) {
 		if (AMenu->Checked) {
 			AProc(this);
@@ -2128,7 +2191,8 @@ class AdjustedConnectionLock {
 	bool FAdjusted;
 
 public:
-	AdjustedConnectionLock(TTreeConnection *AConnection) : FStateMachineConnection(dynamic_cast<TStateMachineConnection *>(AConnection)) {
+	AdjustedConnectionLock(TTreeConnection *AConnection) : FStateMachineConnection
+		(dynamic_cast<TStateMachineConnection *>(AConnection)) {
 		FAdjusted = false;
 		if (FStateMachineConnection) {
 			FAdjusted = FStateMachineConnection->AdjustableSides;
@@ -2173,18 +2237,20 @@ void __fastcall TTreeEditorEx::OnMenuChangeConnectionType(System::TObject * Send
 
 						const int iPercentFromHeight15 = (double)ASelectedConnection->FromShape->Height * 0.1f;
 
-						const bool bTopIsPossible = ASelectedConnection->ToShape->Y0 - ASelectedConnection->FromShape->Y0 >
-							iPercentFromHeight15;
-						const bool bBottomIsPossible = ASelectedConnection->FromShape->Y1 - ASelectedConnection->ToShape->Y1 >
-							iPercentFromHeight15;
+						const bool bTopIsPossible = ASelectedConnection->ToShape->Y0 -
+							ASelectedConnection->FromShape->Y0 > iPercentFromHeight15;
+						const bool bBottomIsPossible = ASelectedConnection->FromShape->Y1 -
+							ASelectedConnection->ToShape->Y1 > iPercentFromHeight15;
 
 						const bool bTopSideCloser = ASelectedConnection->Points->Item[iPointsCount - 1]
-							.Y - ASelectedConnection->ToShape->Y0 <= ASelectedConnection->ToShape->Y1 - ASelectedConnection->Points->Item
-							[iPointsCount - 1].Y;
+							.Y - ASelectedConnection->ToShape->Y0 <= ASelectedConnection->ToShape->Y1 -
+							ASelectedConnection->Points->Item[iPointsCount - 1].Y;
 
 						const int iPercentX = AToIOType == ccftLeft ? 100 : 0;
-						const int iTopPercentY = ASelectedConnection->FromShape->Y1 < ASelectedConnection->ToShape->Y0 ? 50 : 10;
-						const int iBottomPercentY = ASelectedConnection->ToShape->Y1 < ASelectedConnection->FromShape->Y0 ? 50 : 90;
+						const int iTopPercentY = ASelectedConnection->FromShape->Y1 <
+							ASelectedConnection->ToShape->Y0 ? 50 : 10;
+						const int iBottomPercentY = ASelectedConnection->ToShape->Y1 <
+							ASelectedConnection->FromShape->Y0 ? 50 : 90;
 
 						// ближе к верхней стороне
 						if (bTopSideCloser) {
@@ -2255,18 +2321,20 @@ void __fastcall TTreeEditorEx::OnMenuChangeConnectionType(System::TObject * Send
 
 						const int iPercentFromWidth15 = (double)ASelectedConnection->FromShape->Width * 0.1f;
 
-						const bool bLeftIsPossible = ASelectedConnection->ToShape->X0 - ASelectedConnection->FromShape->X0 >
-							iPercentFromWidth15;
-						const bool bRightIsPossible = ASelectedConnection->FromShape->X1 - ASelectedConnection->ToShape->X1 >
-							iPercentFromWidth15;
+						const bool bLeftIsPossible = ASelectedConnection->ToShape->X0 -
+							ASelectedConnection->FromShape->X0 > iPercentFromWidth15;
+						const bool bRightIsPossible = ASelectedConnection->FromShape->X1 -
+							ASelectedConnection->ToShape->X1 > iPercentFromWidth15;
 
 						const bool bLeftSideCloser = ASelectedConnection->Points->Item[iPointsCount - 1]
-							.X - ASelectedConnection->ToShape->X0 <= ASelectedConnection->ToShape->X1 - ASelectedConnection->Points->Item
-							[iPointsCount - 1].X;
+							.X - ASelectedConnection->ToShape->X0 <= ASelectedConnection->ToShape->X1 -
+							ASelectedConnection->Points->Item[iPointsCount - 1].X;
 
 						const int iPercentY = AToIOType == ccftTop ? 100 : 0;
-						const int iLeftPercentX = ASelectedConnection->FromShape->X1 < ASelectedConnection->ToShape->X0 ? 50 : 10;
-						const int iRightPercentX = ASelectedConnection->ToShape->X1 < ASelectedConnection->FromShape->X0 ? 50 : 90;
+						const int iLeftPercentX = ASelectedConnection->FromShape->X1 <
+							ASelectedConnection->ToShape->X0 ? 50 : 10;
+						const int iRightPercentX = ASelectedConnection->ToShape->X1 <
+							ASelectedConnection->FromShape->X0 ? 50 : 90;
 
 						// ближе к левой стороне
 						if (bLeftSideCloser) {
@@ -2351,7 +2419,8 @@ void __fastcall TTreeEditorEx::OnMenuChangeConnectionType(System::TObject * Send
 				case csInvertedSides:
 				case csSides:
 					SetConnectionXYPointByIOType(ASelectedConnection, AFromIOType, cdtFrom, 0);
-					SetConnectionXYPointByIOType(ASelectedConnection, AToIOType, cdtTo, ASelectedConnection->Points->Count() - 1);
+					SetConnectionXYPointByIOType(ASelectedConnection, AToIOType, cdtTo,
+						ASelectedConnection->Points->Count() - 1);
 					break;
 				}
 			}
@@ -2451,7 +2520,8 @@ void __fastcall TTreeEditorEx::SetBookmark(TSpeedButton *ABookmarkBtn, TScxmlBas
 		if (ASetShape) {
 			// если на какой-то кнопке такое назначено, тогда сбросим
 			for (std::size_t i = 0; i < FBookmarkButtons.size(); i++) {
-				if (FBookmarkButtons[i] != ABookmarkBtn && FBookmarkButtons[i]->Tag == reinterpret_cast<int>(ASetShape->Guid)) {
+				if (FBookmarkButtons[i] != ABookmarkBtn && FBookmarkButtons[i]->Tag == reinterpret_cast<int>
+					(ASetShape->Guid)) {
 					ResetBookmark(FBookmarkButtons[i]);
 				}
 			}
@@ -2467,10 +2537,11 @@ void __fastcall TTreeEditorEx::SetBookmark(TSpeedButton *ABookmarkBtn, TScxmlBas
 }
 
 // ---------------------------------------------------------------------------
-const UnicodeString TTreeEditorEx::GetBookmarkHelp(TSpeedButton *ABookmarkButton, const bool bMultiline/* = true*/) {
+const UnicodeString TTreeEditorEx::GetBookmarkHelp(TSpeedButton *ABookmarkButton, const bool bMultiline /* = true */ ) {
 	UnicodeString sHelp = L"Click 'Ctrl' + 'Left Mouse Btn'";
 	sHelp = sHelp + (bMultiline ? L"\n" : L" ");
-	sHelp = sHelp + "or press 'Shift+Ctrl+" + UnicodeString(ABookmarkButton->HelpContext) + "' on selected shape to SET/RESET a bookmark";
+	sHelp = sHelp + "or press 'Shift+Ctrl+" + UnicodeString(ABookmarkButton->HelpContext) +
+		"' on selected shape to SET/RESET a bookmark";
 	return sHelp;
 }
 
@@ -2478,7 +2549,8 @@ const UnicodeString TTreeEditorEx::GetBookmarkHelp(TSpeedButton *ABookmarkButton
 void __fastcall TTreeEditorEx::SelectShapeFromBookmark(TSpeedButton * ABookmarkBtn) {
 	if (ABookmarkBtn) {
 		if (ABookmarkBtn->Tag) {
-			const int iShapeIndex = Editorutils::IndexOfShapeByGuid(TheTree, reinterpret_cast<GUID*>(ABookmarkBtn->Tag));
+			const int iShapeIndex = Editorutils::IndexOfShapeByGuid(TheTree,
+				reinterpret_cast<GUID*>(ABookmarkBtn->Tag));
 			// проверяем, существует ли до сих пор фигура
 			if (iShapeIndex != -1) {
 				TTreeNodeShape *AShape = TheTree->Shapes->Items[iShapeIndex];
@@ -2507,7 +2579,8 @@ void __fastcall TTreeEditorEx::OnBookmarkBtnClick(TObject * Sender) {
 			if (TheTree->Selected->Count()) {
 				TScxmlBaseShape * AScxmlBaseShape = dynamic_cast<TScxmlBaseShape*>(TheTree->Selected->First());
 				if (AScxmlBaseShape) {
-					SetBookmark(ASpeedButton, ASpeedButton->Tag == reinterpret_cast<int>(AScxmlBaseShape->Guid) ? NULL : AScxmlBaseShape);
+					SetBookmark(ASpeedButton, ASpeedButton->Tag == reinterpret_cast<int>(AScxmlBaseShape->Guid)
+						? NULL : AScxmlBaseShape);
 					TheTree->Invalidate();
 				}
 				else {
@@ -2525,7 +2598,8 @@ void __fastcall TTreeEditorEx::OnBookmarkBtnClick(TObject * Sender) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TTreeEditorEx::SelectConnection(TTreeConnection * AConnection, const bool bScrollInView/* = SCROLL_CHART_IN_VIEW*/) {
+void __fastcall TTreeEditorEx::SelectConnection(TTreeConnection * AConnection,
+	const bool bScrollInView /* = SCROLL_CHART_IN_VIEW */ ) {
 	TheTree->Selected->Clear();
 	TheTree->SelectConnection(AConnection);
 
@@ -2593,7 +2667,8 @@ void __fastcall TTreeEditorEx::CenterInView(TTreeNodeShape *AShape) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TTreeEditorEx::SelectShape(TTreeNodeShape * AShape, const bool bScrollInView/* = SCROLL_CHART_IN_VIEW*/) {
+void __fastcall TTreeEditorEx::SelectShape(TTreeNodeShape * AShape,
+	const bool bScrollInView /* = SCROLL_CHART_IN_VIEW */ ) {
 	TheTree->Selected->Clear();
 	AShape->Selected = true;
 
@@ -2644,8 +2719,10 @@ void __fastcall TTreeEditorEx::ZoomToFit(const Types::TRect &ABounds, TZoomFitTy
 		const int iTotalBoundsWidth = bFromZero == false ? ABounds.Width() : ABounds.Right;
 		const int iTotalBoundsHeight = bFromZero == false ? ABounds.Height() : ABounds.Bottom;
 
-		const int iWidth = TheTree->Width < iTotalBoundsWidth ? TheTree->HorzScrollBar->PageSize : (TheTree->Width - iHorzSize);
-		const int iHeight = TheTree->Height < iTotalBoundsHeight ? TheTree->VertScrollBar->PageSize : (TheTree->Height - iHorzSize);
+		const int iWidth = TheTree->Width < iTotalBoundsWidth ? TheTree->HorzScrollBar->PageSize :
+			(TheTree->Width - iHorzSize);
+		const int iHeight = TheTree->Height < iTotalBoundsHeight ? TheTree->VertScrollBar->PageSize :
+			(TheTree->Height - iHorzSize);
 
 		if (AZoomFitType == zftAll) {
 			const double dTreeRatio = (double)(TheTree->Width) / (double)(TheTree->Height);
@@ -2731,7 +2808,7 @@ void __fastcall TTreeEditorEx::ZoomToFitSelection(TZoomFitType AZoomFitType, boo
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TTreeEditorEx::SelectTemporaryRectangle(const TRect &ABounds, const UnicodeString sMsg/* = L""*/) {
+void __fastcall TTreeEditorEx::SelectTemporaryRectangle(const TRect &ABounds, const UnicodeString sMsg /* = L"" */ ) {
 	FTemporarySelectedRectangle.Bounds = ABounds;
 	FTemporarySelectedRectangle.Enabled = true;
 	FTemporarySelectedRectangle.Text = sMsg;
@@ -2769,12 +2846,61 @@ void __fastcall TTreeEditorEx::TheTreeAfterDraw(System::TObject * Sender) {
 			TheTree->Canvas->Font->Size = 8;
 			TheTree->Canvas->Font->Style = TFontStyles();
 			TheTree->Canvas->TextAlign = TA_LEFT;
-			TheTree->Canvas->TextOut3D(FTemporarySelectedRectangle.Bounds.left, FTemporarySelectedRectangle.Bounds.top - 14, TeeTreeZ,
-				FTemporarySelectedRectangle.Text);
+			TheTree->Canvas->TextOut3D(FTemporarySelectedRectangle.Bounds.left,
+				FTemporarySelectedRectangle.Bounds.top - 14, TeeTreeZ, FTemporarySelectedRectangle.Text);
 		}
 	}
 	else {
 		FTemporarySelectedRectangle.Visible = false;
+	}
+
+	TTreeEx * ATreeEx = static_cast<TTreeEx*>(TheTree);
+	if (ATreeEx) {
+		const TRect ABounds2D = ATreeEx->Bounds2D;
+
+		if (ATreeEx->Selected->Count()) {
+
+			TRect ASelectionBounds = ATreeEx->Selected->First()->Bounds();
+
+			if (ATreeEx->DragAxis == axisX) {
+				TheTree->Canvas->Pen->Color = clGreen;
+				TheTree->Canvas->Pen->Width = 1;
+
+				const int iLeft = Min(static_cast<int>(ABounds2D.Left), static_cast<int>(ASelectionBounds.Left));
+				const int iTop = ASelectionBounds.top;
+				const int iBottom = iTop;
+				const int iRight = Max(static_cast<int>(ABounds2D.Right), static_cast<int>(ASelectionBounds.Right));
+
+				TheTree->Canvas->LineWithZ(iLeft, iTop, iRight, iBottom, TeeTreeZ);
+
+				TheTree->Canvas->Brush->Color = clWhite;
+				TheTree->Canvas->Font->Color = clGreen;
+				TheTree->Canvas->Font->Size = 8;
+				TheTree->Canvas->Font->Style = TFontStyles();
+				TheTree->Canvas->TextAlign = TA_LEFT;
+				TheTree->Canvas->TextOut3D(ASelectionBounds.Left, ASelectionBounds.Top - 18, TeeTreeZ,
+					L"Press X to unlock axis");
+			}
+			else if (ATreeEx->DragAxis == axisY) {
+				TheTree->Canvas->Pen->Color = clBlue;
+				TheTree->Canvas->Pen->Width = 1;
+
+				const int iLeft = ASelectionBounds.Left;
+				const int iTop = Min(static_cast<int>(ABounds2D.Top), static_cast<int>(ASelectionBounds.Top));
+				const int iBottom = Max(static_cast<int>(ABounds2D.Bottom), static_cast<int>(ASelectionBounds.Bottom));
+				const int iRight = iLeft;
+
+				TheTree->Canvas->LineWithZ(iLeft, iTop, iRight, iBottom, TeeTreeZ);
+
+				TheTree->Canvas->Brush->Color = clWhite;
+				TheTree->Canvas->Font->Color = clBlue;
+				TheTree->Canvas->Font->Size = 8;
+				TheTree->Canvas->Font->Style = TFontStyles();
+				TheTree->Canvas->TextAlign = TA_LEFT;
+				TheTree->Canvas->TextOut3D(ASelectionBounds.Left, ASelectionBounds.Top - 18, TeeTreeZ,
+					L"Press Y to unlock axis");
+			}
+		}
 	}
 
 	TTreeEx::DrawChartFocus(TheTree);
@@ -2801,7 +2927,8 @@ void __fastcall TTreeEditorEx::OnEditNodeTreeKeyPress(System::TObject* Sender, S
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TTreeEditorEx::OnEditNodeTreeKeyDown(System::TObject* Sender, System::Word &Key, Classes::TShiftState Shift) {
+void __fastcall TTreeEditorEx::OnEditNodeTreeKeyDown(System::TObject* Sender, System::Word &Key,
+	Classes::TShiftState Shift) {
 	switch(Key) {
 	case VK_DOWN:
 		Key = 0;
@@ -2838,12 +2965,12 @@ TCustomTreeElement * __fastcall TTreeEditorEx::NodeTreeShapeToTreeElement(TTreeN
 	return NULL;
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 void __fastcall TTreeEditorEx::ButtonUndoRedoDropDownClick(TObject *Sender) {
 	AddMenuUndoItems(PopupMenuBtnUndoRedo->Items);
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 void __fastcall TTreeEditorEx::ButtonSelectionDropDownClick(TObject *Sender) {
 	AddMenuSelectionItems(PopupMenuBtnSelect->Items);
 }

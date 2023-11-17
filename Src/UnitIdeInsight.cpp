@@ -425,6 +425,14 @@ void __fastcall TDialogInsight::EditInsightChange(TObject *Sender) {
 
 				DoAddMenuItems(ALevelNode, FStateMachineEditor->View1, FStateMachineEditor->ImageList1);
 			}
+
+			/* Select */ {
+				UnicodeString sLevelName = L"Select";
+				TTreeNodeShape *ALevelNode = AddTreeChildObjectData(TreeViewInsight, AEditorLevelNode, indtLevel, sLevelName, sTextUpper,
+					NULL, sLevelName.UpperCase().Pos(sTextUpper));
+
+				DoAddMenuItems(ALevelNode, FStateMachineEditor->MenuMainSelect, FStateMachineEditor->ImageList1);
+			}
 		}
 
 		/* Main Menu */ {

@@ -918,11 +918,16 @@ TStateChildType __fastcall TScxmlBaseShape::XMLNodeNameToType(const UnicodeStrin
 }
 
 // ---------------------------------------------------------------------------
-UnicodeString __fastcall TScxmlBaseShape::TypeToXMLNodeName(const TStateChildType AType) {
+UnicodeString __fastcall TScxmlBaseShape::TypeToName(const TStateChildType AType) {
 	PPropInfo APropInfo = GetPropInfo(__classid(TScxmlBaseShape), "StateChildType");
 	if (!APropInfo)
 		throw Exception("GetPropInfo(__classid(TScxmlBaseShape), \"StateChildType\"==NULL)");
 	return StringReplace(GetEnumName(*(APropInfo->PropType), AType), L"sct", L"", TReplaceFlags()).LowerCase();
+}
+
+// ---------------------------------------------------------------------------
+UnicodeString __fastcall TScxmlBaseShape::TypeToXMLNodeName(const TStateChildType AType) {
+	return TypeToName(AType).LowerCase();
 }
 
 // ---------------------------------------------------------------------------

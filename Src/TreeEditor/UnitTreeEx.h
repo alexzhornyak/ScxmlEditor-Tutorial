@@ -36,6 +36,9 @@
 
 #include <TeeTree.hpp>
 
+typedef enum { axisAll, axisX, axisY } TAxis2D;
+
+
 class TTreeEx: public TTree {
 private:
 	bool FLockCursorFlag;
@@ -49,6 +52,8 @@ private:
 	TNotifyEvent FOnAfterMouseDown;
 
 	UnicodeString FApplicationVersion;
+
+	TAxis2D FDragAxis;
 
 protected:
 	// переопределяем, чтобы сделать запрет по созданию точки по клику
@@ -98,6 +103,7 @@ public:
 
 	static void __fastcall DrawChartFocus(TCustomTree *ACustomTree);
 	__property bool DisableFocus = {read=FDisableFocus, write=FDisableFocus, default=false};
+	__property TAxis2D DragAxis = {read=FDragAxis, write=FDragAxis, default=axisAll};
 
 __published:
 	__property TStringList * Bookmarks = {read=FBookmarks, write=SetBookmarks};

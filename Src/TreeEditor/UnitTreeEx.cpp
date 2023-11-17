@@ -72,6 +72,8 @@ __fastcall TTreeEx::TTreeEx(Classes::TComponent* AOwner) : TTree(AOwner) {
 	FLockCursorFlag = false;
 
 	FDisableFocus = false;
+
+	FDragAxis = axisAll;
 }
 
 // ---------------------------------------------------------------------------
@@ -117,6 +119,7 @@ void __fastcall TTreeEx::Assign(Classes::TPersistent* Source) {
 			if (ASourceTreeEx) {
 				FApplicationVersion = ASourceTreeEx->FApplicationVersion;
 				FBookmarks->Assign(ASourceTreeEx->FBookmarks);
+				FDragAxis = ASourceTreeEx->FDragAxis;
 			}
 		}
 		else
