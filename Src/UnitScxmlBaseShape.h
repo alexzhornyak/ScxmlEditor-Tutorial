@@ -502,6 +502,8 @@ public:
 
 	inline virtual bool __fastcall MustSimpleTextBeUnique(void) { return true;} /* override */
 
+	bool FindChildInitial(TVisualScxmlBaseShape *AShape, const UnicodeString &sInitial);
+
 	// возвращает первое соединение, которое выходит наружу изнутри, или приходит внутрь
 	// гарантирует FromShape, ToShape != NULL
 	TStateMachineConnection * __fastcall HasInternalInOutConnections(void);

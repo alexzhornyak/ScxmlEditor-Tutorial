@@ -222,10 +222,14 @@ void __fastcall TTreeEditorEx::OnDectivateTreeEditor(TObject *Sender) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TTreeEditorEx::DoInvalidateTrees() {
-	if (NodeTree && IsWindowVisible(NodeTree->Handle)) {
-		NodeTree->Invalidate();
+	try {
+		if (NodeTree && IsWindowVisible(NodeTree->Handle)) {
+			NodeTree->Invalidate();
+		}
+		DoInvalidateFocusedTheTree();
 	}
-	DoInvalidateFocusedTheTree();
+	catch(Exception * e) {
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -1119,8 +1123,12 @@ void __fastcall TTreeEditorEx::PopupNodePopup(System::TObject* Sender) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TTreeEditorEx::DoInvalidateFocusedTheTree(void) {
-	if (TheTree && IsWindowVisible(TheTree->Handle) && TheTree->Focused()) {
-		this->InvalidateTheTreeWithTemp();
+	try {
+		if (TheTree && IsWindowVisible(TheTree->Handle) && TheTree->Focused()) {
+			this->InvalidateTheTreeWithTemp();
+		}
+	}
+	catch(Exception * E) {
 	}
 }
 

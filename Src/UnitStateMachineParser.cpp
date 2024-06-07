@@ -2047,6 +2047,62 @@ namespace Statemachine {
 		}
 	}
 
+	typedef std::set<UnicodeString> TUniqueIDs;
+
+	void ValidateInitialIDs(ILMDXmlNode * AParentNode, TUniqueIDs &AParentIDs, ILMDXmlNode * AScxmlNode) {
+		if (AParentNode && (AParentNode->NodeType == LMD_NODE_ELEMENT || AParentNode->NodeType == LMD_NODE_DOCUMENT)) {
+
+			TUniqueIDs AChildrenIDs;
+
+			bool bIsScxml = false;
+			bool bIsState = false;
+
+			UnicodeString sId = "";
+
+			// SCXML могут быть вложенными, поэтому определяем текущий,
+			// как только встретится новый элемент, переключаем родителя на него,
+			// и рекурсивно переходим, а потом возвращаемся обратно
+			if (AParentNode->NodeName == L"scxml") {
+				bIsScxml = true;
+				AScxmlNode = AParentNode;
+				sId = AParentNode->GetAttr(L"name", "");
+			}
+			else if (VISUAL_STATE_NAMES.find(AParentNode->NodeName) != VISUAL_STATE_NAMES.end()) {
+				bIsState = true;
+				sId = AParentNode->GetAttr(L"id", "");
+				if (!sId.IsEmpty()) {
+					   AParentIDs.insert(sId);
+				}
+			}
+
+			for (int i = 0; i < AParentNode->ChildNodes->Count; i++) {
+				ValidateInitialIDs(AParentNode->ChildNodes->Item[i], AChildrenIDs, AScxmlNode);
+			}
+
+			if (bIsScxml || bIsState) {
+				std::auto_ptr<TStringList> AUniqueIDs(new TStringList);
+				AUniqueIDs->Delimiter = L' ';
+				AUniqueIDs->StrictDelimiter = true;
+				AUniqueIDs->DelimitedText = AParentNode->GetAttr(L"initial", "");
+				for (int i = 0; i < AUniqueIDs->Count; i++) {
+					const UnicodeString sInitialID = AUniqueIDs->Strings[i];
+					if (AChildrenIDs.find(sInitialID) == AChildrenIDs.end()) {
+						const UnicodeString sScxmlName = AScxmlNode ? UnicodeString(AScxmlNode->GetAttr(L"name", L"")) : UnicodeString("");
+						throw EScxmlDuplicateStateIDException(UnicodeString().sprintf(L"Element:[%s]:[%s] initial ID:[%s] not found Scxml:[%s]",
+								AParentNode->NodeName.c_str(), sId.c_str(), sInitialID.c_str(), sScxmlName.c_str()), sScxmlName, sId);
+					}
+				}
+
+			}
+
+			if (!bIsScxml) {
+				if (!AChildrenIDs.empty()) {
+             		AParentIDs.insert(AChildrenIDs.begin(), AChildrenIDs.end());
+				}
+			}
+		}
+	}
+
 	typedef std::multimap<UnicodeString, UnicodeString>TUnicodeDictionary;
 
 	void GetInPredicateValues(const UnicodeString &sText, const std::set<UnicodeString> &AStateIDs, const bool bIsNullDatamodel) {
@@ -2190,6 +2246,9 @@ namespace Statemachine {
 				TMapUniqueStates AUniqueStates;
 				ValidateUniqueStateIDs(AMainDoc->DocumentElement, AUniqueStates, NULL);
 
+				TUniqueIDs AUniqueIDs;
+				ValidateInitialIDs(AMainDoc->DocumentElement, AUniqueIDs, NULL);
+
 #if 0 // для глубокой отладки
 				DumpUniqueStates(AUniqueStates);
 #endif
@@ -2308,6 +2367,10 @@ namespace Statemachine {
 #if 0 // для глубокой отладки
 				DumpUniqueStates(AUniqueStates);
 #endif
+
+                // More precise check for initials
+				TUniqueIDs AUniqueIDs;
+				ValidateInitialIDs(AMainDoc->DocumentElement, AUniqueIDs, NULL);
 
 				// проверка предиката 'In()'
 				if (SettingsData->ValidateInPredicate) {

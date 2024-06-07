@@ -662,18 +662,29 @@ void __fastcall TStateMachineConnection::UpdateDummyText(void) {
 void __fastcall TStateMachineConnection::UpdateAppearance() {
 	if (!this->ComponentState.Contains(csLoading)) {
 
+		const int iLineWidth1 = SettingsData->ThemeSettings->TransitionLineWidth;
+		const int iLineWidth2 = SettingsData->ThemeSettings->TransitionLineWidth + 1;
+		const int iLineWidth3 = SettingsData->ThemeSettings->TransitionLineWidth + 2;
+
 		if (IsSelfConnection || (Type == external && IsTargetDescendant)) {
 			this->Border->Style = IsTargetStored ? psDash : psDot;
+
 			this->Border->Color = IsTargetStored ? clRed : clBlue;
-			this->Border->Width = IsTargetStored ? 2 : 1;
+			this->Border->Width = IsTargetStored ? iLineWidth2 : iLineWidth1;
 			this->Border->SmallDots = false;
 		}
 		else {
 			this->Border->Style = IsTargetDescendant ? psDot : psSolid;
 			this->Border->Color = clBlack;
-			this->Border->Width = 1;
-			this->Border->SmallDots = IsTargetDescendant == false;
+			this->Border->Width = iLineWidth1;
+			this->Border->SmallDots = IsTargetDescendant == false && iLineWidth1 == 1;
 		}
+
+        // NOTE: it looks ugly on Windows without aliasing
+		if (this->Border->Style == psDot && this->Border->Width != 1) {
+			this->Border->Style = psSolid;
+		}
+
 		this->Format->Visible = ContentTrigger->Enabled == true;
 		this->Format->Color = clInfoBk;
 		this->Format->Gradient->Visible = false;
@@ -692,10 +703,13 @@ void __fastcall TStateMachineConnection::UpdateAppearance() {
 		TColor AToBackColor = Locked ? (InheritanceMismatch ? clRed : (InheritanceResolver->ResolvedProps->Count ? TColor(RGB(255, 150,
 						50)) : clYellow)) : (InheritanceMismatch ? clFuchsia : clBlack);
 
+		const int iArrowFromSize1 = SettingsData->ThemeSettings->TransitionFromCircleSize;
+		const int iArrowFromSize2 = SettingsData->ThemeSettings->TransitionFromCircleSize + 5;
+
 		switch(SWITCH) {
 		case tstINVERT_CONDITION: {
 				this->ArrowFrom->Style = casSolid;
-				this->ArrowFrom->Size = 15;
+				this->ArrowFrom->Size = iArrowFromSize2;
 				this->Border->SmallDots = false;
 				this->Border->Style = psDash;
 				this->Border->Color = TColor(RGB(200, 0, 0));
@@ -709,7 +723,7 @@ void __fastcall TStateMachineConnection::UpdateAppearance() {
 			}break;
 		case tstSIMPLE: {
 				this->ArrowFrom->Style = casSolid;
-				this->ArrowFrom->Size = 15;
+				this->ArrowFrom->Size = iArrowFromSize2;
 				this->Border->SmallDots = false;
 				this->Border->Style = psDash;
 				this->Border->Color = clGray;
@@ -724,7 +738,7 @@ void __fastcall TStateMachineConnection::UpdateAppearance() {
 		case tstNONE:
 		default: {
 				this->ArrowFrom->Style = casCircle;
-				this->ArrowFrom->Size = 10;
+				this->ArrowFrom->Size = iArrowFromSize1;
 			}break;
 		}
 
@@ -735,14 +749,14 @@ void __fastcall TStateMachineConnection::UpdateAppearance() {
 			if (this == StateMachineEditor->FActiveDebugConnection) {
 				this->Border->Color = clRed;
 				this->Border->Style = psSolid;
-				this->Border->Width = 3;
+				this->Border->Width = iLineWidth3;
 				this->Border->SmallDots = false;
 			}
 			else {
 				if (StateMachineEditor->WasEnteredConnection(this)) {
 					this->Border->Color = SettingsData->ChartTestCoverageColor;
 					this->Border->Style = psSolid;
-					this->Border->Width = 3;
+					this->Border->Width = iLineWidth3;
 					this->Border->SmallDots = false;
 
 				}

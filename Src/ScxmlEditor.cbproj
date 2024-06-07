@@ -1015,13 +1015,13 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">alexander.zhornyak@gmail.com</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">Scxml State Charts Editor</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">2.5.3.1760</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.5.4.1768</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright">alexander.zhornyak@gmail.com</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>
 						<VersionInfoKeys Name="OriginalFilename"/>
 						<VersionInfoKeys Name="ProductName">ScxmlEditor</VersionInfoKeys>
-						<VersionInfoKeys Name="ProductVersion">2.5.3.0</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">2.5.4.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
 					<Parameters>

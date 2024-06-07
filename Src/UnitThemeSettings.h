@@ -70,6 +70,12 @@ private:
 	TColor FChildNormalBorderColor;
 	TPenStyle FChildNormalBorderStyle;
 
+	int FTransitionLineWidth;
+	void __fastcall SetTransitionLineWidth(int val);
+
+	int FTransitionFromCircleSize;
+	void __fastcall SetTransitionFromCircleSize(int val);
+
 protected:
 
 public:
@@ -101,6 +107,9 @@ __published:
 
 	 __property TColor VirtualNormalColor = {read=FVirtualNormalColor, write=FVirtualNormalColor, default=clSilver};
 	 __property TColor VirtualHeadColor = {read=FVirtualHeadColor, write=FVirtualHeadColor, default=clGray};
+
+	 __property int TransitionLineWidth = {read=FTransitionLineWidth, write=SetTransitionLineWidth, default=1};
+	 __property int TransitionFromCircleSize = {read=FTransitionFromCircleSize, write=SetTransitionFromCircleSize, default=10};
 };
 
 /* PROP EDITORS */

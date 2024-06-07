@@ -77,6 +77,9 @@ __fastcall TThemeSettings::TThemeSettings() {
 
 	FVirtualNormalColor = clSilver;
 	FVirtualHeadColor = clGray;
+
+	FTransitionLineWidth = 1;
+	FTransitionFromCircleSize = 10;
 }
 
 // ---------------------------------------------------------------------------
@@ -114,6 +117,8 @@ void __fastcall TThemeSettings::Assign(Classes::TPersistent* Source) {
 			FVirtualNormalColor = AThemeSettings->FVirtualNormalColor;
 			FVirtualHeadColor = AThemeSettings->FVirtualHeadColor;
 
+			FTransitionLineWidth = AThemeSettings->FTransitionLineWidth;
+			FTransitionFromCircleSize = AThemeSettings->FTransitionFromCircleSize;
 		}
 		else
 			throw Exception(__FUNCTION__ "> Can not cast <" + Source->ClassName() + "> to <"+this->ClassName() + ">");
@@ -136,6 +141,20 @@ void __fastcall TThemeSettings::OnGetPropEditorClass(TPersistent *AInstance, ILM
 //			AEditorClass = __classid(TExternTesterExePropEditor);
 //		}
 //	}
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TThemeSettings::SetTransitionLineWidth(int val) {
+	if (val > 0 && val < 20) {
+		FTransitionLineWidth = val;
+	}
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TThemeSettings::SetTransitionFromCircleSize(int val) {
+	if (val > 6 && val < 40) {
+		FTransitionFromCircleSize = val;
+	}
 }
 
 //---------------------------------------------------------------------------

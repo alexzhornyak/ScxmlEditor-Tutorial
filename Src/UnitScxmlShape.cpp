@@ -47,20 +47,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma package(smart_init)
 
-bool FindChildInitial(TVisualScxmlBaseShape *AShape, const UnicodeString &sInitial) {
-	for (int i = 0; i < AShape->Children->Count; i++) {
-		TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(AShape->Children->Items[i]);
-		if (AVisualScxmlBaseShape) {
-			if ((AVisualScxmlBaseShape->SimpleText == sInitial) ||
-				// рекурсивно поиск по вложенным
-				FindChildInitial(AVisualScxmlBaseShape, sInitial)) {
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
@@ -87,31 +73,6 @@ FBinding(TScxmlBinding::early), FInvokeID(L""), FTempInvokeID(L"") {
 // ---------------------------------------------------------------------------
 __fastcall TScxmlShape::~TScxmlShape() {
 
-}
-
-// ---------------------------------------------------------------------------
-UnicodeString __fastcall TScxmlShape::GetInitial(void) {
-	// проверка, является ли валидным указатель на начальный элемент
-	if (!FInitial.IsEmpty()) {
-		// если классический Initial с указанием только одного элемента
-		if (!FInitial.Pos(" ")) {
-			// если есть хоть в одном из дочерних
-			if (FindChildInitial(this, FInitial)) {
-				return FInitial;
-			}
-
-			WLOG_WARNING(L"Initial element [%s] is not a valid child element of [%s]!", FInitial.c_str(), this->SimpleText.c_str());
-
-			FInitial = L""; // не знаю, правильно или нет
-		}
-		else {
-			// иначе просто возвращаем список без всяких проверок
-			return FInitial;
-		}
-
-	}
-	// в этом случае невозвращаем начальный элемент, но пока сохраняем FInitial
-	return L"";
 }
 
 // ---------------------------------------------------------------------------

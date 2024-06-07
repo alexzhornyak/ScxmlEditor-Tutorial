@@ -1,4 +1,4 @@
-/***********************************************************************************
+/** *********************************************************************************
 BSD 3-Clause License
 
 Copyright (c) 2018, https://github.com/alexzhornyak
@@ -28,7 +28,7 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ***************************************************************************************/
+ ************************************************************************************** */
 
 #include <vcl.h>
 #pragma hdrstop
@@ -107,7 +107,8 @@ protected:
 int GetMaxBrotherRight(TVisualScxmlBaseShape *AVisualParentShape) {
 	int iX = 0;
 	for (int i = 0; i < AVisualParentShape->Children->Count; i++) {
-		TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(AVisualParentShape->Children->Items[i]);
+		TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(AVisualParentShape->Children->Items[i]);
 		if (AVisualShape) {
 			if (AVisualShape->X1 > iX) {
 				iX = AVisualShape->X1;
@@ -121,7 +122,8 @@ int GetMaxBrotherRight(TVisualScxmlBaseShape *AVisualParentShape) {
 int GetMaxBrotherBottom(TVisualScxmlBaseShape *AVisualParentShape, TVisualScxmlBaseShape *ACurrentShape) {
 	int iY = 0;
 	for (int i = 0; i < AVisualParentShape->Children->Count; i++) {
-		TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(AVisualParentShape->Children->Items[i]);
+		TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(AVisualParentShape->Children->Items[i]);
 		// чтобы не смещать на собственную высоту
 		if (AVisualShape && (ACurrentShape != AVisualShape)) {
 			WLOG_DEBUG(L"Current child is <%s>", AVisualShape->SimpleText.c_str());
@@ -137,22 +139,25 @@ int GetMaxBrotherBottom(TVisualScxmlBaseShape *AVisualParentShape, TVisualScxmlB
 bool IsOverlappedWithSomebody(TVisualScxmlBaseShape *AVisualParentShape, TVisualScxmlBaseShape *ACurrentShape) {
 	bool bOverlapped = false;
 	for (int i = 0; i < AVisualParentShape->Children->Count; i++) {
-		TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(AVisualParentShape->Children->Items[i]);
+		TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(AVisualParentShape->Children->Items[i]);
 		// чтобы не сравнивать с собой
 		if (AVisualShape && (ACurrentShape != AVisualShape)) {
 			TRect AIntersect;
 
-			//			WLOG_DEBUG(L"Comparing overlapping between [%s] and [%d][%s]", ACurrentShape->SimpleText.c_str(), i,
-			//				AVisualShape->SimpleText.c_str());
+			// WLOG_DEBUG(L"Comparing overlapping between [%s] and [%d][%s]", ACurrentShape->SimpleText.c_str(), i,
+			// AVisualShape->SimpleText.c_str());
 
-			bOverlapped = IntersectRect(AIntersect, TRect(AVisualShape->X0, AVisualShape->Y0, AVisualShape->X1, AVisualShape->Y1),
-				TRect(ACurrentShape->X0, ACurrentShape->Y0, ACurrentShape->X1, ACurrentShape->Y1));
+			bOverlapped = IntersectRect(AIntersect, TRect(AVisualShape->X0, AVisualShape->Y0, AVisualShape->X1,
+					AVisualShape->Y1), TRect(ACurrentShape->X0, ACurrentShape->Y0, ACurrentShape->X1,
+					ACurrentShape->Y1));
 
 			if (bOverlapped) {
 				WLOG_DEBUG(L"Intersect %s=[%d,%d,%d,%d] with %s=[%d,%d,%d,%d]", AVisualShape->SimpleText.c_str(),
-					AVisualShape->Bounds().left, AVisualShape->Bounds().top, AVisualShape->Bounds().right, AVisualShape->Bounds().bottom,
-					ACurrentShape->SimpleText.c_str(), ACurrentShape->Bounds().left, ACurrentShape->Bounds().top,
-					ACurrentShape->Bounds().right, ACurrentShape->Bounds().bottom);
+					AVisualShape->Bounds().left, AVisualShape->Bounds().top, AVisualShape->Bounds().right,
+					AVisualShape->Bounds().bottom, ACurrentShape->SimpleText.c_str(),
+					ACurrentShape->Bounds().left, ACurrentShape->Bounds().top, ACurrentShape->Bounds().right,
+					ACurrentShape->Bounds().bottom);
 				break;
 			}
 		}
@@ -168,14 +173,16 @@ void CheckVisualScxmlShapePos(TCustomTree *ATree, TVisualScxmlBaseShape *AVisual
 			if (AVisualShape->X0 <= AVisualShapeParent->X0) {
 				AVisualShape->X0 = AVisualShapeParent->X0 + 30;
 
-				WLOG_DEBUG(L"Moved %s on X axis %d,%d,%d,%d", AVisualShape->SimpleText.c_str(), AVisualShape->Bounds().left,
-					AVisualShape->Bounds().top, AVisualShape->Bounds().right, AVisualShape->Bounds().bottom);
+				WLOG_DEBUG(L"Moved %s on X axis %d,%d,%d,%d", AVisualShape->SimpleText.c_str(),
+					AVisualShape->Bounds().left, AVisualShape->Bounds().top, AVisualShape->Bounds().right,
+					AVisualShape->Bounds().bottom);
 			}
 			if (AVisualShape->Y0 <= AVisualShapeParent->Y0) {
 				AVisualShape->Y0 = AVisualShapeParent->Y0 + 30;
 
-				WLOG_DEBUG(L"Moved %s on Y axis %d,%d,%d,%d", AVisualShape->SimpleText.c_str(), AVisualShape->Bounds().left,
-					AVisualShape->Bounds().top, AVisualShape->Bounds().right, AVisualShape->Bounds().bottom);
+				WLOG_DEBUG(L"Moved %s on Y axis %d,%d,%d,%d", AVisualShape->SimpleText.c_str(),
+					AVisualShape->Bounds().left, AVisualShape->Bounds().top, AVisualShape->Bounds().right,
+					AVisualShape->Bounds().bottom);
 			}
 
 			if (iVisualIndex > 0 && IsOverlappedWithSomebody(AVisualShapeParent, AVisualShape)) {
@@ -189,7 +196,8 @@ void CheckVisualScxmlShapePos(TCustomTree *ATree, TVisualScxmlBaseShape *AVisual
 		// итерация дочерних
 		int iIndex = 0;
 		for (int i = 0; i < AVisualShape->Children->Count; i++) {
-			TVisualScxmlBaseShape *AVisualChild = dynamic_cast<TVisualScxmlBaseShape*>(AVisualShape->Children->Items[i]);
+			TVisualScxmlBaseShape *AVisualChild = dynamic_cast<TVisualScxmlBaseShape*>
+				(AVisualShape->Children->Items[i]);
 			if (AVisualChild) {
 				CheckVisualScxmlShapePos(ATree, AVisualChild, iIndex);
 				iIndex++;
@@ -262,7 +270,8 @@ __fastcall TScxmlBaseShape::~TScxmlBaseShape() {
 // ---------------------------------------------------------------------------
 void __fastcall TScxmlBaseShape::DrawShapeCanvas(Tecanvas::TCanvas3D * ACanvas, const Types::TRect & R) {
 	/* INHERITANCE */
-	if (this->Locked && !this->InheritanceMismatch && StateMachineEditorUnit && StateMachineEditorUnit->IsInherited && StateMachineEditor) {
+	if (this->Locked && !this->InheritanceMismatch && StateMachineEditorUnit && StateMachineEditorUnit->IsInherited &&
+		StateMachineEditor) {
 		StateMachineEditor->EnqueeScxmlShapeForInheritanceCheck(this);
 	}
 
@@ -434,7 +443,8 @@ TStateMachineEditor * __fastcall TScxmlBaseShape::GetStateMachineEditor(void) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TScxmlBaseShape::OnGetPropEditorClass(TPersistent *AInstance, ILMDProperty *APropInfo, TLMDPropEditorClass &AEditorClass) {
+void __fastcall TScxmlBaseShape::OnGetPropEditorClass(TPersistent *AInstance, ILMDProperty *APropInfo,
+	TLMDPropEditorClass &AEditorClass) {
 	const UnicodeString sPropName = APropInfo->Name();
 	if (APropInfo && !IsPublishedProp(__classid(TTreeNodeShape), sPropName)) {
 
@@ -483,7 +493,8 @@ bool __fastcall TScxmlBaseShape::OnFilterPropEvent(const UnicodeString & sPropNa
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TScxmlBaseShape::OnGetPropCaptionColor(TObject *Sender, Lmdinspropinsp::TLMDPropertyInspectorItem *AItem, TColor &AColor) {
+void __fastcall TScxmlBaseShape::OnGetPropCaptionColor(TObject *Sender,
+	Lmdinspropinsp::TLMDPropertyInspectorItem *AItem, TColor &AColor) {
 	// специальный случай
 	if (AItem->PropName == L"InheritanceResolver") {
 		AColor = clTeal;
@@ -492,7 +503,8 @@ void __fastcall TScxmlBaseShape::OnGetPropCaptionColor(TObject *Sender, Lmdinspr
 
 	if (AItem->TypeInfo->Kind != tkClass && !AItem->Parent && AItem->PropInfo[0]->IsWritable()) {
 
-		if (!IsPublishedProp(__classid(TTreeNodeShape), AItem->PropName) && IsPublishedProp(__classid(TScxmlBaseShape), AItem->PropName)) {
+		if (!IsPublishedProp(__classid(TTreeNodeShape), AItem->PropName) && IsPublishedProp(__classid(TScxmlBaseShape),
+				AItem->PropName)) {
 			AColor = clTeal;
 		}
 	}
@@ -515,7 +527,8 @@ UnicodeString __fastcall TScxmlBaseShape::OnGetHTMLPropertyInfo(const UnicodeStr
 
 	if (sPropName == L"ExcludeFromSave") {
 		return L"The element will not be saved to <B>the resulting scxml file</B>\n" //
-		"P.S. You can exclude the element by <b>ExcludeConditions</b> also (see <b>ExcludeConditions</b> for more details)" //
+		"P.S. You can exclude the element by <b>ExcludeConditions</b> also (see <b>ExcludeConditions</b> for more details)"
+		//
 		;
 	}
 
@@ -588,7 +601,7 @@ UnicodeString __fastcall TScxmlBaseShape::OnGetHTMLPropertyInfo(const UnicodeStr
 	}
 
 	if (sPropName == L"InheritanceResolver") {
-		return L"String list of properties which will be skipped during inheritance comparison\n"//
+		return L"String list of properties which will be skipped during inheritance comparison\n" //
 		;
 	}
 
@@ -658,7 +671,8 @@ TScxmlBaseShape * __fastcall TScxmlBaseShape::AddStateChild(TStateChildType AChi
 	TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(this);
 	if (AVisualShape) {
 		for (int i = 0; i < AVisualShape->Count(); i++) {
-			TVisualScxmlBaseShape *AChildVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(AVisualShape->Children->Items[i]);
+			TVisualScxmlBaseShape *AChildVisualShape = dynamic_cast<TVisualScxmlBaseShape*>
+				(AVisualShape->Children->Items[i]);
 			if (AChildVisualShape) {
 				if (AChildVisualShape->Bounds().Bottom > iTop) {
 					iTop = AChildVisualShape->Bounds().Bottom;
@@ -757,7 +771,8 @@ TScxmlBaseShape * __fastcall TScxmlBaseShape::AddStateChild(TStateChildType AChi
 		AShape = AddScxmlClassShape<TProtocolBindingShape>(this, TScxmlBaseShape::TypeToXMLNodeName(AChildType), false);
 		break;
 	case sctWeakProtocolBinding:
-		AShape = AddScxmlClassShape<TProtocolWeakBindingShape>(this, TScxmlBaseShape::TypeToXMLNodeName(AChildType), false);
+		AShape = AddScxmlClassShape<TProtocolWeakBindingShape>(this, TScxmlBaseShape::TypeToXMLNodeName(AChildType),
+			false);
 		break;
 	case sctSetValue:
 		AShape = AddScxmlClassShape<TSetValueShape>(this, TScxmlBaseShape::TypeToXMLNodeName(AChildType), false);
@@ -866,7 +881,8 @@ void __fastcall TScxmlBaseShape::PropsToAttributes(ILMDXmlElement * ANode) {
 
 		if (bRequiredOrDefault && sAttrValue.IsEmpty())
 			throw EScxmlBaseShapeException(this, L"Empty '" + sAttrName + "'",
-			L"Required attribute '" + sAttrName + "' can not be empty! Shape id:["+this->SimpleText + "] name:["+this->Name + "]");
+			L"Required attribute '" + sAttrName + "' can not be empty! Shape id:["+this->SimpleText +
+			"] name:["+this->Name + "]");
 
 		bool bDoSave = true;
 
@@ -909,7 +925,8 @@ TStateChildType __fastcall TScxmlBaseShape::XMLNodeNameToType(const UnicodeStrin
 		PPropInfo APropInfo = GetPropInfo(__classid(TScxmlBaseShape), "StateChildType");
 		assert(APropInfo != NULL);
 		const TStateChildType AType = TStateChildType(i);
-		const UnicodeString sEnumName = StringReplace(GetEnumName(*(APropInfo->PropType), AType), L"sct", L"", TReplaceFlags());
+		const UnicodeString sEnumName = StringReplace(GetEnumName(*(APropInfo->PropType), AType), L"sct", L"",
+			TReplaceFlags());
 		if (sEnumName.UpperCase() == sNodeName.UpperCase()) {
 			return AType;
 		}
@@ -992,24 +1009,27 @@ void __fastcall TScxmlBaseShape::ValidateChild(TScxmlBaseShape *AChild) {
 		return;
 
 	if (this->AvailableTypes.find(AChild->StateChildType) == this->AvailableTypes.end())
-		throw EScxmlBaseShapeException(AChild, L"Not valid child", UnicodeString().sprintf(L"<%s> is not a valid child of <%s>", //
+		throw EScxmlBaseShapeException(AChild, L"Not valid child",
+		UnicodeString().sprintf(L"<%s> is not a valid child of <%s>", //
 			AChild->XMLName.c_str(), this->XMLName.c_str()));
 
 	if (AChild->OccursOnce) {
 		if (AChild->Parent != this)
-			throw EScxmlBaseShapeException(AChild, L"Program logic", UnicodeString().sprintf
-			(L"ValidateChild> Program logic error! [%s] is not a child of [%s]", //
+			throw EScxmlBaseShapeException(AChild, L"Program logic",
+			UnicodeString().sprintf(L"ValidateChild> Program logic error! [%s] is not a child of [%s]", //
 				AChild->SimpleText.c_str(), this->SimpleText.c_str()));
 
 		if (AChild->ChildIndex >= this->Children->Count)
 			throw EScxmlBaseShapeException(AChild, L"Program logic", //
-			UnicodeString().sprintf(L"ValidateChild> Program logic error! ChildIndex:[%s]:[%d] is out of range [%s]:[0...%d]", //
+			UnicodeString().sprintf(
+				L"ValidateChild> Program logic error! ChildIndex:[%s]:[%d] is out of range [%s]:[0...%d]", //
 				AChild->SimpleText.c_str(), AChild->ChildIndex, this->SimpleText.c_str(), this->Children->Count));
 
 		// проверяем все предыдущие
 		for (int i = 0; i < AChild->ChildIndex; i++) {
 			if (this->Children->Items[i]->ClassType() == AChild->ClassType()) {
-				throw EScxmlBaseShapeException(AChild, L"Duplicated", L"<" + AChild->XMLName + "> must occur only 1 time!");
+				throw EScxmlBaseShapeException(AChild, L"Duplicated",
+					L"<" + AChild->XMLName + "> must occur only 1 time!");
 			}
 		}
 	}
@@ -1027,8 +1047,9 @@ void __fastcall TScxmlBaseShape::ValidateShape() {
 			}
 		}
 		else {
-			const UnicodeString sMsg = UnicodeString().sprintf(L"E%d:%s> text=[%s] name=[%s]", SCXML_ERROR_WRONG_CHILD_TYPE,
-				GetErrorDescription(SCXML_ERROR_WRONG_CHILD_TYPE).c_str(), this->SimpleText.c_str(), this->Name.c_str());
+			const UnicodeString sMsg = UnicodeString().sprintf(L"E%d:%s> text=[%s] name=[%s]",
+				SCXML_ERROR_WRONG_CHILD_TYPE, GetErrorDescription(SCXML_ERROR_WRONG_CHILD_TYPE).c_str(),
+				this->SimpleText.c_str(), this->Name.c_str());
 
 			if (it == FErrorMap.end()) {
 				WLOG_WARNING(L"%s", sMsg.c_str());
@@ -1060,9 +1081,10 @@ void __fastcall TScxmlBaseShape::ValidateSimpleText(TCustomTree *ATree) {
 				TStateErrorMap::iterator it = ABaseShape->FErrorMap.find(SCXML_ERROR_NAME_DUPLICATED);
 
 				if (ANamesList->IndexOf(ABaseShape->SimpleText) != -1) {
-					const UnicodeString sMsg = UnicodeString().sprintf(L"E%d:%s> text=[%s] name=[%s]", SCXML_ERROR_NAME_DUPLICATED,
-						ABaseShape->GetErrorDescription(SCXML_ERROR_NAME_DUPLICATED).c_str(), ABaseShape->SimpleText.c_str(),
-						ABaseShape->Name.c_str());
+					const UnicodeString sMsg = UnicodeString().sprintf(L"E%d:%s> text=[%s] name=[%s]",
+						SCXML_ERROR_NAME_DUPLICATED,
+						ABaseShape->GetErrorDescription(SCXML_ERROR_NAME_DUPLICATED).c_str(),
+						ABaseShape->SimpleText.c_str(), ABaseShape->Name.c_str());
 					if (it == ABaseShape->FErrorMap.end()) {
 						WLOG_WARNING(sMsg.c_str());
 						bValid = false;
@@ -1211,7 +1233,8 @@ void __fastcall TScxmlBaseShape::SetInheritanceMismatch(bool val) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TScxmlBaseShape::StoreInheritedVisualsParentOffsets(void) // сохранит положение дочерних относительно родителя
+void __fastcall TScxmlBaseShape::StoreInheritedVisualsParentOffsets(void)
+// сохранит положение дочерних относительно родителя
 {
 	// запомним дочерние не наследованные
 	for (int i = 0; i < this->Children->Count; i++) {
@@ -1229,7 +1252,8 @@ void __fastcall TScxmlBaseShape::RestoreInheritedVisualsParentOffsets(void) // в
 	// сдвинем дочерние не наследованные
 	for (int i = 0; i < this->Children->Count; i++) {
 		TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(this->Children->Items[i]);
-		if (AVisualScxmlBaseShape && !AVisualScxmlBaseShape->Locked && !AVisualScxmlBaseShape->ParentOffsetStored->IsEmpty()) {
+		if (AVisualScxmlBaseShape && !AVisualScxmlBaseShape->Locked &&
+			!AVisualScxmlBaseShape->ParentOffsetStored->IsEmpty()) {
 
 			const int iOffsetX = AVisualScxmlBaseShape->ParentOffsetStored->X - AVisualScxmlBaseShape->ParentOffsetX;
 			const int iOffsetY = AVisualScxmlBaseShape->ParentOffsetStored->Y - AVisualScxmlBaseShape->ParentOffsetY;
@@ -1341,8 +1365,8 @@ bool __fastcall TScxmlBaseShape::ShouldDrawVectorImages(void) {
 // ---------------------------------------------------------------------------
 // TVisualScxmlBaseShape
 // ---------------------------------------------------------------------------
-__fastcall TVisualScxmlBaseShape::TVisualScxmlBaseShape(Classes::TComponent * AOwner) : TScxmlBaseShape(AOwner), FEntered(false),
-FInitial(L""), FExamined(false), FSkipDebugging(false), FBreakpointSet(false) {
+__fastcall TVisualScxmlBaseShape::TVisualScxmlBaseShape(Classes::TComponent * AOwner) : TScxmlBaseShape(AOwner),
+FEntered(false), FInitial(L""), FExamined(false), FSkipDebugging(false), FBreakpointSet(false) {
 
 	FAvailableTypes.insert(sctProtocolBinding);
 	FAvailableTypes.insert(sctWeakProtocolBinding);
@@ -1450,16 +1474,16 @@ bool __fastcall TVisualScxmlBaseShape::OnFilterPropEvent(const UnicodeString & s
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TVisualScxmlBaseShape::OnGetPropCaptionColor(TObject *Sender, Lmdinspropinsp::TLMDPropertyInspectorItem *AItem,
-	TColor &AColor) {
+void __fastcall TVisualScxmlBaseShape::OnGetPropCaptionColor(TObject *Sender,
+	Lmdinspropinsp::TLMDPropertyInspectorItem *AItem, TColor &AColor) {
 
 	TScxmlBaseShape::OnGetPropCaptionColor(Sender, AItem, AColor);
 
 	if (AItem->TypeInfo->Kind != tkClass && !AItem->Parent && AItem->PropInfo[0]->IsWritable()) {
 		if (IsPublishedProp(__classid(TVisualScxmlBaseShape), AItem->PropName)) {
-			//			if (!IsPublishedProp(__classid(TScxmlBaseShape), AItem->PropName)) {
-			//				AColor = RGB(90,90,0);
-			//			}
+			// if (!IsPublishedProp(__classid(TScxmlBaseShape), AItem->PropName)) {
+			// AColor = RGB(90,90,0);
+			// }
 		}
 		else {
 			AColor = clNavy;
@@ -1547,19 +1571,39 @@ UnicodeString __fastcall TVisualScxmlBaseShape::OnGetHTMLPropertyInfo(const Unic
 
 	if (sPropName == L"ChildrenAlignXOffset") {
 		return //
-		L"children are aligned to the <b>left</b>, <b>right</b> or <b>center</b> of the shape + 'ChildrenAlignXOffset'\n" //
+		L"children are aligned to the <b>left</b>, <b>right</b> or <b>center</b> of the shape + 'ChildrenAlignXOffset'\n"
+		//
 		;
 	}
 
 	if (sPropName == L"ChildrenAlignY") {
 		return //
-		L"<B>scayClusterTop</B> - children are aligned to the <b>top</b> corner of the shape in <b>cluster mode</b>\n" //
+		L"<B>scayClusterTop</B> - children are aligned to the <b>top</b> corner of the shape in <b>cluster mode</b>\n"
+		//
 		"<B>scayAlwaysBottom</B> - children are aligned to the <b>bottom</b> corner of the shape\n" //
 		"<B>scayAlwaysTop</B> - children are aligned to the <b>top</b> corner of the shape\n" //
 		;
 	}
 
 	return L"";
+}
+
+// ---------------------------------------------------------------------------
+bool TVisualScxmlBaseShape::FindChildInitial(TVisualScxmlBaseShape *AShape, const UnicodeString &sInitial) {
+	for (int i = 0; i < AShape->Children->Count; i++) {
+		TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>
+			(AShape->Children->Items[i]);
+		if (AVisualScxmlBaseShape) {
+			if ((AVisualScxmlBaseShape->SimpleText == sInitial) ||
+				// we skip virtual substates, they will be checked later
+				(AVisualScxmlBaseShape->StateChildType == sctVirtual) ||
+				// рекурсивно поиск по вложенным
+				FindChildInitial(AVisualScxmlBaseShape, sInitial)) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -1603,7 +1647,8 @@ void __fastcall TVisualScxmlBaseShape::UpdateStateChildren(void) {
 			const int iWasIndex = AChildShape->ChildIndex;
 			if (iWasIndex != iBrotherIndex) {
 				AChildShape->ChildIndex = iBrotherIndex;
-				WLOG_DEBUG(L"[%s] Reassigned brother index from[%d] to[%d]", AChildShape->SimpleText.c_str(), iWasIndex, iBrotherIndex);
+				WLOG_DEBUG(L"[%s] Reassigned brother index from[%d] to[%d]", AChildShape->SimpleText.c_str(),
+					iWasIndex, iBrotherIndex);
 			}
 			iBrotherIndex++;
 			// применяем автопозицию
@@ -1631,13 +1676,13 @@ UnicodeString __fastcall TVisualScxmlBaseShape::GetInitial(void) {
 	if (!FInitial.IsEmpty()) {
 		// если классический Initial с указанием только одного элемента
 		if (!FInitial.Pos(" ")) {
-			for (int i = 0; i < this->Children->Count; i++) {
-				TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(this->Children->Items[i]);
-				if (AVisualScxmlBaseShape && AVisualScxmlBaseShape->SimpleText == FInitial) {
-					return FInitial;
-				}
+			// если есть хоть в одном из дочерних
+			if (this->FindChildInitial(this, FInitial)) {
+				return FInitial;
 			}
-			WLOG_WARNING(L"Initial element [%s] is not a valid child element of [%s]!", FInitial.c_str(), this->SimpleText.c_str());
+
+			WLOG_WARNING(L"Initial element [%s] is not a valid child element of [%s]!", FInitial.c_str(),
+				this->SimpleText.c_str());
 
 			FInitial = L""; // не знаю, правильно или нет
 		}
@@ -1778,7 +1823,8 @@ void __fastcall TVisualScxmlBaseShape::UpdateBreakpointView() {
 
 // ---------------------------------------------------------------------------
 TVertTextAlign __fastcall TVisualScxmlBaseShape::GetVertTextAlign(void) {
-	return this->IsCluster() ? Teetree::vtaTop : (FAutoVertTextAlign ? Teetree::vtaCenter : TScxmlBaseShape::GetVertTextAlign());
+	return this->IsCluster() ? Teetree::vtaTop :
+		(FAutoVertTextAlign ? Teetree::vtaCenter : TScxmlBaseShape::GetVertTextAlign());
 }
 
 // ---------------------------------------------------------------------------
@@ -1963,11 +2009,10 @@ void __fastcall TVisualScxmlBaseShape::DrawShapeCanvas(Tecanvas::TCanvas3D * ACa
 		}
 
 		if (TVisualScxmlBaseShape * AVisualParent = this->VisualParent) {
-
 			switch(AVisualParent->StateChildType) {
 			case sctScxml:
 			case sctState: {
-					if (AVisualParent->Initial.IsEmpty()) {
+					if (AVisualParent->FInitial.IsEmpty()) {
 
 						TVisualScxmlBaseShape *AFirstVisual = NULL;
 
@@ -2010,7 +2055,49 @@ void __fastcall TVisualScxmlBaseShape::DrawShapeCanvas(Tecanvas::TCanvas3D * ACa
 			default:
 				break;
 			}
+
+			TTreeNodeShape *AParent = dynamic_cast<TTreeNodeShape*>(AVisualParent->Parent);
+			while (AParent) {
+
+				TVisualScxmlBaseShape * AVisualUpperParent = dynamic_cast<TVisualScxmlBaseShape*>(AParent);
+				if (AVisualUpperParent) {
+					if (AVisualUpperParent->ExcludeFromSave) {
+						break;
+					}
+
+					bool bIsNestedInitial = false;
+
+					switch(AVisualUpperParent->StateChildType) {
+					case sctScxml:
+					case sctState: {
+							if (AVisualUpperParent->FInitial == this->SimpleText) {
+								bIsNestedInitial = true;
+							}
+						}break;
+					}
+
+					if (bIsNestedInitial) {
+						ACanvas->Brush->Color = SettingsData->ThemeSettings->StateInitialBorderColor;
+						ACanvas->Pen->Color = clBlack;
+
+						if (this->StateChildType == sctFinal) {
+
+							ACanvas->EllipseWithZ(TRect(R.Left - 4, R.Top - 10, R.Left + 6, R.Top), TeeTreeZ);
+
+						}
+						else {
+							ACanvas->EllipseWithZ(TRect(R.Left + 4, R.Top + 4, R.Left + 14, R.Top + 14), TeeTreeZ);
+						}
+
+						break;
+					}
+				}
+
+				AParent = AParent->Parent;
+			}
+
 		}
+
 	}
 }
 
@@ -2023,7 +2110,8 @@ void __fastcall TVisualScxmlBaseShape::SetEntered(bool val) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TVisualScxmlBaseShape::SetChildrenEntered(TNodeShapeList *AShapes, bool bVal, bool bRecursive /* =true */ ) {
+void __fastcall TVisualScxmlBaseShape::SetChildrenEntered(TNodeShapeList *AShapes, bool bVal,
+	bool bRecursive /* =true */ ) {
 	for (int i = 0; i < AShapes->Count; i++) {
 		TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(AShapes->Items[i]);
 		if (AVisualShape) {
@@ -2100,7 +2188,8 @@ void __fastcall TVisualScxmlBaseShape::ArrangeSelfConnections(void) {
 
 	for (int i = 0; i < this->Connections->Count; i++) {
 		if (this->Connections->Items[i]->ToShape == this) {
-			TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(this->Connections->Items[i]);
+			TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+				(this->Connections->Items[i]);
 			if (AStateMachineConnection) {
 
 				const TSelfConnectionInfo AInfo = AStateMachineConnection->SelfConnectionInfo;
@@ -2113,7 +2202,8 @@ void __fastcall TVisualScxmlBaseShape::ArrangeSelfConnections(void) {
 				// некрасиво, когда вылазит соединение за пределы фигуры,
 				// поэтому будем рассматривать варианты только когда оно в пределах
 				AStateMachineConnection->AlignSelfConnection(AInfo.Align,
-					ASelfAlignMap[AInfo.Align].LengthOffsetBegin < 0 ? 0 : ASelfAlignMap[AInfo.Align].LengthOffsetBegin,
+					ASelfAlignMap[AInfo.Align].LengthOffsetBegin < 0 ? 0 : ASelfAlignMap[AInfo.Align]
+					.LengthOffsetBegin,
 					ASelfAlignMap[AInfo.Align].LengthOffsetEnd < 0 ? 0 : ASelfAlignMap[AInfo.Align].LengthOffsetEnd,
 					ASelfAlignMap[AInfo.Align].TextOffset);
 			}
@@ -2126,7 +2216,8 @@ void __fastcall TVisualScxmlBaseShape::ArrangeDefaultSelfConnections(void) {
 
 	for (int i = 0; i < this->Connections->Count; i++) {
 
-		TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(this->Connections->Items[i]);
+		TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+			(this->Connections->Items[i]);
 		if (AStateMachineConnection && AStateMachineConnection->IsSelfConnection) {
 
 			AStateMachineConnection->AlignSelfConnection(scaTop);
@@ -2173,10 +2264,13 @@ void __fastcall TVisualScxmlBaseShape::SetExcludeFromSave(bool val) {
 TStateMachineConnection * __fastcall TVisualScxmlBaseShape::HasInternalInOutConnections(void) {
 	if (Tree) {
 		for (int i = 0; i < Tree->Connections->Count; i++) {
-			TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(Tree->Connections->Items[i]);
+			TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+				(Tree->Connections->Items[i]);
 			if (AStateMachineConnection && !AStateMachineConnection->IsSelfConnection) {
-				TVisualScxmlBaseShape * AVisualFrom = dynamic_cast<TVisualScxmlBaseShape*>(AStateMachineConnection->FromShape);
-				TVisualScxmlBaseShape * AVisualTo = dynamic_cast<TVisualScxmlBaseShape*>(AStateMachineConnection->ToShape);
+				TVisualScxmlBaseShape * AVisualFrom = dynamic_cast<TVisualScxmlBaseShape*>
+					(AStateMachineConnection->FromShape);
+				TVisualScxmlBaseShape * AVisualTo = dynamic_cast<TVisualScxmlBaseShape*>
+					(AStateMachineConnection->ToShape);
 				if (AVisualFrom && AVisualTo) {
 					const bool bThisFromParent = AVisualFrom->HasAsParent(this);
 					const bool bThisToParent = AVisualTo->HasAsParent(this);
@@ -2342,8 +2436,8 @@ bool __fastcall TChildScxmlBaseShape::OnFilterPropEvent(const UnicodeString &sPr
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TChildScxmlBaseShape::OnGetPropCaptionColor(TObject *Sender, Lmdinspropinsp::TLMDPropertyInspectorItem *AItem,
-	TColor &AColor) {
+void __fastcall TChildScxmlBaseShape::OnGetPropCaptionColor(TObject *Sender,
+	Lmdinspropinsp::TLMDPropertyInspectorItem *AItem, TColor &AColor) {
 
 	TScxmlBaseShape::OnGetPropCaptionColor(Sender, AItem, AColor);
 
@@ -2395,7 +2489,8 @@ UnicodeString __fastcall TChildScxmlBaseShape::OnGetHTMLPropertyInfo(const Unico
 
 	if (sPropName == L"ClipOutMax") {
 		return //
-		"If <B>ClipOutValue</B> is set to <B>true</B> then the shape's text will be cut until <B>ClipOutMax</B> position\n" //
+		"If <B>ClipOutValue</B> is set to <B>true</B> then the shape's text will be cut until <B>ClipOutMax</B> position\n"
+		//
 		"<B>For example:</B>\n" //
 		"    Text=<B>'Very long string'</B>\n" //
 		"    ClipOutValue=true\n" //
@@ -2479,8 +2574,8 @@ void __fastcall TChildScxmlBaseShape::UpdateSimpleText() {
 			}
 		}
 
-		SimpleText = sOut.IsEmpty() ? sXMLName : UnicodeString().sprintf(L"%s%s {%s}", sXMLName.c_str(), sXMLTextInfo.c_str(),
-			sOut.c_str());
+		SimpleText = sOut.IsEmpty() ? sXMLName : UnicodeString().sprintf(L"%s%s {%s}", sXMLName.c_str(),
+			sXMLTextInfo.c_str(), sOut.c_str());
 
 		UpdateParentSimpleText();
 
@@ -2586,8 +2681,9 @@ void __fastcall TChildScxmlBaseShape::DrawShapeCanvas(Tecanvas::TCanvas3D* ACanv
 // ---------------------------------------------------------------------------
 // -------------------- EScxmlDuplicateStateIDException ----------------------
 // ---------------------------------------------------------------------------
-__fastcall EScxmlDuplicateStateIDException::EScxmlDuplicateStateIDException(const UnicodeString &sMsg, const UnicodeString &sScxmlName,
-	const UnicodeString &sID) : Exception(sMsg), FScxmlName(sScxmlName), FStateID(sID) {
+__fastcall EScxmlDuplicateStateIDException::EScxmlDuplicateStateIDException(const UnicodeString &sMsg,
+	const UnicodeString &sScxmlName, const UnicodeString &sID) : Exception(sMsg), FScxmlName(sScxmlName),
+FStateID(sID) {
 
 }
 

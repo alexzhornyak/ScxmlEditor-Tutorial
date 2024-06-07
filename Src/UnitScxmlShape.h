@@ -75,9 +75,6 @@ protected:
 
 	virtual void __fastcall DrawShapeCanvas(Tecanvas::TCanvas3D * ACanvas, const Types::TRect & R);
 
-	/* может быть любой элемент в этом SCXML */
-	virtual UnicodeString __fastcall GetInitial(void);
-
     inline virtual bool __fastcall GetOccursOnce(void) { return true; }
 
 	void __fastcall SyncByInvokeID(void);
