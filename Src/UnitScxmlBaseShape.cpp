@@ -2056,44 +2056,52 @@ void __fastcall TVisualScxmlBaseShape::DrawShapeCanvas(Tecanvas::TCanvas3D * ACa
 				break;
 			}
 
-			TTreeNodeShape *AParent = dynamic_cast<TTreeNodeShape*>(AVisualParent->Parent);
-			while (AParent) {
+			if (!this->SimpleText.IsEmpty()) {
 
-				TVisualScxmlBaseShape * AVisualUpperParent = dynamic_cast<TVisualScxmlBaseShape*>(AParent);
-				if (AVisualUpperParent) {
-					if (AVisualUpperParent->ExcludeFromSave) {
-						break;
-					}
+				TTreeNodeShape *AParent = dynamic_cast<TTreeNodeShape*>(AVisualParent->Parent);
+				while (AParent) {
 
-					bool bIsNestedInitial = false;
+					TVisualScxmlBaseShape * AVisualUpperParent = dynamic_cast<TVisualScxmlBaseShape*>(AParent);
+					if (AVisualUpperParent) {
+						if (AVisualUpperParent->ExcludeFromSave) {
+							break;
+						}
 
-					switch(AVisualUpperParent->StateChildType) {
-					case sctScxml:
-					case sctState: {
-							if (AVisualUpperParent->FInitial == this->SimpleText) {
-								bIsNestedInitial = true;
+						bool bIsNestedInitial = false;
+
+						switch(AVisualUpperParent->StateChildType) {
+						case sctScxml:
+						case sctState: {
+								std::auto_ptr<TStringList>AInitialList(new TStringList);
+								AInitialList->StrictDelimiter = true;
+								AInitialList->Delimiter = L' ';
+								AInitialList->DelimitedText =  AVisualUpperParent->FInitial;
+								if (AInitialList->IndexOf(this->SimpleText) != -1) {
+									bIsNestedInitial = true;
+								}
+							}break;
+						}
+
+						if (bIsNestedInitial) {
+							ACanvas->Brush->Color = SettingsData->ThemeSettings->StateInitialBorderColor;
+							ACanvas->Pen->Color = clBlack;
+
+							if (this->StateChildType == sctFinal) {
+
+								ACanvas->EllipseWithZ(TRect(R.Left - 4, R.Top - 10, R.Left + 6, R.Top), TeeTreeZ);
+
 							}
-						}break;
+							else {
+								ACanvas->EllipseWithZ(TRect(R.Left + 4, R.Top + 4, R.Left + 14, R.Top + 14), TeeTreeZ);
+							}
+
+							break;
+						}
 					}
 
-					if (bIsNestedInitial) {
-						ACanvas->Brush->Color = SettingsData->ThemeSettings->StateInitialBorderColor;
-						ACanvas->Pen->Color = clBlack;
-
-						if (this->StateChildType == sctFinal) {
-
-							ACanvas->EllipseWithZ(TRect(R.Left - 4, R.Top - 10, R.Left + 6, R.Top), TeeTreeZ);
-
-						}
-						else {
-							ACanvas->EllipseWithZ(TRect(R.Left + 4, R.Top + 4, R.Left + 14, R.Top + 14), TeeTreeZ);
-						}
-
-						break;
-					}
+					AParent = AParent->Parent;
 				}
 
-				AParent = AParent->Parent;
 			}
 
 		}
