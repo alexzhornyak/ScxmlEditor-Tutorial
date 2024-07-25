@@ -1729,6 +1729,51 @@ void __fastcall TVisualScxmlBaseShape::SetIsInitial(bool val) {
 }
 
 // ---------------------------------------------------------------------------
+bool __fastcall TVisualScxmlBaseShape::GetIsInitialDeep(void) {
+	TVisualScxmlBaseShape *AVisualParent = dynamic_cast<TVisualScxmlBaseShape*>(this->Parent);
+	while (AVisualParent) {
+		const bool bIsInitial = !AVisualParent->FInitial.IsEmpty() && (AVisualParent->FInitial == this->SimpleText);
+		if (bIsInitial) {
+			return true;
+		}
+		AVisualParent = dynamic_cast<TVisualScxmlBaseShape*>(AVisualParent->Parent);
+	}
+	return false;
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TVisualScxmlBaseShape::SetIsInitialDeep(bool val) {
+	bool bNeedToRedraw = false;
+	TVisualScxmlBaseShape *AVisualParent = dynamic_cast<TVisualScxmlBaseShape*>(this->Parent);
+	if (AVisualParent) {
+		if (val) {
+			if (AVisualParent->FInitial != this->SimpleText) {
+				AVisualParent->Initial = this->SimpleText;
+				bNeedToRedraw = true;
+			}
+		}
+		else if (AVisualParent->FInitial == this->SimpleText) {
+			AVisualParent->Initial = L"";
+			bNeedToRedraw = true;
+		}
+
+		AVisualParent = dynamic_cast<TVisualScxmlBaseShape*>(AVisualParent->Parent);
+		while (AVisualParent) {
+			if (AVisualParent->FInitial == this->SimpleText) {
+				AVisualParent->Initial = L"";
+				bNeedToRedraw = true;
+			}
+			AVisualParent = dynamic_cast<TVisualScxmlBaseShape*>(AVisualParent->Parent);
+		}
+	}
+
+	// иначе будет access violation
+	if (!this->ComponentState.Contains(csReading) && !this->ComponentState.Contains(csLoading) && bNeedToRedraw) {
+		this->Draw();
+	}
+}
+
+// ---------------------------------------------------------------------------
 void __fastcall TVisualScxmlBaseShape::SetStateId(UnicodeString sVal) {
 	// эта нода была initial до этого
 	if (this->VisualParent && !this->VisualParent->FInitial.IsEmpty() && this->VisualParent->FInitial == SimpleText) {
@@ -2075,7 +2120,7 @@ void __fastcall TVisualScxmlBaseShape::DrawShapeCanvas(Tecanvas::TCanvas3D * ACa
 								std::auto_ptr<TStringList>AInitialList(new TStringList);
 								AInitialList->StrictDelimiter = true;
 								AInitialList->Delimiter = L' ';
-								AInitialList->DelimitedText =  AVisualUpperParent->FInitial;
+								AInitialList->DelimitedText = AVisualUpperParent->FInitial;
 								if (AInitialList->IndexOf(this->SimpleText) != -1) {
 									bIsNestedInitial = true;
 								}
@@ -2168,8 +2213,8 @@ void __fastcall TVisualScxmlBaseShape::SetDefaultSize() {
 
 	SetNormalAppearance();
 
-	Width = 100;
-	Height = 50;
+	Width = SettingsData->ThemeSettings->StateDefaultWidth;
+	Height = SettingsData->ThemeSettings->StateDefaultHeight;
 }
 
 // ---------------------------------------------------------------------------

@@ -357,6 +357,10 @@ FPropSplitter(NULL), FFormReplaceDlg(NULL) {
 	MenuChartStatistics->OnClick = OnMenuChartStatistics;
 
 	MenuResetToDefault->OnClick = OnMenuResetViewToDefault;
+	MenuViewPresetsMinimal->OnClick = OnMenuViewPresetsMinimal;
+	MenuViewPresetsCustom->OnClick = OnMenuViewPresetsCustom;
+	MenuViewPresets->OnClick = OnMenuViewPresets;
+	MenuViewFullScreen->OnClick = OnMenuViewFullScreen;
 
 	for (int i = 0; i < File1->Count; i++) {
 		File1->Items[i]->ShortCut = 0;
@@ -4043,9 +4047,13 @@ void __fastcall TStateMachineEditor::PopupNodePopup(System::TObject * Sender) {
 
 		FMenuFilterSelectionByProperty->Visible = TheTree->Selected->Count() > 1;
 
+		// NOTE: IsInitialDeep is not published !
 		FMenuIsInitial->Visible = ASelectedShape && IsPublishedProp(ASelectedShape, "IsInitial");
 		if (FMenuIsInitial->Visible) {
-			FMenuIsInitial->Checked = GetPropValue(ASelectedShape, "IsInitial");
+			TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape *>(ASelectedShape);
+			if (AVisualShape) {
+				  FMenuIsInitial->Checked = AVisualShape->IsInitialDeep;
+			}
 		}
 
 		FMenuConvertTo->Clear();
@@ -4409,11 +4417,15 @@ void __fastcall TStateMachineEditor::OnMenuIsInitialClick(TObject * Sender) {
 		if (AMenuItem) {
 			TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>
 				(GetSafeTreeListFirst(TheTree->Selected->Shapes));
+			// NOTE: IsInitialDeep is not published !
 			if (AVisualShape && IsPublishedProp(AVisualShape, "IsInitial")) {
+				AVisualShape->IsInitialDeep = AMenuItem->Checked;
 
-				SetPropValue(AVisualShape, "IsInitial", AMenuItem->Checked);
+				if (PropSettingsInspector) {
+					PropSettingsInspector->UpdateContent();
+				}
 
-				GetPropSettingsInspector()->UpdateContent();
+				TheTree->Invalidate();
 
 				TeeModified(true, 1, "Changed initial state [" + AVisualShape->SimpleText + "]");
 			}
@@ -5241,6 +5253,161 @@ void __fastcall TStateMachineEditor::OnMenuResetViewToDefault(TObject *Sender) {
 	TheTree->ShowImages = true;
 	TheTree->ShowText = true;
 	TheTree->CrossBox->Visible = true;
+
+	this->SaveEditorParameters();
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuViewPresetsMinimal(TObject *Sender) {
+	TTreeEditWindows HideWindows = TTreeEditWindows() << teInspector << teNodeTree << teToolbar << teToolShapes <<
+		teEditors << teFont << teFormat << teRulers << TTreeEditWindow::teStatus << teModeTabs << teMainMenu <<
+		teSideToolbar;
+
+	this->TreeHideEditorPanels(HideWindows);
+
+	TheTree->Shapes->Visible = true;
+	TheTree->Connections->Visible = true;
+	TheTree->CrossBox->Visible = true;
+	TheTree->ShowImages = true;
+	TheTree->ShowText = true;
+	TheTree->CrossBox->Visible = true;
+
+	this->SaveEditorParameters();
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuViewPresetsCustom(TObject *Sender) {
+	std::auto_ptr<TForm>AFormPtr(new TForm(this));
+	AFormPtr->Caption = L"View Presets Editor";
+
+	TPanel *APanel = new TPanel(AFormPtr.get());
+	APanel->Parent = AFormPtr.get();
+	APanel->ShowCaption = false;
+	APanel->Height = 40;
+	APanel->Align = alTop;
+	APanel->AlignWithMargins = true;
+
+	TButton *AButtonAdd = new TButton(AFormPtr.get());
+	AButtonAdd->Parent = APanel;
+	AButtonAdd->Caption = L"Add";
+	AButtonAdd->Align = alLeft;
+	AButtonAdd->AlignWithMargins = true;
+	AButtonAdd->ModalResult = mrYes;
+
+	TButton *AButtonRemove = new TButton(AFormPtr.get());
+	AButtonRemove->Parent = APanel;
+	AButtonRemove->Caption = L"Remove";
+	AButtonRemove->Align = alLeft;
+	AButtonRemove->AlignWithMargins = true;
+	AButtonRemove->ModalResult = mrNo;
+
+	TButton *AButtonCancel = new TButton(AFormPtr.get());
+	AButtonCancel->Parent = APanel;
+	AButtonCancel->Caption = L"Cancel";
+	AButtonCancel->Align = alRight;
+	AButtonCancel->AlignWithMargins = true;
+	AButtonCancel->ModalResult = mrCancel;
+
+	TComboBox *AComboEdit = new TComboBox(AFormPtr.get());
+	AComboEdit->Parent = AFormPtr.get();
+	AComboEdit->Align = alTop;
+	AComboEdit->AlignWithMargins = true;
+
+	// NOTE: use this to garantee Combo over Panel
+	AComboEdit->Top = 0;
+	APanel->Top = AComboEdit->Height;
+
+	for (int k = 0; k < SettingsData->TempRegistry->Count; k++) {
+		const UnicodeString sPrefix = this->ClassName() + ".ViewPresets.";
+		if (SettingsData->TempRegistry->Names[k].Pos(sPrefix) == 1) {
+			AComboEdit->Items->Add(StringReplace(SettingsData->TempRegistry->Names[k], sPrefix, L"",
+					TReplaceFlags() << rfIgnoreCase));
+		}
+	}
+
+	AFormPtr->AutoSize = true;
+
+	const int iRes = AFormPtr->ShowModal();
+
+	const UnicodeString sPresetName = AComboEdit->Text.Trim();
+	if (!sPresetName.IsEmpty()) {
+		const UnicodeString sRegKey = this->ClassName() + ".ViewPresets." + sPresetName;
+
+		switch(iRes) {
+		case mrYes: {
+				SettingsData->TempRegistry->Values[sRegKey] = UnicodeString().sprintf(L"%d;%d",
+					this->HideWindowsStatus.ToInt(), PanelNodes->Width);
+			}break;
+		case mrNo: {
+				const int iIndex = SettingsData->TempRegistry->IndexOfName(sRegKey);
+				if (iIndex != -1) {
+					SettingsData->TempRegistry->Delete(iIndex);
+				}
+			}break;
+		}
+	}
+	else {
+		LOG_WARNING_SS << "Preset name can not be empty!";
+	}
+
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuViewPresetsApply(TObject *Sender) {
+	try {
+		TMenuItem *AMenuItem = dynamic_cast<TMenuItem*>(Sender);
+		if (AMenuItem) {
+			const UnicodeString sRegKey = this->ClassName() + ".ViewPresets." + StripHotkey(AMenuItem->Caption);
+			const int iIndex = SettingsData->TempRegistry->IndexOfName(sRegKey);
+			if (iIndex != -1) {
+				std::auto_ptr<TStringList>ADataPtr(new TStringList);
+				ADataPtr->StrictDelimiter = true;
+				ADataPtr->Delimiter = L';';
+				ADataPtr->DelimitedText = SettingsData->TempRegistry->ValueFromIndex[iIndex];
+
+				const TTreeEditWindows AHideWindows(ADataPtr->Strings[0].ToInt());
+				TreeHideEditorPanels(AHideWindows);
+
+				PanelNodes->Width = ADataPtr->Strings[1].ToInt();
+
+				this->SaveEditorParameters();
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuViewPresets(TObject *Sender) {
+
+	int iIndex = -1;
+	for (int i = MenuViewPresets->Count - 1; i > 0; i--) {
+		if (MenuViewPresets->Items[i]->Name == L"MenuViewPresetsMinimal") {
+			iIndex = i;
+			break;
+		}
+		else {
+			MenuViewPresets->Remove(MenuViewPresets->Items[i]);
+		}
+	}
+
+	for (int k = 0; k < SettingsData->TempRegistry->Count; k++) {
+		const UnicodeString sPrefix = this->ClassName() + ".ViewPresets.";
+		if (SettingsData->TempRegistry->Names[k].Pos(sPrefix) == 1) {
+			TMenuItem *AMenuItem = new TMenuItem(this);
+			AMenuItem->Caption = StringReplace(SettingsData->TempRegistry->Names[k], sPrefix, L"",
+				TReplaceFlags() << rfIgnoreCase);
+			AMenuItem->OnClick = OnMenuViewPresetsApply;
+			MenuViewPresets->Insert(++iIndex, AMenuItem);
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMenuViewFullScreen(TObject *Sender) {
+	this->ToggleFullScreenMode();
 }
 
 // ---------------------------------------------------------------------------
@@ -5616,6 +5783,17 @@ void __fastcall TStateMachineEditor::TheTreeKeyDown(System::TObject* Sender, Sys
 			FFrameTransitionTypes->Visible = false;
 		}
 
+		switch(Key) {
+		case VK_RETURN: {
+				if (Shift == Classes::TShiftState() << ssCtrl) {
+					if (TScxmlBaseShape * AScxmlBaseShape = FirstSelected) {
+						// NOTE: we need to disable expand-collapse on press 'Ctrl+Enter'
+						Key = 0;
+					}
+				}
+			}break;
+		}
+
 		TTreeEditorEx::TheTreeKeyDown(Sender, Key, Shift);
 
 		switch(Key) {
@@ -5636,6 +5814,22 @@ void __fastcall TStateMachineEditor::TheTreeKeyDown(System::TObject* Sender, Sys
 	catch(Exception * E) {
 		WLOG_ERROR(L"KEY DOWN> %s", E->Message.c_str());
 	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::TheTreeKeyUp(System::TObject* Sender, System::Word &Key,
+	Classes::TShiftState Shift) {
+	switch(Key) {
+	case VK_RETURN: {
+			if (Shift == Classes::TShiftState() << ssCtrl) {
+				if (TScxmlBaseShape * AScxmlBaseShape = FirstSelected) {
+					PostMessage(this->Handle, WM_SCXML_EDIT_TREE_SHAPE, (WPARAM)this, (LPARAM)AScxmlBaseShape);
+				}
+			}
+		}break;
+	}
+
+	TTreeEditorEx::TheTreeKeyUp(Sender, Key, Shift);
 }
 
 // ---------------------------------------------------------------------------
@@ -6161,6 +6355,20 @@ void __fastcall TStateMachineEditor::OnMsgDeleteTreeShape(TMessage &AMsg) {
 	if (TheTree->Shapes->IndexOf(AShape) != -1) {
 		delete AShape;
 		FillNodeTree();
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMsgEditTreeShape(TMessage &AMsg) {
+	if (!AMsg.LParam)
+		return;
+
+	if ((int)AMsg.WParam != (int)this)
+		return;
+
+	TScxmlBaseShape *AScxmlBaseShape = reinterpret_cast<TScxmlBaseShape*>(AMsg.LParam);
+	if (TheTree->Shapes->IndexOf(AScxmlBaseShape) != -1) {
+		DoEditScxmlShapes(AScxmlBaseShape);
 	}
 }
 

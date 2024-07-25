@@ -55,6 +55,7 @@ namespace Syntaxutils {
 		AExtensionPtr->Values["ini"] = "INI";
 		AExtensionPtr->Values["dfm"] = "DFM";
 		AExtensionPtr->Values["cmd"] = "Batch";
+		AExtensionPtr->Values["py"] = "Python";
 
 		if (sExt.Pos(".") == 1) {
 			sExt = sExt.Delete(1, 1);
@@ -76,6 +77,7 @@ namespace Syntaxutils {
 		AExtensionPtr->Values["DFM"] = "dfm";
 		AExtensionPtr->Values["Batch"] = "cmd";
 		AExtensionPtr->Values["JavaScript"] = "js";
+		AExtensionPtr->Values["Python"] = "py";
 
 		return AExtensionPtr->Values[sSyntaxScheme];
 	}
@@ -94,6 +96,7 @@ namespace Syntaxutils {
 		AStartCommentListPtr->Values[L"CPP"] = L"//";
 		AStartCommentListPtr->Values[L"Batch"] = L"REM";
 		AStartCommentListPtr->Values[L"INI"] = L";";
+		AStartCommentListPtr->Values[L"Python"] = L"#";
 
 		std::auto_ptr<TStringList>AEndCommentListPtr(new TStringList());
 		AEndCommentListPtr->Values[L"XML"] = L"-->";

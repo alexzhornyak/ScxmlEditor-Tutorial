@@ -69,6 +69,9 @@ __fastcall TThemeSettings::TThemeSettings() {
 	FStateNormalFontStyle = TFontStyles();
 	FStateSelfConnectionInsideFontStyle = g_STATE_SELF_CONNECTION_INSIDE_FONT_STYLE;
 
+	FStateDefaultWidth = 100;
+	FStateDefaultHeight = 50;
+
 	FScxmlNormalHeadColor = clMoneyGreen;
 	FScxmlDatamodelFontColor = clMaroon;
 	FScxmlVirtualFontColor = clBlue;
@@ -106,6 +109,10 @@ void __fastcall TThemeSettings::Assign(Classes::TPersistent* Source) {
 			FStateNormalBorderColor = AThemeSettings->FStateNormalBorderColor;
 			FStateNormalBorderStyle = AThemeSettings->FStateNormalBorderStyle;
 			FStateNormalFontStyle = AThemeSettings->FStateNormalFontStyle;
+
+			FStateDefaultWidth = AThemeSettings->FStateDefaultWidth;
+			FStateDefaultHeight = AThemeSettings->FStateDefaultHeight;
+
 			FStateSelfConnectionInsideFontStyle = AThemeSettings->FStateSelfConnectionInsideFontStyle;
 
 			FScxmlNormalHeadColor = AThemeSettings->FScxmlNormalHeadColor;
@@ -141,20 +148,6 @@ void __fastcall TThemeSettings::OnGetPropEditorClass(TPersistent *AInstance, ILM
 //			AEditorClass = __classid(TExternTesterExePropEditor);
 //		}
 //	}
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TThemeSettings::SetTransitionLineWidth(int val) {
-	if (val > 0 && val < 20) {
-		FTransitionLineWidth = val;
-	}
-}
-
-//---------------------------------------------------------------------------
-void __fastcall TThemeSettings::SetTransitionFromCircleSize(int val) {
-	if (val > 6 && val < 40) {
-		FTransitionFromCircleSize = val;
-	}
 }
 
 //---------------------------------------------------------------------------

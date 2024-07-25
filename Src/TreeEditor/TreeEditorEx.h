@@ -309,6 +309,10 @@ public:
 	void __fastcall InvalidateTheTreeWithTemp(void);
 	void __fastcall RefreshTheTreeWithTemp(void);
 
+	void __fastcall EnterFullScreenMode(void);
+	void __fastcall ExitFullScreenMode(void);
+	void __fastcall ToggleFullScreenMode(void);
+
 	__property TTreeEditWindows HideWindowsStatus = {read=GetHideWindowsStatus};
 
 __published:

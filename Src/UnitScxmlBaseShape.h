@@ -448,6 +448,9 @@ protected:
 	bool __fastcall GetIsInitial(void);
 	void __fastcall SetIsInitial(bool val);
 
+	bool __fastcall GetIsInitialDeep(void);
+	void __fastcall SetIsInitialDeep(bool val);
+
 	virtual void __fastcall SetEntered(bool val);
 	virtual void __fastcall SetExamined(bool val);
 	virtual void __fastcall SetBreakpointSet(bool val);
@@ -515,6 +518,7 @@ public:
 	__property bool Examined = {read=FExamined, write=SetExamined, default=false};
 	__property bool BreakpointSet = {read=FBreakpointSet, write=SetBreakpointSet, default=false};
 	__property bool IsInitial = {read=GetIsInitial,write=SetIsInitial};
+	__property bool IsInitialDeep = {read=GetIsInitialDeep,write=SetIsInitialDeep};
 	__property UnicodeString Initial = {read=GetInitial, write=FInitial};
 	__property int ParentOffsetX = { read=GetParentOffsetX };
 	__property int ParentOffsetY = { read=GetParentOffsetY };

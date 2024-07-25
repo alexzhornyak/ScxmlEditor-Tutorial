@@ -13,7 +13,7 @@
 
 **[Video overview - v.2.2](https://youtu.be/30dyXAs-m1A)**
 
-# Scxml Editor 2.5.4
+# Scxml Editor 2.5.5
 Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](Images/Inheritance_TV_example.gif)
@@ -24,6 +24,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 [![Discord](Images/Discord.svg)](https://discord.gg/5XWDsbEXzn)
 
 ### Changelog
+**2.5.5:** Chart design panel view presets <br>
 **2.5.4:** Nested initial state indication <br>
 **2.5.3:** Chart Draw Constraints, Select Chart Elements <br>
 **2.5.1:** [Fast Triggers](Doc/DebugScxmlStateCharts.md#transition-triggers) <br>
@@ -52,7 +53,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 ## Installation
 You can find portable version as attached Zip in ScxmlEditor Github Release page
 
-Latest version: **[2.5.4.1769]**
+Latest version: **[2.5.5.1755]**
 
 ### Windows Installation
 #### First Install

@@ -36,6 +36,8 @@
 
 #include "LMDInsPropEditors.hpp"
 
+#include "CommonConsts.h"
+
 static const TColor g_CHILD_NORMAL_BORDER_COLOR = TColor(RGB(32, 32, 32));
 static const TColor g_STATE_NORMAL_COLOR = TColor(0x00FFD680);
 static const TColor g_STATE_INITIAL_BORDER_COLOR = TColor(0x000080FF);
@@ -57,6 +59,11 @@ private:
 	TFontStyles FStateNormalFontStyle;
 	TFontStyles FStateSelfConnectionInsideFontStyle;
 
+	int FStateDefaultWidth;
+	SET_PROPERTY_MIN(StateDefaultWidth, int, 20);
+	int FStateDefaultHeight;
+	SET_PROPERTY_MIN(StateDefaultHeight, int, 10);
+
 	TColor FScxmlNormalHeadColor;
 	TColor FVirtualNormalColor;
 	TColor FVirtualHeadColor;
@@ -71,10 +78,10 @@ private:
 	TPenStyle FChildNormalBorderStyle;
 
 	int FTransitionLineWidth;
-	void __fastcall SetTransitionLineWidth(int val);
+	SET_PROPERTY_RANGE(TransitionLineWidth, int, 1, 20);
 
 	int FTransitionFromCircleSize;
-	void __fastcall SetTransitionFromCircleSize(int val);
+	SET_PROPERTY_RANGE(TransitionFromCircleSize, int, 7, 40);
 
 protected:
 
@@ -93,6 +100,9 @@ __published:
 	 __property TPenStyle StateNormalBorderStyle = {read=FStateNormalBorderStyle, write=FStateNormalBorderStyle, default=psSolid};
 	 __property TFontStyles StateNormalFontStyle = {read=FStateNormalFontStyle, write=FStateNormalFontStyle, default=0};
 	 __property TFontStyles StateSelfConnectionInsideFontStyle = {read=FStateSelfConnectionInsideFontStyle, write=FStateSelfConnectionInsideFontStyle, default=g_STATE_SELF_CONNECTION_INSIDE_FONT_STYLE_INT};
+
+	 __property int StateDefaultWidth = {read=FStateDefaultWidth, write=SetStateDefaultWidth, default=100};
+	 __property int StateDefaultHeight = {read=FStateDefaultHeight, write=SetStateDefaultHeight, default=50};
 
 	 __property TColor ChildNormalColor = {read=FChildNormalColor, write=FChildNormalColor, default=clWhite};
 	 __property TFontStyles ChildNormalFontStyle = {read=FChildNormalFontStyle, write=FChildNormalFontStyle, default=0};

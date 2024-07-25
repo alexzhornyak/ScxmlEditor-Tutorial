@@ -42,6 +42,7 @@
 #define WM_SCXML_DELETE_TREE_SHAPE                  WM_USER+106
 #define WM_SCXML_ADD_OR_OPEN_EXISTING_UNIT			WM_USER+107
 #define WM_SCXML_UPDATE_DBG_MSG_QUEUE				WM_USER+108
+#define WM_SCXML_EDIT_TREE_SHAPE                  	WM_USER+109
 
 #include <map>
 
@@ -93,5 +94,11 @@ struct INTERPROCESS_COPYDATA
 	wchar_t wchArg2[SCXML_INTERPROCESS_BUFFER_SIZE];
 	wchar_t wchArg3[SCXML_INTERPROCESS_BUFFER_SIZE];
 };
+
+
+#define SET_PROPERTY_MIN(X, TYPE, MIN)			void __fastcall Set##X(TYPE val) { if (val>=MIN) F##X=val;}
+#define SET_PROPERTY_MAX(X, TYPE, MAX)			void __fastcall Set##X(TYPE val) { if (val<=MAX) F##X=val;}
+#define SET_PROPERTY_RANGE(X, TYPE, MIN, MAX)	void __fastcall Set##X(TYPE val) { if (val>=MIN && val<=MAX) F##X=val;}
+
 
 #endif

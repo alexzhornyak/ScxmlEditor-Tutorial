@@ -1261,8 +1261,6 @@ void __fastcall TTreeEditorEx::TheTreeKeyDown(System::TObject* Sender, System::W
 	// стираем временный прямоугольник
 	ForceResetTemporarySelected();
 
-	bool bNeedToDeleteFullScreenForm = false;
-
 	switch(Key) {
 	case VK_BACK: {
 			if (Shift == Classes::TShiftState() << ssCtrl) {
@@ -1480,30 +1478,50 @@ void __fastcall TTreeEditorEx::TheTreeKeyDown(System::TObject* Sender, System::W
 			}
 		}break;
 	case VK_F12: {
-			if (!FFullScreenForm) {
-				FFullScreenForm = new TForm(this->Owner);
-				FFullScreenForm->BorderStyle = bsNone;
-				FFullScreenForm->WindowState = wsMaximized;
-				this->TheTree->Parent = FFullScreenForm;
-
-				FFullScreenForm->OnCloseQuery = OnFullScreenFormCloseQuery;
-				FFullScreenForm->Show();
-			}
-			else {
-				bNeedToDeleteFullScreenForm = true;
-			}
+			ToggleFullScreenMode();
 		}break;
 	case VK_ESCAPE: {
-			bNeedToDeleteFullScreenForm = true;
+			ExitFullScreenMode();
 		}break;
 	}
+}
 
-	if (bNeedToDeleteFullScreenForm) {
-		if (FFullScreenForm) {
+// ---------------------------------------------------------------------------
+void __fastcall TTreeEditorEx::EnterFullScreenMode(void) {
+	if (!FFullScreenForm) {
+		FFullScreenForm = new TForm(this->Owner);
+		FFullScreenForm->BorderStyle = bsNone;
+		FFullScreenForm->WindowState = wsMaximized;
+		this->TheTree->Parent = FFullScreenForm;
+
+		FFullScreenForm->OnCloseQuery = OnFullScreenFormCloseQuery;
+		FFullScreenForm->Show();
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TTreeEditorEx::ExitFullScreenMode(void) {
+	if (FFullScreenForm) {
+		try {
 			this->TheTree->Parent = PanelTree;
 			delete FFullScreenForm;
 			FFullScreenForm = NULL;
+
+			this->TheTree->SetFocus();
 		}
+		catch(Exception * E) {
+			LOG_ERROR(LOG_ERROR_MSG);
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TTreeEditorEx::ToggleFullScreenMode(void) {
+	if (!FFullScreenForm) {
+		EnterFullScreenMode();
+	}
+	else {
+		ExitFullScreenMode();
 	}
 }
 
@@ -1634,6 +1652,9 @@ void __fastcall TTreeEditorEx::NodeTreeKeyDown(System::TObject* Sender, System::
 
 // ---------------------------------------------------------------------------
 void __fastcall TTreeEditorEx::TheTreeKeyUp(System::TObject* Sender, System::Word &Key, Classes::TShiftState Shift) {
+#if 0
+	WLOG_DEBUG(L"TheTreeKeyUp: Key:%d Shift:%d", Key, Shift.ToInt());
+#endif
 
 	switch(Key) {
 	case VK_DOWN: {
@@ -1888,25 +1909,15 @@ void __fastcall TTreeEditorEx::TheTreeMouseUp(System::TObject* Sender, Controls:
 
 // ---------------------------------------------------------------------------
 void __fastcall TTreeEditorEx::OnConnectionReconnected(TTreeConnection *AConnection) {
-
+	// XXX:
 }
 
 // ---------------------------------------------------------------------------
 void MoveShapeWithMovingLayout(Teetree::TTreeNodeShape* Sender, const int DeltaX, const int DeltaY,
-	std::set<TTreeConnection*> &AConnections) {
+	std::set<TTreeConnection*> &AConnections, bool bIsPrimary) {
 	if (Sender && Sender->Parent) {
-
-		/* This callback is called for every shape in the selection, so we should handle only the first one */
-		int iSelIndex = -1;
-		int iShapeSelIndex = -1;
-
 		for (int i = 0; i < Sender->Parent->Children->Count; i++) {
 			TTreeNodeShape *AChildShape = Sender->Parent->Children->Items[i];
-
-			if (AChildShape->Selected) {
-				iSelIndex++;
-			}
-
 			if (AChildShape != Sender) {
 				if (DeltaY > 0) {
 					if (AChildShape->Y0 > Sender->Y1 - DeltaY) {
@@ -1936,12 +1947,9 @@ void MoveShapeWithMovingLayout(Teetree::TTreeNodeShape* Sender, const int DeltaX
 					AConnections.insert(AChildShape->Connections->Items[k]);
 				}
 			}
-			else {
-				iShapeSelIndex = iSelIndex;
-			}
 		}
 
-		if (iShapeSelIndex == 0) {
+		if (bIsPrimary) {
 			if (DeltaX < 0) {
 				const int iNewX = Sender->Parent->X0 + DeltaX;
 				if (iNewX > 0) {
@@ -1965,7 +1973,7 @@ void MoveShapeWithMovingLayout(Teetree::TTreeNodeShape* Sender, const int DeltaX
 				AConnections.insert(Sender->Parent->Connections->Items[k]);
 			}
 
-			MoveShapeWithMovingLayout(Sender->Parent, DeltaX, DeltaY, AConnections);
+			MoveShapeWithMovingLayout(Sender->Parent, DeltaX, DeltaY, AConnections, bIsPrimary);
 		}
 	}
 }
@@ -1979,7 +1987,8 @@ void __fastcall TTreeEditorEx::TheTreeMovingShape(Teetree::TTreeNodeShape* Sende
 
 	if (IsShiftPressed() && !IsAltPressed() && !IsControlPressed()) {
 		std::set<TTreeConnection*>AConnections;
-		MoveShapeWithMovingLayout(Sender, DeltaX, DeltaY, AConnections);
+		const bool bIsPrimary = GetSafeTreeListFirst(TheTree->Selected->Shapes) == Sender;
+		MoveShapeWithMovingLayout(Sender, DeltaX, DeltaY, AConnections, bIsPrimary);
 		for (std::set<TTreeConnection*>::iterator it = AConnections.begin(); it != AConnections.end(); ++it) {
 			Editorutils::AdjustSidesConnection(*it);
 		}
@@ -1988,20 +1997,11 @@ void __fastcall TTreeEditorEx::TheTreeMovingShape(Teetree::TTreeNodeShape* Sende
 
 // ---------------------------------------------------------------------------
 void ResizeShapeWithMovingLayout(Teetree::TTreeNodeShape* Sender, const int DeltaX, const int DeltaY,
-	std::set<TTreeConnection*> &AConnections) {
+	std::set<TTreeConnection*> &AConnections, bool bIsPrimary) {
 	if (Sender && Sender->Parent) {
-
-		/* This callback is called for every shape in the selection, so we should handle only the first one */
-		int iSelIndex = -1;
-		int iShapeSelIndex = -1;
 
 		for (int i = 0; i < Sender->Parent->Children->Count; i++) {
 			TTreeNodeShape *AChildShape = Sender->Parent->Children->Items[i];
-
-			if (AChildShape->Selected) {
-				iSelIndex++;
-			}
-
 			if (AChildShape != Sender) {
 				if (DeltaY != 0) {
 					if (AChildShape->Y0 > Sender->Y1 - DeltaY /* край на момент сдвига */ ) {
@@ -2019,12 +2019,9 @@ void ResizeShapeWithMovingLayout(Teetree::TTreeNodeShape* Sender, const int Delt
 					AConnections.insert(AChildShape->Connections->Items[k]);
 				}
 			}
-			else {
-				iShapeSelIndex = iSelIndex;
-			}
 		}
 
-		if (iShapeSelIndex == 0) {
+		if (bIsPrimary) {
 			Sender->Parent->X1 = Sender->Parent->X1 + DeltaX;
 			Sender->Parent->Y1 = Sender->Parent->Y1 + DeltaY;
 
@@ -2032,7 +2029,7 @@ void ResizeShapeWithMovingLayout(Teetree::TTreeNodeShape* Sender, const int Delt
 				AConnections.insert(Sender->Parent->Connections->Items[k]);
 			}
 
-			ResizeShapeWithMovingLayout(Sender->Parent, DeltaX, DeltaY, AConnections);
+			ResizeShapeWithMovingLayout(Sender->Parent, DeltaX, DeltaY, AConnections, bIsPrimary);
 		}
 	}
 }
@@ -2049,7 +2046,8 @@ void __fastcall TTreeEditorEx::TheTreeResizingShape(Teetree::TTreeNodeShape* Sen
 
 	if (IsShiftPressed() && !IsAltPressed()) {
 		std::set<TTreeConnection*>AConnections;
-		ResizeShapeWithMovingLayout(Sender, DeltaX, DeltaY, AConnections);
+		const bool bIsPrimary = GetSafeTreeListFirst(TheTree->Selected->Shapes) == Sender;
+		ResizeShapeWithMovingLayout(Sender, DeltaX, DeltaY, AConnections, bIsPrimary);
 		for (std::set<TTreeConnection*>::iterator it = AConnections.begin(); it != AConnections.end(); ++it) {
 			Editorutils::AdjustSidesConnection(*it);
 		}

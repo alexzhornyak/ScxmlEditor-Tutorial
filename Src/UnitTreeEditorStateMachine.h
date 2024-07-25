@@ -476,12 +476,13 @@ protected:
 	virtual void __fastcall TheTreeMovingShape(Teetree::TTreeNodeShape* Sender, int &DeltaX, int &DeltaY);
 	virtual void __fastcall TheTreeResizingShape(Teetree::TTreeNodeShape* Sender, Teetree::TTreeShapeHandle ACorner, int &DeltaX, int &DeltaY);
 	virtual void __fastcall TheTreeKeyDown(System::TObject* Sender, System::Word &Key, Classes::TShiftState Shift);
+	virtual void __fastcall TheTreeKeyUp(System::TObject* Sender, System::Word &Key, Classes::TShiftState Shift);
     virtual void __fastcall TheTreeMouseDown(System::TObject* Sender, Controls::TMouseButton Button, Classes::TShiftState Shift, int X, int Y);
 	virtual void __fastcall TheTreeMouseUp(System::TObject* Sender, Controls::TMouseButton Button, Classes::TShiftState Shift, int X, int Y);
 	virtual void __fastcall TheTreeMouseWheelEvent(System::TObject* Sender, Classes::TShiftState Shift, int WheelDelta, const Types::TPoint &MousePos, bool &Handled);
 	virtual void __fastcall TheTreeDragOver(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept);
 	virtual void __fastcall TheTreeDragDrop(TObject *Sender, TObject *Source, int X, int Y);
-    virtual void __fastcall TheTreeDeletingConnection(Teetree::TTreeConnection* Sender, bool &AllowDelete);
+	virtual void __fastcall TheTreeDeletingConnection(Teetree::TTreeConnection* Sender, bool &AllowDelete);
 
 	virtual void __fastcall TryPopup(Teetree::TCustomTree* ATree, int x, int y, int xScreen, int yScreen);
 	TPopupMenu * __fastcall GetPreparedPopupMenu(Teetree::TCustomTree* ATree,
@@ -496,6 +497,12 @@ protected:
 	virtual void __fastcall OnMenuClone(TObject *Sender);
 
 	void __fastcall OnMenuResetViewToDefault(TObject *Sender);
+	void __fastcall OnMenuViewPresetsMinimal(TObject *Sender);
+	void __fastcall OnMenuViewPresetsCustom(TObject *Sender);
+	void __fastcall OnMenuViewPresets(TObject *Sender);
+	void __fastcall OnMenuViewPresetsApply(TObject *Sender);
+
+	void __fastcall OnMenuViewFullScreen(TObject *Sender);
 
 	void __fastcall OnMenuClearSelection(TObject *Sender);
 
@@ -539,10 +546,12 @@ protected:
 	void __fastcall ExecuteInterprocessCommand(INTERPROCESS_COPYDATA *ACopyData);
 
 	void __fastcall OnMsgDeleteTreeShape(TMessage &AMsg);
+	void __fastcall OnMsgEditTreeShape(TMessage &AMsg);
 	void __fastcall OnMsgCopyData(TWMCopyData &msg);
 
 	BEGIN_MESSAGE_MAP
 		VCL_MESSAGE_HANDLER(WM_SCXML_DELETE_TREE_SHAPE, TMessage, OnMsgDeleteTreeShape)
+		VCL_MESSAGE_HANDLER(WM_SCXML_EDIT_TREE_SHAPE, TMessage, OnMsgEditTreeShape)
 		VCL_MESSAGE_HANDLER(WM_COPYDATA, TWMCopyData, OnMsgCopyData)
 	END_MESSAGE_MAP(TTreeEditorEx)
 
