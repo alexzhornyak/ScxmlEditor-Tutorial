@@ -43,6 +43,7 @@
 #include "UnitTriggers.h"
 #include "UnitProtocolBinding.h"
 #include "UnitInheritanceResolver.h"
+#include "CommonConsts.h"
 
 class TFormTransitionEditor;
 class TVisualScxmlBaseShape;
@@ -231,7 +232,9 @@ private:
 
 protected:
 
-	virtual void __fastcall DoAppendExtraParamsAndChildren(Lmdxml::ILMDXmlElement *AElement, Lmdxml::ILMDXmlElement *AParentNode);
+	virtual void __fastcall DoAppendExtraParamsAndChildren(
+		Lmdxml::ILMDXmlElement *AElement, Lmdxml::ILMDXmlElement *AParentNode,
+		const TVisualMetaInformationTypes AMetaTypes);
 
 	virtual void __fastcall DoInternalDrawEx(void);
 
@@ -274,9 +277,9 @@ public:
 	bool __fastcall IsEditorOpened(void);
 
 	// добавляет или просто проверяет содержимое
-	void __fastcall AppendTransitionElement(Lmdxml::ILMDXmlElement *AParentNode);
+	void __fastcall AppendTransitionElement(Lmdxml::ILMDXmlElement *AParentNode, const TVisualMetaInformationTypes AMetaTypes);
 
-	void __fastcall AppendTransitionSwitchElement(Lmdxml::ILMDXmlElement *AParentNode, const UnicodeString &sTarget);
+	void __fastcall AppendTransitionSwitchElement(Lmdxml::ILMDXmlElement *AParentNode, const UnicodeString &sTarget, const TVisualMetaInformationTypes AMetaTypes);
 
 	void __fastcall MakeSelfConnection(void);
 

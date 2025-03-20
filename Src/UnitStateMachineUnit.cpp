@@ -590,7 +590,7 @@ void __fastcall TStateMachineEditorUnit::DoSave(const Lmdtypes::TLMDString AFile
 			TFile::SetAttributes(sTempFile, AFileAttr << Ioutils::faHidden);
 
 			// запуск скрипта на исполнение
-			TSpawnAndRedirect ASpawner(sTempFile, ExtractFileDir(sTempFile));
+			TSpawnAndRedirect ASpawner(AnsiQuotedStr(sTempFile, L'"'), ExtractFileDir(sTempFile));
 			ASpawner.ConvertOutputEncoding = coeOEM866;
 			ASpawner.StartProcessInfinite();
 

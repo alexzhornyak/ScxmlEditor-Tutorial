@@ -604,6 +604,11 @@ public:
 	void __fastcall SaveToBMP(const UnicodeString &sFileName);
 	void __fastcall SaveToPNG(const UnicodeString &sFileName);
 
+	void __fastcall SaveToQtCreatorScxml(const UnicodeString & sFileName);
+	void __fastcall SaveToVSCodeScxml(const UnicodeString & sFileName);
+	void __fastcall SaveToScxmlGui(const UnicodeString & sFileName);
+	void __fastcall SaveToSimpleScxml(const UnicodeString & sFileName);
+
 	void __fastcall GetDataIDs(TStrings *AIDList);
 	void __fastcall GetStateNames(TStrings *AStateNamesList);
 

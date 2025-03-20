@@ -112,6 +112,14 @@ private:	// User declarations
 	bool FCheckPositionOnLoadScxml;
 	bool FSaveCommentsAnywayOnLoad;
 	bool FParserDoNotLoadQtEditorInfo;
+	int FParserSaveQtTransitionOffsetMargin;
+	inline void __fastcall SetParserSaveQtTransitionOffsetMargin(int val) {
+	   if (val < 0) {
+			FParserSaveQtTransitionOffsetMargin = 0;
+	   } else {
+			FParserSaveQtTransitionOffsetMargin = val;
+	   }
+	}
 
 	int 			FConnectionTextAngle;
 	TVertTextAlign 	FConnectionVertTextAlign;
@@ -338,6 +346,7 @@ __published:	// PROPERTIES THAT ARE SEEN IN SETTINGS EDITOR
 	__property bool CheckPositionOnLoadScxml = {read=FCheckPositionOnLoadScxml, write=FCheckPositionOnLoadScxml, default=true};
 	__property bool SaveCommentsAnywayOnLoad = {read=FSaveCommentsAnywayOnLoad, write=FSaveCommentsAnywayOnLoad, default=false};
 	__property bool ParserDoNotLoadQtEditorInfo = {read=FParserDoNotLoadQtEditorInfo, write=FParserDoNotLoadQtEditorInfo, default=true};
+	__property int ParserSaveQtTransitionOffsetMargin = {read=FParserSaveQtTransitionOffsetMargin, write=SetParserSaveQtTransitionOffsetMargin, default=5};
 	__property UnicodeString 	VirtualAliasVariable = {read=GetVirtualAliasVariable,write=FVirtualAliasVariable, stored=IsVirtualAliasVariableStored};
 
 	__property bool 			AviaExtensionEnabled = {read=FAviaExtensionEnabled, write=FAviaExtensionEnabled, default=false};

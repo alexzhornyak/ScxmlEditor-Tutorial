@@ -397,6 +397,16 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuProjRename;
 	TAction *actRevert;
 	TMenuItem *Revert1;
+	TAction *actExportAsQtCreatorScxml;
+	TMenuItem *N10;
+	TMenuItem *ExportasQtCreatorScxml1;
+	TAction *actExportAsScxmlGui;
+	TAction *actExportAsVSCodeScxml;
+	TAction *actExportAsSimpleScxml;
+	TMenuItem *ExportasVSCodeScxml1;
+	TMenuItem *ExportasScxmlGui1;
+	TMenuItem *ExportasSimpleVisualScxml1;
+	TMenuItem *Documentation1;
 	void __fastcall LMDDockManager1WriteAppInfo(TObject *Sender, const ILMDXmlDocument *Xml);
 	void __fastcall LMDDockManager1BeforeRead(TObject *Sender, const ILMDXmlDocument *Xml);
 	void __fastcall ProjectManager1Open(TObject *Sender, bool AShowEditor, TLMDProjDocOpenContext *AContext);
@@ -586,6 +596,11 @@ __published:	// IDE-managed Components
 	void __fastcall MenuProjRenameClick(TObject *Sender);
 	void __fastcall actRevertExecute(TObject *Sender);
 	void __fastcall actRevertUpdate(TObject *Sender);
+	void __fastcall actExportAsQtCreatorScxmlExecute(TObject *Sender);
+	void __fastcall actExportAsScxmlGuiExecute(TObject *Sender);
+	void __fastcall actExportAsVSCodeScxmlExecute(TObject *Sender);
+	void __fastcall actExportAsSimpleScxmlExecute(TObject *Sender);
+	void __fastcall Documentation1Click(TObject *Sender);
 
 
 private:	// User declarations

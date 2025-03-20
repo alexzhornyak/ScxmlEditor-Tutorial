@@ -97,6 +97,7 @@ FProject(AProject) {
 	FProjectPostBuild = new TProjectPostBuild(FProject);
 
 	FBuildTypes = TProjectBuildTypes() << pbtSaveAll << pbtSaveFlat << pbtPostBuild;
+	FProjectMetaInformationTypes = TVisualMetaInformationTypes();
 
 	FCalibratorCfg = "";
 	FCanserviceCfg = "";
@@ -149,6 +150,7 @@ void __fastcall TProjectProperties::Assign(TPersistent* Source) {
 			FDisableSameControls = AProjectProperties->FDisableSameControls;
 
 			FBuildTypes = AProjectProperties->FBuildTypes;
+			FProjectMetaInformationTypes = AProjectProperties->FProjectMetaInformationTypes;
 
 			FProjectDefines = AProjectProperties->FProjectDefines;
 			FVerifyChecksums = AProjectProperties->FVerifyChecksums;

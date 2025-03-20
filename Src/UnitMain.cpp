@@ -1,4 +1,4 @@
-/***********************************************************************************
+/** *********************************************************************************
 BSD 3-Clause License
 
 Copyright (c) 2018, https://github.com/alexzhornyak
@@ -28,7 +28,7 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ***************************************************************************************/
+ ************************************************************************************** */
 
 #include <vcl.h>
 #pragma hdrstop
@@ -184,7 +184,8 @@ void RecursiveSaveAll(TLMDProjectManager *AProjectManager, TLMDProjDocument *ARo
 			RecursiveSaveAll(AProjectManager, ARoot->Documents[i]);
 		}
 		// записываем только открытые документы
-		const bool bSaveTop = AProjectManager->Root == ARoot ? true : (ARoot->OpenedDocument && ARoot->OpenedDocument->Opened);
+		const bool bSaveTop = AProjectManager->Root == ARoot ? true :
+			(ARoot->OpenedDocument && ARoot->OpenedDocument->Opened);
 		if (bSaveTop && (ARoot->NeedSave || ARoot->IsModified(false))) {
 			AProjectManager->Save(ARoot, false);
 		}
@@ -217,7 +218,8 @@ TLMDProjDocument * RecursiveSearchOpened(TLMDProjDocument *ARoot, const UnicodeS
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall IterateInvokeSrcNode(TLMDProjectManager *AProjectManager, TStateMachineEditorUnit *AUnit, _di_IXMLNode ANode) {
+void __fastcall IterateInvokeSrcNode(TLMDProjectManager *AProjectManager, TStateMachineEditorUnit *AUnit,
+	_di_IXMLNode ANode) {
 	if (AUnit && ANode && ANode->NodeType == ntElement) {
 		if (ANode->NodeName == L"invoke" && ANode->HasAttribute(L"src")) {
 			try {
@@ -239,13 +241,13 @@ void __fastcall IterateInvokeSrcNode(TLMDProjectManager *AProjectManager, TState
 				WLOG_DEBUG(L"Adding [%s] to [%s] ...", sInvokeSrcFile.c_str(), AUnit->FileName.c_str());
 
 				// сначала пытаемся найти в текущих документах проекта
-				TStateMachineEditorUnit *ANewUnit = dynamic_cast<TStateMachineEditorUnit*>(RecursiveSearchOpened(AProjectManager->Root,
-						sInvokeSrcFile));
+				TStateMachineEditorUnit *ANewUnit = dynamic_cast<TStateMachineEditorUnit*>
+					(RecursiveSearchOpened(AProjectManager->Root, sInvokeSrcFile));
 
 				// если не нашли, то пытаемся открыть
 				if (!ANewUnit) {
-					ANewUnit = dynamic_cast<TStateMachineEditorUnit*>(AProjectManager->AddExisting(sInvokeSrcFile, AUnit,
-							__classid(TStateMachineEditorUnit)));
+					ANewUnit = dynamic_cast<TStateMachineEditorUnit*>(AProjectManager->AddExisting(sInvokeSrcFile,
+							AUnit, __classid(TStateMachineEditorUnit)));
 					if (ANewUnit) {
 						WLOG_INFO(L"Successfully added [%s] to [%s]", sInvokeSrcFile.c_str(), AUnit->FileName.c_str());
 						if (!AProjectManager->Root->IsModified(false)) {
@@ -277,14 +279,16 @@ void __fastcall IterateVirtualSrcNode(TLMDProjectManager *AProjectManager, TStat
 	TStateMachineEditorUnit *AUnit) {
 	if (ADockPanel) {
 		for (int i = 0; i < ADockPanel->StateMachineEditor->TheTree->Shapes->Count; i++) {
-			TVirtualShape * AVirtualShape = dynamic_cast<TVirtualShape*>(ADockPanel->StateMachineEditor->TheTree->Shapes->Items[i]);
+			TVirtualShape * AVirtualShape = dynamic_cast<TVirtualShape*>
+				(ADockPanel->StateMachineEditor->TheTree->Shapes->Items[i]);
 			if (AVirtualShape && !AVirtualShape->ExcludeFromSave) {
 				if (!AVirtualShape->SrcUnit) {
 					try {
 						if (!FileExists(AVirtualShape->FullPath))
 							throw Exception(L"Virtual machine unit [" + AVirtualShape->FullPath + "] is not found!");
 
-						TStateMachineEditorUnit *AVirtualUnit = GlobalAddExistingStateMachineUnit(AUnit, AVirtualShape->FullPath, true);
+						TStateMachineEditorUnit *AVirtualUnit = GlobalAddExistingStateMachineUnit(AUnit,
+							AVirtualShape->FullPath, true);
 						if (!AVirtualUnit)
 							throw Exception(L"Virtual machine unit [" + AVirtualShape->FullPath + "] was not created!");
 
@@ -453,7 +457,8 @@ FActiveEditorDockPanel(0), FBreakpointSync(false) {
 		if (bSettingsExist) {
 			SettingsData->LoadFromFile(SettingsData->AppSettingsFile);
 
-			PanelPropInspPath->Visible = StrToBoolDef(SettingsData->TempRegistry->Values["PanelPropInspPath.Visible"], true);
+			PanelPropInspPath->Visible = StrToBoolDef(SettingsData->TempRegistry->Values["PanelPropInspPath.Visible"],
+				true);
 			LMDDockSite1->LockMode = SettingsData->LockUI ? (LMDDockSite1->LockMode << dlmUndockFrom) :
 				(LMDDockSite1->LockMode >> dlmUndockFrom);
 		}
@@ -494,7 +499,8 @@ FActiveEditorDockPanel(0), FBreakpointSync(false) {
 		std::auto_ptr<TStringList>ALoggingPropsPtr(new TStringList());
 		ALoggingPropsPtr->Text = SettingsData->LoggingProperties->Text;
 		const UnicodeString sWasFileName = ALoggingPropsPtr->Values["log4cpp.appender.file.fileName"];
-		UnicodeString sLogFileName = sWasFileName.IsEmpty() ? UnicodeString(L"ScxmlEditor.log") : ExtractFileName(sWasFileName);
+		UnicodeString sLogFileName = sWasFileName.IsEmpty() ? UnicodeString(L"ScxmlEditor.log") : ExtractFileName
+			(sWasFileName);
 		UnicodeString sLogPath = ExtractFilePath(sLogFileName);
 		if (sLogPath.IsEmpty()) {
 			sLogPath = SettingsData->AppPath;
@@ -536,8 +542,8 @@ FActiveEditorDockPanel(0), FBreakpointSync(false) {
 					if (AXMLDocument->DocumentElement) {
 						for (int k = 0; k < AXMLDocument->DocumentElement->ChildNodes->Count; k++) {
 							_di_IXMLNode AChildNode = AXMLDocument->DocumentElement->ChildNodes->Nodes[k];
-							Xmlserialize::XMLDeserializeProperty(AChildNode, SettingsData->AutoCompleteItems->Items[i]->KeywordHints,
-								OnErrorGetCallback);
+							Xmlserialize::XMLDeserializeProperty(AChildNode,
+								SettingsData->AutoCompleteItems->Items[i]->KeywordHints, OnErrorGetCallback);
 						}
 						WLOG_INFO(L"AutoComplete> Successfully loaded default [%s]", sFileName.c_str());
 					}
@@ -701,8 +707,8 @@ void __fastcall TFormScxmlGui::LMDDockManager1BeforeRead(TObject * Sender, const
 					this->BoundsRect = ASettingsRect;
 				}
 				else {
-					WLOG_WARNING(L"Config application rect <%s> does not intersect with desktop rect <%s>", sRect.c_str(),
-						Customutils::RectToStr(Screen->DesktopRect).c_str());
+					WLOG_WARNING(L"Config application rect <%s> does not intersect with desktop rect <%s>",
+						sRect.c_str(), Customutils::RectToStr(Screen->DesktopRect).c_str());
 				}
 			}
 
@@ -719,11 +725,13 @@ void __fastcall TFormScxmlGui::LMDDockManager1BeforeRead(TObject * Sender, const
 				ILMDXmlElement * ANodeItem = AControlBarNode->FindElement(ControlBar1->Controls[i]->Name, L"", 0);
 				if (ANodeItem) {
 
-					ControlBar1->Controls[i]->Visible = ANodeItem->GetBoolAttr("Visible", ControlBar1->Controls[i]->Visible);
+					ControlBar1->Controls[i]->Visible = ANodeItem->GetBoolAttr("Visible",
+						ControlBar1->Controls[i]->Visible);
 
 					if (ANodeItem->AttrExists("BoundsRect")) {
 						const UnicodeString sBoundsRect = ANodeItem->GetAttr("BoundsRect");
-						ControlBar1->Controls[i]->BoundsRect = Customutils::StrToRect(sBoundsRect, ControlBar1->Controls[i]->BoundsRect);
+						ControlBar1->Controls[i]->BoundsRect = Customutils::StrToRect(sBoundsRect,
+							ControlBar1->Controls[i]->BoundsRect);
 						TToolBar *AToolBar = dynamic_cast<TToolBar*>(ControlBar1->Controls[i]);
 						if (AToolBar) {
 							AToolBar->AutoSize = true;
@@ -751,7 +759,8 @@ void __fastcall TFormScxmlGui::FixDockPanelSize(TLMDDockPanel *ADockPanel) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::ProjectManager1Open(TObject * Sender, bool AShowEditor, TLMDProjDocOpenContext * AContext) {
+void __fastcall TFormScxmlGui::ProjectManager1Open(TObject * Sender, bool AShowEditor,
+	TLMDProjDocOpenContext * AContext) {
 	TStateMachineEditorUnit *AEditorUnit = dynamic_cast<TStateMachineEditorUnit*>(AContext->Document);
 	if (AEditorUnit) {
 		// если указано показать редактор, тогда формируем док.панель
@@ -831,7 +840,8 @@ void __fastcall TFormScxmlGui::InternalRevertSaveQuery(TObject * Sender, TLMDPro
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::ProjectManager1SaveAs(TObject * Sender, TLMDProjDocument * ADocument, TLMDString & AFilePath, bool&ASave) {
+void __fastcall TFormScxmlGui::ProjectManager1SaveAs(TObject * Sender, TLMDProjDocument * ADocument,
+	TLMDString & AFilePath, bool&ASave) {
 	bool bIsValid = false;
 
 	/* Execute these actions only if we are not in Replace Mode */
@@ -911,8 +921,8 @@ void __fastcall TFormScxmlGui::ProjectManager1SaveAs(TObject * Sender, TLMDProjD
 							if (AVirtualShape) {
 								if (SameText(AVirtualShape->FileName, AUnit->FileName)) {
 									AVirtualShape->Src = ExtractRelativePath(AVecUnits[i]->FilePath, AFilePath);
-									WLOG_DEBUG(L"Virtual path:[%s] was changed to:[%s]", AVecUnits[i]->FileName.c_str(),
-										ExtractFileName(AFilePath).c_str());
+									WLOG_DEBUG(L"Virtual path:[%s] was changed to:[%s]",
+										AVecUnits[i]->FileName.c_str(), ExtractFileName(AFilePath).c_str());
 									bTreeModified = true;
 								}
 							}
@@ -969,11 +979,11 @@ void __fastcall TFormScxmlGui::actNewProjExecute(TObject * Sender) {
 
 			DeleteAllProjects();
 
-			TStateMachineProject *AProject = dynamic_cast<TStateMachineProject*>
-				(ProjectManager1->New(NULL, __classid(TStateMachineProject)));
+			TStateMachineProject *AProject = dynamic_cast<TStateMachineProject*>(ProjectManager1->New(NULL,
+					__classid(TStateMachineProject)));
 			if (AProject) {
-				TStateMachineEditorUnit *AUnit = dynamic_cast<TStateMachineEditorUnit*>(ProjectManager1->New(AProject,
-						__classid(TStateMachineEditorUnit)));
+				TStateMachineEditorUnit *AUnit = dynamic_cast<TStateMachineEditorUnit*>
+					(ProjectManager1->New(AProject, __classid(TStateMachineEditorUnit)));
 				if (AUnit) {
 					AUnit->IsBuildRoot = true;
 					AUnit->Open(true);
@@ -1115,7 +1125,8 @@ void __fastcall TFormScxmlGui::actAddUnitExecute(TObject * Sender) {
 // ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::MenuProjViewAddUnitClick(TObject * Sender) {
 	try {
-		if (TStateMachineEditorUnit * AUnitRoot = dynamic_cast<TStateMachineEditorUnit*>(ProjectManagerView1->SelectedDoc)) {
+		if (TStateMachineEditorUnit * AUnitRoot = dynamic_cast<TStateMachineEditorUnit*>
+			(ProjectManagerView1->SelectedDoc)) {
 			if (AUnitRoot->Enabled) {
 				AddNewUnit(AUnitRoot);
 			}
@@ -1166,7 +1177,8 @@ void __fastcall TFormScxmlGui::MenuProjForceSaveUnitClick(TObject *Sender) {
 				ProjectManagerView1->SelectedDoc->Open(true);
 			}
 			else {
-				TStateMachineEditorUnit * AUnitRoot = dynamic_cast<TStateMachineEditorUnit*>(ProjectManagerView1->SelectedDoc);
+				TStateMachineEditorUnit * AUnitRoot = dynamic_cast<TStateMachineEditorUnit*>
+					(ProjectManagerView1->SelectedDoc);
 				if (AUnitRoot && AUnitRoot->StateMachineDockPanel) {
 					AUnitRoot->StateMachineDockPanel->Show();
 				}
@@ -1283,8 +1295,8 @@ void __fastcall TFormScxmlGui::MenuProjCloneUnitClick(TObject * Sender) {
 			TLMDProjNode *AParent = AProjUnit->Parent;
 
 			UnicodeString sFilePath = AProjUnit->FilePath;
-			if (!PromptForFileName(sFilePath, TStateMachineEditor::GetOpenDialogFilter(), L"scxml", "Select name for unit to be cloned",
-					ExtractFileDir(sFilePath), true))
+			if (!PromptForFileName(sFilePath, TStateMachineEditor::GetOpenDialogFilter(), L"scxml",
+					"Select name for unit to be cloned", ExtractFileDir(sFilePath), true))
 				throw Exception("Cancelled by user!");
 
 			CopyFileW(AProjUnit->FilePath.c_str(), sFilePath.c_str(), false);
@@ -1307,13 +1319,14 @@ void __fastcall TFormScxmlGui::MenuProjCloneUnitClick(TObject * Sender) {
 	}
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::MenuProjRenameClick(TObject *Sender) {
 	try {
 		if (ProjectManagerView1->SelectedDoc) {
 
 			const UnicodeString sWasFile = ProjectManagerView1->SelectedDoc->FilePath;
-			const UnicodeString sWasFilePart = TPath::GetFileNameWithoutExtension(ProjectManagerView1->SelectedDoc->FilePath);
+			const UnicodeString sWasFilePart = TPath::GetFileNameWithoutExtension
+				(ProjectManagerView1->SelectedDoc->FilePath);
 			UnicodeString sFilePart = sWasFilePart;
 
 			std::auto_ptr<TStringList>AStringListPtr(new TStringList());
@@ -1334,7 +1347,8 @@ void __fastcall TFormScxmlGui::MenuProjRenameClick(TObject *Sender) {
 
 				ProjectManager1->Save(ProjectManagerView1->SelectedDoc, true);
 
-				if (TStateMachineProject * AStateMachineProject = dynamic_cast<TStateMachineProject*>(ProjectManagerView1->SelectedDoc)) {
+				if (TStateMachineProject * AStateMachineProject = dynamic_cast<TStateMachineProject*>
+					(ProjectManagerView1->SelectedDoc)) {
 					DeleteFile(sWasFile);
 					DeleteFile(sWasFile + L".checksum");
 					DeleteFile(sWasFile + L".props");
@@ -1423,15 +1437,16 @@ void __fastcall TFormScxmlGui::actForceSaveAllOpenedExecute(TObject * Sender) {
 			for (std::size_t i = 0; i < AVecUnits.size(); i++) {
 				if (AVecUnits[i]->Opened) {
 
-					ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Saving [%s] %d from %d ...", AVecUnits[i]->DisplayName.c_str(),
-							i + 1, AVecUnits.size()));
+					ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Saving [%s] %d from %d ...",
+							AVecUnits[i]->DisplayName.c_str(), i + 1, AVecUnits.size()));
 
 					if (!AVecUnits[i]->StateMachineDockPanel)
 						throw Exception(AVecUnits[i]->DisplayName + "> StateMachineDockPanel==NULL!");
 
 					AVecUnits[i]->StateMachineDockPanel->Show();
 
-					if (AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->ReloadInheritedTree(true) != oresSuccess)
+					if (AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->ReloadInheritedTree(true)
+						!= oresSuccess)
 						throw Exception("Operation was cancelled! Resolve conflicts and try again!");
 
 					AVecUnits[i]->MarkModified();
@@ -1463,8 +1478,8 @@ void __fastcall TFormScxmlGui::actForceSaveAllExecute(TObject *Sender) {
 		std::vector<TStateMachineEditorUnit*>AVecUnits;
 		CollectAllEnabledUnits(ProjectManager1->Root, AVecUnits);
 		for (std::size_t i = 0; i < AVecUnits.size(); i++) {
-			ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Saving [%s] %d from %d ...", AVecUnits[i]->FileName.c_str(), i + 1,
-					AVecUnits.size()));
+			ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Saving [%s] %d from %d ...",
+					AVecUnits[i]->FileName.c_str(), i + 1, AVecUnits.size()));
 
 			const bool bWasOpened = AVecUnits[i]->Opened;
 			if (!bWasOpened) {
@@ -1581,7 +1596,8 @@ void __fastcall TFormScxmlGui::DoOpenProject(const UnicodeString & sFileName) {
 				}
 			}
 			else
-				throw Exception("Can not cast <" + ProjectManager1->Root->Nodes[i]->ClassName() + "> to <TStateMachineEditorUnit>");
+				throw Exception("Can not cast <" + ProjectManager1->Root->Nodes[i]->ClassName()
+				+ "> to <TStateMachineEditorUnit>");
 		}
 
 		// если у нас указан основной модуль для Билда, тогда запускаем именно его
@@ -1624,12 +1640,13 @@ void __fastcall TFormScxmlGui::actOpenProjectExecute(TObject * Sender) {
 			if (SameText(sExt, TStateMachineEditorUnit::FileExt_)) {
 
 				const UnicodeString Caption = L"INFO";
-				const UnicodeString Text = L"Do you want to create a project with [" + ExtractFileName(OpenDialog->FileName) + "] ?";
+				const UnicodeString Text = L"Do you want to create a project with [" + ExtractFileName
+					(OpenDialog->FileName) + "] ?";
 				if (MessageBoxW(this->Handle, Text.c_str(), Caption.c_str(), MB_ICONINFORMATION | MB_YESNO) == IDYES) {
 					DeleteAllProjects();
 
-					TStateMachineProject *AProject = dynamic_cast<TStateMachineProject*>(ProjectManager1->New(NULL,
-							__classid(TStateMachineProject)));
+					TStateMachineProject *AProject = dynamic_cast<TStateMachineProject*>
+						(ProjectManager1->New(NULL, __classid(TStateMachineProject)));
 					if (AProject) {
 						AddExistingUnit(AProject, OpenDialog->FileName, false);
 					}
@@ -1682,7 +1699,8 @@ void __fastcall TFormScxmlGui::ViewPanelClick(TObject * Sender) {
 				ADockPanel->PanelVisible = bVisible;
 
 				if (!ADockPanel->Parent) {
-					TLMDDockZone *AZone = DockPanelFrameRoot->PanelVisible ? DockPanelFrameRoot->Zone : this->LMDDockSite1->RootZone;
+					TLMDDockZone *AZone = DockPanelFrameRoot->PanelVisible ?
+						DockPanelFrameRoot->Zone : this->LMDDockSite1->RootZone;
 					this->LMDDockSite1->DockControl(ADockPanel, AZone, alClient);
 					WLOG_DEBUG(L"Dock panel [%s] was undocked!", ADockPanel->Caption.c_str());
 				}
@@ -1719,12 +1737,12 @@ void __fastcall TFormScxmlGui::ViewClick(TObject * Sender) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::UpdateCaption(const UnicodeString sDisplayName /* = L"" */ ) {
-	const UnicodeString sProject = StateMachineProject ?
-		(IsAnyDocumentModified(StateMachineProject) ? StateMachineProject->DisplayName + L"*" : StateMachineProject->DisplayName)
-		: UnicodeString(L"");
+	const UnicodeString sProject = StateMachineProject ? (IsAnyDocumentModified(StateMachineProject)
+		? StateMachineProject->DisplayName + L"*" : StateMachineProject->DisplayName) : UnicodeString(L"");
 
 	TStateMachineEditorUnit* AUnit = GetActiveUnit();
-	const UnicodeString sActiveScxml = sDisplayName.IsEmpty() ? (AUnit ? AUnit->FileName : UnicodeString(L"")) : sDisplayName;
+	const UnicodeString sActiveScxml = sDisplayName.IsEmpty() ? (AUnit ? AUnit->FileName : UnicodeString(L""))
+		: sDisplayName;
 
 	UnicodeString sCaption = UnicodeString().sprintf(L"SCXML editor version %s", SettingsData->AppVersion.c_str());
 
@@ -1807,8 +1825,8 @@ void __fastcall TFormScxmlGui::MenuProjForceSaveAllInheritedClick(TObject *Sende
 
 				WLOG_DEBUG(L"Derived unit:[%s]", AVecUnits[i]->FileName.c_str());
 
-				ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Saving [%s] %d from %d ...", AVecUnits[i]->FileName.c_str(), i + 1,
-						AVecUnits.size()));
+				ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Saving [%s] %d from %d ...",
+						AVecUnits[i]->FileName.c_str(), i + 1, AVecUnits.size()));
 
 				if (!AVecUnits[i]->Opened) {
 					AVecUnits[i]->Open(true);
@@ -1847,8 +1865,8 @@ void __fastcall TFormScxmlGui::MenuProjOpenAllInheritedClick(TObject *Sender) {
 
 				WLOG_DEBUG(L"Derived unit:[%s]", AVecUnits[i]->FileName.c_str());
 
-				ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Opening [%s] %d from %d ...", AVecUnits[i]->FileName.c_str(), i + 1,
-						AVecUnits.size()));
+				ADialogWaitPtr->ShowDialog(UnicodeString().sprintf(L"Opening [%s] %d from %d ...",
+						AVecUnits[i]->FileName.c_str(), i + 1, AVecUnits.size()));
 
 				if (!AVecUnits[i]->Opened) {
 					AVecUnits[i]->Open(true);
@@ -1871,7 +1889,8 @@ void __fastcall TFormScxmlGui::OnMenuProjResetInheritance(TObject * Sender) {
 			const UnicodeString Text = L"This operation will reset inheritance!\n" //
 			"You WILL NOT be able to inherit again without loosing you data!\n" //
 			"Are you sure to continue?";
-			if (MessageBoxW(this->Handle, Text.c_str(), Caption.c_str(), MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) == IDOK) {
+			if (MessageBoxW(this->Handle, Text.c_str(), Caption.c_str(), MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2)
+				== IDOK) {
 				// необходимо открыть, так как это должно прописаться в сам SCXML
 				if (!AUnit->Opened) {
 					AUnit->Open(true);
@@ -1925,16 +1944,20 @@ void __fastcall TFormScxmlGui::OnMenuProjAddInheritance(TObject * Sender) {
 				}
 
 				const UnicodeString Caption = L"WARNING";
-				const UnicodeString Text = L"This operation will add inheritance from <" + AInheritedUnit->FileName + ">!\n" //
+				const UnicodeString Text = L"This operation will add inheritance from <" + AInheritedUnit->FileName +
+					">!\n" //
 				"All your current shapes and connections WILL BE ERASED!\n" //
 				"Are you sure to continue?";
-				if (MessageBoxW(this->Handle, Text.c_str(), Caption.c_str(), MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) == IDOK) {
+				if (MessageBoxW(this->Handle, Text.c_str(), Caption.c_str(),
+						MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) == IDOK) {
 
 					std::auto_ptr<TMemoryStream>AMemoryStreamPtr(new TMemoryStream());
 					AInheritedUnit->StateMachineDockPanel->StateMachineEditor->TheTree->Cursor = crDefault;
-					SaveTreeToStream(AInheritedUnit->StateMachineDockPanel->StateMachineEditor->TheTree, AMemoryStreamPtr.get());
+					SaveTreeToStream(AInheritedUnit->StateMachineDockPanel->StateMachineEditor->TheTree,
+						AMemoryStreamPtr.get());
 
-					AUnit->StateMachineDockPanel->StateMachineEditor->LoadScxmlStream(AMemoryStreamPtr.get(), AUnit->FilePath);
+					AUnit->StateMachineDockPanel->StateMachineEditor->LoadScxmlStream(AMemoryStreamPtr.get(),
+						AUnit->FilePath);
 					AUnit->StateMachineDockPanel->StateMachineEditor->SetNewInheritance();
 					AUnit->Inherited = AInheritedUnit->FileName;
 
@@ -1953,7 +1976,8 @@ void __fastcall TFormScxmlGui::OnMenuProjAddInheritance(TObject * Sender) {
 // ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::PopupProjViewPopup(TObject * Sender) {
 
-	TStateMachineEditorUnit *AStateMachineEditorUnit = dynamic_cast<TStateMachineEditorUnit*>(ProjectManagerView1->SelectedDoc);
+	TStateMachineEditorUnit *AStateMachineEditorUnit = dynamic_cast<TStateMachineEditorUnit*>
+		(ProjectManagerView1->SelectedDoc);
 	TStateMachineProject *AStateMachineProject = dynamic_cast<TStateMachineProject*>(ProjectManagerView1->SelectedDoc);
 
 	const bool bIsStateMachineUnit = AStateMachineEditorUnit != NULL;
@@ -2001,7 +2025,8 @@ void __fastcall TFormScxmlGui::PopupProjViewPopup(TObject * Sender) {
 
 	MenuProjEditOrder->Visible = bIsProjectMode;
 	MenuProjEditOrder->Enabled = !SettingsData->IsTesterWorking && !IsAnyDocumentModified(ProjectManager1->Root);
-	MenuProjEditOrder->Caption = MenuProjEditOrder->Enabled ? L"Edit Project Order" : L"Edit Project Order (Save all to enable)";
+	MenuProjEditOrder->Caption = MenuProjEditOrder->Enabled ?
+		L"Edit Project Order" : L"Edit Project Order (Save all to enable)";
 
 	const bool bIsInheritedOpened = bIsEnabledUnitInProject && AStateMachineEditorUnit->IsInherited &&
 		AStateMachineEditorUnit->StateMachineDockPanel;
@@ -2037,8 +2062,8 @@ void __fastcall TFormScxmlGui::PopupProjViewPopup(TObject * Sender) {
 	MenuProjEditInherited->Visible = bIsEnabledUnitInProject;
 	MenuProjEditInherited->Clear();
 	if (MenuProjEditInherited->Visible) {
-		MenuProjEditInherited->Caption = L"Inheritance" + (AStateMachineEditorUnit->Inherited.IsEmpty() ? UnicodeString(L"") :
-			(L" [" + AStateMachineEditorUnit->Inherited + "]"));
+		MenuProjEditInherited->Caption = L"Inheritance" + (AStateMachineEditorUnit->Inherited.IsEmpty() ? UnicodeString
+			(L"") : (L" [" + AStateMachineEditorUnit->Inherited + "]"));
 
 		TMenuItem *AMenuResetInherited = new TMenuItem(this);
 		AMenuResetInherited->Caption = "Reset Inheritance";
@@ -2053,7 +2078,8 @@ void __fastcall TFormScxmlGui::PopupProjViewPopup(TObject * Sender) {
 			AMenuInherited->Caption = AVecAvailableForInheritance[i]->FileName;
 			AMenuInherited->Tag = reinterpret_cast<int>(AVecAvailableForInheritance[i]);
 			MenuProjEditInherited->Add(AMenuInherited);
-			AMenuInherited->Checked = SameText(AVecAvailableForInheritance[i]->FileName, AStateMachineEditorUnit->Inherited);
+			AMenuInherited->Checked = SameText(AVecAvailableForInheritance[i]->FileName,
+				AStateMachineEditorUnit->Inherited);
 			if (!AMenuInherited->Checked) {
 				AMenuInherited->OnClick = OnMenuProjAddInheritance;
 			}
@@ -2085,7 +2111,8 @@ void __fastcall TFormScxmlGui::PopupProjViewPopup(TObject * Sender) {
 		MenuProjPathToClipboard->Caption = L"Path=" + ProjectManagerView1->SelectedDoc->FilePath;
 		MenuProjPathToClipboard->Visible = true;
 
-		MenuProjFileNameToClipboard->Caption = L"FileName=" + ExtractFileName(ProjectManagerView1->SelectedDoc->FilePath);
+		MenuProjFileNameToClipboard->Caption = L"FileName=" + ExtractFileName
+			(ProjectManagerView1->SelectedDoc->FilePath);
 		MenuProjFileNameToClipboard->Visible = true;
 	}
 	else {
@@ -2119,7 +2146,8 @@ void __fastcall TFormScxmlGui::MoveProjectNodeUpDown(const bool bUp) {
 					AParentProjNode->Nodes[i]->DisplayName + "]!");
 			}
 
-			TTreeNode *ATreeNodeParent = ProjectManagerView1->SelectionCount ? ProjectManagerView1->Selections[0]->Parent : NULL;
+			TTreeNode *ATreeNodeParent = ProjectManagerView1->SelectionCount ? ProjectManagerView1->Selections[0]
+				->Parent : NULL;
 
 			int iIndex = -1;
 			for (int i = 0; i < AParentProjNode->DocumentCount; i++) {
@@ -2143,10 +2171,12 @@ void __fastcall TFormScxmlGui::MoveProjectNodeUpDown(const bool bUp) {
 			_di_ILMDXmlDocument ADoc = LMDCreateXmlDocument("root", "1.0", "UTF-8");
 
 			/* записываем рекурсивно все подузлы */
-			if (TStateMachineEditorUnit * AStateMachineEditorUnit = dynamic_cast<TStateMachineEditorUnit*>(AParentProjNode)) {
+			if (TStateMachineEditorUnit * AStateMachineEditorUnit = dynamic_cast<TStateMachineEditorUnit*>
+				(AParentProjNode)) {
 				AStateMachineEditorUnit->WriteChildren(ADoc->DocumentElement);
 			}
-			else if (TStateMachineProject * AStateMachineProject = dynamic_cast<TStateMachineProject*>(AParentProjNode)) {
+			else if (TStateMachineProject * AStateMachineProject = dynamic_cast<TStateMachineProject*>(AParentProjNode)
+				) {
 				AStateMachineProject->WriteChildren(ADoc->DocumentElement);
 			}
 
@@ -2174,18 +2204,21 @@ void __fastcall TFormScxmlGui::MoveProjectNodeUpDown(const bool bUp) {
 			/* удаляем все дочерние элементы */
 			while (AParentProjNode->DocumentCount) {
 				if (!RecursiveCloseUnit(AParentProjNode->Documents[0]))
-					throw Exception("Can not perform operation on not closed unit! [" + AParentProjNode->Documents[0]->DisplayName + "]");
+					throw Exception("Can not perform operation on not closed unit! [" + AParentProjNode->Documents[0]
+					->DisplayName + "]");
 
 				AParentProjNode->Documents[0]->Delete();
 			}
 
 			/* на этот момент все дочерние должны быть удалены */
 			/* считываем их из XML, рекурсивно добавляя */
-			if (TStateMachineEditorUnit * AStateMachineEditorUnit = dynamic_cast<TStateMachineEditorUnit*>(AParentProjNode)) {
+			if (TStateMachineEditorUnit * AStateMachineEditorUnit = dynamic_cast<TStateMachineEditorUnit*>
+				(AParentProjNode)) {
 
 				AStateMachineEditorUnit->ReadChildren(ADoc->DocumentElement);
 			}
-			else if (TStateMachineProject * AStateMachineProject = dynamic_cast<TStateMachineProject*>(AParentProjNode)) {
+			else if (TStateMachineProject * AStateMachineProject = dynamic_cast<TStateMachineProject*>(AParentProjNode)
+				) {
 
 				AStateMachineProject->ReadChildren(ADoc->DocumentElement);
 			}
@@ -2228,7 +2261,8 @@ void __fastcall TFormScxmlGui::FormCloseQuery(TObject * Sender, bool&CanClose) {
 	if (SettingsData->IsTesterWorking) {
 		String Caption = "WARNING";
 		String Text = "Debugging is executed now! Are you sure to quit?";
-		if (Application->MessageBoxA(Text.c_str(), Caption.c_str(), MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) == IDOK) {
+		if (Application->MessageBoxA(Text.c_str(), Caption.c_str(), MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2)
+			== IDOK) {
 			actStop->Execute();
 
 			Application->ProcessMessages();
@@ -2250,7 +2284,8 @@ void __fastcall TFormScxmlGui::FormCloseQuery(TObject * Sender, bool&CanClose) {
 				const UnicodeString Caption = L"WARNING!";
 				const UnicodeString Text = UnicodeString().sprintf(L"Text editor [%s] is modified!\n" //
 					"Are you sure to continue?", ASyntaxDockPanel->Caption.c_str());
-				CanClose = Application->MessageBoxA(Text.c_str(), Caption.c_str(), MB_OKCANCEL | MB_DEFBUTTON2 | MB_ICONWARNING) == IDOK;
+				CanClose = Application->MessageBoxA(Text.c_str(), Caption.c_str(),
+					MB_OKCANCEL | MB_DEFBUTTON2 | MB_ICONWARNING) == IDOK;
 				if (!CanClose) {
 					ASyntaxDockPanel->PanelVisible = true;
 
@@ -2348,8 +2383,8 @@ void FillBindingsNodeTree(TTree * ATree, TTreeNodeShape * ANode, ILMDXmlNode * A
 
 				UnicodeString().sprintf(L"%s [%s]", sScxmlName.c_str(), sShapeName.c_str()) :
 
-				UnicodeString().sprintf(L"%s=%s[%s][%s]", sScxmlName.c_str(), sControlName.c_str(), sDescription.c_str(),
-				sShapeName.c_str());
+				UnicodeString().sprintf(L"%s=%s[%s][%s]", sScxmlName.c_str(), sControlName.c_str(),
+				sDescription.c_str(), sShapeName.c_str());
 
 			bool bAdd = false;
 			int iMaskPos = -1;
@@ -2438,8 +2473,8 @@ void __fastcall TFormScxmlGui::DoCollectAllBindings(void) {
 }
 
 // ---------------------------------------------------------------------------
-TLMDProjDocument * __fastcall TFormScxmlGui::AddExistingUnit(TLMDProjNode * AParent, const UnicodeString & sFileName, bool bCheckIsOpened,
-	const bool bCollectBindings /* = true */ ) {
+TLMDProjDocument * __fastcall TFormScxmlGui::AddExistingUnit(TLMDProjNode * AParent, const UnicodeString & sFileName,
+	bool bCheckIsOpened, const bool bCollectBindings /* = true */ ) {
 	if (!FileExists(sFileName))
 		throw Exception("File <" + sFileName + "> does not exist!");
 
@@ -2449,8 +2484,8 @@ TLMDProjDocument * __fastcall TFormScxmlGui::AddExistingUnit(TLMDProjNode * APar
 	}
 
 	if (!AEditorForm) {
-		AEditorForm = dynamic_cast<TLMDProjDocument*>(ProjectManager1->AddExisting(sFileName, dynamic_cast<TLMDProjDocument*>(AParent),
-				__classid(TStateMachineEditorUnit)));
+		AEditorForm = dynamic_cast<TLMDProjDocument*>(ProjectManager1->AddExisting(sFileName,
+				dynamic_cast<TLMDProjDocument*>(AParent), __classid(TStateMachineEditorUnit)));
 
 		// помечаем, что в проект добавлен юнит
 		if (StateMachineProject && !StateMachineProject->IsModified(false)) {
@@ -2488,8 +2523,8 @@ void __fastcall TFormScxmlGui::actAddExistingExecute(TObject * Sender) {
 }
 
 // ---------------------------------------------------------------------------
-TLMDProjDocument * __fastcall TFormScxmlGui::FindAndAddExistingUnit(TLMDProjNode *AParent, const UnicodeString &sFileName,
-	bool bCheckIsOpened, const bool bCollectBindings /* = true */ ) {
+TLMDProjDocument * __fastcall TFormScxmlGui::FindAndAddExistingUnit(TLMDProjNode *AParent,
+	const UnicodeString &sFileName, bool bCheckIsOpened, const bool bCollectBindings /* = true */ ) {
 
 	UnicodeString sTrueFileName = sFileName;
 	if (!FileExists(sTrueFileName)) {
@@ -2537,7 +2572,8 @@ void __fastcall TFormScxmlGui::MenuProjAddAllInvokeSrcClick(TObject * Sender) {
 				ProjectManagerView1->SelectedDoc->Open(true);
 			}
 
-			DoAddAllExistingInvokeSrc(ProjectManager1, dynamic_cast<TStateMachineEditorUnit*>(ProjectManagerView1->SelectedDoc));
+			DoAddAllExistingInvokeSrc(ProjectManager1,
+				dynamic_cast<TStateMachineEditorUnit*>(ProjectManagerView1->SelectedDoc));
 
 			/* bugfix: по отображению вложенных нод */ ProjectManagerView1->BeginUpdate();
 			ProjectManagerView1->EndUpdate();
@@ -2610,7 +2646,8 @@ void __fastcall TFormScxmlGui::File1Click(TObject * Sender) {
 			AMenuItem->Enabled = FileExists(SettingsData->RecentFiles->Strings[i]);
 
 			if (ProjectManager1->Root) {
-				AMenuItem->Checked = SettingsData->RecentFiles->Strings[i].UpperCase() == ProjectManager1->Root->FilePath.UpperCase();
+				AMenuItem->Checked = SettingsData->RecentFiles->Strings[i].UpperCase()
+					== ProjectManager1->Root->FilePath.UpperCase();
 			}
 
 			AMenuItem->OnClick = &OnRecentFileClick;
@@ -2673,7 +2710,8 @@ void __fastcall TFormScxmlGui::DoEditSettings(const UnicodeString sItemName /* =
 		AComponentPtr->Assign(SettingsData);
 
 		std::auto_ptr<TFormSettingsEditor>AFormSettingsEditor(new TFormSettingsEditor(this, AComponentPtr.get()));
-		SettingsData->PropSettingsRegisterCategories(AFormSettingsEditor->PropSettingsInspector); // обязательно перед Arrange change
+		SettingsData->PropSettingsRegisterCategories(AFormSettingsEditor->PropSettingsInspector);
+		// обязательно перед Arrange change
 		AFormSettingsEditor->BtnArrangeType->Down = true;
 		AFormSettingsEditor->BtnArrangeTypeClick(AFormSettingsEditor->BtnArrangeType);
 
@@ -2708,12 +2746,15 @@ void __fastcall TFormScxmlGui::DoEditProjectOptions(const UnicodeString sItemNam
 				AMemoryStream->Position = 0;
 
 				// отдаем смарт указателю для дальнейшего удаления
-				std::auto_ptr<TComponent>AComponentPtr(StateMachineProject->ProjectProperties->DoCreateDefaultInstance());
+				std::auto_ptr<TComponent>AComponentPtr(StateMachineProject->ProjectProperties->DoCreateDefaultInstance()
+					);
 				AMemoryStream->ReadComponent(AComponentPtr.get());
 				AComponentPtr->Assign(StateMachineProject->ProjectProperties);
 
-				std::auto_ptr<TFormSettingsEditor>AFormSettingsEditor(new TFormSettingsEditor(this, AComponentPtr.get()));
-				AFormSettingsEditor->LabelCaption->Caption = "Edit [" + StateMachineProject->DisplayName + "] properties";
+				std::auto_ptr<TFormSettingsEditor>AFormSettingsEditor(new TFormSettingsEditor(this,
+						AComponentPtr.get()));
+				AFormSettingsEditor->LabelCaption->Caption = "Edit [" + StateMachineProject->DisplayName +
+					"] properties";
 
 				AFormSettingsEditor->SelectItemOrRestoreState(sItemName, FPropInspStateOptionsPtr.get());
 
@@ -2747,18 +2788,21 @@ void __fastcall TFormScxmlGui::DoEditProjectOptions(const UnicodeString sItemNam
 
 						for (std::size_t n = 0; n < AVecUnits.size(); n++) {
 							if (AVecUnits[n]->StateMachineDockPanel) {
-								for (int i = 0; i < AVecUnits[n]->StateMachineDockPanel->StateMachineEditor->TheTree->Shapes->Count; i++) {
+								for (int i = 0;
+									i < AVecUnits[n]
+									->StateMachineDockPanel->StateMachineEditor->TheTree->Shapes->Count; i++) {
 									if (TScxmlBaseShape * ABaseShape = dynamic_cast<TScxmlBaseShape*>
-										(AVecUnits[n]->StateMachineDockPanel->StateMachineEditor->TheTree->Shapes->Items[i])) {
+										(AVecUnits[n]
+										->StateMachineDockPanel->StateMachineEditor->TheTree->Shapes->Items[i])) {
 										if (ABaseShape->AreConditionalDefinesUsed(AOldDefinesPtr.get())
-											|| ABaseShape->AreConditionalDefinesUsed(ANewDefinesPtr.get())) {
+										|| ABaseShape->AreConditionalDefinesUsed(ANewDefinesPtr.get())) {
 
-											AVecUnits[n]->StateMachineDockPanel->MarkModified(1, L"Project definitions were changed!",
-												true);
+										AVecUnits[n]->StateMachineDockPanel->MarkModified(1,
+										L"Project definitions were changed!", true);
 
-											AVecUnits[n]->StateMachineDockPanel->InvalidateTree();
+										AVecUnits[n]->StateMachineDockPanel->InvalidateTree();
 
-											break;
+										break;
 										}
 									}
 								}
@@ -2818,7 +2862,8 @@ void __fastcall TFormScxmlGui::ProjectManagerView1MouseMove(TObject * Sender, TS
 }
 
 // ---------------------------------------------------------------------------
-void EnumerateAllPropItems(TLMDPropertyInspectorItem * AItem, TUnicodeStringMap & AOutMap, const UnicodeString sPath = L"") {
+void EnumerateAllPropItems(TLMDPropertyInspectorItem * AItem, TUnicodeStringMap & AOutMap,
+	const UnicodeString sPath = L"") {
 	const UnicodeString sDot = sPath.IsEmpty() ? L"" : L".";
 	const UnicodeString sFullPropName = sPath + sDot + AItem->PropName;
 #if 0
@@ -2859,10 +2904,12 @@ void __fastcall TFormScxmlGui::PropSettingsInspectorChange(TObject * Sender) {
 
 					UnicodeString sObject = L"!NULL!";
 					if (DesignObjects1->Count && DesignObjects1->Item[0]) {
-						if (TCustomTreeElement * AElement = dynamic_cast<TCustomTreeElement*>(DesignObjects1->Item[0])) {
+						if (TCustomTreeElement * AElement = dynamic_cast<TCustomTreeElement*>(DesignObjects1->Item[0]))
+						{
 							sObject = AElement->SimpleText;
 
-							TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(AElement);
+							TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+								(AElement);
 							if (AStateMachineConnection && it->first == L"XML") {
 								bChangedTransitionXML = true;
 							}
@@ -2878,7 +2925,8 @@ void __fastcall TFormScxmlGui::PropSettingsInspectorChange(TObject * Sender) {
 					const int iClipMax = 40;
 
 					sModifiedInfo = UnicodeString().sprintf(L"Object[%s] prop[%s] changed to[%s]",
-						Customutils::ClippedText(sObject, iClipMax).c_str(), Customutils::ClippedText(it->first, iClipMax).c_str(),
+						Customutils::ClippedText(sObject, iClipMax).c_str(),
+						Customutils::ClippedText(it->first, iClipMax).c_str(),
 						Customutils::ClippedText(it_new->second, iClipMax).c_str());
 #ifdef _DEBUG
 					WLOG_DEBUG(L"%s", sModifiedInfo.c_str());
@@ -2909,7 +2957,8 @@ void __fastcall TFormScxmlGui::PropSettingsInspectorChange(TObject * Sender) {
 
 			// этот флаг предполагает, что DesignObjects содержат не менее 1 объекта
 			if (bChangedTransitionXML) {
-				TransitionXMLEditor->SetStateMachineConnection(dynamic_cast<TStateMachineConnection*>(DesignObjects1->Item[0]));
+				TransitionXMLEditor->SetStateMachineConnection
+					(dynamic_cast<TStateMachineConnection*>(DesignObjects1->Item[0]));
 			}
 		}
 	}
@@ -3014,8 +3063,8 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 				FRunScxmlName = AScxmlActivePanel->StateMachineEditor->RootScxml->ScxmlName;
 
 			if (!FExternTestListeningFlag) {
-				if (SameText(AScxmlActivePanel->StateMachineEditor->SyntaxScheme, L"Lua") && ContainsText(ATestSettings->ExeName,
-						L"QtScxmlTester")) {
+				if (SameText(AScxmlActivePanel->StateMachineEditor->SyntaxScheme,
+						L"Lua") && ContainsText(ATestSettings->ExeName, L"QtScxmlTester")) {
 					const String Caption = L"WARNING";
 					const String Text = UnicodeString().sprintf(L"[%s] does not support <Lua> datamodel.\n" //
 						"Switch to [uscxml_tester.exe]?", ExtractFileName(ATestSettings->ExeName).c_str());
@@ -3134,7 +3183,8 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 
 							if (TProtocolBindingShape * AProtocolBindingShape = dynamic_cast<TProtocolBindingShape*>
 								(ADockPanel->StateMachineEditor->TheTree->Shapes->Items[k])) {
-								CreateTrigger(ScrollBoxTriggers, AProtocolBindingShape->ContentTrigger, AProtocolBindingShape->Params);
+								CreateTrigger(ScrollBoxTriggers, AProtocolBindingShape->ContentTrigger,
+									AProtocolBindingShape->Params);
 							}
 							else if (TTriggerShape * ATriggerShape = dynamic_cast<TTriggerShape*>
 								(ADockPanel->StateMachineEditor->TheTree->Shapes->Items[k])) {
@@ -3148,30 +3198,32 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 									bool bWatchLabelExists = false;
 
 									for (int n = 0; n < ScrollBoxTriggers->ControlCount; n++) {
-										TWatchLabel * ACurrentWatchLabel = dynamic_cast<TWatchLabel*>(ScrollBoxTriggers->Controls[n]);
+										TWatchLabel * ACurrentWatchLabel = dynamic_cast<TWatchLabel*>
+										(ScrollBoxTriggers->Controls[n]);
 										if (ACurrentWatchLabel) {
-											if
-												(ACurrentWatchLabel->WatchLabel == AWatchShape->Label &&
-												ACurrentWatchLabel->RegExp == AWatchShape->RegExp) {
-												bWatchLabelExists = true;
-												break;
-											}
+										if
+										(ACurrentWatchLabel->WatchLabel == AWatchShape->Label &&
+										ACurrentWatchLabel->RegExp == AWatchShape->RegExp) {
+										bWatchLabelExists = true;
+										break;
+										}
 										}
 									}
 
 									// проверяем, чтобы не дублировать с одинаковыми значениями,
 									// например, при наследованиии
 									if (!bWatchLabelExists) {
-										TWatchLabel *AWatchLabel = new TWatchLabel(ScrollBoxTriggers, AWatchShape->Label,
-											AWatchShape->RegExp);
+										TWatchLabel *AWatchLabel = new TWatchLabel(ScrollBoxTriggers,
+										AWatchShape->Label, AWatchShape->RegExp);
 										AWatchLabel->Name = TeeGetUniqueName(ScrollBoxTriggers, "WatchLabel");
 										if (!AWatchShape->Label.IsEmpty()) {
-											AWatchLabel->Caption = AWatchShape->Label + L":";
+										AWatchLabel->Caption = AWatchShape->Label + L":";
 										}
 
 										AWatchLabel->Align = alTop;
 										AWatchLabel->AlignWithMargins = true;
-										AWatchLabel->Top = Customutils::GetWinControlAlignedChildrenHeight(ScrollBoxTriggers);
+										AWatchLabel->Top = Customutils::GetWinControlAlignedChildrenHeight
+										(ScrollBoxTriggers);
 
 										AWatchLabel->Parent = ScrollBoxTriggers;
 									}
@@ -3198,7 +3250,8 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 					const int iOldHeight = Customutils::GetWinControlAlignedChildrenHeight(ScrollBoxTriggers);
 
 					for (int i = 0; i < StateMachineProject->ProjectProperties->Triggers->Count; i++) {
-						CreateTrigger(ScrollBoxTriggers, StateMachineProject->ProjectProperties->Triggers->Items[i]->ContentTrigger,
+						CreateTrigger(ScrollBoxTriggers,
+							StateMachineProject->ProjectProperties->Triggers->Items[i]->ContentTrigger,
 							StateMachineProject->ProjectProperties->Triggers->Items[i]->Params);
 					}
 
@@ -3232,7 +3285,8 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 				}
 				catch(EStateMachineConnectionException * E) {
 					AScxmlActivePanel->ActivateZonePage();
-					AScxmlActivePanel->StateMachineEditor->SelectConnection(E->StateMachineConnection, SCROLL_CHART_IN_VIEW);
+					AScxmlActivePanel->StateMachineEditor->SelectConnection(E->StateMachineConnection,
+						SCROLL_CHART_IN_VIEW);
 					AScxmlActivePanel->StateMachineEditor->SelectTemporaryRectangle
 						(Editorutils::IncrementRectCopy(E->StateMachineConnection->GetBounds(), 15),
 						"Error: " + E->Category);
@@ -3241,8 +3295,8 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 				catch(EScxmlBaseShapeException * E) {
 					AScxmlActivePanel->ActivateZonePage();
 					AScxmlActivePanel->StateMachineEditor->SelectShape(E->Shape, SCROLL_CHART_IN_VIEW);
-					AScxmlActivePanel->StateMachineEditor->SelectTemporaryRectangle(Editorutils::IncrementRectCopy(E->Shape->Bounds(), 15),
-						"Error: " + E->Category);
+					AScxmlActivePanel->StateMachineEditor->SelectTemporaryRectangle
+						(Editorutils::IncrementRectCopy(E->Shape->Bounds(), 15), "Error: " + E->Category);
 					throw E;
 				}
 				catch(EScxmlDuplicateStateIDException * E) {
@@ -3272,8 +3326,8 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 						sCMD = sCMD + " -hidedebuginfo true";
 					}
 					if (ATestSettings->HttpEnabled) {
-						sCMD = sCMD + UnicodeString().sprintf(L" -usehttp true -httplistenport %d -httpwebsocketport %d",
-							ATestSettings->HttpListenPort, ATestSettings->HttpWebSocket);
+						sCMD = sCMD + UnicodeString().sprintf
+							(L" -usehttp true -httplistenport %d -httpwebsocketport %d", ATestSettings->HttpListenPort, ATestSettings->HttpWebSocket);
 					}
 					sCMD = UnicodeString().sprintf(L"%s -r %d -l %d -f %s", sCMD.c_str(), ATestSettings->LocalPort,
 						ATestSettings->RemotePort, AnsiQuotedStr(sTempFile, '"').c_str());
@@ -3284,8 +3338,9 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 
 				FormScxmlGui->SwitchToTesterLog(true /* clear */ );
 
-				FExternTesterSpawnPtr.reset(new TSpawnAndRedirect(sCMD, TTestSettings::GetExpandedCMD(ATestSettings->WorkDir, sTempFile),
-						this->Handle, WM_SCXML_STOP_DEBUGGING));
+				FExternTesterSpawnPtr.reset(new TSpawnAndRedirect(sCMD,
+						TTestSettings::GetExpandedCMD(ATestSettings->WorkDir, sTempFile), this->Handle,
+						WM_SCXML_STOP_DEBUGGING));
 				FExternTesterSpawnPtr->ConvertOutputEncoding = ATestSettings->ConvertOutputEncoding;
 
 				if (ATestSettings->TriggersProtocol == TTriggersProtocol::tpPipes) {
@@ -3301,9 +3356,11 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 			}
 			else {
 				FormScxmlGui->SwitchToProgramLog( /* not clear */ );
-				const UnicodeString sMsg = UnicodeString().sprintf(L"Start listening from external application.\nActive unit:[%s]",
-					AScxmlActivePanel->StateMachineEditorUnit ? AScxmlActivePanel->StateMachineEditorUnit->FileName.c_str()
-					: AScxmlActivePanel->ScxmlName.c_str());
+				const UnicodeString sMsg = UnicodeString().sprintf(
+					L"Start listening from external application.\nActive unit:[%s]",
+					AScxmlActivePanel->StateMachineEditorUnit ?
+					AScxmlActivePanel->StateMachineEditorUnit->FileName.c_str() : AScxmlActivePanel->ScxmlName.c_str()
+					);
 
 				// иначе спрячет сообщение об ошибках
 				if (!bHasErrors) {
@@ -3324,7 +3381,8 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 		for (int i = 0; i < this->ComponentCount; i++) {
 			TStateMachineDockPanel *APanel = dynamic_cast<TStateMachineDockPanel*>(this->Components[i]);
 			if (APanel && APanel->StateMachineEditor) {
-				AWasMap.insert(std::make_pair(APanel->StateMachineEditor, APanel->StateMachineEditor->GetTemporarySelectedRectangle()));
+				AWasMap.insert(std::make_pair(APanel->StateMachineEditor,
+						APanel->StateMachineEditor->GetTemporarySelectedRectangle()));
 			}
 		}
 
@@ -3332,7 +3390,8 @@ void __fastcall TFormScxmlGui::actRunExecute(TObject * Sender) {
 		// понаблюдаем, не приведет ли к конфликтам
 		actStop->Execute();
 
-		for (std::map<TStateMachineEditor*, TTemporarySelectedRectangle>::iterator it = AWasMap.begin(); it != AWasMap.end(); ++it) {
+		for (std::map<TStateMachineEditor*, TTemporarySelectedRectangle>::iterator it = AWasMap.begin();
+			it != AWasMap.end(); ++it) {
 			it->first->SetTemporarySelectedRectangle(it->second);
 		}
 	}
@@ -3519,8 +3578,8 @@ void SetListViewCanvasSettings(TCustomListView * Sender, TListItem * Item) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::ListViewCallStackAdvancedCustomDrawSubItem(TCustomListView * Sender, TListItem * Item, int SubItem,
-	TCustomDrawState State, TCustomDrawStage Stage, bool&DefaultDraw) {
+void __fastcall TFormScxmlGui::ListViewCallStackAdvancedCustomDrawSubItem(TCustomListView * Sender, TListItem * Item,
+	int SubItem, TCustomDrawState State, TCustomDrawStage Stage, bool&DefaultDraw) {
 	if (SubItem == 2) {
 		Sender->Canvas->Font->Style = TFontStyles() << fsBold;
 	}
@@ -3532,8 +3591,8 @@ void __fastcall TFormScxmlGui::ListViewCallStackAdvancedCustomDrawSubItem(TCusto
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::ListViewCallStackAdvancedCustomDrawItem(TCustomListView * Sender, TListItem * Item, TCustomDrawState State,
-	TCustomDrawStage Stage, bool&DefaultDraw) {
+void __fastcall TFormScxmlGui::ListViewCallStackAdvancedCustomDrawItem(TCustomListView * Sender, TListItem * Item,
+	TCustomDrawState State, TCustomDrawStage Stage, bool&DefaultDraw) {
 
 	SetListViewCanvasSettings(Sender, Item);
 }
@@ -3682,27 +3741,32 @@ void __fastcall TFormScxmlGui::ParseReceivedUDPTesterCommand(const std::wstring 
 									for (std::size_t i = 0; i < AVecUnits.size(); i++) {
 										const UnicodeString &sUnitName = AVecUnits[i]->ScxmlName;
 										if (sUnitName == sMsg) {
-											if (TStateMachineDockPanel * ASubDockPanel = AVecUnits[i]->StateMachineDockPanel) {
-												if (TScxmlShape * ASubRootScxml = ASubDockPanel->StateMachineEditor->RootScxml) {
-													if (ASubRootScxml->InvokeID == sIdentifier) {
-														AUninvokedUnit = AVecUnits[i];
-														ASubRootScxml->TempInvokeID = L"";
-														break;
-													}
-												}
-											}
+										if
+										(TStateMachineDockPanel * ASubDockPanel = AVecUnits[i]
+										->StateMachineDockPanel) {
+										if (TScxmlShape * ASubRootScxml = ASubDockPanel->StateMachineEditor->RootScxml)
+										{
+										if (ASubRootScxml->InvokeID == sIdentifier) {
+										AUninvokedUnit = AVecUnits[i];
+										ASubRootScxml->TempInvokeID = L"";
+										break;
+										}
+										}
+										}
 										}
 									}
 
 									if (AUninvokedUnit) {
 										for (std::size_t i = 0; i < AVecUnits.size(); i++) {
-											if (AVecUnits[i] != AUninvokedUnit && //
-												AUninvokedUnit->VirtualDependencies->IndexOf(AVecUnits[i]->FileName) != -1) {
+										if (AVecUnits[i] != AUninvokedUnit && //
+										AUninvokedUnit->VirtualDependencies->IndexOf(AVecUnits[i]->FileName) != -1) {
 
-												if (TStateMachineDockPanel * ASubDockPanel = AVecUnits[i]->StateMachineDockPanel) {
-													ASubDockPanel->ClearEnteredStates();
-												}
-											}
+										if
+										(TStateMachineDockPanel * ASubDockPanel = AVecUnits[i]
+										->StateMachineDockPanel) {
+										ASubDockPanel->ClearEnteredStates();
+										}
+										}
 										}
 									}
 
@@ -3744,15 +3808,16 @@ void __fastcall TFormScxmlGui::ParseReceivedUDPTesterCommand(const std::wstring 
 									const bool bIsBreakpointSet = AVisualShape && AVisualShape->BreakpointSet;
 
 									if (bIsBreakpointSet) {
-										SendBallonMsg(UnicodeString().sprintf(L"Breakpoint for state:[%s] machine:[%s] is activated!",
-												sMsg.c_str(), ADockPanel->ScxmlName.c_str()), bfInfo);
+										SendBallonMsg(UnicodeString().sprintf
+										(L"Breakpoint for state:[%s] machine:[%s] is activated!", sMsg.c_str(),
+										ADockPanel->ScxmlName.c_str()), bfInfo);
 
 										if (!actPause->Checked) {
-											FBreakpointForcedFlag = true;
+										FBreakpointForcedFlag = true;
 
-											this->InvalidateAllEditors();
+										this->InvalidateAllEditors();
 
-											actPause->Checked = true;
+										actPause->Checked = true;
 										}
 										actPause->Update();
 									}
@@ -3775,8 +3840,8 @@ void __fastcall TFormScxmlGui::ParseReceivedUDPTesterCommand(const std::wstring 
 							case smttBeforeTakingTransition: {
 
 									std::pair<TStateMachineDockPanel*,
-									TTreeConnection*>AEnteredElements = ADockPanel->TakingTransition(sTransitionFrom, iTransitionID,
-										SettingsData->TestingAutoOpenUnit, L"");
+									TTreeConnection*>AEnteredElements = ADockPanel->TakingTransition(sTransitionFrom,
+										iTransitionID, SettingsData->TestingAutoOpenUnit, L"");
 
 									ADockPanel = AEnteredElements.first;
 									AConnection = dynamic_cast<TStateMachineConnection*>(AEnteredElements.second);
@@ -3784,15 +3849,16 @@ void __fastcall TFormScxmlGui::ParseReceivedUDPTesterCommand(const std::wstring 
 									const bool bIsBreakpointSet = AConnection && AConnection->BreakpointSet;
 
 									if (bIsBreakpointSet) {
-										SendBallonMsg(UnicodeString().sprintf(L"Breakpoint for state:[%s] machine:[%s] is activated!",
-												sMsg.c_str(), ADockPanel->ScxmlName.c_str()), bfInfo);
+										SendBallonMsg(UnicodeString().sprintf
+										(L"Breakpoint for state:[%s] machine:[%s] is activated!", sMsg.c_str(),
+										ADockPanel->ScxmlName.c_str()), bfInfo);
 
 										if (!actPause->Checked) {
-											FBreakpointForcedFlag = true;
+										FBreakpointForcedFlag = true;
 
-											this->InvalidateAllEditors();
+										this->InvalidateAllEditors();
 
-											actPause->Checked = true;
+										actPause->Checked = true;
 										}
 										actPause->Update();
 									}
@@ -3809,7 +3875,10 @@ void __fastcall TFormScxmlGui::ParseReceivedUDPTesterCommand(const std::wstring 
 							// если определена фигура, и установлены разрешения, то переключим на соотв. док. панель
 							if (AVisualShape || AConnection) {
 
-								if (ADockPanel && (SettingsData->TestingSwitchToPanel && ADockPanel->Zone && ADockPanel->Zone->Parent) &&
+								if
+									(ADockPanel &&
+									(SettingsData->TestingSwitchToPanel && ADockPanel->Zone &&
+										ADockPanel->Zone->Parent) &&
 									(ADockPanel->Zone->Parent->ActivePage != ADockPanel->Zone)) {
 									// в этом методе будет переключено на передний план и обновиться SyntaxView
 
@@ -3831,13 +3900,15 @@ void __fastcall TFormScxmlGui::ParseReceivedUDPTesterCommand(const std::wstring 
 						/* ПРЕДУПРЕЖДЕНИЕ! Эта операция очень затратная по ресурсам и времени,
 						поэтому выполнять только по запросу! */
 						// GIF IMAGE
-						if (b_IS_GIF_MAKER_ACTIVE && (AType == smttBeforeEnter || AType == smttBeforeTakingTransition)) {
+						if (b_IS_GIF_MAKER_ACTIVE && (AType == smttBeforeEnter || AType == smttBeforeTakingTransition))
+						{
 
 							TStateMachineDockPanel *ADockPanel = GetActiveEditorDockPanel();
 							if (ADockPanel && (ADockPanel->ScxmlName == sScxmlName) && //
 								(ADockPanel->InvokeID.IsEmpty() || ADockPanel->InvokeID == sIdentifier)) {
 
-								const UnicodeString sImageName = (AType == smttBeforeEnter ? L"Enter: " : L"Transition: ") + sMsg;
+								const UnicodeString sImageName =
+									(AType == smttBeforeEnter ? L"Enter: " : L"Transition: ") + sMsg;
 
 								FrameGifMaker->CaptureImage(ADockPanel->StateMachineEditor->TheTree,
 									ADockPanel->StateMachineEditor->RootScxml, AType, sImageName);
@@ -3897,7 +3968,8 @@ void __fastcall TFormScxmlGui::ThreadTesterComponentRun(TIdThreadComponent * Sen
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::UDPServer1UDPRead(TIdUDPListenerThread * AThread, TBytes AData, TIdSocketHandle * ABinding) {
+void __fastcall TFormScxmlGui::UDPServer1UDPRead(TIdUDPListenerThread * AThread, TBytes AData,
+	TIdSocketHandle * ABinding) {
 	if (AData.Length > 1) {
 		const RawByteString str(reinterpret_cast<char*>(&AData[0]), AData.Length);
 		const std::size_t nSize = FLockFreeQueue.enqueue(UTF8ToUnicodeString(str).c_str());
@@ -3938,8 +4010,8 @@ void __fastcall TFormScxmlGui::actNewUnitExecute(TObject * Sender) {
 
 			DeleteAllProjects();
 
-			TStateMachineEditorUnit *AEditorForm = dynamic_cast<TStateMachineEditorUnit*>(ProjectManager1->New(NULL,
-					__classid(TStateMachineEditorUnit)));
+			TStateMachineEditorUnit *AEditorForm = dynamic_cast<TStateMachineEditorUnit*>
+				(ProjectManager1->New(NULL, __classid(TStateMachineEditorUnit)));
 			if (AEditorForm) {
 				AEditorForm->Open(true);
 			}
@@ -3995,8 +4067,8 @@ void __fastcall TFormScxmlGui::TabControlLogChange(TObject * Sender) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::ElDropTarget1TargetDrag(TObject * Sender, TDragState State, TOleDragObject * Source, TShiftState Shift,
-	int X, int Y, TDragType & DragType) {
+void __fastcall TFormScxmlGui::ElDropTarget1TargetDrag(TObject * Sender, TDragState State, TOleDragObject * Source,
+	TShiftState Shift, int X, int Y, TDragType & DragType) {
 
 	switch(Source->Content) {
 	case edcFileList: {
@@ -4034,8 +4106,8 @@ void __fastcall TFormScxmlGui::ElDropTarget1TargetDrag(TObject * Sender, TDragSt
 
 // ---------------------------------------------------------------------------
 
-void __fastcall TFormScxmlGui::ElDropTarget1TargetDrop(TObject * Sender, TOleDragObject * Source, TShiftState Shift, int X, int Y,
-	TDragType & DragType)
+void __fastcall TFormScxmlGui::ElDropTarget1TargetDrop(TObject * Sender, TOleDragObject * Source, TShiftState Shift,
+	int X, int Y, TDragType & DragType)
 
 {
 	try {
@@ -4057,7 +4129,8 @@ void __fastcall TFormScxmlGui::ElDropTarget1TargetDrop(TObject * Sender, TOleDra
 						break;
 					}
 					else if (sExt == TStateMachineEditorUnit::FileExt_) {
-						if (ProjectManager1->Root && ProjectManager1->Root->ClassType() == __classid(TStateMachineProject)) {
+						if (ProjectManager1->Root && ProjectManager1->Root->ClassType() == __classid
+							(TStateMachineProject)) {
 							// бросаем в дерево
 							if (bDropToProjectTree && AProjSelectedDoc && !SettingsData->IsTesterWorking) {
 								AddExistingUnit(AProjSelectedDoc, Source->FileList->Strings[i], false);
@@ -4091,7 +4164,8 @@ void __fastcall TFormScxmlGui::ElDropTarget1TargetDrop(TObject * Sender, TOleDra
 								AParentShape = AScxmlActivePanel->StateMachineEditor->RootScxml;
 							}
 
-							std::vector<TProtocolBindingShape*>AProtocolShapes = CreateProtocolBindingShapeFromJSON(AParentShape, sText);
+							std::vector<TProtocolBindingShape*>AProtocolShapes = CreateProtocolBindingShapeFromJSON
+								(AParentShape, sText);
 							// имеет смысл выделять, если вообще хоть что-то добавлено
 							if (AProtocolShapes.size()) {
 
@@ -4105,16 +4179,16 @@ void __fastcall TFormScxmlGui::ElDropTarget1TargetDrop(TObject * Sender, TOleDra
 									}
 									else {
 										if (AProtocolShapes[i]->X0 < ABounds.Left) {
-											ABounds.Left = AProtocolShapes[i]->X0;
+										ABounds.Left = AProtocolShapes[i]->X0;
 										}
 										if (AProtocolShapes[i]->Y0 < ABounds.Top) {
-											ABounds.Top = AProtocolShapes[i]->Y0;
+										ABounds.Top = AProtocolShapes[i]->Y0;
 										}
 										if (AProtocolShapes[i]->X1 > ABounds.Right) {
-											ABounds.Right = AProtocolShapes[i]->X1;
+										ABounds.Right = AProtocolShapes[i]->X1;
 										}
 										if (AProtocolShapes[i]->Y1 > ABounds.Bottom) {
-											ABounds.Bottom = AProtocolShapes[i]->Y1;
+										ABounds.Bottom = AProtocolShapes[i]->Y1;
 										}
 									}
 								}
@@ -4201,13 +4275,14 @@ void __fastcall TFormScxmlGui::UpdateHtmlRecentFiles() {
 			}
 			else {
 				if (SameText(ExtractFileExt(SettingsData->RecentFiles->Strings[i]), TStateMachineProject::FileExt_)) {
-					UnicodeString sRef = UnicodeString().sprintf(L"<A href=\"%s\">%s</A>", SettingsData->RecentFiles->Strings[i].c_str(),
-						SettingsData->RecentFiles->Strings[i].c_str());
+					UnicodeString sRef = UnicodeString().sprintf(L"<A href=\"%s\">%s</A>",
+						SettingsData->RecentFiles->Strings[i].c_str(), SettingsData->RecentFiles->Strings[i].c_str());
 
 					const int iActive = ProjectManager1->Root && SameText(SettingsData->RecentFiles->Strings[i],
 						ProjectManager1->Root->FilePath);
 
-					TAnchorTextShape * AnchorTextShape = dynamic_cast<TAnchorTextShape*>(HTMLRecent->Items->AddChild(NULL, L""));
+					TAnchorTextShape * AnchorTextShape = dynamic_cast<TAnchorTextShape*>
+						(HTMLRecent->Items->AddChild(NULL, L""));
 					if (AnchorTextShape) {
 						AnchorTextShape->SetFilePath(SettingsData->RecentFiles->Strings[i], iCount + 1, iActive);
 						AnchorTextShape->Font->Size = 10;
@@ -4235,13 +4310,14 @@ void __fastcall TFormScxmlGui::UpdateHtmlRecentFiles() {
 
 		for (int i = 0; i < SettingsData->RecentFiles->Count; i++) {
 			if (!SameText(ExtractFileExt(SettingsData->RecentFiles->Strings[i]), TStateMachineProject::FileExt_)) {
-				UnicodeString sRef = UnicodeString().sprintf(L"<A href=\"%s\">%s</A>", SettingsData->RecentFiles->Strings[i].c_str(),
-					SettingsData->RecentFiles->Strings[i].c_str());
+				UnicodeString sRef = UnicodeString().sprintf(L"<A href=\"%s\">%s</A>",
+					SettingsData->RecentFiles->Strings[i].c_str(), SettingsData->RecentFiles->Strings[i].c_str());
 
 				const int iActive = ProjectManager1->Root && SameText(SettingsData->RecentFiles->Strings[i],
 					ProjectManager1->Root->FilePath);
 
-				TAnchorTextShape * AnchorTextShape = dynamic_cast<TAnchorTextShape*>(HTMLRecent->Items->AddChild(NULL, L""));
+				TAnchorTextShape * AnchorTextShape = dynamic_cast<TAnchorTextShape*>
+					(HTMLRecent->Items->AddChild(NULL, L""));
 				if (AnchorTextShape) {
 					AnchorTextShape->SetFilePath(SettingsData->RecentFiles->Strings[i], iCount + 1, iActive);
 					AnchorTextShape->Font->Size = 10;
@@ -4396,7 +4472,8 @@ void __fastcall TFormScxmlGui::actBuildProjectExecute(TObject * Sender) {
 
 						// записываем скрипт в формате OEM 866, чтобы правильно кириллица читалась
 						std::auto_ptr<TStringList>APostBuildPtr(new TStringList());
-						APostBuildPtr->Text = StateMachineProject->ProjectProperties->ProjectPostBuild->PostBuildEvaluated;
+						APostBuildPtr->Text =
+							StateMachineProject->ProjectProperties->ProjectPostBuild->PostBuildEvaluated;
 						APostBuildPtr->SaveToFile(sTempFile, TEncoding::GetEncoding(866));
 
 						TFileAttributes AFileAttr = TFile::GetAttributes(sTempFile);
@@ -4542,7 +4619,8 @@ void __fastcall TFormScxmlGui::actExportAnsiCAccept(TObject * Sender) {
 		if (FConvertToAnsiCSpawnPtr.get()) {
 			String Caption = "WARNING!";
 			String Text = "Previous operation wasn't finished! Are you sure to continue?";
-			if (Application->MessageBoxA(Text.w_str(), Caption.w_str(), MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) != IDOK) {
+			if (Application->MessageBoxA(Text.w_str(), Caption.w_str(), MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2)
+				!= IDOK) {
 				return;
 			}
 		}
@@ -4551,8 +4629,8 @@ void __fastcall TFormScxmlGui::actExportAnsiCAccept(TObject * Sender) {
 		if (AUnit && AUnit->StateMachineDockPanel) {
 			const UnicodeString sTransformer = TPath::Combine(SettingsData->AppPath, "uscxml-transform.exe");
 			FConvertToAnsiCSpawnPtr.reset(new TSpawnAndRedirect(UnicodeString().sprintf(L"%s -tc -i \"%s\" -o \"%s\"",
-						sTransformer.c_str(), AUnit->FilePath.c_str(), actExportAnsiC->Dialog->FileName.c_str()), SettingsData->AppPath,
-					this->Handle, WM_SCXML_ANSI_C_CONVERTED));
+						sTransformer.c_str(), AUnit->FilePath.c_str(), actExportAnsiC->Dialog->FileName.c_str()),
+					SettingsData->AppPath, this->Handle, WM_SCXML_ANSI_C_CONVERTED));
 			FConvertToAnsiCSpawnPtr->StartProcess();
 		}
 	}
@@ -4616,7 +4694,8 @@ void __fastcall TFormScxmlGui::actExportQtAccept(TObject * Sender) {
 			if (FConvertToQtSpawnPtr.get()) {
 				String Caption = "WARNING!";
 				String Text = "Previous operation wasn't finished! Are you sure to continue?";
-				if (Application->MessageBoxA(Text.w_str(), Caption.w_str(), MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) != IDOK) {
+				if (Application->MessageBoxA(Text.w_str(), Caption.w_str(),
+						MB_OKCANCEL | MB_ICONWARNING | MB_DEFBUTTON2) != IDOK) {
 					return;
 				}
 			}
@@ -4629,8 +4708,10 @@ void __fastcall TFormScxmlGui::actExportQtAccept(TObject * Sender) {
 			if (ADialogPtr->ShowModal() == mrOk) {
 				const UnicodeString sTransformer = TPath::Combine(SettingsData->AppPath, "QtScxmlTester\\qscxmlc.exe");
 
-				UnicodeString sCMD = UnicodeString().sprintf(L"%s \"%s\" -o \"%s\"", sTransformer.c_str(), AUnit->FilePath.c_str(),
-					ADialogPtr->ComboOutName->Text.IsEmpty() ? sOutpath.c_str() : ADialogPtr->ComboOutName->Text.c_str());
+				UnicodeString sCMD = UnicodeString().sprintf(L"%s \"%s\" -o \"%s\"", sTransformer.c_str(),
+					AUnit->FilePath.c_str(),
+					ADialogPtr->ComboOutName->Text.IsEmpty() ? sOutpath.c_str()
+					: ADialogPtr->ComboOutName->Text.c_str());
 
 				if (ADialogPtr->CheckNamespace->Checked && !ADialogPtr->ComboNamespace->Text.IsEmpty()) {
 					sCMD = sCMD + " --namespace " + AnsiQuotedStr(ADialogPtr->ComboNamespace->Text, L'"');
@@ -4648,7 +4729,8 @@ void __fastcall TFormScxmlGui::actExportQtAccept(TObject * Sender) {
 					sCMD = sCMD + " --statemethods";
 				}
 
-				FConvertToQtSpawnPtr.reset(new TSpawnAndRedirect(sCMD.c_str(), SettingsData->AppPath, this->Handle, WM_SCXML_QT_CONVERTED));
+				FConvertToQtSpawnPtr.reset(new TSpawnAndRedirect(sCMD.c_str(), SettingsData->AppPath, this->Handle,
+						WM_SCXML_QT_CONVERTED));
 				FConvertToQtSpawnPtr->StartProcess();
 			}
 		}
@@ -4693,31 +4775,34 @@ void __fastcall TFormScxmlGui::SelectBinding(const bool bScrollInView) {
 
 							if (AVecUnits[i]->StateMachineDockPanel) {
 
-								if
-									((bScrollInView && AVecUnits[i]->StateMachineDockPanel->Zone && AVecUnits[i]
+								if ((bScrollInView && AVecUnits[i]->StateMachineDockPanel->Zone && AVecUnits[i]
 										->StateMachineDockPanel->Zone->Parent) &&
-									(AVecUnits[i]->StateMachineDockPanel->Zone->Parent->ActivePage != AVecUnits[i]
+									(AVecUnits[i]
+										->StateMachineDockPanel->Zone->Parent->ActivePage != AVecUnits[i]
 										->StateMachineDockPanel->Zone)) {
 									// в этом методе будет переключено на передний план и обновится SyntaxView
 									AVecUnits[i]->StateMachineDockPanel->Show();
 								}
 
-								TComponent *AComponent = AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->FindComponent(sShapeName);
+								TComponent *AComponent = AVecUnits[i]
+									->StateMachineDockPanel->StateMachineEditor->FindComponent(sShapeName);
 								if (!AComponent)
 									throw Exception("Can not find component with name [" + sShapeName + "]");
 
-								TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(AComponent);
+								TStateMachineConnection * AStateMachineConnection =
+									dynamic_cast<TStateMachineConnection*>(AComponent);
 								if (AStateMachineConnection) {
 									// дизайн объекты можно предварительно не чистить в этом методе само почистит
-									AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->SelectConnection(AStateMachineConnection,
-										bScrollInView);
+									AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->SelectConnection
+										(AStateMachineConnection, bScrollInView);
 									return;
 								}
 
 								TTreeNodeShape * ATreeNodeShape = dynamic_cast<TTreeNodeShape*>(AComponent);
 								if (ATreeNodeShape) {
 									// дизайн объекты можно предварительно не чистить в этом методе само почистит
-									AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->SelectShape(ATreeNodeShape, bScrollInView);
+									AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->SelectShape
+										(ATreeNodeShape, bScrollInView);
 									// дополнительно выделим фигуру, так как иногда сложно сразу найти
 									AVecUnits[i]->StateMachineDockPanel->StateMachineEditor->SelectTemporaryRectangle
 										(Editorutils::IncrementRectCopy(ATreeNodeShape->Bounds(), 10));
@@ -4780,8 +4865,8 @@ void __fastcall TFormScxmlGui::PropSettingsInspectorClick(TObject * Sender) {
 			for (int i = 0; i < AStringListPtr->Count - 1; i++) {
 
 				if (AInstance && //
-					(PropIsType(AInstance, AStringListPtr->Strings[i], tkClass) || PropIsType(AInstance, AStringListPtr->Strings[i],
-							tkClassRef)) //
+					(PropIsType(AInstance, AStringListPtr->Strings[i], tkClass) || PropIsType(AInstance,
+							AStringListPtr->Strings[i], tkClassRef)) //
 					) {
 					AInstance = GetObjectProp(AInstance, AStringListPtr->Strings[i]);
 				}
@@ -4834,7 +4919,8 @@ void __fastcall TFormScxmlGui::PopupMenuBindingsPopup(TObject * Sender) {
 			if (boost::regex_match(wstr, what, e) && what.size() == 2) {
 				const UnicodeString sScxmlName = std::wstring(what[1]).c_str();
 
-				CopyScxmlNametoClipboard1->Caption = UnicodeString().sprintf(L"Copy [%s] to Clipboard", sScxmlName.Trim().c_str());
+				CopyScxmlNametoClipboard1->Caption = UnicodeString().sprintf(L"Copy [%s] to Clipboard",
+					sScxmlName.Trim().c_str());
 
 				CopyScxmlNametoClipboard1->Visible = true;
 			}
@@ -4854,7 +4940,8 @@ void __fastcall TFormScxmlGui::PopupMenuBindingsPopup(TObject * Sender) {
 
 				const UnicodeString sName = std::wstring(what[1]).c_str();
 
-				CopyAviaNametoClipboard1->Caption = UnicodeString().sprintf(L"Copy [%s] to Clipboard", sName.Trim().c_str());
+				CopyAviaNametoClipboard1->Caption = UnicodeString().sprintf(L"Copy [%s] to Clipboard",
+					sName.Trim().c_str());
 
 				CopyAviaNametoClipboard1->Visible = true;
 			}
@@ -4958,7 +5045,8 @@ void __fastcall TFormScxmlGui::MenuProjUnitScxmlNameClick(TObject * Sender) {
 	try {
 		TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 		if (AMenuItem) {
-			const UnicodeString sScxmlName = StringReplace(StripHotkey(AMenuItem->Caption), L"ScxmlName=", L"", TReplaceFlags());
+			const UnicodeString sScxmlName = StringReplace(StripHotkey(AMenuItem->Caption), L"ScxmlName=", L"",
+				TReplaceFlags());
 			Clipboard()->AsText = sScxmlName;
 			WLOG_DEBUG(L"ScxmlName <%s> copied to clipboard", sScxmlName.c_str());
 		}
@@ -5110,8 +5198,9 @@ void __fastcall TFormScxmlGui::MenuStackFilterMsgClick(TObject * Sender) {
 		TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 		if (AMenuItem) {
 			std::auto_ptr<TStringList>AStringListPtr(new TStringList());
-			AStringListPtr->CommaText = AMenuItem->Checked ? StringReplace(StripHotkey(AMenuItem->Caption), L"Remove filter=", L"",
-				TReplaceFlags()) : StringReplace(StripHotkey(AMenuItem->Caption), L"Add filter=", L"", TReplaceFlags());
+			AStringListPtr->CommaText = AMenuItem->Checked ? StringReplace(StripHotkey(AMenuItem->Caption),
+				L"Remove filter=", L"", TReplaceFlags()) : StringReplace(StripHotkey(AMenuItem->Caption),
+				L"Add filter=", L"", TReplaceFlags());
 
 			if (AStringListPtr->Count != 4)
 				throw Exception(L"Wrong filter stack msg format: " + AStringListPtr->CommaText);
@@ -5125,8 +5214,8 @@ void __fastcall TFormScxmlGui::MenuStackFilterMsgClick(TObject * Sender) {
 
 				bool bProjectRequireSave = false;
 
-				const int iIndex = StateMachineProject->ProjectProperties->FilteredMsgs->IndexOfAnyMatched(sStateName, sScxmlMachineName,
-					sID, AScxmlMsgType);
+				const int iIndex = StateMachineProject->ProjectProperties->FilteredMsgs->IndexOfAnyMatched(sStateName,
+					sScxmlMachineName, sID, AScxmlMsgType);
 				if (AMenuItem->Checked) {
 					if (iIndex != -1) {
 						bProjectRequireSave = true;
@@ -5173,7 +5262,8 @@ void __fastcall TFormScxmlGui::PopupMenuStackPopup(TObject * Sender) {
 			MenuStackCopyMsg->Caption = L"Msg=" + AItem->SubItems->Strings[TCallStackColumnType::csctMsg];
 			MenuStackCopyMsg->Visible = true;
 
-			MenuStackCopyScxmlName->Caption = L"ScxmlName=" + AItem->SubItems->Strings[TCallStackColumnType::csctStatemachineName];
+			MenuStackCopyScxmlName->Caption = L"ScxmlName=" + AItem->SubItems->Strings
+				[TCallStackColumnType::csctStatemachineName];
 			MenuStackCopyScxmlName->Visible = true;
 
 			MenuStackCopyID->Caption = L"ID=" + AItem->SubItems->Strings[TCallStackColumnType::csctIdentifier];
@@ -5195,7 +5285,8 @@ void __fastcall TFormScxmlGui::PopupMenuStackPopup(TObject * Sender) {
 				AStringListPtr->Add(AItem->SubItems->Strings[TCallStackColumnType::csctMsg]);
 				AStringListPtr->Add(AItem->SubItems->Strings[TCallStackColumnType::csctScxmlType]);
 
-				MenuStackFilterMsg->Caption = (iIndex == -1 ? L"Add filter=" : L"Remove filter=") + AStringListPtr->CommaText;
+				MenuStackFilterMsg->Caption = (iIndex == -1 ? L"Add filter=" : L"Remove filter=")
+					+ AStringListPtr->CommaText;
 				MenuStackFilterMsg->Visible = true;
 				MenuStackFilterMsg->Checked = iIndex != -1;
 			}
@@ -5205,8 +5296,8 @@ void __fastcall TFormScxmlGui::PopupMenuStackPopup(TObject * Sender) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::SetDockPanelStackCaption(const int iFilteredCount) {
-	DockPanelCallStack->Caption = iFilteredCount ? UnicodeString().sprintf(L"Call stack - filtered [%d]", iFilteredCount) : UnicodeString
-		("Call stack");
+	DockPanelCallStack->Caption = iFilteredCount ? UnicodeString().sprintf(L"Call stack - filtered [%d]",
+		iFilteredCount) : UnicodeString("Call stack");
 }
 
 // ---------------------------------------------------------------------------
@@ -5391,7 +5482,8 @@ void __fastcall TFormScxmlGui::actClearClipboardConnectionsUpdate(TObject * Send
 void __fastcall TFormScxmlGui::actShowTextEditorExecute(TObject * Sender) {
 	int iCount = 0;
 	for (int i = 0; i < this->ComponentCount; i++) {
-		TSyntaxTextEditorDockPanel * ASyntaxTextEditorDockPanel = dynamic_cast<TSyntaxTextEditorDockPanel*>(this->Components[i]);
+		TSyntaxTextEditorDockPanel * ASyntaxTextEditorDockPanel = dynamic_cast<TSyntaxTextEditorDockPanel*>
+			(this->Components[i]);
 		if (ASyntaxTextEditorDockPanel) {
 			iCount++;
 		}
@@ -5440,8 +5532,8 @@ bool __fastcall TFormScxmlGui::IsPropIncluded(const UnicodeString & sPropName, b
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::PropSettingsInspectorFilterProp(TObject * Sender, TPersistent * AInstance, ILMDProperty * APropInfo,
-	bool AIsSubProp, bool&AIncludeProp) {
+void __fastcall TFormScxmlGui::PropSettingsInspectorFilterProp(TObject * Sender, TPersistent * AInstance,
+	ILMDProperty * APropInfo, bool AIsSubProp, bool&AIncludeProp) {
 
 	if (SettingsData) {
 		// сначала базовый вызов
@@ -5454,7 +5546,8 @@ void __fastcall TFormScxmlGui::PropSettingsInspectorFilterProp(TObject * Sender,
 				static TMetaClass *AClass = NULL;
 				if (!AClass || ALMDPropertyInspector->Selection->Item[0]->ClassType() != AClass) {
 					FFilterPropsListPtr->Clear();
-					MUtils::GetAllNestedPublishedProps(ALMDPropertyInspector->Selection->Item[0], FFilterPropsListPtr.get(), L"");
+					MUtils::GetAllNestedPublishedProps(ALMDPropertyInspector->Selection->Item[0],
+						FFilterPropsListPtr.get(), L"");
 					AClass = ALMDPropertyInspector->Selection->Item[0]->ClassType();
 				}
 			}
@@ -5465,8 +5558,8 @@ void __fastcall TFormScxmlGui::PropSettingsInspectorFilterProp(TObject * Sender,
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::PropSettingsInspectorGetEditorClass(TObject * Sender, TPersistent * AInstance, ILMDProperty * APropInfo,
-	TLMDPropEditorClass & AEditorClass)
+void __fastcall TFormScxmlGui::PropSettingsInspectorGetEditorClass(TObject * Sender, TPersistent * AInstance,
+	ILMDProperty * APropInfo, TLMDPropEditorClass & AEditorClass)
 
 {
 	if (SettingsData) {
@@ -5486,7 +5579,8 @@ void __fastcall TFormScxmlGui::PropSettingsInspectorGetEditorClass(TObject * Sen
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::PropSettingsInspectorGetCaptionColor(TObject * Sender, TLMDPropertyInspectorItem * AItem, TColor & AColor) {
+void __fastcall TFormScxmlGui::PropSettingsInspectorGetCaptionColor(TObject * Sender,
+	TLMDPropertyInspectorItem * AItem, TColor & AColor) {
 	Propinspext::PropSettingsInspectorGetCaptionColor(Sender, AItem, AColor);
 }
 
@@ -5614,7 +5708,8 @@ void __fastcall TFormScxmlGui::ApplicationEvents1Idle(TObject * Sender, bool&Don
 	/* Update Caption */
 	if (!FUpdateCaptionPanelsSet.empty()) {
 
-		for (std::set<TStateMachineDockPanel*>::iterator it = FUpdateCaptionPanelsSet.begin(); it != FUpdateCaptionPanelsSet.end(); ++it) {
+		for (std::set<TStateMachineDockPanel*>::iterator it = FUpdateCaptionPanelsSet.begin();
+			it != FUpdateCaptionPanelsSet.end(); ++it) {
 			TStateMachineDockPanel *ADockPanel = *it;
 			// внимание, в служебных целях, мы можем передать ADockPanel == NULL, чтобы инициировать обновление заглавия формы
 			// уже может и не существовать
@@ -5672,7 +5767,8 @@ void __fastcall TFormScxmlGui::ApplicationEvents1Idle(TObject * Sender, bool&Don
 
 	if (!FDockPanelResizeSet.empty()) {
 
-		for (std::set<TLMDDockPanel*>::iterator it = FDockPanelResizeSet.begin(); it != FDockPanelResizeSet.end(); ++it) {
+		for (std::set<TLMDDockPanel*>::iterator it = FDockPanelResizeSet.begin(); it != FDockPanelResizeSet.end();
+			++it) {
 			TLMDDockPanel *ADockPanel = *it;
 			// уже может и не существовать
 			if (ADockPanel && IndexOfComponentList(this, ADockPanel) != -1) {
@@ -5777,7 +5873,8 @@ void __fastcall TFormScxmlGui::actImportConfigurationAccept(TObject * Sender) {
 								true /* принудительно открываем все узлы */ , L"");
 
 							ADockPanel = AEnteredElements.first;
-							TVisualScxmlBaseShape * AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(AEnteredElements.second);
+							TVisualScxmlBaseShape * AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>
+								(AEnteredElements.second);
 
 							// если определена фигура, и установлены разрешения, то переключим на соотв. док. панель
 							if (AVisualShape) {
@@ -5792,7 +5889,8 @@ void __fastcall TFormScxmlGui::actImportConfigurationAccept(TObject * Sender) {
 								}
 							}
 							else {
-								WLOG_WARNING(L"Can not find shape [%s] in unit [%s]", sState.c_str(), sInterpreter.c_str());
+								WLOG_WARNING(L"Can not find shape [%s] in unit [%s]", sState.c_str(),
+									sInterpreter.c_str());
 							}
 						}
 
@@ -5820,8 +5918,8 @@ void __fastcall TFormScxmlGui::MenuProjEditOrderClick(TObject * Sender) {
 			std::auto_ptr<TStringList>AStringListPtr(new TStringList());
 			AStringListPtr->LoadFromFile(StateMachineProject->FilePath);
 
-			std::auto_ptr<TFormSyntaxEditorForm>ASyntaxForm(new TFormSyntaxEditorForm(Application, "XML", AStringListPtr->Text,
-					"Edit Project Order"));
+			std::auto_ptr<TFormSyntaxEditorForm>ASyntaxForm(new TFormSyntaxEditorForm(Application, "XML",
+					AStringListPtr->Text, "Edit Project Order"));
 			if (ASyntaxForm->ShowModal() == mrOk) {
 				TFile::Copy(StateMachineProject->FilePath, StateMachineProject->FilePath + ".BAK", true);
 
@@ -5865,8 +5963,8 @@ int GetPropertyLevel(TPersistent * AInstance, ILMDProperty * APropInfo) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::PropSettingsInspectorCompare(TObject * Sender, TPersistent * AInstance, ILMDProperty * APropInfo1,
-	ILMDProperty * APropInfo2, int&ACompare) {
+void __fastcall TFormScxmlGui::PropSettingsInspectorCompare(TObject * Sender, TPersistent * AInstance,
+	ILMDProperty * APropInfo1, ILMDProperty * APropInfo2, int&ACompare) {
 	// эту процедуру необходимо для всех делать, так как иначе будут по алфавиту сортироваться остальные
 	if (AInstance) {
 
@@ -5901,7 +5999,8 @@ void __fastcall TFormScxmlGui::PropSettingsInspectorCompare(TObject * Sender, TP
 void __fastcall TFormScxmlGui::actLockDockingExecute(TObject * Sender) {
 	SettingsData->LockUI = !SettingsData->LockUI;
 
-	LMDDockSite1->LockMode = SettingsData->LockUI ? (LMDDockSite1->LockMode << dlmUndockFrom) : (LMDDockSite1->LockMode >> dlmUndockFrom);
+	LMDDockSite1->LockMode = SettingsData->LockUI ? (LMDDockSite1->LockMode << dlmUndockFrom) :
+		(LMDDockSite1->LockMode >> dlmUndockFrom);
 }
 // ---------------------------------------------------------------------------
 
@@ -5911,7 +6010,8 @@ void __fastcall TFormScxmlGui::actLockDockingUpdate(TObject * Sender) {
 
 // ---------------------------------------------------------------------------
 
-void __fastcall TFormScxmlGui::CheckImageAdvancedDrawItem(TObject * Sender, TCanvas * ACanvas, const TRect & ARect, TOwnerDrawState State) {
+void __fastcall TFormScxmlGui::CheckImageAdvancedDrawItem(TObject * Sender, TCanvas * ACanvas, const TRect & ARect,
+	TOwnerDrawState State) {
 	TMenuItem * AMenuItem = dynamic_cast<TMenuItem*>(Sender);
 	if (AMenuItem) {
 		TAdvancedMenuDrawItemEvent AHandler = AMenuItem->OnAdvancedDrawItem;
@@ -5989,8 +6089,8 @@ void __fastcall TFormScxmlGui::FixDockPanelActiveState(TLMDDockPanel *APanelActi
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::OnFixDockPanelMouseActivate(System::TObject* Sender, TMouseButton Button, Classes::TShiftState Shift, int X,
-	int Y, int HitTest, TMouseActivate &MouseActivate) {
+void __fastcall TFormScxmlGui::OnFixDockPanelMouseActivate(System::TObject* Sender, TMouseButton Button,
+	Classes::TShiftState Shift, int X, int Y, int HitTest, TMouseActivate &MouseActivate) {
 
 	FixDockPanelActiveState(DockPanelTransitionXML);
 
@@ -6001,7 +6101,8 @@ void __fastcall TFormScxmlGui::OnFixDockPanelMouseActivate(System::TObject* Send
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TFormScxmlGui::LMDDockSite1UnDock(TObject *Sender, TControl *Client, TWinControl *NewTarget, bool &Allow) {
+void __fastcall TFormScxmlGui::LMDDockSite1UnDock(TObject *Sender, TControl *Client, TWinControl *NewTarget,
+	bool &Allow) {
 	TLMDDockPanel * ADockPanel = dynamic_cast<TLMDDockPanel*>(Client);
 
 	// специальная подстройка, чтобы при отстыковке панелей, мы попадали на предыдущую
@@ -6012,7 +6113,8 @@ void __fastcall TFormScxmlGui::LMDDockSite1UnDock(TObject *Sender, TControl *Cli
 		if (ADockPanel->Zone->Parent) {
 
 			for (int i = ADockPanel->Zone->Index - 1; i > 0; i--) {
-				if (ADockPanel->Zone->Parent->Zones[i]->Panel && ADockPanel->Zone->Parent->Zones[i]->Panel->PanelVisible) {
+				if (ADockPanel->Zone->Parent->Zones[i]->Panel && ADockPanel->Zone->Parent->Zones[i]
+					->Panel->PanelVisible) {
 					FBeforeUndockZone = ADockPanel->Zone->Parent->Zones[i];
 					FUndockPanel = ADockPanel;
 
@@ -6045,7 +6147,8 @@ void __fastcall TFormScxmlGui::actIDEInsightExecute(TObject *Sender) {
 			if (TStateMachineEditor * AModalEditor = dynamic_cast<TStateMachineEditor*>(AWinControl)) {
 				AEditorActive = AModalEditor;
 			}
-			else if (TFormTransitionEditor * AFormTransitionEditor = dynamic_cast<TFormTransitionEditor*>(AWinControl)) {
+			else if (TFormTransitionEditor * AFormTransitionEditor = dynamic_cast<TFormTransitionEditor*>(AWinControl))
+			{
 				AEditorActive = AFormTransitionEditor->StateMachineEditor;
 			}
 		}
@@ -6058,7 +6161,8 @@ void __fastcall TFormScxmlGui::actIDEInsightExecute(TObject *Sender) {
 	if (!AEditorActive) {
 		AEditorActive = DockPanelTransitionXML->FIX_PANEL_ENTERED ? TransitionXMLEditor : GetActiveStateMachineEditor();
 #if 0 // для глубокой отладки
-		WLOG_INFO(L"ActiveEditor=[%s]", AEditorActive->StateMachineEditorUnit ? AEditorActive->StateMachineEditorUnit->DisplayName.c_str()
+		WLOG_INFO(L"ActiveEditor=[%s]",
+			AEditorActive->StateMachineEditorUnit ? AEditorActive->StateMachineEditorUnit->DisplayName.c_str()
 			: AEditorActive->ClassName().c_str());
 #endif
 	}
@@ -6155,7 +6259,8 @@ void __fastcall TFormScxmlGui::actExportDefExtBeforeExecute(TObject *Sender) {
 			TStateMachineEditorUnit* AUnit = GetActiveUnit();
 			if (AUnit && AUnit->StateMachineDockPanel) {
 				AFileSaveAs->Dialog->InitialDir = ExtractFileDir(AUnit->FilePath);
-				AFileSaveAs->Dialog->FileName = ExtractFileName(ChangeFileExt(AUnit->FilePath, L"." + AFileSaveAs->Dialog->DefaultExt));
+				AFileSaveAs->Dialog->FileName = ExtractFileName(ChangeFileExt(AUnit->FilePath,
+						L"." + AFileSaveAs->Dialog->DefaultExt));
 			}
 		}
 	}
@@ -6251,8 +6356,9 @@ void __fastcall TFormScxmlGui::MenuRunClick(TObject *Sender) {
 
 			std::auto_ptr<TStringList>ASkippedPropsPtr(new TStringList());
 			Unique::CompareError ACompareError;
-			AMenuItem->Checked = Unique::CompareObjects(ATestSettings, SettingsData->TestApplicationPresets->Items[i]->TestSettings,
-				ASkippedPropsPtr.get(), L"", ACompareError);
+			AMenuItem->Checked = Unique::CompareObjects(ATestSettings,
+				SettingsData->TestApplicationPresets->Items[i]->TestSettings, ASkippedPropsPtr.get(), L"",
+				ACompareError);
 			AMenuItem->Enabled = FileExists(SettingsData->TestApplicationPresets->Items[i]->TestSettings->FullPath);
 			if (AMenuItem->Checked) {
 				bFound = true;
@@ -6267,7 +6373,8 @@ void __fastcall TFormScxmlGui::MenuRunClick(TObject *Sender) {
 	if (!bFound) {
 		for (int i = 0; i < SettingsData->TestApplicationPresets->Count; i++) {
 			if (SettingsData->TestApplicationPresets->Items[i]->Enabled) {
-				if (SameText(ATestSettings->ExeName, SettingsData->TestApplicationPresets->Items[i]->TestSettings->ExeName)) {
+				if (SameText(ATestSettings->ExeName,
+						SettingsData->TestApplicationPresets->Items[i]->TestSettings->ExeName)) {
 					std::map<int, TMenuItem*>::iterator it = AMenus.find(i);
 					if (it != AMenus.end()) {
 						it->second->Checked = true;
@@ -6296,8 +6403,8 @@ void __fastcall TFormScxmlGui::MenuPresetTesterClick(TObject *Sender) {
 				std::auto_ptr<TStringList>ASkippedPropsPtr(new TStringList());
 				Unique::CompareError ACompareError;
 				if (!Unique::CompareObjects(StateMachineProject->ProjectProperties->TestSettings,
-						SettingsData->TestApplicationPresets->Items[iItemIndex]->TestSettings, ASkippedPropsPtr.get(), L"",
-						ACompareError)) {
+						SettingsData->TestApplicationPresets->Items[iItemIndex]->TestSettings,
+						ASkippedPropsPtr.get(), L"", ACompareError)) {
 
 					StateMachineProject->ProjectProperties->TestSettings->Assign(AItem->TestSettings);
 					StateMachineProject->SaveProperties();
@@ -6307,8 +6414,8 @@ void __fastcall TFormScxmlGui::MenuPresetTesterClick(TObject *Sender) {
 				std::auto_ptr<TStringList>ASkippedPropsPtr(new TStringList());
 				Unique::CompareError ACompareError;
 				if (!Unique::CompareObjects(SettingsData->TestSettings,
-						SettingsData->TestApplicationPresets->Items[iItemIndex]->TestSettings, ASkippedPropsPtr.get(), L"",
-						ACompareError)) {
+						SettingsData->TestApplicationPresets->Items[iItemIndex]->TestSettings, ASkippedPropsPtr.get(),
+						L"", ACompareError)) {
 					SettingsData->TestSettings->Assign(AItem->TestSettings);
 					SettingsData->Save();
 				}
@@ -6321,7 +6428,7 @@ void __fastcall TFormScxmlGui::MenuPresetTesterClick(TObject *Sender) {
 
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::actSyncInvokedExecute(TObject *Sender) {
 	try {
 		UnicodeString sInvoked = "";
@@ -6337,14 +6444,15 @@ void __fastcall TFormScxmlGui::actSyncInvokedExecute(TObject *Sender) {
 	}
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::actSyncInvokedUpdate(TObject *Sender) {
 	actSyncInvoked->Enabled = SettingsData->IsTesterWorking;
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-void __fastcall TFormScxmlGui::HTMLRecentClickShape(TTreeNodeShape *Sender, TMouseButton Button, TShiftState Shift, int X, int Y) {
+void __fastcall TFormScxmlGui::HTMLRecentClickShape(TTreeNodeShape *Sender, TMouseButton Button, TShiftState Shift,
+	int X, int Y) {
 	try {
 		TAnchorTextShape * AnchorTextShape = dynamic_cast<TAnchorTextShape*>(Sender);
 		if (AnchorTextShape && !AnchorTextShape->ItemSelected && !AnchorTextShape->FilePath.IsEmpty()) {
@@ -6370,7 +6478,7 @@ void __fastcall TFormScxmlGui::HTMLRecentClickShape(TTreeNodeShape *Sender, TMou
 	}
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::HTMLRecentMouseEnterShape(TTreeNodeShape *Sender, TShiftState Shift, int X, int Y) {
 	if (Sender) {
 		TAnchorTextShape * AnchorTextShape = dynamic_cast<TAnchorTextShape*>(Sender);
@@ -6384,19 +6492,19 @@ void __fastcall TFormScxmlGui::HTMLRecentMouseEnterShape(TTreeNodeShape *Sender,
 
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::HTMLRecentMouseLeaveShape(TTreeNodeShape *Sender, TShiftState Shift, int X, int Y) {
 	if (Sender) {
 		Sender->Cursor = crDefault;
 	}
 }
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void __fastcall TFormScxmlGui::actTestCoverageExecute(TObject *Sender) {
 	// Do not remove this handler !
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::actRevertExecute(TObject *Sender) {
 	TStateMachineProject * AStateMachineProject = this->StateMachineProject;
 	TStateMachineEditorUnit* AUnit = ActiveUnit;
@@ -6497,8 +6605,78 @@ void __fastcall TFormScxmlGui::actRevertExecute(TObject *Sender) {
 	}
 }
 
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::actRevertUpdate(TObject *Sender) {
 	actRevert->Enabled = (ProjectManager1->Root != NULL) && !SettingsData->IsTesterWorking;
 }
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+void __fastcall TFormScxmlGui::actExportAsQtCreatorScxmlExecute(TObject *Sender) {
+	try {
+		TStateMachineDockPanel * AScxmlActivePanel = GetActiveEditorDockPanel();
+		if (AScxmlActivePanel) {
+			SaveDialog->Filter = TStateMachineEditorUnit::OpenDialogFilter;
+			if (SaveDialog->Execute(this->Handle)) {
+				AScxmlActivePanel->StateMachineEditor->SaveToQtCreatorScxml(SaveDialog->FileName);
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TFormScxmlGui::actExportAsScxmlGuiExecute(TObject *Sender) {
+	try {
+		TStateMachineDockPanel * AScxmlActivePanel = GetActiveEditorDockPanel();
+		if (AScxmlActivePanel) {
+			SaveDialog->Filter = TStateMachineEditorUnit::OpenDialogFilter;
+			if (SaveDialog->Execute(this->Handle)) {
+				AScxmlActivePanel->StateMachineEditor->SaveToScxmlGui(SaveDialog->FileName);
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TFormScxmlGui::actExportAsVSCodeScxmlExecute(TObject *Sender) {
+	try {
+		TStateMachineDockPanel * AScxmlActivePanel = GetActiveEditorDockPanel();
+		if (AScxmlActivePanel) {
+			SaveDialog->Filter = TStateMachineEditorUnit::OpenDialogFilter;
+			if (SaveDialog->Execute(this->Handle)) {
+				AScxmlActivePanel->StateMachineEditor->SaveToVSCodeScxml(SaveDialog->FileName);
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TFormScxmlGui::actExportAsSimpleScxmlExecute(TObject *Sender) {
+	try {
+		TStateMachineDockPanel * AScxmlActivePanel = GetActiveEditorDockPanel();
+		if (AScxmlActivePanel) {
+			SaveDialog->Filter = TStateMachineEditorUnit::OpenDialogFilter;
+			if (SaveDialog->Execute(this->Handle)) {
+				AScxmlActivePanel->StateMachineEditor->SaveToSimpleScxml(SaveDialog->FileName);
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TFormScxmlGui::Documentation1Click(TObject *Sender) {
+	ShellExecuteW(NULL, L"open", L"https://alexzhornyak.github.io/ScxmlEditor-Tutorial/#table-of-contents", NULL, NULL,
+		SW_SHOWNORMAL);
+}
+// ---------------------------------------------------------------------------

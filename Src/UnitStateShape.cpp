@@ -542,10 +542,15 @@ void __fastcall TVirtualShape::OnGetPropEditorClass(TPersistent *AInstance, ILMD
 	const UnicodeString sPropName = APropInfo->Name();
 	if (sPropName == L"Src") {
 		AEditorClass = __classid(TVirtualSrcDialogPropEditor);
+		return;
 	}
 	else if (sPropName == L"AliasParams") {
 		AEditorClass = __classid(TStringTextPairsEditor);
+		return;
 	}
+
+	/* inherited */
+	TVisualScxmlBaseShape::OnGetPropEditorClass(AInstance, APropInfo, AEditorClass);
 }
 
 // ---------------------------------------------------------------------------
@@ -700,8 +705,12 @@ TStateMachineEditorUnit * __fastcall TVirtualShape::NewVirtualUnit(void) {
 
 // ---------------------------------------------------------------------------
 bool __fastcall TVirtualShape::IsSrcValid() {
-	if (this->SrcUnit)
-		return SameText(this->SrcUnit->FilePath, ExpandFileName(this->FullPath));
+	if (this->SrcUnit) {
+		const UnicodeString sUnitFilePath = this->SrcUnit->FilePath;
+		const UnicodeString sFullFilePath = this->FullPath;
+
+		return SameText(sUnitFilePath, sFullFilePath) || SameText(ExpandFileName(sUnitFilePath), ExpandFileName(sFullFilePath));
+	}
 
 	const UnicodeString sFullPath = this->FullPath;
 	if (!sFullPath.IsEmpty() && FileExists(sFullPath))

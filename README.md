@@ -13,7 +13,7 @@
 
 **[Video overview - v.2.2](https://youtu.be/30dyXAs-m1A)**
 
-# Scxml Editor 2.5.5
+# Scxml Editor 2.6.0
 Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](Images/Inheritance_TV_example.gif)
@@ -24,6 +24,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 [![Discord](Images/Discord.svg)](https://discord.gg/5XWDsbEXzn)
 
 ### Changelog
+**2.6.0:** Export charts with [Qt Creator](Doc/ExportScxmlWithMetainformation.md#qt-creator), [VSCode](Doc/ExportScxmlWithMetainformation.md#vscode), [ScxmlGui](Doc/ExportScxmlWithMetainformation.md#scxmlgui) and [Simple](Doc/ExportScxmlWithMetainformation.md#simple-visual-metainformation-format) graphical metainformation <br>
 **2.5.5:** Chart design panel view presets <br>
 **2.5.4:** Nested initial state indication <br>
 **2.5.3:** Chart Draw Constraints, Select Chart Elements <br>
@@ -53,7 +54,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 ## Installation
 You can find portable version as attached Zip in ScxmlEditor Github Release page
 
-Latest version: **[2.5.5.1755]**
+Latest version: **[2.6.0.1790]**
 
 ### Windows Installation
 #### First Install
@@ -68,7 +69,7 @@ Latest version: **[2.5.5.1755]**
 1. Download from latest Release page and unpack it into **Temporary** folder
 2. Run **Temporary\ScxmlEditor\ScxmlEditor_InstallOrUpdate.cmd "Path\To\Location\ScxmlEditor"**
 
-> NOTICE! We are continiously making updates, so follow the version number on the README page and update to the latest to have all last cool features
+> **NOTICE!** We are continiously making updates, so follow the version number on the README page and update to the latest to have all last cool features
 
 ### [Linux Installation](Doc/LinuxInstallation.md)
 1. **Install [Wine](https://www.winehq.org/):**
@@ -156,6 +157,10 @@ Current binaries are compiled with single development licensies registered by th
 - Exports
   - [Convert SCXML to DOT](Doc/DotBasedAutoLayout.md#how-to-convert-scxml-to-dot)
   - [Export SCXML to SVG](Doc/ExportScxmlToSVG.md)
+  - [Export charts with Qt Creator](Doc/ExportScxmlWithMetainformation.md#qt-creator) graphical metainformation
+  - [Export charts with VSCode](Doc/ExportScxmlWithMetainformation.md#vscode) graphical metainformation
+  - [Export charts with ScxmlGui](Doc/ExportScxmlWithMetainformation.md#scxmlgui) graphical metainformation
+  - [Export charts with Simple](Doc/ExportScxmlWithMetainformation.md#simple-visual-metainformation-format) graphical metainformation
 - Run and Debug
   - [How to debug SCXML statecharts](Doc/DebugScxmlStateCharts.md)
   - [Qt SCXML framework debugging](https://github.com/alexzhornyak/QtScxmlMonitor/blob/main/README.md)

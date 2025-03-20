@@ -48,6 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Log4cpp_VCL.hpp"
 
 #include "MConvertComponent.hpp"
+#include "UTF8NoBomEncoding.hpp"
 
 #include "UnitMain.h"
 #include "UnitStateMachineParser.h"
@@ -4050,9 +4051,9 @@ void __fastcall TStateMachineEditor::PopupNodePopup(System::TObject * Sender) {
 		// NOTE: IsInitialDeep is not published !
 		FMenuIsInitial->Visible = ASelectedShape && IsPublishedProp(ASelectedShape, "IsInitial");
 		if (FMenuIsInitial->Visible) {
-			TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape *>(ASelectedShape);
+			TVisualScxmlBaseShape *AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(ASelectedShape);
 			if (AVisualShape) {
-				  FMenuIsInitial->Checked = AVisualShape->IsInitialDeep;
+				FMenuIsInitial->Checked = AVisualShape->IsInitialDeep;
 			}
 		}
 
@@ -8491,6 +8492,19 @@ void __fastcall TStateMachineEditor::ExecuteInterprocessCommand(INTERPROCESS_COP
 	else if (SameText(ACopyData->wchCommand, L"SaveToPNG")) {
 		this->SaveToPNG(ACopyData->wchArg1);
 	}
+
+	else if (SameText(ACopyData->wchCommand, L"SaveToQtCreatorScxml")) {
+		this->SaveToQtCreatorScxml(ACopyData->wchArg1);
+	}
+	else if (SameText(ACopyData->wchCommand, L"SaveToVSCodeScxml")) {
+		this->SaveToVSCodeScxml(ACopyData->wchArg1);
+	}
+	else if (SameText(ACopyData->wchCommand, L"SaveToScxmlGui")) {
+		this->SaveToScxmlGui(ACopyData->wchArg1);
+	}
+	else if (SameText(ACopyData->wchCommand, L"SaveToSimpleScxml")) {
+		this->SaveToSimpleScxml(ACopyData->wchArg1);
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -8583,6 +8597,42 @@ void __fastcall TStateMachineEditor::SaveRawScxmlToFile(const UnicodeString & sF
 		Statemachine::MaxPossibleTypes() : (Statemachine::MaxPossibleTypes() >> Statemachine::istComments);
 
 	Statemachine::SaveTreeToScxml(TheTree, sFileName, false, true, ATypes);
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveToQtCreatorScxml(const UnicodeString & sFileName) {
+	const Statemachine::TIterateSaveTypes ATypes = (Statemachine::MaxPossibleTypes() >> Statemachine::istVirtual);
+	const TVisualMetaInformationTypes AMetaTypes = TVisualMetaInformationTypes() << vmiQt;
+
+	Statemachine::SaveTreeToScxml(TheTree, sFileName, false, false, ATypes, AMetaTypes);
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveToVSCodeScxml(const UnicodeString & sFileName) {
+	const Statemachine::TIterateSaveTypes ATypes = (Statemachine::MaxPossibleTypes() >> Statemachine::istVirtual);
+	const TVisualMetaInformationTypes AMetaTypes = TVisualMetaInformationTypes() << vmiVSCode;
+
+	Statemachine::SaveTreeToScxml(TheTree, sFileName, false, false, ATypes, AMetaTypes);
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveToScxmlGui(const UnicodeString & sFileName) {
+	const Statemachine::TIterateSaveTypes ATypes = (Statemachine::MaxPossibleTypes() >> Statemachine::istVirtual);
+	const TVisualMetaInformationTypes AMetaTypes = TVisualMetaInformationTypes() << vmiScxmlGui;
+
+	std::auto_ptr<TUTF8EncodingNoBOM>AUTF8EncodingPtr(new TUTF8EncodingNoBOM());
+	std::auto_ptr<TStringStream>AStreamPtr(new TStringStream(L"", AUTF8EncodingPtr.get(), false));
+	Statemachine::SaveTreeToScxml(TheTree, AStreamPtr.get(), false /* do not append gui */ ,
+		true /* skip encoding inside */ , ATypes, AMetaTypes);
+	AStreamPtr->SaveToFile(sFileName);
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveToSimpleScxml(const UnicodeString & sFileName) {
+	const Statemachine::TIterateSaveTypes ATypes = (Statemachine::MaxPossibleTypes() >> Statemachine::istVirtual);
+	const TVisualMetaInformationTypes AMetaTypes = TVisualMetaInformationTypes() << vmiSimple;
+
+	Statemachine::SaveTreeToScxml(TheTree, sFileName, false, false, ATypes, AMetaTypes);
 }
 
 // ---------------------------------------------------------------------------
@@ -9101,9 +9151,13 @@ void __fastcall TStateMachineDockPanel::OpenedDocOnSave(System::TObject * Sender
 			}
 		}
 
+		TVisualMetaInformationTypes AMetaTypes = TVisualMetaInformationTypes();
+
 		/* ÔÈ×È, ÑÂßÇÀÍÍÛÅ Â ÐÅÆÈÌÅ ÏÐÎÅÊÒÀ */
 		TStateMachineProject *AStateMachineProject = StateMachineEditorUnit->StateMachineProject;
 		if (AStateMachineProject) {
+
+			AMetaTypes = AStateMachineProject->ProjectProperties->ProjectMetaInformationTypes;
 
 			/* Bindings */
 			if (SettingsData->AviaExtensionEnabled && !StateMachineEditorUnit->BindingsDisabled) {
@@ -9163,11 +9217,12 @@ void __fastcall TStateMachineDockPanel::OpenedDocOnSave(System::TObject * Sender
 				throw Exception("Can not find inherited module [" + StateMachineEditorUnit->Inherited + "]!");
 
 			Statemachine::SaveInheritedToScxml(FStateMachineEditor->TheTree, AInheritedEditor->TheTree, AFileStream,
-				StateMachineEditorUnit->Inherited);
+				StateMachineEditorUnit->Inherited, AMetaTypes);
 		}
 		/* ÎÁÛ×ÍÀß ÇÀÏÈÑÜ */
 		else {
-			Statemachine::SaveTreeToScxml(FStateMachineEditor->TheTree, AFileStream);
+			Statemachine::SaveTreeToScxml(FStateMachineEditor->TheTree, AFileStream, true, false,
+				Statemachine::TIterateSaveTypes() << Statemachine::istMAXSIZE, AMetaTypes);
 		}
 
 		SettingsData->ProfileOperationReset(__FUNCTION__, "SaveTreeToScxml");

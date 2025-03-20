@@ -65,6 +65,10 @@ $(AppFilePath) command $(UnitHandle) SaveToSVG $(UnitFileDir)\$(UnitName).svg
 | SaveToDotPlusPng | Arg1=FileName | Saves state chart to Graphviz DOT and PNG files |
 | SaveToBMP | Arg1=FileName | Saves state chart to BMP file |
 | SaveToPNG | Arg1=FileName | Saves state chart to PNG file |
+| SaveToQtCreatorScxml | Arg1=FileName | Saves state chart with Qt Creator graphical metainformation |
+| SaveToVSCodeScxml | Arg1=FileName | Saves state chart with VSCode graphical metainformation |
+| SaveToScxmlGui | Arg1=FileName | Saves state chart with ScxmlGui graphical metainformation |
+| SaveToSimpleScxml | Arg1=FileName | Saves state chart with Simple Visual graphical metainformation |
 
 ### Post Save Application Commands
 Commands that could be executed by ScxmlEditor application
@@ -78,7 +82,7 @@ $(AppFilePath) command [App HWND] [Command] [Arg1|Arg2|Arg3]
 **Example:**
 
 ```batch
-$(AppFilePath) command $(AppHandle) SwitchLog Debug True
+$(AppFilePath) command $(AppHandle) SwitchLog Debug False
 ```
 
 | Command | Arguments | Description |

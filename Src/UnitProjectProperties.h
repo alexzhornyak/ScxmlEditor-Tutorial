@@ -42,6 +42,7 @@
 #include "UnitTestSettings.h"
 #include "UnitPostBuildInterface.h"
 #include <XMLDoc.hpp>
+#include "CommonConsts.h"
 
 class TStateMachineProject;
 
@@ -49,6 +50,7 @@ typedef enum {pbtSaveAll,pbtSaveFlat,pbtPostBuild} TProjectBuildType;
 typedef Set<TProjectBuildType, pbtSaveAll, pbtPostBuild> TProjectBuildTypes;
 
 #define DEFAULT_PROJECT_BUILD_TYPES		(TProjectBuildTypes() << pbtSaveAll << pbtSaveFlat << pbtPostBuild)
+
 
 class TProjectPostBuild: public IPostBuildInterface {
 protected:
@@ -75,6 +77,8 @@ private:
 
 	TProjectBuildTypes FBuildTypes;
 	bool __fastcall IsBuildTypesStored() { return FBuildTypes != DEFAULT_PROJECT_BUILD_TYPES; }
+
+	TVisualMetaInformationTypes FProjectMetaInformationTypes;
 
 	UnicodeString FCalibratorCfg;
 	UnicodeString FCanserviceCfg;
@@ -109,16 +113,17 @@ public:		// User declarations
 	virtual TComponent *__fastcall DoCreateDefaultInstance();
 
 __published:
-	__property UnicodeString			ProjectDefines= {read=FProjectDefines, write=FProjectDefines};
-	__property TTestSettings *			TestSettings = {read=FTestSettings, write=SetTestSettings};
-	__property TProjectTriggerItems *	Triggers = {read=FTriggers, write=SetTriggers};
-	__property TProjectPostBuild *		ProjectPostBuild = {read=FProjectPostBuild, write=SetProjectPostBuild};
-	__property TTestingMsgItems *		FilteredMsgs = {read=FFilteredMsgs, write=SetFilteredMsgs};
-	__property UnicodeString 			CalibratorCfg = {read=FCalibratorCfg, write=FCalibratorCfg, stored=IsCalibratorCfgStored};
-	__property UnicodeString 			CanserviceCfg = {read=FCanserviceCfg, write=FCanserviceCfg, stored=IsCanserviceCfgStored};
-	__property TProjectBuildTypes 		BuildTypes = {read=FBuildTypes, write=FBuildTypes, stored=IsBuildTypesStored};
-	__property bool 					DisableSameControls = {read=FDisableSameControls, write=FDisableSameControls, default=false };
-	__property bool 					VerifyChecksums = {read=FVerifyChecksums, write=FVerifyChecksums, default=true };
+	__property UnicodeString					ProjectDefines= {read=FProjectDefines, write=FProjectDefines};
+	__property TTestSettings *					TestSettings = {read=FTestSettings, write=SetTestSettings};
+	__property TProjectTriggerItems *			Triggers = {read=FTriggers, write=SetTriggers};
+	__property TProjectPostBuild *				ProjectPostBuild = {read=FProjectPostBuild, write=SetProjectPostBuild};
+	__property TTestingMsgItems *				FilteredMsgs = {read=FFilteredMsgs, write=SetFilteredMsgs};
+	__property UnicodeString 					CalibratorCfg = {read=FCalibratorCfg, write=FCalibratorCfg, stored=IsCalibratorCfgStored};
+	__property UnicodeString 					CanserviceCfg = {read=FCanserviceCfg, write=FCanserviceCfg, stored=IsCanserviceCfgStored};
+	__property TProjectBuildTypes 				BuildTypes = {read=FBuildTypes, write=FBuildTypes, stored=IsBuildTypesStored};
+	__property TVisualMetaInformationTypes      ProjectMetaInformationTypes = {read=FProjectMetaInformationTypes, write=FProjectMetaInformationTypes, default=0};
+	__property bool 							DisableSameControls = {read=FDisableSameControls, write=FDisableSameControls, default=false };
+	__property bool 							VerifyChecksums = {read=FVerifyChecksums, write=FVerifyChecksums, default=true };
 };
 
 

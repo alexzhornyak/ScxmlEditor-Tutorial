@@ -870,6 +870,18 @@ void __fastcall TScxmlBaseShape::AttributesToProps(ILMDXmlElement * ANode) {
 }
 
 // ---------------------------------------------------------------------------
+
+void __fastcall TScxmlBaseShape::ExtraParamsToAttributes(ILMDXmlElement * ANode) {
+	std::auto_ptr<TStringList>AExtraParamsList(new TStringList());
+	AExtraParamsList->Text = this->ExtraParams;
+	for (int i = 0; i < AExtraParamsList->Count; i++) {
+		if (!AExtraParamsList->Names[i].IsEmpty()) {
+			ANode->SetAttr(AExtraParamsList->Names[i], AExtraParamsList->ValueFromIndex[i]);
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
 void __fastcall TScxmlBaseShape::PropsToAttributes(ILMDXmlElement * ANode) {
 	assert(ANode != NULL);
 	for (TStateAttributesMap::iterator it = FStateAttrMap.begin(); it != FStateAttrMap.end(); ++it) {
@@ -910,13 +922,7 @@ void __fastcall TScxmlBaseShape::PropsToAttributes(ILMDXmlElement * ANode) {
 		}
 	}
 
-	std::auto_ptr<TStringList>AExtraParamsList(new TStringList());
-	AExtraParamsList->Text = this->ExtraParams;
-	for (int i = 0; i < AExtraParamsList->Count; i++) {
-		if (!AExtraParamsList->Names[i].IsEmpty()) {
-			ANode->SetAttr(AExtraParamsList->Names[i], AExtraParamsList->ValueFromIndex[i]);
-		}
-	}
+	this->ExtraParamsToAttributes(ANode);
 }
 
 // ---------------------------------------------------------------------------

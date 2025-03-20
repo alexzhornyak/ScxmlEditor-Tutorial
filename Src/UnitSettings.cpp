@@ -91,6 +91,7 @@ __fastcall TSettingsData::TSettingsData(TComponent* Owner) : TSettingsBase(Owner
 	FCheckPositionOnLoadScxml = true;
 	FSaveCommentsAnywayOnLoad = false;
 	FParserDoNotLoadQtEditorInfo = true;
+	FParserSaveQtTransitionOffsetMargin = 5;
 	FChartFocusEnabled = true;
 	FChartFocusLineWidth = 2;
 	FChartFocusLineColor = clHighlight;
@@ -272,6 +273,7 @@ void __fastcall TSettingsData::Assign(TPersistent* Source) {
 			FCheckPositionOnLoadScxml = ASettingsData->FCheckPositionOnLoadScxml;
 			FSaveCommentsAnywayOnLoad = ASettingsData->FSaveCommentsAnywayOnLoad;
 			FParserDoNotLoadQtEditorInfo = ASettingsData->FParserDoNotLoadQtEditorInfo;
+			FParserSaveQtTransitionOffsetMargin = ASettingsData->FParserSaveQtTransitionOffsetMargin;
 			FChartFocusEnabled = ASettingsData->FChartFocusEnabled;
 			FChartFocusLineWidth = ASettingsData->FChartFocusLineWidth;
 			FChartFocusLineColor = ASettingsData->FChartFocusLineColor;
@@ -505,6 +507,7 @@ void __fastcall TSettingsData::PropSettingsRegisterCategories(TLMDPropertyInspec
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"CheckPositionOnLoadScxml");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"SaveCommentsAnywayOnLoad");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ParserDoNotLoadQtEditorInfo");
+	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ParserSaveQtTransitionOffsetMargin");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ConnectionTextAngle");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ConnectionVertTextAlign");
 	APropSettingsInspector->RegisterPropCategory(L"Scxml parser", L"ConnectionHorizTextAlign");

@@ -37,6 +37,7 @@
 #include "TeeTree.hpp"
 
 #include "UnicodeStringHash.h"
+#include "CommonConsts.h"
 
 class TScxmlBaseShape;
 class TStateMachineEditor;
@@ -45,7 +46,10 @@ class TStateMachineConnection;
 namespace Statemachine {
 
 	typedef enum {
-		istAttributes, istXmlText, istComments, istInvisibleChilds, istVisibleChilds, istConnections, istExtraContent, istMAXSIZE
+		istAttributes, istXmlText, istComments,
+		istInvisibleChilds, istVisibleChilds,
+		istConnections, istExtraContent,
+		istVirtual, istMAXSIZE
 	}TIterateSaveType;
 	typedef Set<TIterateSaveType, istAttributes, istMAXSIZE>TIterateSaveTypes;
 
@@ -62,13 +66,19 @@ namespace Statemachine {
 	UnicodeString GetRawScxml(TCustomTree *ATree, bool bSkipComments);
 
 	void SaveTreeToScxml(TCustomTree *ATree, const UnicodeString &sFileName,
-		bool bAppendGui=true, bool bSkipVersionEncoding=false, const TIterateSaveTypes ASaveTypes = TIterateSaveTypes() << istMAXSIZE);
+		bool bAppendGui=true, bool bSkipVersionEncoding=false,
+		const TIterateSaveTypes ASaveTypes = TIterateSaveTypes() << istMAXSIZE,
+		const TVisualMetaInformationTypes AMetaTypes = TVisualMetaInformationTypes());
 	void SaveTreeToScxml(TCustomTree *ATree, Classes::TStream *AStream,
-		bool bAppendGui=true, bool bSkipVersionEncoding=false, const TIterateSaveTypes ASaveTypes = TIterateSaveTypes() << istMAXSIZE); /* overload */
+		bool bAppendGui=true, bool bSkipVersionEncoding=false,
+		const TIterateSaveTypes ASaveTypes = TIterateSaveTypes() << istMAXSIZE,
+		const TVisualMetaInformationTypes AMetaTypes = TVisualMetaInformationTypes()); /* overload */
 
 	void SaveScxmlAsFlat(const UnicodeString &sFileName, const UnicodeString &sFlatFileName);
 
-	void SaveInheritedToScxml(TCustomTree *AEditorRoot, TCustomTree *AEditorAncestor, TStream *AStream, const UnicodeString &sInherited);
+	void SaveInheritedToScxml(TCustomTree *AEditorRoot, TCustomTree *AEditorAncestor, TStream *AStream,
+		const UnicodeString &sInherited,
+		const TVisualMetaInformationTypes AMetaTypes = TVisualMetaInformationTypes());
 
 	void LoadTreeFromScxml(TCustomTree *&ATree, const UnicodeString &sFileName);
 	void LoadTreeFromScxmlData(TCustomTree *&ATree, const UnicodeString &sScxmlData);

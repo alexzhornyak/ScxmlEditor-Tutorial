@@ -323,6 +323,7 @@ public:
 	virtual UnicodeString __fastcall PropNameToXMLAttrName(UnicodeString sPropName);
 	virtual void __fastcall AttributesToProps(ILMDXmlElement *ANode);
 	virtual void __fastcall PropsToAttributes(ILMDXmlElement *ANode);
+	virtual void __fastcall ExtraParamsToAttributes(ILMDXmlElement * ANode);
 
 	bool __fastcall EditRawXMLContent(void);
 

@@ -1,4 +1,4 @@
-/***********************************************************************************
+/** *********************************************************************************
 BSD 3-Clause License
 
 Copyright (c) 2018, https://github.com/alexzhornyak
@@ -28,7 +28,7 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- ***************************************************************************************/
+ ************************************************************************************** */
 
 #include <vcl.h>
 #pragma hdrstop
@@ -95,7 +95,8 @@ namespace Statemachine {
 	static const UnicodeString __VISUAL_STATE_NAMES[] = {
 		L"state", L"parallel", L"final"
 	};
-	static const std::set<UnicodeString>VISUAL_STATE_NAMES(__VISUAL_STATE_NAMES, __VISUAL_STATE_NAMES + ARRAYSIZE(__VISUAL_STATE_NAMES));
+	static const std::set<UnicodeString>VISUAL_STATE_NAMES(__VISUAL_STATE_NAMES,
+		__VISUAL_STATE_NAMES + ARRAYSIZE(__VISUAL_STATE_NAMES));
 
 	typedef boost::tuple<UnicodeString, TVecPoint, TScxmlImportFormat>TTransitionBodyTuple;
 
@@ -142,7 +143,8 @@ namespace Statemachine {
 				while (regex_search(start, end, what, xRegEx, flags)) {
 
 					if (what.size() == 3) {
-						AVecPoint.push_back(TPoint(StrToInt(std::wstring(what[1]).c_str()), StrToInt(std::wstring(what[2]).c_str())));
+						AVecPoint.push_back(TPoint(StrToInt(std::wstring(what[1]).c_str()),
+								StrToInt(std::wstring(what[2]).c_str())));
 					}
 					// update search position:
 					start = what[0].second;
@@ -216,7 +218,8 @@ namespace Statemachine {
 					std::auto_ptr<TStringList>AStringListPtr(new TStringList());
 					AStringListPtr->StrictDelimiter = true;
 					AStringListPtr->Delimiter = L';';
-					AStringListPtr->DelimitedText = AParentNode->ChildNodes->Item[k]->GetAttr("startTargetFactors", "-1;-1");
+					AStringListPtr->DelimitedText = AParentNode->ChildNodes->Item[k]->GetAttr("startTargetFactors",
+						"-1;-1");
 					for (int n = 0; n < AStringListPtr->Count; n += 2) {
 						const int iX = RoundTo(StrToFloatDef(AStringListPtr->Strings[n], 0.0), 0);
 						const int iY = RoundTo(StrToFloatDef(AStringListPtr->Strings[n + 1], 0.0), 0);
@@ -244,7 +247,8 @@ namespace Statemachine {
 					std::auto_ptr<TStringList>AStringListPtr(new TStringList());
 					AStringListPtr->StrictDelimiter = true;
 					AStringListPtr->Delimiter = L';';
-					AStringListPtr->DelimitedText = AParentNode->ChildNodes->Item[k]->GetAttr("endTargetFactors", "-1;-1");
+					AStringListPtr->DelimitedText = AParentNode->ChildNodes->Item[k]->GetAttr("endTargetFactors",
+						"-1;-1");
 					for (int n = 0; n < AStringListPtr->Count; n += 2) {
 						const int iX = RoundTo(StrToFloatDef(AStringListPtr->Strings[n], 0.0), 0);
 						const int iY = RoundTo(StrToFloatDef(AStringListPtr->Strings[n + 1], 0.0), 0);
@@ -273,7 +277,8 @@ namespace Statemachine {
 		ADebugList->StrictDelimiter = true;
 		ADebugList->Delimiter = L'|';
 
-		WLOG_DEBUG(L"Name=[%s] Type [%s] [%s]", sName.c_str(), LMDNodeTypeToText(iType).c_str(), ADebugList->DelimitedText.Trim().c_str());
+		WLOG_DEBUG(L"Name=[%s] Type [%s] [%s]", sName.c_str(), LMDNodeTypeToText(iType).c_str(),
+			ADebugList->DelimitedText.Trim().c_str());
 	}
 
 	void IterateStateNodes(TCustomTree * ATree, ILMDXmlNode * AParentNode, int iIndexXML, TScxmlBaseShape * AShape,
@@ -339,8 +344,8 @@ namespace Statemachine {
 					TScxmlBaseShape *AParentShape = AShape;
 					AShape = AParentShape->AddStateChild(sctComment, false);
 					if (!AShape)
-						throw Exception
-							("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" + AParentShape->XMLName + ">");
+						throw Exception("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" +
+						AParentShape->XMLName + ">");
 
 					AShape->Comments->Text = AParentNode->Text;
 				}
@@ -368,7 +373,8 @@ namespace Statemachine {
 				}
 
 				AShape->XMLText->Text = AShape->XMLText->Text + AParentNode->XML;
-				AShape->XMLText->Type = AParentNode->NodeName == L"scxml" ? TXMLTextType::xttSCXML : TXMLTextType::xttXML;
+				AShape->XMLText->Type = AParentNode->NodeName == L"scxml" ?
+					TXMLTextType::xttSCXML : TXMLTextType::xttXML;
 				AShape->XMLText->SyntaxScheme = L"XML";
 				return; // значит добавляем данные в узлы типа <content> или <script>
 			}
@@ -424,13 +430,14 @@ namespace Statemachine {
 						for (int i = 0; i < AParentNode->OwnerDocument->ChildNodes->Count; i++) {
 							/* перебираем все комменты сверху DocumentElement */
 							if (AParentNode->OwnerDocument->ChildNodes->Item[i]->NodeType == LMD_NODE_ELEMENT) {
-								if (AParentNode->OwnerDocument->ChildNodes->Item[i]->AsElement() == AParentNode->AsElement()) {
+								if (AParentNode->OwnerDocument->ChildNodes->Item[i]->AsElement()
+									== AParentNode->AsElement()) {
 									break;
 								}
 							}
 							else if (AParentNode->OwnerDocument->ChildNodes->Item[i]->NodeType == LMD_NODE_COMMENT) {
-								IterateStateNodes(ATree, AParentNode->OwnerDocument->ChildNodes->Item[i], i, AScxmlShape, AVecTransition,
-									false, AScxmlImportFormat);
+								IterateStateNodes(ATree, AParentNode->OwnerDocument->ChildNodes->Item[i], i,
+									AScxmlShape, AVecTransition, false, AScxmlImportFormat);
 							}
 						}
 					}
@@ -469,8 +476,8 @@ namespace Statemachine {
 
 				AVecTransition.push_back(boost::make_tuple(AShape, sEvent, sTarget, sCondition, //
 						boost::get<0>(ABodyTuple), boost::get<1>(ABodyTuple),
-						sType == L"internal" ? TScxmlTransitionType::internal : TScxmlTransitionType::external, AExtraParamsPtr->Text,
-						AScxmlImportFormat));
+						sType == L"internal" ? TScxmlTransitionType::internal : TScxmlTransitionType::external,
+						AExtraParamsPtr->Text, AScxmlImportFormat));
 
 				bIsTransition = true;
 			}
@@ -482,16 +489,19 @@ namespace Statemachine {
 						AShape = AParentShape->AddStateChild(AStateType, false);
 						if (!AShape)
 							throw Exception
-								("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" + AParentShape->XMLName + ">");
+								("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" +
+							AParentShape->XMLName + ">");
 						bAdded = true;
 					}
 					else {
-						LOG_WARNING("%s> Unknown state type <%s>", __FUNCTION__, AnsiString(AParentNode->NodeName).c_str());
+						LOG_WARNING("%s> Unknown state type <%s>", __FUNCTION__,
+							AnsiString(AParentNode->NodeName).c_str());
 					}
 
 				}
 				else {
-					LOG_WARNING("%s> Can not convert <%s> to <%s>", __FUNCTION__, AnsiString(AParentNode->NodeName).c_str(),
+					LOG_WARNING("%s> Can not convert <%s> to <%s>", __FUNCTION__,
+						AnsiString(AParentNode->NodeName).c_str(),
 						AnsiString(__classid(TScxmlBaseShape)->ClassName()).c_str());
 				}
 			}
@@ -532,12 +542,14 @@ namespace Statemachine {
 									iParentX = AShape->Parent->XCenter();
 									iParentY = AShape->Parent->YCenter();
 
-									TVisualScxmlBaseShape*AVisualParent = dynamic_cast<TVisualScxmlBaseShape*>(AShape->Parent);
+									TVisualScxmlBaseShape*AVisualParent = dynamic_cast<TVisualScxmlBaseShape*>
+										(AShape->Parent);
 									if (AVisualParent) {
-										std::map<TVisualScxmlBaseShape*, TPoint>::iterator it = g_MapQtParentPoints.find(AVisualParent);
+										std::map<TVisualScxmlBaseShape*,
+										TPoint>::iterator it = g_MapQtParentPoints.find(AVisualParent);
 										if (it != g_MapQtParentPoints.end()) {
-											iParentX -= it->second.x;
-											iParentY -= it->second.y;
+										iParentX -= it->second.x;
+										iParentY -= it->second.y;
 										}
 									}
 								}
@@ -552,11 +564,13 @@ namespace Statemachine {
 									const int iRectCenterX = AVecPoints[1].x + AVecPoints[2].x / 2;
 									const int iRectCenterY = AVecPoints[1].y + AVecPoints[2].y / 2;
 #if 0
-									WLOG_INFO(L"Shape:[%s] rect center x=%d, y=%d", AShape->SimpleText.c_str(), iRectCenterX, iRectCenterY);
+									WLOG_INFO(L"Shape:[%s] rect center x=%d, y=%d", AShape->SimpleText.c_str(),
+										iRectCenterX, iRectCenterY);
 #endif
 
-									g_MapQtParentPoints.insert(std::make_pair(dynamic_cast<TVisualScxmlBaseShape*>(AShape),
-											Point(iRectCenterX, iRectCenterY)));
+									g_MapQtParentPoints.insert
+										(std::make_pair(dynamic_cast<TVisualScxmlBaseShape*>(AShape),
+										Point(iRectCenterX, iRectCenterY)));
 
 									AShape->X0 = iParentX + AVecPoints[0].x + AVecPoints[1].x;
 									AShape->Y0 = iParentY + AVecPoints[0].y + AVecPoints[1].y;
@@ -567,7 +581,7 @@ namespace Statemachine {
 									case sctFinal:
 									case sctHistory:
 									case sctInitial: {
-											AVisualShape->SetDefaultSize();
+										AVisualShape->SetDefaultSize();
 										}break;
 									default:
 										break;
@@ -582,14 +596,14 @@ namespace Statemachine {
 						}
 					}
 
-					WLOG_WARNING(L"Unknown node type <%s> with parent <%s> <%s>", AParentNode->NodeName.c_str(), AShape->Name.c_str(),
-						AShape->SimpleText.c_str());
+					WLOG_WARNING(L"Unknown node type <%s> with parent <%s> <%s>", AParentNode->NodeName.c_str(),
+						AShape->Name.c_str(), AShape->SimpleText.c_str());
 
 					TScxmlBaseShape *AParentShape = AShape;
 					AShape = AParentShape->AddStateChild(sctExtraContent, false);
 					if (!AShape)
-						throw Exception
-							("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" + AParentShape->XMLName + ">");
+						throw Exception("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" +
+						AParentShape->XMLName + ">");
 
 					AShape->ExtraContent->Text = AParentNode->XML;
 					bExtraContent = true;
@@ -600,16 +614,17 @@ namespace Statemachine {
 				if (bExtraContent)
 					continue;
 				// проанализируем только комменты для поддержки гуев, если это ноды внутри соединения
-				if (!bIsTransition || (AParentNode->ChildNodes->Item[i]->NodeType == LMD_NODE_COMMENT && bIsTransition)) {
-					IterateStateNodes(ATree, AParentNode->ChildNodes->Item[i], i, AShape, AVecTransition, bIsTransition,
-						AScxmlImportFormat);
+				if (!bIsTransition || (AParentNode->ChildNodes->Item[i]->NodeType == LMD_NODE_COMMENT && bIsTransition)
+					) {
+					IterateStateNodes(ATree, AParentNode->ChildNodes->Item[i], i, AShape, AVecTransition,
+						bIsTransition, AScxmlImportFormat);
 				}
 			}
 		}
 	}
 
-	void CreatePoints_Qt(TTreeConnection *AConnection, TTreeNodeShape *AShape, TTreeNodeShape *ASourceNode, TTreeNodeShape *ATargetNode,
-		const TVecPoint &AVecPoint) {
+	void CreatePoints_Qt(TTreeConnection *AConnection, TTreeNodeShape *AShape, TTreeNodeShape *ASourceNode,
+		TTreeNodeShape *ATargetNode, const TVecPoint &AVecPoint) {
 
 		if (AVecPoint.size() < 2) {
 			WLOG_WARNING(L"CreatePoints_Qt> Requires at least 2 points but got:[%d]", (int)AVecPoint.size());
@@ -670,8 +685,8 @@ namespace Statemachine {
 
 			if (i == 0) {
 				double X0clip, X1clip, Y0clip, Y1clip;
-				if (Editorutils::LiangBarsky(ASourceNode->X0, ASourceNode->X1, -ASourceNode->Y1, -ASourceNode->Y0, iX, -iY, iSourceCenterX,
-						-iSourceCenterY, X0clip, Y0clip, X1clip, Y1clip)) {
+				if (Editorutils::LiangBarsky(ASourceNode->X0, ASourceNode->X1, -ASourceNode->Y1, -ASourceNode->Y0, iX,
+						-iY, iSourceCenterX, -iSourceCenterY, X0clip, Y0clip, X1clip, Y1clip)) {
 
 					const int iIndex = 0;
 					if (iIndex < AConnection->Points->Count()) {
@@ -688,8 +703,8 @@ namespace Statemachine {
 			}
 			if (i == AVecPoint.size() - 1) {
 				double X0clip, X1clip, Y0clip, Y1clip;
-				if (Editorutils::LiangBarsky(ATargetNode->X0, ATargetNode->X1, -ATargetNode->Y1, -ATargetNode->Y0, iX, -iY, iTargetCenterX,
-						-iTargetCenterY, X0clip, Y0clip, X1clip, Y1clip)) {
+				if (Editorutils::LiangBarsky(ATargetNode->X0, ATargetNode->X1, -ATargetNode->Y1, -ATargetNode->Y0, iX,
+						-iY, iTargetCenterX, -iTargetCenterY, X0clip, Y0clip, X1clip, Y1clip)) {
 
 					const int iIndex = AConnection->Points->Count() - 1;
 					if (iIndex >= 0) {
@@ -726,7 +741,8 @@ namespace Statemachine {
 		const UnicodeString sSource = ASourceNode != NULL ? ASourceNode->SimpleText.c_str() : L"";
 		TTreeNodeShape *ATargetNode = sTarget.IsEmpty() ? ASourceNode : ATree->Items->Find(sTarget, false);
 		if (!ASourceNode || !ATargetNode)
-			throw Exception(UnicodeString().sprintf(L"Can not create transition from:[%s] to:[%s] event:[%s] cond:[%s]", //
+			throw Exception
+				(UnicodeString().sprintf(L"Can not create transition from:[%s] to:[%s] event:[%s] cond:[%s]", //
 				sSource.c_str(), sTarget.c_str(), sEvent.c_str(), sCond.c_str()));
 
 		// приходится создавать отдельно из-за невозможности штатными средствами создавать множественные соединения
@@ -773,8 +789,10 @@ namespace Statemachine {
 							AConnection->Points->Clear();
 
 							AConnection->Points->Add(TPoint(ASourceNode->X0 + iHalfWidth, ASourceNode->Y1));
-							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x, ASourceNode->Y0 + AVecPoint[0].y));
-							AConnection->Points->Add(TPoint(ASourceNode->X1 - AVecPoint[0].x, ASourceNode->Y0 + AVecPoint[0].y));
+							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x,
+									ASourceNode->Y0 + AVecPoint[0].y));
+							AConnection->Points->Add(TPoint(ASourceNode->X1 - AVecPoint[0].x,
+									ASourceNode->Y0 + AVecPoint[0].y));
 							AConnection->Points->Add(TPoint(ASourceNode->X0 + iHalfWidth, ASourceNode->Y1));
 						}
 						// вверху
@@ -783,8 +801,10 @@ namespace Statemachine {
 							AConnection->Points->Clear();
 
 							AConnection->Points->Add(TPoint(ASourceNode->X0 + iHalfWidth, ASourceNode->Y0));
-							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x, ASourceNode->Y0 + AVecPoint[0].y));
-							AConnection->Points->Add(TPoint(ASourceNode->X1 - AVecPoint[0].x, ASourceNode->Y0 + AVecPoint[0].y));
+							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x,
+									ASourceNode->Y0 + AVecPoint[0].y));
+							AConnection->Points->Add(TPoint(ASourceNode->X1 - AVecPoint[0].x,
+									ASourceNode->Y0 + AVecPoint[0].y));
 							AConnection->Points->Add(TPoint(ASourceNode->X0 + iHalfWidth, ASourceNode->Y0));
 						}
 						// слева
@@ -792,8 +812,10 @@ namespace Statemachine {
 							AConnection->Points->Clear();
 
 							AConnection->Points->Add(TPoint(ASourceNode->X0, ASourceNode->Y0 + iHalfHeight));
-							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x, ASourceNode->Y0 + AVecPoint[0].y));
-							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x, ASourceNode->Y1 - AVecPoint[0].y));
+							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x,
+									ASourceNode->Y0 + AVecPoint[0].y));
+							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x,
+									ASourceNode->Y1 - AVecPoint[0].y));
 							AConnection->Points->Add(TPoint(ASourceNode->X0, ASourceNode->Y0 + iHalfHeight));
 						}
 						// справа
@@ -802,8 +824,10 @@ namespace Statemachine {
 							AConnection->Points->Clear();
 
 							AConnection->Points->Add(TPoint(ASourceNode->X1, ASourceNode->Y0 + iHalfHeight));
-							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x, ASourceNode->Y0 + AVecPoint[0].y / 2));
-							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x, ASourceNode->Y1 - AVecPoint[0].y / 2));
+							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x,
+									ASourceNode->Y0 + AVecPoint[0].y / 2));
+							AConnection->Points->Add(TPoint(ASourceNode->X0 + AVecPoint[0].x,
+									ASourceNode->Y1 - AVecPoint[0].y / 2));
 							AConnection->Points->Add(TPoint(ASourceNode->X1, ASourceNode->Y0 + iHalfHeight));
 						}
 
@@ -889,8 +913,9 @@ namespace Statemachine {
 							const int iIndex = 0;
 
 							double X0clip, X1clip, Y0clip, Y1clip;
-							if (Editorutils::LiangBarsky(ASourceNode->X0, ASourceNode->X1, -ASourceNode->Y1, -ASourceNode->Y0,
-									iTargetCenterX, -iTargetCenterY, iSourceCenterX, -iSourceCenterY, X0clip, Y0clip, X1clip, Y1clip)) {
+							if (Editorutils::LiangBarsky(ASourceNode->X0, ASourceNode->X1, -ASourceNode->Y1,
+									-ASourceNode->Y0, iTargetCenterX, -iTargetCenterY, iSourceCenterX,
+									-iSourceCenterY, X0clip, Y0clip, X1clip, Y1clip)) {
 
 								X0clip = (X0clip - ASourceNode->X0) / (ASourceNode->X1 - ASourceNode->X0) * 100.0f;
 								Y0clip = (-Y0clip - ASourceNode->Y0) / (ASourceNode->Y1 - ASourceNode->Y0) * 100.0f;
@@ -908,8 +933,9 @@ namespace Statemachine {
 							const int iIndex = 1;
 
 							double X0clip, X1clip, Y0clip, Y1clip;
-							if (Editorutils::LiangBarsky(ATargetNode->X0, ATargetNode->X1, -ATargetNode->Y1, -ATargetNode->Y0,
-									iSourceCenterX, -iSourceCenterY, iTargetCenterX, -iTargetCenterY, X0clip, Y0clip, X1clip, Y1clip)) {
+							if (Editorutils::LiangBarsky(ATargetNode->X0, ATargetNode->X1, -ATargetNode->Y1,
+									-ATargetNode->Y0, iSourceCenterX, -iSourceCenterY, iTargetCenterX,
+									-iTargetCenterY, X0clip, Y0clip, X1clip, Y1clip)) {
 
 								X0clip = (X0clip - ATargetNode->X0) / (ATargetNode->X1 - ATargetNode->X0) * 100.0f;
 								Y0clip = (-Y0clip - ATargetNode->Y0) / (ATargetNode->Y1 - ATargetNode->Y0) * 100.0f;
@@ -1013,7 +1039,8 @@ namespace Statemachine {
 
 						// проверка смещения меньше нуля
 						for (int i = 0; i < AScxmlShape->Children->Count; i++) {
-							TVisualScxmlBaseShape * AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>(AScxmlShape->Children->Items[i]);
+							TVisualScxmlBaseShape * AVisualShape = dynamic_cast<TVisualScxmlBaseShape*>
+								(AScxmlShape->Children->Items[i]);
 							if (AVisualShape) {
 								AVisualShape->MoveRelative(iMinX < 0 ? (iMinX*-1 + AScxmlShape->X0 + 50) : 0,
 									iMinY < 0 ? (iMinY*-1 + AScxmlShape->Y0 + 50) : 0, true);
@@ -1060,12 +1087,13 @@ namespace Statemachine {
 	}
 
 	/* INHERITANCE */
-	void SetInheritance(TScxmlBaseShape *AScxmlBaseShape, bool bSet, bool bWithConnections/*=true*/) {
+	void SetInheritance(TScxmlBaseShape *AScxmlBaseShape, bool bSet, bool bWithConnections /* =true */ ) {
 		if (AScxmlBaseShape) {
 
 			// необходимо сменить имя, иначе фигура даже при снятом Locked будет удаляться
 			if (!bSet) {
-				const Unique::TUniquePair AUniqueName = Unique::GetUniqueName(AScxmlBaseShape->Owner, AScxmlBaseShape->ClassType());
+				const Unique::TUniquePair AUniqueName = Unique::GetUniqueName(AScxmlBaseShape->Owner,
+					AScxmlBaseShape->ClassType());
 				AScxmlBaseShape->Name = AUniqueName.second;
 			}
 
@@ -1080,8 +1108,8 @@ namespace Statemachine {
 
 						// необходимо сменить имя, иначе фигура даже при снятом Locked будет удаляться
 						if (!bSet) {
-							const Unique::TUniquePair AUniqueName = Unique::GetUniqueName(AStateMachineConnection->Owner,
-								AStateMachineConnection->ClassType());
+							const Unique::TUniquePair AUniqueName = Unique::GetUniqueName
+								(AStateMachineConnection->Owner, AStateMachineConnection->ClassType());
 							AStateMachineConnection->Name = AUniqueName.second;
 						}
 
@@ -1102,7 +1130,8 @@ namespace Statemachine {
 
 			// необходимо сменить имя, иначе фигура даже при снятом Locked будет удаляться
 			if (!bSet) {
-				const Unique::TUniquePair AUniqueName = Unique::GetUniqueName(AConnection->Owner, AConnection->ClassType());
+				const Unique::TUniquePair AUniqueName = Unique::GetUniqueName(AConnection->Owner,
+					AConnection->ClassType());
 				AConnection->Name = AUniqueName.second;
 			}
 
@@ -1111,19 +1140,22 @@ namespace Statemachine {
 		}
 	}
 
-	void CheckAndFixInheritedParent(TComponent *ABaseOwner, TScxmlBaseShape *AScxmlBaseShape, TScxmlBaseShape * AOriginShape) {
+	void CheckAndFixInheritedParent(TComponent *ABaseOwner, TScxmlBaseShape *AScxmlBaseShape,
+		TScxmlBaseShape * AOriginShape) {
 		if (AScxmlBaseShape && AOriginShape && AOriginShape->Parent && ABaseOwner) {
 			if (!AOriginShape->Parent->Name.IsEmpty() && (!AScxmlBaseShape->Parent ||
 					(AOriginShape->Parent->Name != AScxmlBaseShape->Parent->Name))) {
 
-				const UnicodeString sShapeParentName = AScxmlBaseShape->Parent ? AScxmlBaseShape->Parent->Name : UnicodeString(L"NULL");
+				const UnicodeString sShapeParentName = AScxmlBaseShape->Parent ?
+					AScxmlBaseShape->Parent->Name : UnicodeString(L"NULL");
 
 				LastError = UnicodeString().sprintf(L"INHERITANCE> Shape:[%s] Repair parent from:[%s] to:[%s]",
 					AScxmlBaseShape->SimpleText.c_str(), sShapeParentName.c_str(), AOriginShape->Parent->Name.c_str());
 				WLOG_WARNING(L"%s", LastError.c_str());
 
 				// 1) ищем у хозяина, чтобы проверить, что правильно назначен владелец
-				TScxmlBaseShape *ANewParent = dynamic_cast<TScxmlBaseShape*>(ABaseOwner->FindComponent(AOriginShape->Parent->Name));
+				TScxmlBaseShape *ANewParent = dynamic_cast<TScxmlBaseShape*>
+					(ABaseOwner->FindComponent(AOriginShape->Parent->Name));
 				if (ANewParent) {
 					Editorutils::SetShapeParentEx(AScxmlBaseShape, ANewParent);
 				}
@@ -1188,7 +1220,8 @@ namespace Statemachine {
 					Application->CreateForm(ComponentClass, &Component);
 					FTreeOwner->InsertComponent(Component);
 					FNotFoundComponents.insert(Component);
-					LastError = UnicodeString().sprintf(L"INHERITANCE> Component:[%s] was deleted in base module!", ComponentName.c_str());
+					LastError = UnicodeString().sprintf(L"INHERITANCE> Component:[%s] was deleted in base module!",
+						ComponentName.c_str());
 					WLOG_WARNING(L"%s", LastError.c_str());
 				}
 			}
@@ -1204,8 +1237,8 @@ namespace Statemachine {
 
 	public:
 
-		__fastcall TAncestorTreeReader(TStream* Stream, int BufSize, TComponent *ATreeOwner) : TReader(Stream, BufSize),
-		FTreeOwner(ATreeOwner) {
+		__fastcall TAncestorTreeReader(TStream* Stream, int BufSize, TComponent *ATreeOwner) : TReader(Stream,
+			BufSize), FTreeOwner(ATreeOwner) {
 			FParsingErrors = false;
 			this->OnAncestorNotFound = OnReaderAncestorNotFound;
 		}
@@ -1216,7 +1249,8 @@ namespace Statemachine {
 
 		void CheckInheritedComponents(TComponent *AOwnerAncestor) {
 			if (AOwnerAncestor) {
-				for (std::set<TComponent*>::iterator it = FInheritedComponents.begin(); it != FInheritedComponents.end(); ++it) {
+				for (std::set<TComponent*>::iterator it = FInheritedComponents.begin();
+					it != FInheritedComponents.end(); ++it) {
 #if 0
 					WLOG_DEBUG(L"Start:[%s]", (*it)->Name.c_str());
 #endif
@@ -1224,7 +1258,8 @@ namespace Statemachine {
 					TComponent *AComponentAncestor = AOwnerAncestor->FindComponent((*it)->Name);
 					if (AComponentAncestor) {
 						if (TScxmlBaseShape * AScxmlBaseShape = dynamic_cast<TScxmlBaseShape*>(*it)) {
-							CheckAndFixInheritedParent(FTreeOwner, AScxmlBaseShape, dynamic_cast<TScxmlBaseShape*>(AComponentAncestor));
+							CheckAndFixInheritedParent(FTreeOwner, AScxmlBaseShape,
+								dynamic_cast<TScxmlBaseShape*>(AComponentAncestor));
 
 							// именно в этом месте
 							Unique::CompareError ACompareError;
@@ -1282,7 +1317,8 @@ namespace Statemachine {
 		if (!ADoc)
 			throw Exception("GetGuiAppendix> Can not load [" + sFileName + "] SCXML document!");
 
-		if (ADoc->ChildNodes->Count > 1 && ADoc->ChildNodes->Item[ADoc->ChildNodes->Count - 1]->NodeType == LMD_NODE_COMMENT) {
+		if (ADoc->ChildNodes->Count > 1 && ADoc->ChildNodes->Item[ADoc->ChildNodes->Count - 1]
+			->NodeType == LMD_NODE_COMMENT) {
 			std::auto_ptr<TBytesStream>ABytesStreamPtr
 				(new TBytesStream(DecodeBase64(ADoc->ChildNodes->Item[ADoc->ChildNodes->Count - 1]->Text)));
 
@@ -1305,7 +1341,8 @@ namespace Statemachine {
 
 		SettingsData->ProfileOperationReset(__FUNCTION__, "Load XML");
 
-		if (ADoc->ChildNodes->Count > 1 && ADoc->ChildNodes->Item[ADoc->ChildNodes->Count - 1]->NodeType == LMD_NODE_COMMENT) {
+		if (ADoc->ChildNodes->Count > 1 && ADoc->ChildNodes->Item[ADoc->ChildNodes->Count - 1]
+			->NodeType == LMD_NODE_COMMENT) {
 
 			try {
 				std::auto_ptr<TBytesStream>ABytesStreamPtr
@@ -1363,7 +1400,8 @@ namespace Statemachine {
 
 					// должен быть в 'namespace', так как в деструкторе удаление не найденных
 					{
-						std::auto_ptr<TAncestorTreeReader>AReaderPtr(new TAncestorTreeReader(ABytesStreamPtr.get(), 4096, ATree->Owner));
+						std::auto_ptr<TAncestorTreeReader>AReaderPtr(new TAncestorTreeReader(ABytesStreamPtr.get(),
+								4096, ATree->Owner));
 						// !!! Внимание, Owner может меняться в процессе
 						AReaderPtr->Owner = ATree->Owner;
 
@@ -1393,17 +1431,19 @@ namespace Statemachine {
 						TTreeConnection *AConnection = ATree->Connections->Items[i];
 						if (!AConnection->FromShape || !AConnection->ToShape) {
 							// ошибка, которую позже нужно обработать
-							LastError = UnicodeString().sprintf(L"Broken connection:[%s] text:[%s]", AConnection->Name.c_str(),
-								AConnection->SimpleText.c_str());
+							LastError = UnicodeString().sprintf(L"Broken connection:[%s] text:[%s]",
+								AConnection->Name.c_str(), AConnection->SimpleText.c_str());
 							WLOG_ERROR(L"%s", LastError.c_str());
 							delete AConnection;
 						}
 						else {
-							TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>(AConnection);
+							TStateMachineConnection * AStateMachineConnection = dynamic_cast<TStateMachineConnection*>
+								(AConnection);
 							if (AStateMachineConnection && AStateMachineConnection->Locked) {
 
-								TStateMachineConnection * ASourceConnection = Editorutils::FindConnectionByName<TStateMachineConnection>
-									(ATreeAncestor, AStateMachineConnection->Name);
+								TStateMachineConnection * ASourceConnection =
+									Editorutils::FindConnectionByName<TStateMachineConnection>(ATreeAncestor,
+									AStateMachineConnection->Name);
 
 								if (ASourceConnection) {
 
@@ -1416,14 +1456,16 @@ namespace Statemachine {
 										Editorutils::RememberPoints(AStateMachineConnection, ATargetPoints);
 
 										if (!Editorutils::AreEqualPoints(ASourcePoints, ATargetPoints)) {
-											Editorutils::RestorePoints(AStateMachineConnection, ASourcePoints);
-											WLOG_DEBUG(L"INHERITANCE> Restored points=%s", AStateMachineConnection->Name.c_str());
+										Editorutils::RestorePoints(AStateMachineConnection, ASourcePoints);
+										WLOG_DEBUG(L"INHERITANCE> Restored points=%s",
+										AStateMachineConnection->Name.c_str());
 										}
 									}
 
 								}
 								else {
-									LastError = UnicodeString().sprintf(L"Connection:[%s] ancestor not found", AConnection->Name.c_str());
+									LastError = UnicodeString().sprintf(L"Connection:[%s] ancestor not found",
+										AConnection->Name.c_str());
 								}
 							}
 						}
@@ -1431,11 +1473,14 @@ namespace Statemachine {
 
 					for (int i = 0; i < ATree->Shapes->Count; i++) {
 						// смещение родителя для всех визуальных фигур
-						if (TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(ATree->Shapes->Items[i])) {
+						if (TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>
+							(ATree->Shapes->Items[i])) {
 							if (AVisualScxmlBaseShape->Parent && !AVisualScxmlBaseShape->Locked &&
 								!AVisualScxmlBaseShape->ParentOffsetStored->IsEmpty()) {
-								const int iOffsetX = AVisualScxmlBaseShape->ParentOffsetStored->X - AVisualScxmlBaseShape->ParentOffsetX;
-								const int iOffsetY = AVisualScxmlBaseShape->ParentOffsetStored->Y - AVisualScxmlBaseShape->ParentOffsetY;
+								const int iOffsetX = AVisualScxmlBaseShape->ParentOffsetStored->X -
+									AVisualScxmlBaseShape->ParentOffsetX;
+								const int iOffsetY = AVisualScxmlBaseShape->ParentOffsetStored->Y -
+									AVisualScxmlBaseShape->ParentOffsetY;
 								if (iOffsetX || iOffsetY) {
 									AVisualScxmlBaseShape->MoveRelative(iOffsetX, iOffsetY, false);
 								}
@@ -1505,15 +1550,18 @@ namespace Statemachine {
 
 		if (!sInherited.IsEmpty()) {
 			if (!ATreeEditor->StateMachineEditorUnit)
-				throw Exception("File <" + sFileName + "> is inherited from <" + sInherited + "> and require <StateMachineEditorUnit>");
+				throw Exception("File <" + sFileName + "> is inherited from <" + sInherited +
+				"> and require <StateMachineEditorUnit>");
 
 			ATreeEditor->StateMachineEditorUnit->Inherited = sInherited;
 
-			TStateMachineEditor *AInheritedEditor = FindStateMachineEditorByFileName(ATreeEditor->StateMachineEditorUnit->Inherited);
+			TStateMachineEditor *AInheritedEditor = FindStateMachineEditorByFileName
+				(ATreeEditor->StateMachineEditorUnit->Inherited);
 			// если редактор не в проекте, то попробуем его добавить к проекту
 			if (!AInheritedEditor) {
-				TStateMachineEditorUnit *AInheritedUnit = GlobalFindAndAddExistingUnit(ATreeEditor->StateMachineEditorUnit->Parent,
-					ATreeEditor->StateMachineEditorUnit->Inherited, true, true);
+				TStateMachineEditorUnit *AInheritedUnit = GlobalFindAndAddExistingUnit
+					(ATreeEditor->StateMachineEditorUnit->Parent, ATreeEditor->StateMachineEditorUnit->Inherited,
+					true, true);
 				if (!AInheritedUnit->Opened) {
 					AInheritedUnit->Open(true);
 				}
@@ -1542,7 +1590,8 @@ namespace Statemachine {
 				TScxmlBaseShape *AParentShape = AShape;
 				AShape = AParentShape->AddStateChild(sctComment, false);
 				if (!AShape)
-					throw Exception("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" + AParentShape->XMLName + ">");
+					throw Exception("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" +
+					AParentShape->XMLName + ">");
 
 				AShape->Comments->Text = AParentNode->Text;
 			}
@@ -1563,7 +1612,8 @@ namespace Statemachine {
 
 			if (AShape && IsPublishedProp(AShape, "XMLText")) {
 				AShape->XMLText->Text = AShape->XMLText->Text + AParentNode->XML;
-				AShape->XMLText->Type = AParentNode->NodeName == L"scxml" ? TXMLTextType::xttSCXML : TXMLTextType::xttXML;
+				AShape->XMLText->Type = AParentNode->NodeName == L"scxml" ?
+					TXMLTextType::xttSCXML : TXMLTextType::xttXML;
 				AShape->XMLText->SyntaxScheme = L"XML";
 				return; // значит добавляем данные в узлы типа <content> или <script>
 			}
@@ -1580,8 +1630,8 @@ namespace Statemachine {
 				if (AStateType != sctMAXSIZE) {
 					AShape = AScxmlBaseShape->AddStateChild(AStateType, false);
 					if (!AShape)
-						throw Exception
-							("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" + AScxmlBaseShape->XMLName + ">");
+						throw Exception("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" +
+						AScxmlBaseShape->XMLName + ">");
 					bAdded = true;
 				}
 				else {
@@ -1589,7 +1639,8 @@ namespace Statemachine {
 				}
 			}
 			else {
-				LOG_WARNING("%s> Can not convert <%s> to <%s>", __FUNCTION__, AnsiString(AParentNode->NodeName).c_str(),
+				LOG_WARNING("%s> Can not convert <%s> to <%s>", __FUNCTION__,
+					AnsiString(AParentNode->NodeName).c_str(),
 					AnsiString(__classid(TScxmlBaseShape)->ClassName()).c_str());
 			}
 
@@ -1600,13 +1651,14 @@ namespace Statemachine {
 
 			}
 			else {
-				WLOG_WARNING(L"Unknown node type <%s> on parent <%s> <%s>", AParentNode->NodeName.c_str(), AShape->Name.c_str(),
-					AShape->SimpleText.c_str());
+				WLOG_WARNING(L"Unknown node type <%s> on parent <%s> <%s>", AParentNode->NodeName.c_str(),
+					AShape->Name.c_str(), AShape->SimpleText.c_str());
 
 				TScxmlBaseShape *AParentShape = AShape;
 				AShape = AParentShape->AddStateChild(sctExtraContent, false);
 				if (!AShape)
-					throw Exception("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" + AParentShape->XMLName + ">");
+					throw Exception("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" +
+					AParentShape->XMLName + ">");
 
 				AShape->ExtraContent->Text = AParentNode->XML;
 				bExtraContent = true;
@@ -1671,14 +1723,16 @@ namespace Statemachine {
 
 	// ---------------------------------------------------------------------------
 	void ForeachTreeNodeToXmlNode(TScxmlBaseShape *ABaseShape, ILMDXmlElement *ANode, const bool bAppendFirstNode,
-		const TIterateSaveTypes ASaveTypes) {
+		const TIterateSaveTypes ASaveTypes,
+		const TVisualMetaInformationTypes AMetaTypes = TVisualMetaInformationTypes()) {
 		if (ABaseShape && ANode) {
 #if 0	// для очень детальной отладки
 			WLOG_DEBUG(L"Shape [%s][%s]", ABaseShape->Name.c_str(), ABaseShape->SimpleText.c_str());
 #endif
 
 			if (ABaseShape->ExcludeFromSave) {
-				WLOG_WARNING(L"Shape [%s][%s] is excluded from save", ABaseShape->Name.c_str(), ABaseShape->SimpleText.c_str());
+				WLOG_WARNING(L"Shape [%s][%s] is excluded from save", ABaseShape->Name.c_str(),
+					ABaseShape->SimpleText.c_str());
 				return;
 			}
 
@@ -1703,8 +1757,9 @@ namespace Statemachine {
 							ANode->AppendChild((ILMDXmlElement*)ADoc->DocumentElement->AsElement());
 						}
 						else
-							WLOG_ERROR(L"ExtraContent in shape [%s][%s] XML format is invalid[%s]", ABaseShape->Name.c_str(),
-							ABaseShape->SimpleText.c_str(), ABaseShape->ExtraContent->Text.c_str());
+							WLOG_ERROR(L"ExtraContent in shape [%s][%s] XML format is invalid[%s]",
+							ABaseShape->Name.c_str(), ABaseShape->SimpleText.c_str(),
+							ABaseShape->ExtraContent->Text.c_str());
 					}
 				}
 				return;
@@ -1723,10 +1778,9 @@ namespace Statemachine {
 			ILMDXmlElement *AStateNode = ANode;
 
 			/* Особый случай: вставка другого SCXML */
-			if (ABaseShape->ClassType() == __classid(TVirtualShape)) {
+			if (TVirtualShape * AVirtualShape = dynamic_cast<TVirtualShape*>(ABaseShape)) {
 
-				TVirtualShape *AVirtualShape = dynamic_cast<TVirtualShape*>(ABaseShape);
-				if (AVirtualShape) {
+				if (ASaveTypes.Contains(istVirtual) || ASaveTypes.Contains(istMAXSIZE)) {
 
 					ILMDXmlElement *AVirtualElement = NULL;
 
@@ -1735,8 +1789,8 @@ namespace Statemachine {
 
 						TStateMachineEditorUnit *AUnit = AVirtualShape->SrcUnit;
 						if (AUnit && AUnit->StateMachineDockPanel) {
-							Statemachine::SaveTreeToScxml(AUnit->StateMachineDockPanel->StateMachineEditor->TheTree, AStreamPtr.get(),
-								false, true);
+							Statemachine::SaveTreeToScxml(AUnit->StateMachineDockPanel->StateMachineEditor->TheTree,
+								AStreamPtr.get(), false, true, ASaveTypes, AMetaTypes);
 						}
 						else {
 							if (AVirtualShape->Src.IsEmpty())
@@ -1759,7 +1813,8 @@ namespace Statemachine {
 						}
 
 						AStreamPtr->Position = 0;
-						_di_ILMDXmlDocument ADoc = LMDLoadXmlDocumentFromXML(sCorrected.IsEmpty() ? AStreamPtr->DataString : sCorrected);
+						_di_ILMDXmlDocument ADoc = LMDLoadXmlDocumentFromXML
+							(sCorrected.IsEmpty() ? AStreamPtr->DataString : sCorrected);
 						if (!ADoc || !ADoc->DocumentElement)
 							throw Exception(L"Can not load SCXML document! Path: " + AVirtualShape->Src);
 
@@ -1776,17 +1831,20 @@ namespace Statemachine {
 									continue;
 								}
 
-								const UnicodeString sVirtualID = ADoc->DocumentElement->ChildNodes->Item[k]->GetAttr(L"id", L"");
+								const UnicodeString sVirtualID = ADoc->DocumentElement->ChildNodes->Item[k]->GetAttr
+									(L"id", L"");
 								if (sVirtualID != AVirtualShape->SimpleText)
 									throw Exception
-										(L"Submachine root ID:[" + sVirtualID + "] mismatches to Parent:[" + AVirtualShape->SimpleText +
-									"]");
+										(L"Submachine root ID:[" + sVirtualID +
+									"] mismatches to Parent:[" + AVirtualShape->SimpleText + "]");
 
 								AVirtualElement = ADoc->DocumentElement->ChildNodes->Item[k]->AsElement();
 
 								ANode->AppendChild(AVirtualElement);
 
 								AStateNode = ANode->ChildNodes->Item[ANode->ChildNodes->Count - 1]->AsElement();
+
+								AVirtualShape->ExtraParamsToAttributes(AStateNode);
 								break;
 							}
 						}
@@ -1795,7 +1853,8 @@ namespace Statemachine {
 							throw Exception("Submachine ROOT is not found!");
 					}
 					catch(Exception * E) {
-						WLOG_ERROR(L"VIRTUAL> Submachine:[%s] save failed. Reason: %s", ABaseShape->SimpleText.c_str(), E->Message.c_str());
+						WLOG_ERROR(L"VIRTUAL> Submachine:[%s] save failed. Reason: %s", ABaseShape->SimpleText.c_str(),
+							E->Message.c_str());
 					}
 
 					if (SettingsData->ValidateChildren) {
@@ -1810,17 +1869,27 @@ namespace Statemachine {
 							}
 
 							for (int k = 0; k < AVirtualShape->Children->Count; k++) {
-								TScxmlBaseShape * AVirtualChildShape = dynamic_cast<TScxmlBaseShape*>(AVirtualShape->Children->Items[k]);
-								if (AVirtualChildShape && AVirtualChildShape->OccursOnce && !AVirtualChildShape->ExcludeFromSave) {
+								TScxmlBaseShape * AVirtualChildShape = dynamic_cast<TScxmlBaseShape*>
+									(AVirtualShape->Children->Items[k]);
+								if
+									(AVirtualChildShape && AVirtualChildShape->OccursOnce &&
+									!AVirtualChildShape->ExcludeFromSave) {
 									if (AElements.find(AVirtualChildShape->XMLName) != AElements.end()) {
 										throw EScxmlBaseShapeException(AVirtualChildShape, L"Duplicated in virtual",
-											L"<" + AVirtualChildShape->XMLName +
-											"> must occur only 1 time but is duplicated in virtual <" + AVirtualShape->Src + ">");
+										L"<" + AVirtualChildShape->XMLName +
+										"> must occur only 1 time but is duplicated in virtual <" +
+										AVirtualShape->Src + ">");
 									}
 								}
 							}
 						}
 					}
+				} else {
+					/* WARNING: this is non-standard inclusion just to save visual layout */
+					AStateNode = ANode->AppendElement(L"state");
+					AStateNode->SetAttr(L"id", AVirtualShape->SimpleText);
+					AVirtualShape->ExtraParamsToAttributes(AStateNode);
+					AStateNode->AppendComment(L"ScxmlEditor:virtual_src=" + AVirtualShape->Src);
 				}
 			}
 			else {
@@ -1850,15 +1919,119 @@ namespace Statemachine {
 				}
 			}
 
+			if (ASaveTypes.Contains(istVisibleChilds) || ASaveTypes.Contains(istMAXSIZE)) {
+				if (STATE_TYPES_VISUAL_SHAPES.find(ABaseShape->StateChildType) != STATE_TYPES_VISUAL_SHAPES.end()) {
+
+					const bIsScxml = ABaseShape->StateChildType == sctScxml;
+
+					TStateShape *AStateShape = dynamic_cast<TStateShape*>(ABaseShape);
+
+					// OLD GUI
+					if (AMetaTypes.Contains(vmiScxmlGui)) {
+						int iX = ABaseShape->X0;
+						int iY = ABaseShape->Y0;
+
+						if (ABaseShape->VisualParent) {
+							iX -= ABaseShape->VisualParent->X0;
+							iY -= ABaseShape->VisualParent->Y0;
+						}
+
+						const UnicodeString sGuiFormat = UnicodeString().sprintf
+							(L"   node-size-and-position x=%d y=%d w=%d h=%d  ", iX, iY,
+							ABaseShape->Width, ABaseShape->Height);
+						AStateNode->AppendComment(sGuiFormat);
+					}
+
+					// Simple
+					if (AMetaTypes.Contains(vmiSimple)) {
+						const UnicodeString sSimpleFormat = UnicodeString().sprintf
+							(L"shape_x_y_w_h:%d;%d;%d;%d", ABaseShape->X0, ABaseShape->Y0,
+							ABaseShape->Width, ABaseShape->Height);
+						AStateNode->AppendComment(sSimpleFormat);
+                    }
+
+					// VSCode
+					if (AMetaTypes.Contains(vmiVSCode)) {
+						if (bIsScxml) {
+							AStateNode->SetAttr("xmlns:viz", "http://phrogz.net/visual-scxml");
+						}
+						else {
+
+							if (AStateShape && AStateShape->StateChildType != sctParallel) {
+
+								TColor AColor = AStateShape->Color;
+								if (AStateShape->IsCluster()) {
+                                	AColor = TColor(RGB(128, 128, 128));
+								}
+
+								// Convert TColor to RGB
+								const COLORREF rgb = ColorToRGB(AColor);
+
+								// Extract red, green, and blue components
+								const int red = GetRValue(rgb);
+								const int green = GetGValue(rgb);
+								const int blue = GetBValue(rgb);
+
+								UnicodeString hexColor;
+								hexColor.sprintf(L"%.2x%.2x%.2x", red, green, blue);
+
+								AStateNode->SetAttr("viz:rgb", hexColor);
+							}
+
+							AStateNode->SetAttr("viz:xywh", UnicodeString().sprintf(L"%d %d %d %d", ABaseShape->X0,
+									ABaseShape->Y0, ABaseShape->Width, ABaseShape->Height));
+
+						}
+					}
+
+					// QT
+					if (AMetaTypes.Contains(vmiQt)) {
+						if (bIsScxml) {
+							AStateNode->SetAttr("xmlns:qt", "http://www.qt.io/2015/02/scxml-ext");
+							AStateNode->SetAttr("qt:editorversion", "4.12.0");
+						}
+						else {
+							ILMDXmlNode *AQtNode = AStateNode->AppendElement("qt:editorinfo");
+
+							int iSceneCenterX = ABaseShape->XCenter();
+							int iSceneCenterY = ABaseShape->YCenter();
+
+							int iDiffX = 0;
+							int iDiffY = 0;
+
+							if (ABaseShape->VisualParent && ABaseShape->VisualParent->StateChildType != sctScxml) {
+								iDiffX = iSceneCenterX - ABaseShape->Parent->XCenter();
+								iDiffY = iSceneCenterY - ABaseShape->Parent->YCenter();
+
+								iSceneCenterX = iDiffX;
+								iSceneCenterY = iDiffY;
+							}
+
+							AQtNode->SetAttr("geometry", UnicodeString().sprintf(L"%d;%d;%d;%d;%d;%d", iSceneCenterX,
+									iSceneCenterY, -ABaseShape->Width / 2, -ABaseShape->Height / 2, ABaseShape->Width,
+									ABaseShape->Height));
+
+							AQtNode->SetAttr("scenegeometry", UnicodeString().sprintf(L"%d;%d;%d;%d;%d;%d",
+									ABaseShape->XCenter() - iDiffX, ABaseShape->YCenter() - iDiffY,
+									ABaseShape->X0 - iDiffX, ABaseShape->Y0 - iDiffY, ABaseShape->Width,
+									ABaseShape->Height));
+						}
+					}
+
+				}
+			}
+
 			/* дочерние элементы */
 			if (ASaveTypes.Contains(istInvisibleChilds) || ASaveTypes.Contains(istMAXSIZE)) {
 				// все дочерние невидимые
 				for (int i = 0; i < ABaseShape->Children->Count; i++) {
 					TScxmlBaseShape *ABaseChildShape = dynamic_cast<TScxmlBaseShape*>(ABaseShape->Children->Items[i]);
 					if (ABaseChildShape && //
-						STATE_TYPES_VISUAL_SHAPES.find(ABaseChildShape->StateChildType) == STATE_TYPES_VISUAL_SHAPES.end()) {
+						STATE_TYPES_VISUAL_SHAPES.find(ABaseChildShape->StateChildType) == STATE_TYPES_VISUAL_SHAPES.end
+						()) {
 
-						ForeachTreeNodeToXmlNode(ABaseChildShape, (ILMDXmlElement*)AStateNode, true, ASaveTypes);
+						ForeachTreeNodeToXmlNode(ABaseChildShape, (ILMDXmlElement*)AStateNode, true, ASaveTypes,
+							AMetaTypes);
 					}
 				}
 			}
@@ -1871,7 +2044,7 @@ namespace Statemachine {
 				TConnectionFromToMap AInConnections;
 				CollectInConnections(ABaseShape, AInConnections);
 
-				std::map<TVisualScxmlBaseShape* /*From*/, TStateMachineConnection*>AEmptyConnections;
+				std::map<TVisualScxmlBaseShape* /* From */ , TStateMachineConnection*>AEmptyConnections;
 
 				for (TConnectionFromToMap::iterator it = AInConnections.begin(); it != AInConnections.end(); ++it) {
 					TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(it->first);
@@ -1886,7 +2059,7 @@ namespace Statemachine {
 								}
 							}break;
 						default:
-							AConnection->AppendTransitionSwitchElement(AStateNode, AConnection->VisualFrom->SimpleText);
+							AConnection->AppendTransitionSwitchElement(AStateNode, AConnection->VisualFrom->SimpleText, AMetaTypes);
 							break;
 						}
 
@@ -1895,7 +2068,8 @@ namespace Statemachine {
 
 				// transitions
 				for (int i = 0; i < ABaseShape->Connections->Count; i++) {
-					TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>(ABaseShape->Connections->Items[i]);
+					TStateMachineConnection *AConnection = dynamic_cast<TStateMachineConnection*>
+						(ABaseShape->Connections->Items[i]);
 					/* 'ExcludeFromSave==false' гарантирует VisualFrom и VisualTo */
 					if (AConnection && !AConnection->ExcludeFromSave) {
 						if (!AConnection->IsSelfConnection) {
@@ -1905,12 +2079,12 @@ namespace Statemachine {
 								if (it != AEmptyConnections.end()) {
 									throw EStateMachineConnectionException(AConnection, L"Circular deadlock", //
 										UnicodeString().sprintf(L"Circular deadlock detected between [%s] and [%s]",
-											AConnection->Name.c_str(), it->second->Name.c_str()));
+										AConnection->Name.c_str(), it->second->Name.c_str()));
 								}
 							}
 						}
 
-						AConnection->AppendTransitionElement(AStateNode);
+						AConnection->AppendTransitionElement(AStateNode, AMetaTypes);
 					}
 				}
 			}
@@ -1920,9 +2094,10 @@ namespace Statemachine {
 				// теперь все дочерние видимые
 				for (int i = 0; i < ABaseShape->Children->Count; i++) {
 					TScxmlBaseShape *ABaseChildShape = dynamic_cast<TScxmlBaseShape*>(ABaseShape->Children->Items[i]);
-					if (ABaseChildShape && STATE_TYPES_VISUAL_SHAPES.find(ABaseChildShape->StateChildType) != STATE_TYPES_VISUAL_SHAPES.end
-						()) {
-						ForeachTreeNodeToXmlNode(ABaseChildShape, (ILMDXmlElement*)AStateNode, true, ASaveTypes);
+					if (ABaseChildShape && STATE_TYPES_VISUAL_SHAPES.find(ABaseChildShape->StateChildType)
+						!= STATE_TYPES_VISUAL_SHAPES.end()) {
+						ForeachTreeNodeToXmlNode(ABaseChildShape, (ILMDXmlElement*)AStateNode, true, ASaveTypes,
+							AMetaTypes);
 					}
 				}
 			}
@@ -1934,7 +2109,8 @@ namespace Statemachine {
 		if (AShape) {
 			_di_ILMDXmlDocument AMainDoc = LMDCreateXmlDocument(L"root", L"1.0", L"UTF-8");
 			ForeachTreeNodeToXmlNode(AShape, AMainDoc->DocumentElement, false,
-				TIterateSaveTypes() << istComments << istExtraContent << istInvisibleChilds << istXmlText << istAttributes);
+				TIterateSaveTypes() << istComments << istExtraContent << istInvisibleChilds << istXmlText <<
+				istAttributes);
 			std::auto_ptr<TStringStream>AStreamPtr(new TStringStream(L"", TEncoding::UTF8, false));
 			for (int i = 0; i < AMainDoc->DocumentElement->ChildNodes->Count; i++) {
 				AStreamPtr->WriteString(AMainDoc->DocumentElement->ChildNodes->Item[i]->XML);
@@ -1947,8 +2123,8 @@ namespace Statemachine {
 	// ---------------------------------------------------------------------------
 	void IterateFlatNodes(ILMDXmlNode * AParentNode, const UnicodeString &sPath) {
 		if (AParentNode && (AParentNode->NodeType == LMD_NODE_ELEMENT || AParentNode->NodeType == LMD_NODE_DOCUMENT)) {
-			if (AParentNode->NodeName == "invoke" && AParentNode->AttrExists("src") && !AParentNode->GetBoolAttr("disableflatbuild",
-					false)) {
+			if (AParentNode->NodeName == "invoke" && AParentNode->AttrExists("src") && !AParentNode->GetBoolAttr
+				("disableflatbuild", false)) {
 				const UnicodeString sInvokeFile = TPath::Combine(sPath, AParentNode->GetAttr("src"));
 				const UnicodeString sExt = ExtractFileExt(sInvokeFile);
 				// подгружаем только XML и SCXML
@@ -1976,8 +2152,8 @@ namespace Statemachine {
 					throw Exception("Extension [" + sExt + "] is not supported for flat invokation!");
 			}
 			// возможность загрузить в тело scxml файл, указанный в 'src'
-			else if ((AParentNode->NodeName == "script" || AParentNode->NodeName == "data") && AParentNode->AttrExists("src")
-				&& !AParentNode->GetBoolAttr("disableflatbuild", false)) {
+			else if ((AParentNode->NodeName == "script" || AParentNode->NodeName == "data") && AParentNode->AttrExists
+				("src") && !AParentNode->GetBoolAttr("disableflatbuild", false)) {
 				const UnicodeString sFile = TPath::Combine(sPath, AParentNode->GetAttr("src"));
 				if (!FileExists(sFile))
 					throw Exception("File <" + sFile + "> is not found!");
@@ -2032,8 +2208,9 @@ namespace Statemachine {
 				if (!sId.IsEmpty()) {
 					if (it->second.find(sId) != it->second.end()) {
 						const UnicodeString sScxmlName = it->first->GetAttr(L"name", L"");
-						throw EScxmlDuplicateStateIDException(UnicodeString().sprintf(L"Element:[%s] has duplicated ID:[%s] Scxml:[%s]",
-								AParentNode->NodeName.c_str(), sId.c_str(), sScxmlName.c_str()), sScxmlName, sId);
+						throw EScxmlDuplicateStateIDException(UnicodeString().sprintf
+							(L"Element:[%s] has duplicated ID:[%s] Scxml:[%s]", AParentNode->NodeName.c_str(),
+								sId.c_str(), sScxmlName.c_str()), sScxmlName, sId);
 					}
 
 					it->second.insert(sId);
@@ -2047,7 +2224,7 @@ namespace Statemachine {
 		}
 	}
 
-	typedef std::set<UnicodeString> TUniqueIDs;
+	typedef std::set<UnicodeString>TUniqueIDs;
 
 	void ValidateInitialIDs(ILMDXmlNode * AParentNode, TUniqueIDs &AParentIDs, ILMDXmlNode * AScxmlNode) {
 		if (AParentNode && (AParentNode->NodeType == LMD_NODE_ELEMENT || AParentNode->NodeType == LMD_NODE_DOCUMENT)) {
@@ -2071,7 +2248,7 @@ namespace Statemachine {
 				bIsState = true;
 				sId = AParentNode->GetAttr(L"id", "");
 				if (!sId.IsEmpty()) {
-					   AParentIDs.insert(sId);
+					AParentIDs.insert(sId);
 				}
 			}
 
@@ -2080,16 +2257,18 @@ namespace Statemachine {
 			}
 
 			if (bIsScxml || bIsState) {
-				std::auto_ptr<TStringList> AUniqueIDs(new TStringList);
+				std::auto_ptr<TStringList>AUniqueIDs(new TStringList);
 				AUniqueIDs->Delimiter = L' ';
 				AUniqueIDs->StrictDelimiter = true;
 				AUniqueIDs->DelimitedText = AParentNode->GetAttr(L"initial", "");
 				for (int i = 0; i < AUniqueIDs->Count; i++) {
 					const UnicodeString sInitialID = AUniqueIDs->Strings[i];
 					if (AChildrenIDs.find(sInitialID) == AChildrenIDs.end()) {
-						const UnicodeString sScxmlName = AScxmlNode ? UnicodeString(AScxmlNode->GetAttr(L"name", L"")) : UnicodeString("");
-						throw EScxmlDuplicateStateIDException(UnicodeString().sprintf(L"Element:[%s]:[%s] initial ID:[%s] not found Scxml:[%s]",
-								AParentNode->NodeName.c_str(), sId.c_str(), sInitialID.c_str(), sScxmlName.c_str()), sScxmlName, sId);
+						const UnicodeString sScxmlName = AScxmlNode ? UnicodeString(AScxmlNode->GetAttr(L"name", L""))
+							: UnicodeString("");
+						throw EScxmlDuplicateStateIDException(UnicodeString().sprintf
+							(L"Element:[%s]:[%s] initial ID:[%s] not found Scxml:[%s]", AParentNode->NodeName.c_str(),
+								sId.c_str(), sInitialID.c_str(), sScxmlName.c_str()), sScxmlName, sId);
 					}
 				}
 
@@ -2097,7 +2276,7 @@ namespace Statemachine {
 
 			if (!bIsScxml) {
 				if (!AChildrenIDs.empty()) {
-             		AParentIDs.insert(AChildrenIDs.begin(), AChildrenIDs.end());
+					AParentIDs.insert(AChildrenIDs.begin(), AChildrenIDs.end());
 				}
 			}
 		}
@@ -2105,7 +2284,8 @@ namespace Statemachine {
 
 	typedef std::multimap<UnicodeString, UnicodeString>TUnicodeDictionary;
 
-	void GetInPredicateValues(const UnicodeString &sText, const std::set<UnicodeString> &AStateIDs, const bool bIsNullDatamodel) {
+	void GetInPredicateValues(const UnicodeString &sText, const std::set<UnicodeString> &AStateIDs,
+		const bool bIsNullDatamodel) {
 		if (sText.IsEmpty())
 			return;
 
@@ -2128,7 +2308,8 @@ namespace Statemachine {
 
 					const int iLength = sInPredExpr.Length();
 					if (iLength > 3) {
-						if (sInPredExpr[1] == sInPredExpr[iLength] && (sInPredExpr[1] == L'\'' || sInPredExpr[1] == L'"')) {
+						if (sInPredExpr[1] == sInPredExpr[iLength] &&
+							(sInPredExpr[1] == L'\'' || sInPredExpr[1] == L'"')) {
 							sOutExpr = sInPredExpr.SubString(2, iLength - 2);
 						}
 					}
@@ -2137,8 +2318,8 @@ namespace Statemachine {
 				}
 
 				if (!sInPredExpr.IsEmpty() && AStateIDs.find(sInPredExpr) == AStateIDs.end())
-					throw Exception(UnicodeString().sprintf(L"Predicate 'In(%s)' error! ID:[%s] is missing!", sWasExpr.c_str(),
-						sInPredExpr.c_str()));
+					throw Exception(UnicodeString().sprintf(L"Predicate 'In(%s)' error! ID:[%s] is missing!",
+						sWasExpr.c_str(), sInPredExpr.c_str()));
 			}
 
 			// update search position:
@@ -2184,7 +2365,8 @@ namespace Statemachine {
 				const bool bIsNull = sScxmlDataModel.IsEmpty() || SameText(sScxmlDataModel, "null");
 
 				try {
-					std::pair<TUnicodeDictionary::iterator, TUnicodeDictionary::iterator>it_range = AMapExpr.equal_range(sNodeName);
+					std::pair<TUnicodeDictionary::iterator,
+					TUnicodeDictionary::iterator>it_range = AMapExpr.equal_range(sNodeName);
 					for (TUnicodeDictionary::iterator it = it_range.first; it != it_range.second; ++it) {
 						if (AParentNode->AttrExists(it->second)) {
 							GetInPredicateValues(AParentNode->GetAttr(it->second, ""), itScxml->second, bIsNull);
@@ -2204,8 +2386,8 @@ namespace Statemachine {
 					const UnicodeString sScxmlName = AScxmlNode->GetAttr(L"name", L"");
 
 					WLOG_WARNING(L"Full context:[%s]", AParentNode->XML.Trim().c_str());
-					throw Exception(UnicodeString().sprintf(L"Scxml:[%s] Node:[%s] Msg: %s", sScxmlName.c_str(), sNodeName.c_str(),
-							E->Message.c_str()));
+					throw Exception(UnicodeString().sprintf(L"Scxml:[%s] Node:[%s] Msg: %s", sScxmlName.c_str(),
+							sNodeName.c_str(), E->Message.c_str()));
 				}
 			}
 
@@ -2217,8 +2399,10 @@ namespace Statemachine {
 
 	// ---------------------------------------------------------------------------
 	void DumpUniqueStates(const TMapUniqueStates &AUniqueStates) {
-		for (TMapUniqueStates::const_iterator itScxml = AUniqueStates.begin(); itScxml != AUniqueStates.end(); ++itScxml) {
-			for (std::set<UnicodeString>::const_iterator itState = itScxml->second.begin(); itState != itScxml->second.end(); ++itState) {
+		for (TMapUniqueStates::const_iterator itScxml = AUniqueStates.begin(); itScxml != AUniqueStates.end();
+			++itScxml) {
+			for (std::set<UnicodeString>::const_iterator itState = itScxml->second.begin();
+				itState != itScxml->second.end(); ++itState) {
 				WLOG_DEBUG(L"Scxml:[0x%08X][%s] node id:[%s]", reinterpret_cast<int>(itScxml->first),
 					itScxml->first->GetAttr(L"name", L"").c_str(), (*itState).c_str());
 			}
@@ -2227,7 +2411,9 @@ namespace Statemachine {
 
 	// ---------------------------------------------------------------------------
 	void SaveTreeToScxml(TCustomTree *ATree, Classes::TStream *AStream, bool bAppendGui /* =true */ ,
-		bool bSkipVersionEncoding /* =false */ , const TIterateSaveTypes ASaveTypes /* = TIterateSaveTypes() << istMAXSIZE */ ) {
+		bool bSkipVersionEncoding /* =false */ ,
+		const TIterateSaveTypes ASaveTypes /* = TIterateSaveTypes() << istMAXSIZE */ ,
+		const TVisualMetaInformationTypes AMetaTypes /* = TVisualMetaInformationTypes() */ ) {
 
 		/* не делать Try-Catch, приводим к единому поведению */
 
@@ -2239,7 +2425,7 @@ namespace Statemachine {
 
 			_di_ILMDXmlDocument AMainDoc = LMDCreateXmlDocument(L"scxml", L"1.0", L"UTF-8");
 
-			ForeachTreeNodeToXmlNode(AScxmlShape, AMainDoc->DocumentElement, false, ASaveTypes);
+			ForeachTreeNodeToXmlNode(AScxmlShape, AMainDoc->DocumentElement, false, ASaveTypes, AMetaTypes);
 
 			if (AMainDoc->DocumentElement) {
 
@@ -2285,12 +2471,14 @@ namespace Statemachine {
 
 	// ---------------------------------------------------------------------------
 	void SaveTreeToScxml(TCustomTree *ATree, const UnicodeString &sFileName, bool bAppendGui /* =true */ ,
-		bool bSkipVersionEncoding /* =false */ , const TIterateSaveTypes ASaveTypes /* = TIterateSaveTypes() << istMAXSIZE */ ) {
+		bool bSkipVersionEncoding /* =false */ ,
+		const TIterateSaveTypes ASaveTypes /* = TIterateSaveTypes() << istMAXSIZE */ ,
+		const TVisualMetaInformationTypes AMetaTypes /* = TVisualMetaInformationTypes() */ ) {
 
 		/* не делать Try-Catch, приводим к единому поведению */
 		std::auto_ptr<TStringStream>AStreamPtr(new TStringStream(L"", TEncoding::UTF8, false));
 
-		SaveTreeToScxml(ATree, AStreamPtr.get(), bAppendGui, bSkipVersionEncoding, ASaveTypes);
+		SaveTreeToScxml(ATree, AStreamPtr.get(), bAppendGui, bSkipVersionEncoding, ASaveTypes, AMetaTypes);
 
 		AStreamPtr->SaveToFile(sFileName);
 	}
@@ -2336,7 +2524,8 @@ namespace Statemachine {
 	}
 
 	// ---------------------------------------------------------------------------
-	void SaveInheritedToScxml(TCustomTree *AEditorRoot, TCustomTree *AEditorAncestor, TStream *AStream, const UnicodeString &sInherited) {
+	void SaveInheritedToScxml(TCustomTree *AEditorRoot, TCustomTree *AEditorAncestor, TStream *AStream,
+		const UnicodeString &sInherited, const TVisualMetaInformationTypes AMetaTypes /* = TVisualMetaInformationTypes() */) {
 
 		if (!AEditorRoot)
 			throw Exception(__FUNCTION__ "> AEditorRoot==NULL");
@@ -2348,7 +2537,8 @@ namespace Statemachine {
 		if (AScxmlShape) {
 
 			for (int i = 0; i < AEditorRoot->Shapes->Count; i++) {
-				TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>(AEditorRoot->Shapes->Items[i]);
+				TVisualScxmlBaseShape * AVisualScxmlBaseShape = dynamic_cast<TVisualScxmlBaseShape*>
+					(AEditorRoot->Shapes->Items[i]);
 				if (AVisualScxmlBaseShape && AVisualScxmlBaseShape->Parent && !AVisualScxmlBaseShape->Locked) {
 					AVisualScxmlBaseShape->ParentOffsetStored->X = AVisualScxmlBaseShape->ParentOffsetX;
 					AVisualScxmlBaseShape->ParentOffsetStored->Y = AVisualScxmlBaseShape->ParentOffsetY;
@@ -2357,7 +2547,7 @@ namespace Statemachine {
 
 			_di_ILMDXmlDocument AMainDoc = LMDCreateXmlDocument(L"scxml", L"1.0", L"UTF-8");
 			const TIterateSaveTypes ASaveTypes = TIterateSaveTypes() << istMAXSIZE;
-			ForeachTreeNodeToXmlNode(AScxmlShape, AMainDoc->DocumentElement, false, ASaveTypes);
+			ForeachTreeNodeToXmlNode(AScxmlShape, AMainDoc->DocumentElement, false, ASaveTypes, AMetaTypes);
 
 			if (AMainDoc->DocumentElement) {
 
@@ -2368,7 +2558,7 @@ namespace Statemachine {
 				DumpUniqueStates(AUniqueStates);
 #endif
 
-                // More precise check for initials
+				// More precise check for initials
 				TUniqueIDs AUniqueIDs;
 				ValidateInitialIDs(AMainDoc->DocumentElement, AUniqueIDs, NULL);
 
