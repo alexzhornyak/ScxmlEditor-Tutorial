@@ -24,7 +24,7 @@ If you do not want to change your current file, you can export it with different
 ![](../Images/IO_metainfo_export_as.png)
 
 ## Metainformation types
-### [Qt Creator](https://doc.qt.io/qtcreator/creator-scxml.html)
+### Qt Creator
 State charts will be saved with [Qt Creator](https://doc.qt.io/qtcreator/creator-scxml.html) graphical metainformation
 
 | ![](../Images/IO_metainfo_qt_creator_2.png) |
@@ -41,7 +41,7 @@ State charts will be saved with [Qt Creator](https://doc.qt.io/qtcreator/creator
 > **NOTE:** Use self-transition location at the left side inside of a state
 ![](../Images/IO_metainfo_qt_creator_4.png)
 
-### [VSCode](https://marketplace.visualstudio.com/items?itemName=Phrogz.visual-scxml-editor)
+### VSCode
 State charts will be saved with [VSCode](https://marketplace.visualstudio.com/items?itemName=Phrogz.visual-scxml-editor) graphical metainformation
 
 | ![](../Images/IO_metainfo_vscode_0.png) |
@@ -54,7 +54,7 @@ State charts will be saved with [VSCode](https://marketplace.visualstudio.com/it
 
 > **WARNING:** Invoked state machines could be wrongly represented by VSCode side!
 
-### [ScxmlGui](https://github.com/fmorbini/scxmlgui)
+### ScxmlGui
 State charts will be saved with [ScxmlGui](https://github.com/fmorbini/scxmlgui) graphical metainformation
 
 | ![](../Images/IO_metainfo_scxmlgui_0.png) |
