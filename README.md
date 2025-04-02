@@ -127,7 +127,7 @@ Current binaries are compiled with single development licensies registered by th
 ## Table of contents
 - Common
   - [IDE Insight](Doc/IDEInsight.md)
-  - Main menu
+  - [Main menu](Doc/MainMenu.md)
   - Main toolbar
   - [Project tree](Doc/ProjectTree.md)
     - [Post Save Unit](Doc/ProjectTree.md#post-save-unit-actions)
