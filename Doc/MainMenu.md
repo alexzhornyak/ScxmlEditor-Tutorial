@@ -1,4 +1,11 @@
+<a name="top-anchor"/>
+
+| [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|
+
 # Main Menu
+
+![](../Images/MainMenu_preview.png)
 
 ## File
 <!-- Object: File1 -->
@@ -471,3 +478,6 @@ Shows help for 'luavia' datamodel.
 ### Documentation
 Openes the website with the current documentation.
 <!-- Object: Documentation1 -->
+
+| [TOP](#top-anchor) | [Contents](../README.md#table-of-contents) | [SCXML Wiki](https://alexzhornyak.github.io/SCXML-tutorial/) | [Forum](https://github.com/alexzhornyak/ScxmlEditor-Tutorial/discussions) |
+|---|---|---|---|
