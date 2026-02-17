@@ -1001,27 +1001,27 @@
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
 						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
 						<VersionInfo Name="MajorVer">2</VersionInfo>
-						<VersionInfo Name="MinorVer">6</VersionInfo>
+						<VersionInfo Name="MinorVer">7</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">1790</VersionInfo>
+						<VersionInfo Name="Build">1799</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
 						<VersionInfo Name="Private">False</VersionInfo>
 						<VersionInfo Name="DLL">False</VersionInfo>
-						<VersionInfo Name="Locale">1049</VersionInfo>
-						<VersionInfo Name="CodePage">1251</VersionInfo>
+						<VersionInfo Name="Locale">1033</VersionInfo>
+						<VersionInfo Name="CodePage">1252</VersionInfo>
 					</VersionInfo>
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">alexander.zhornyak@gmail.com</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">Scxml State Charts Editor</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">2.6.0.1790</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.7.0.1799</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright">alexander.zhornyak@gmail.com</VersionInfoKeys>
 						<VersionInfoKeys Name="LegalTrademarks"/>
 						<VersionInfoKeys Name="OriginalFilename"/>
 						<VersionInfoKeys Name="ProductName">ScxmlEditor</VersionInfoKeys>
-						<VersionInfoKeys Name="ProductVersion">2.6.0</VersionInfoKeys>
+						<VersionInfoKeys Name="ProductVersion">2.7.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
 					<Parameters>

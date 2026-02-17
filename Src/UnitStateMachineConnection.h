@@ -234,7 +234,7 @@ protected:
 
 	virtual void __fastcall DoAppendExtraParamsAndChildren(
 		Lmdxml::ILMDXmlElement *AElement, Lmdxml::ILMDXmlElement *AParentNode,
-		const TVisualMetaInformationTypes AMetaTypes);
+		const TVisualMetaInformationTypes AMetaTypes, const bool bIsSwitchPair);
 
 	virtual void __fastcall DoInternalDrawEx(void);
 

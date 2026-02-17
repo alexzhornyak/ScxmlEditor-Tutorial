@@ -58,8 +58,8 @@ typedef std::map<UnicodeString, UnicodeString> TUnicodeStringMap;
 
 typedef enum { oresSuccess, oresError, oresCancel } TOperationResult;
 
-typedef enum {vmiScxmlGui, vmiQt, vmiVSCode, vmiSimple} TVisualMetaInformationType;
-typedef Set<TVisualMetaInformationType, vmiScxmlGui, vmiSimple> TVisualMetaInformationTypes;
+typedef enum {vmiScxmlGui, vmiQt, vmiVSCode, vmiSimple, vmiMetadata} TVisualMetaInformationType;
+typedef Set<TVisualMetaInformationType, vmiScxmlGui, vmiMetadata> TVisualMetaInformationTypes;
 
 struct TMatchFind {
 	UnicodeString sLeft;

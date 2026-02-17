@@ -96,7 +96,8 @@ private:
 
 	UnicodeString FProjectDefines;
 
-    bool FVerifyChecksums;
+	bool FVerifyChecksums;
+	bool FInlineBinaryMetadata;
 
 protected:
 
@@ -122,6 +123,7 @@ __published:
 	__property UnicodeString 					CanserviceCfg = {read=FCanserviceCfg, write=FCanserviceCfg, stored=IsCanserviceCfgStored};
 	__property TProjectBuildTypes 				BuildTypes = {read=FBuildTypes, write=FBuildTypes, stored=IsBuildTypesStored};
 	__property TVisualMetaInformationTypes      ProjectMetaInformationTypes = {read=FProjectMetaInformationTypes, write=FProjectMetaInformationTypes, default=0};
+	__property bool								InlineBinaryMetadata = {read=FInlineBinaryMetadata, write=FInlineBinaryMetadata, default=true };
 	__property bool 							DisableSameControls = {read=FDisableSameControls, write=FDisableSameControls, default=false };
 	__property bool 							VerifyChecksums = {read=FVerifyChecksums, write=FVerifyChecksums, default=true };
 };

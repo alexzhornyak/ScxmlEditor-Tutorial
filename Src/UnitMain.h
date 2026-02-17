@@ -407,6 +407,8 @@ __published:	// IDE-managed Components
 	TMenuItem *ExportasScxmlGui1;
 	TMenuItem *ExportasSimpleVisualScxml1;
 	TMenuItem *Documentation1;
+	TAction *actExportAsTextMetadataScxml;
+	TMenuItem *ExportasTextMetadataScxml1;
 	void __fastcall LMDDockManager1WriteAppInfo(TObject *Sender, const ILMDXmlDocument *Xml);
 	void __fastcall LMDDockManager1BeforeRead(TObject *Sender, const ILMDXmlDocument *Xml);
 	void __fastcall ProjectManager1Open(TObject *Sender, bool AShowEditor, TLMDProjDocOpenContext *AContext);
@@ -601,6 +603,7 @@ __published:	// IDE-managed Components
 	void __fastcall actExportAsVSCodeScxmlExecute(TObject *Sender);
 	void __fastcall actExportAsSimpleScxmlExecute(TObject *Sender);
 	void __fastcall Documentation1Click(TObject *Sender);
+	void __fastcall actExportAsTextMetadataScxmlExecute(TObject *Sender);
 
 
 private:	// User declarations

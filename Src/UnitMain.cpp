@@ -1619,6 +1619,8 @@ void __fastcall TFormScxmlGui::DoOpenProject(const UnicodeString & sFileName) {
 		DoCollectAllBindings();
 
 		ProjectManagerView1->FullExpand();
+
+		ControlBar1->Refresh();
 	}
 	catch(Exception * E) {
 		LOG_ERROR(LOG_ERROR_MSG);
@@ -2827,6 +2829,8 @@ void __fastcall TFormScxmlGui::DoEditProjectOptions(const UnicodeString sItemNam
 					}
 
 					/* для ProjectDefines */ UpdateCaption();
+
+					ControlBar1->Refresh();
 				}
 
 				FPropInspStateOptionsPtr.reset(AFormSettingsEditor->PropSettingsInspector->SaveState());
@@ -6030,13 +6034,28 @@ void __fastcall TFormScxmlGui::CheckImageAdvancedDrawItem(TObject * Sender, TCan
 
 // ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::ControlBar1Paint(TObject * Sender) {
+	int iXOffset = ControlBar1->Width - 5;
 	if (SettingsData->AviaExtensionEnabled) {
 		SetTextAlign(ControlBar1->Canvas->Handle, TA_RIGHT);
 		ControlBar1->Canvas->Font->Color = clBlue;
 		ControlBar1->Canvas->Font->Size = 10;
 		ControlBar1->Canvas->Font->Name = L"Arial";
 		ControlBar1->Canvas->Font->Style = ControlBar1->Canvas->Font->Style << fsBold;
-		ControlBar1->Canvas->TextOut(ControlBar1->Width - 5, 5, "EXTENDED");
+		ControlBar1->Canvas->TextOut(iXOffset, 5, "Mode: EXTENDED");
+		iXOffset -= ControlBar1->Canvas->TextWidth("Mode: EXTENDED") + 10;
+	}
+
+	TStateMachineProject* AStateMachineProject = this->StateMachineProject;
+	if (AStateMachineProject) {
+		if (!AStateMachineProject->ProjectProperties->InlineBinaryMetadata) {
+			SetTextAlign(ControlBar1->Canvas->Handle, TA_RIGHT);
+			ControlBar1->Canvas->Font->Color = clMaroon;
+			ControlBar1->Canvas->Font->Size = 10;
+			ControlBar1->Canvas->Font->Name = L"Arial";
+			ControlBar1->Canvas->Font->Style = ControlBar1->Canvas->Font->Style << fsBold;
+			ControlBar1->Canvas->TextOut(iXOffset, 5, "Binary Metadata: OFF");
+			// iXOffset -= ControlBar1->Canvas->TextWidth(Embedded Metadata") + 5;
+		}
 	}
 }
 
@@ -6675,8 +6694,27 @@ void __fastcall TFormScxmlGui::actExportAsSimpleScxmlExecute(TObject *Sender) {
 }
 
 // ---------------------------------------------------------------------------
+void __fastcall TFormScxmlGui::actExportAsTextMetadataScxmlExecute(TObject *Sender)
+{
+	try {
+		TStateMachineDockPanel * AScxmlActivePanel = GetActiveEditorDockPanel();
+		if (AScxmlActivePanel) {
+			SaveDialog->Filter = TStateMachineEditorUnit::OpenDialogFilter;
+			if (SaveDialog->Execute(this->Handle)) {
+				AScxmlActivePanel->StateMachineEditor->SaveToTextMetadataScxml(SaveDialog->FileName);
+			}
+		}
+	}
+	catch(Exception * E) {
+		LOG_ERROR(LOG_ERROR_MSG);
+	}
+}
+
+// ---------------------------------------------------------------------------
 void __fastcall TFormScxmlGui::Documentation1Click(TObject *Sender) {
 	ShellExecuteW(NULL, L"open", L"https://alexzhornyak.github.io/ScxmlEditor-Tutorial/#table-of-contents", NULL, NULL,
 		SW_SHOWNORMAL);
 }
-// ---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+

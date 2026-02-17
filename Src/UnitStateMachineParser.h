@@ -39,9 +39,32 @@
 #include "UnicodeStringHash.h"
 #include "CommonConsts.h"
 
+#define ATTR_INHERITED_MODULE		L"inheritedModule"
+
+#define LITERAL_QT_EDITORINFO		L"qt:editorinfo"
+
+#define LITERAL_METADATA			L"scxmledit:meta"
+
+#define LITERAL_METADATA_POINT		L"scxmledit:point"
+
+#define LITERAL_METADATA_TEXT		L"scxmledit:text"
+
+#define LITERAL_IS_SWITCH_PAIR		L"_IsSwitchPair"
+
+#define LITERAL_IS_INLINE_VIRTUAL	L"_IsInlineVirtual"
+
+#define LITERAL_SIMPLE_SHAPE		L"shape_x_y_w_h:"
+
+#define LITERAL_SIMPLE_TRANSITION   L"transition_points:"
+
+
 class TScxmlBaseShape;
 class TStateMachineEditor;
 class TStateMachineConnection;
+
+namespace Lmdxml {
+	class ILMDXmlNode;
+}
 
 namespace Statemachine {
 
@@ -90,6 +113,8 @@ namespace Statemachine {
 
 	UnicodeString InvisibleShapeChildrenToXMLString(TScxmlBaseShape *AShape);
 	void XMLStringToInvisibleShapeChildren(TScxmlBaseShape *AShape, const UnicodeString &sXMLString);
+
+	void SavePropsToXML(TObject *AInstance, TStringList *ASimpleProps, ILMDXmlNode *AMetaNode);
 
 	/* INHERITANCE */
 	void CheckAndFixInheritedParent(TComponent *ABaseOwner, TScxmlBaseShape *AScxmlBaseShape, TScxmlBaseShape * AOriginShape);

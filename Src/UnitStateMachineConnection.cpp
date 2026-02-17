@@ -1048,7 +1048,7 @@ void __fastcall TStateMachineConnection::SetXML(UnicodeString val) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TStateMachineConnection::DoAppendExtraParamsAndChildren(Lmdxml::ILMDXmlElement *AElement,
-	Lmdxml::ILMDXmlElement *AParentNode, const TVisualMetaInformationTypes AMetaTypes) {
+	Lmdxml::ILMDXmlElement *AParentNode, const TVisualMetaInformationTypes AMetaTypes, const bool bIsSwitchPair) {
 
 	if (!AMetaTypes.Empty()) {
 		Editorutils::CalculatePointsPosition(this);
@@ -1097,7 +1097,7 @@ void __fastcall TStateMachineConnection::DoAppendExtraParamsAndChildren(Lmdxml::
 				const int iY = AVecPoints[i].first.y;
 				APointsListPtr->Add(UnicodeString().sprintf(L"%d,%d", iX, iY));
 			}
-			AElement->AppendComment(L"transition_points:" + APointsListPtr->DelimitedText);
+			AElement->AppendComment(LITERAL_SIMPLE_TRANSITION + APointsListPtr->DelimitedText);
 		}
 
 		// VSCode
@@ -1228,7 +1228,7 @@ void __fastcall TStateMachineConnection::DoAppendExtraParamsAndChildren(Lmdxml::
 		if (AMetaTypes.Contains(vmiQt)) {
 			if (iPointsLen >= 2) {
 				if (this->FromShape && this->ToShape && this->FromShape != this->ToShape) {
-					ILMDXmlNode *AQtNode = AElement->AppendElement("qt:editorinfo");
+					ILMDXmlNode *AQtNode = AElement->AppendElement(LITERAL_QT_EDITORINFO);
 
 					std::auto_ptr<TStringList>APointsListPtr(new TStringList);
 					APointsListPtr->Delimiter = L';';
@@ -1301,6 +1301,66 @@ void __fastcall TStateMachineConnection::DoAppendExtraParamsAndChildren(Lmdxml::
 
 				}
 			}
+		}
+
+		// Global metadata
+		if (AMetaTypes.Contains(vmiMetadata)) {
+			ILMDXmlNode *AMetaNode = AElement->AppendElement(LITERAL_METADATA);
+
+			if (bIsSwitchPair) {
+				AMetaNode->SetBoolAttr(LITERAL_IS_SWITCH_PAIR, true);
+			}
+
+			if (TVirtualShape *AVirtualParent = dynamic_cast<TVirtualShape *>(this->FromShape)) {
+            	AMetaNode->SetBoolAttr(LITERAL_IS_INLINE_VIRTUAL, true);
+			}
+
+			{
+				std::auto_ptr<TStringList>ASimpleProps(new TStringList);
+				ASimpleProps->Add("Style");
+
+				ASimpleProps->Add("Locked");
+				ASimpleProps->Add("SWITCH");
+				ASimpleProps->Add("AdjustableSides");
+				ASimpleProps->Add("DisplayTypes");
+				ASimpleProps->Add("ClipOutMax");
+				ASimpleProps->Add("ClipOutCondition");
+				ASimpleProps->Add("ClipOutXML");
+				ASimpleProps->Add("ClipTypeCondition");
+				ASimpleProps->Add("ClipTypeXML");
+				ASimpleProps->Add("VerticalCentering");
+				ASimpleProps->Add("SkipAutolayout");
+				ASimpleProps->Add("BreakpointSet");
+				ASimpleProps->Add("Description");
+
+				Statemachine::SavePropsToXML(this, ASimpleProps.get(), AMetaNode);
+			}
+
+			for (int i = 0; i < this->Points->Count(); i++) {
+				ILMDXmlNode *AMetaPointNode = AMetaNode->AppendElement(LITERAL_METADATA_POINT);
+				AMetaPointNode->SetAttr(L"XStyle", this->Points->Item[i].XStyle);
+				AMetaPointNode->SetAttr(L"YStyle", this->Points->Item[i].YStyle);
+				AMetaPointNode->SetAttr(L"XValue", this->Points->Item[i].XValue);
+				AMetaPointNode->SetAttr(L"YValue", this->Points->Item[i].YValue);
+			}
+
+			{
+				ILMDXmlNode *AMetaTextNode = AMetaNode->AppendElement(LITERAL_METADATA_TEXT);
+
+				std::auto_ptr<TStringList>ASimpleProps(new TStringList);
+				ASimpleProps->Add("Angle");
+				ASimpleProps->Add("HorizOffset");
+				ASimpleProps->Add("VertOffset");
+				ASimpleProps->Add("HorizAlign");
+				ASimpleProps->Add("VertAlign");
+
+				Statemachine::SavePropsToXML(this->Text, ASimpleProps.get(), AMetaTextNode);
+
+				if (AMetaTextNode->AttrCount == 0) {
+					AMetaNode->RemoveChild(AMetaTextNode);
+				}
+			}
+
 		}
 	}
 
@@ -1376,7 +1436,7 @@ void __fastcall TStateMachineConnection::AppendTransitionElement(Lmdxml::ILMDXml
 			AElement->SetAttr("type", this->Type == TScxmlTransitionType::external ? L"external" : L"internal");
 		}
 
-		DoAppendExtraParamsAndChildren(AElement, AParentNode, AMetaTypes);
+		DoAppendExtraParamsAndChildren(AElement, AParentNode, AMetaTypes, false);
 	}
 	catch(EStateMachineConnectionException * E) {
 		throw E;
@@ -1443,7 +1503,7 @@ void __fastcall TStateMachineConnection::AppendTransitionSwitchElement(Lmdxml::I
 
 		AElement->SetAttr("target", sTarget);
 
-		DoAppendExtraParamsAndChildren(AElement, AParentNode, AMetaTypes);
+		DoAppendExtraParamsAndChildren(AElement, AParentNode, AMetaTypes, true);
 	}
 	catch(EStateMachineConnectionException * E) {
 		throw E;

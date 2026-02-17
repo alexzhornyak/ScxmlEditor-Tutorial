@@ -952,6 +952,9 @@ object FormScxmlGui: TFormScxmlGui
         object ExportasSimpleVisualScxml1: TMenuItem
           Action = actExportAsSimpleScxml
         end
+        object ExportasTextMetadataScxml1: TMenuItem
+          Action = actExportAsTextMetadataScxml
+        end
       end
       object MenuRecentLine: TMenuItem
         Caption = '-'
@@ -1963,12 +1966,18 @@ object FormScxmlGui: TFormScxmlGui
       OnExecute = actExportAsSimpleScxmlExecute
       OnUpdate = actGetActiveEditorUpdate
     end
+    object actExportAsTextMetadataScxml: TAction
+      Category = 'File'
+      Caption = 'Export as Text Metadata Scxml'
+      OnExecute = actExportAsTextMetadataScxmlExecute
+      OnUpdate = actGetActiveEditorUpdate
+    end
   end
   object ActionsImages: TImageList
     Left = 129
     Top = 72
     Bitmap = {
-      494C01017900E002CC0710001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01017900E002D40710001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000F0010000010020000000000000F0
       010000000000000000000000000000000000000000000000000000000000CCCC
       CC00999999009999990099999900999999009999990099999900999999009999

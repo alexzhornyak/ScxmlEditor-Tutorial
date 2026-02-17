@@ -8505,6 +8505,9 @@ void __fastcall TStateMachineEditor::ExecuteInterprocessCommand(INTERPROCESS_COP
 	else if (SameText(ACopyData->wchCommand, L"SaveToSimpleScxml")) {
 		this->SaveToSimpleScxml(ACopyData->wchArg1);
 	}
+	else if (SameText(ACopyData->wchCommand, L"SaveToTextMetadataScxml")) {
+		this->SaveToTextMetadataScxml(ACopyData->wchArg1);
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -8631,6 +8634,14 @@ void __fastcall TStateMachineEditor::SaveToScxmlGui(const UnicodeString & sFileN
 void __fastcall TStateMachineEditor::SaveToSimpleScxml(const UnicodeString & sFileName) {
 	const Statemachine::TIterateSaveTypes ATypes = (Statemachine::MaxPossibleTypes() >> Statemachine::istVirtual);
 	const TVisualMetaInformationTypes AMetaTypes = TVisualMetaInformationTypes() << vmiSimple;
+
+	Statemachine::SaveTreeToScxml(TheTree, sFileName, false, false, ATypes, AMetaTypes);
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::SaveToTextMetadataScxml(const UnicodeString & sFileName) {
+	const Statemachine::TIterateSaveTypes ATypes = Statemachine::MaxPossibleTypes();
+	const TVisualMetaInformationTypes AMetaTypes = TVisualMetaInformationTypes() << vmiMetadata;
 
 	Statemachine::SaveTreeToScxml(TheTree, sFileName, false, false, ATypes, AMetaTypes);
 }
@@ -9221,7 +9232,13 @@ void __fastcall TStateMachineDockPanel::OpenedDocOnSave(System::TObject * Sender
 		}
 		/* ÎÁÛ×ÍÀß ÇÀÏÈÑÜ */
 		else {
-			Statemachine::SaveTreeToScxml(FStateMachineEditor->TheTree, AFileStream, true, false,
+
+			bool bSaveGlobalMeta = true;
+			if (AStateMachineProject) {
+				bSaveGlobalMeta = AStateMachineProject->ProjectProperties->InlineBinaryMetadata;
+			}
+
+			Statemachine::SaveTreeToScxml(FStateMachineEditor->TheTree, AFileStream, bSaveGlobalMeta, false,
 				Statemachine::TIterateSaveTypes() << Statemachine::istMAXSIZE, AMetaTypes);
 		}
 

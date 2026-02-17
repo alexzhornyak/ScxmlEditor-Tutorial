@@ -65,14 +65,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma package(smart_init)
 #pragma link "soaprtl.lib"
 
-#define ATTR_INHERITED_MODULE	L"inheritedModule"
-
-#define LITERAL_QT_EDITORINFO	L"qt:editorinfo"
-
 namespace Statemachine {
 
 	typedef enum {
-		sifDefault, sifOldGui, sifQt
+		sifDefault, sifOldGui, sifQt, sifVSCode, sifSimple, sifMeta
 	}TScxmlImportFormat;
 
 	typedef std::vector<TPoint>TVecPoint;
@@ -85,11 +81,13 @@ namespace Statemachine {
 	TVecPoint /* 5 */ , //
 	TScxmlTransitionType /* 6 */ , //
 	UnicodeString /* 7 - extra params */ , //
-	TScxmlImportFormat /* 8 - scxml import type */ >TTransitionTuple;
+	TScxmlImportFormat /* 8 - scxml import type */ , //
+	_di_ILMDXmlNode /* 9 - pointer to XML node */ >TTransitionTuple;
 
 	typedef std::vector<TTransitionTuple>TTransitionVec;
 	typedef enum {
-		tttSource, tttEvent, tttTarget, tttCond, tttBody, tttPoints, tttTransitionType, tttExtraParams, tttImportFormat
+		tttSource, tttEvent, tttTarget, tttCond, tttBody, tttPoints, tttTransitionType, tttExtraParams,
+		tttImportFormat, tttXmlNode
 	}TTransitionTupleType;
 
 	static const UnicodeString __VISUAL_STATE_NAMES[] = {
@@ -191,6 +189,54 @@ namespace Statemachine {
 
 	}
 
+	void SavePropsToXML(TObject *AInstance, TStringList *ASimpleProps, ILMDXmlNode *AMetaNode) {
+		TPropList APropList;
+
+		TTypeKinds TypeKinds = TTypeKinds() << tkInteger << tkChar << tkEnumeration << tkFloat << tkString << tkSet <<
+			tkClass << tkWChar << tkLString << tkWString << tkVariant << tkArray << tkRecord << tkInterface <<
+			tkInt64 << tkDynArray << tkUString << tkClassRef << tkPointer << tkProcedure;
+
+		const int iRes = GetPropList(PTypeInfo(AInstance->ClassInfo()), TypeKinds, (TPropList*)(&APropList), false);
+
+		for (int i = 0; i < iRes; i++) {
+			TTypeInfo *ATypeInfo = *APropList[i]->PropType;
+
+			const UnicodeString sPropName = AnsiString(APropList[i]->Name);
+			if (ASimpleProps->IndexOf(sPropName) != -1) {
+				Variant AVar = GetPropValue(AInstance, sPropName);
+				int iOrd = GetOrdProp(AInstance, sPropName);
+				if (iOrd != APropList[i]->Default) {
+					AMetaNode->SetAttr(sPropName, AVar);
+				}
+			}
+		}
+	}
+
+	void LoadPropsFromXML(TObject *AInstance, ILMDXmlNode *AMetaNode) {
+		for (int i = 0; i < AMetaNode->AttrCount; i++) {
+			const UnicodeString sPropName = AMetaNode->AttrNames[i];
+			if (IsPublishedProp(AInstance, sPropName)) {
+				Variant Var = Variant(AMetaNode->AttrValues[i]);
+				SetPropValue(AInstance, sPropName, Var);
+			}
+		}
+	}
+
+	void AssignScxmlImportFormat(TScxmlImportFormat &AScxmlImportFormat, const TScxmlImportFormat AParsedFormat) {
+		// NOTE: ScxmlEditor meta has a highest priority
+		switch(AParsedFormat) {
+		case sifMeta: {
+				AScxmlImportFormat = sifMeta;
+			}break;
+		default: {
+				// NOTE: we allow to assign format only once (if for example a couple of types will be found)
+				if (AScxmlImportFormat == sifDefault) {
+					AScxmlImportFormat = AParsedFormat;
+				}
+			}
+		}
+	}
+
 	TTransitionBodyTuple XMLNodeChildrenToString(ILMDXmlNode * AParentNode) {
 
 		TVecPoint AVecPoint;
@@ -198,42 +244,58 @@ namespace Statemachine {
 
 		_di_ILMDXmlDocument ADoc = LMDCreateXmlDocument();
 		for (int k = 0; k < AParentNode->ChildNodes->Count; k++) {
-			if (AParentNode->ChildNodes->Item[k]->NodeName == LITERAL_QT_EDITORINFO) {
+			_di_ILMDXmlNode ANode = AParentNode->ChildNodes->Item[k];
+			if (ANode->NodeType == LMD_NODE_COMMENT) {
+				TRect AShapeRect;
+				TVecPoint AVecPoint;
 
-				int iMoveX = 0;
-				int iMoveY = 0;
-
-				/* MovePoint */ {
-					std::auto_ptr<TStringList>AStringListPtr(new TStringList());
-					AStringListPtr->StrictDelimiter = true;
-					AStringListPtr->Delimiter = L';';
-					AStringListPtr->DelimitedText = AParentNode->ChildNodes->Item[k]->GetAttr("movePoint", "");
-					if (AStringListPtr->Count == 2) {
-						iMoveX = RoundTo(StrToFloatDef(AStringListPtr->Strings[0], 0.0), 0);
-						iMoveY = RoundTo(StrToFloatDef(AStringListPtr->Strings[1], 0.0), 0);
+				// TODO: need to remove comment double check
+				const UnicodeString sCommentText = ANode->Text;
+				if (MatchesNodesRect(sCommentText, AShapeRect)) {
+					if (!SettingsData->SaveCommentsAnywayOnLoad) {
+						continue;
 					}
 				}
-
-				/* Source */ {
-					std::auto_ptr<TStringList>AStringListPtr(new TStringList());
-					AStringListPtr->StrictDelimiter = true;
-					AStringListPtr->Delimiter = L';';
-					AStringListPtr->DelimitedText = AParentNode->ChildNodes->Item[k]->GetAttr("startTargetFactors",
-						"-1;-1");
-					for (int n = 0; n < AStringListPtr->Count; n += 2) {
-						const int iX = RoundTo(StrToFloatDef(AStringListPtr->Strings[n], 0.0), 0);
-						const int iY = RoundTo(StrToFloatDef(AStringListPtr->Strings[n + 1], 0.0), 0);
-						AVecPoint.push_back(Point(iX, iY));
+				else if (MatchesEdgePath(sCommentText, AVecPoint)) {
+					if (!SettingsData->SaveCommentsAnywayOnLoad) {
+						continue;
 					}
 				}
+				else if (sCommentText.Pos(LITERAL_SIMPLE_SHAPE) == 1) {
+					if (!SettingsData->SaveCommentsAnywayOnLoad) {
+						continue;
+					}
+				}
+				else if (sCommentText.Pos(LITERAL_SIMPLE_TRANSITION) == 1) {
+					if (!SettingsData->SaveCommentsAnywayOnLoad) {
+						continue;
+					}
+				}
+			}
+			else {
 
-				/* Middle */ {
-					std::auto_ptr<TStringList>AStringListPtr(new TStringList());
-					AStringListPtr->StrictDelimiter = true;
-					AStringListPtr->Delimiter = L';';
-					AStringListPtr->DelimitedText = AParentNode->ChildNodes->Item[k]->GetAttr("localGeometry", "");
+				const UnicodeString sNodeName = ANode->NodeName;
+				if (sNodeName == LITERAL_QT_EDITORINFO) {
 
-					if (AStringListPtr->Count % 2 == 0) {
+					int iMoveX = 0;
+					int iMoveY = 0;
+
+					/* MovePoint */ {
+						std::auto_ptr<TStringList>AStringListPtr(new TStringList());
+						AStringListPtr->StrictDelimiter = true;
+						AStringListPtr->Delimiter = L';';
+						AStringListPtr->DelimitedText = ANode->GetAttr("movePoint", "");
+						if (AStringListPtr->Count == 2) {
+							iMoveX = RoundTo(StrToFloatDef(AStringListPtr->Strings[0], 0.0), 0);
+							iMoveY = RoundTo(StrToFloatDef(AStringListPtr->Strings[1], 0.0), 0);
+						}
+					}
+
+					/* Source */ {
+						std::auto_ptr<TStringList>AStringListPtr(new TStringList());
+						AStringListPtr->StrictDelimiter = true;
+						AStringListPtr->Delimiter = L';';
+						AStringListPtr->DelimitedText = ANode->GetAttr("startTargetFactors", "-1;-1");
 						for (int n = 0; n < AStringListPtr->Count; n += 2) {
 							const int iX = RoundTo(StrToFloatDef(AStringListPtr->Strings[n], 0.0), 0);
 							const int iY = RoundTo(StrToFloatDef(AStringListPtr->Strings[n + 1], 0.0), 0);
@@ -241,28 +303,46 @@ namespace Statemachine {
 						}
 					}
 
-				}
+					/* Middle */ {
+						std::auto_ptr<TStringList>AStringListPtr(new TStringList());
+						AStringListPtr->StrictDelimiter = true;
+						AStringListPtr->Delimiter = L';';
+						AStringListPtr->DelimitedText = ANode->GetAttr("localGeometry", "");
 
-				/* Target */ {
-					std::auto_ptr<TStringList>AStringListPtr(new TStringList());
-					AStringListPtr->StrictDelimiter = true;
-					AStringListPtr->Delimiter = L';';
-					AStringListPtr->DelimitedText = AParentNode->ChildNodes->Item[k]->GetAttr("endTargetFactors",
-						"-1;-1");
-					for (int n = 0; n < AStringListPtr->Count; n += 2) {
-						const int iX = RoundTo(StrToFloatDef(AStringListPtr->Strings[n], 0.0), 0);
-						const int iY = RoundTo(StrToFloatDef(AStringListPtr->Strings[n + 1], 0.0), 0);
-						AVecPoint.push_back(Point(iX, iY));
+						if (AStringListPtr->Count % 2 == 0) {
+							for (int n = 0; n < AStringListPtr->Count; n += 2) {
+								const int iX = RoundTo(StrToFloatDef(AStringListPtr->Strings[n], 0.0), 0);
+								const int iY = RoundTo(StrToFloatDef(AStringListPtr->Strings[n + 1], 0.0), 0);
+								AVecPoint.push_back(Point(iX, iY));
+							}
+						}
+
 					}
+
+					/* Target */ {
+						std::auto_ptr<TStringList>AStringListPtr(new TStringList());
+						AStringListPtr->StrictDelimiter = true;
+						AStringListPtr->Delimiter = L';';
+						AStringListPtr->DelimitedText = ANode->GetAttr("endTargetFactors", "-1;-1");
+						for (int n = 0; n < AStringListPtr->Count; n += 2) {
+							const int iX = RoundTo(StrToFloatDef(AStringListPtr->Strings[n], 0.0), 0);
+							const int iY = RoundTo(StrToFloatDef(AStringListPtr->Strings[n + 1], 0.0), 0);
+							AVecPoint.push_back(Point(iX, iY));
+						}
+					}
+
+					AScxmlImportFormat = sifQt;
+
+					if (SettingsData->ParserDoNotLoadQtEditorInfo)
+						continue;
 				}
-
-				AScxmlImportFormat = sifQt;
-
-				if (SettingsData->ParserDoNotLoadQtEditorInfo)
+				else if (sNodeName == LITERAL_METADATA) {
+					AScxmlImportFormat = sifMeta;
 					continue;
+				}
 			}
 
-			ADoc->AppendChild(AParentNode->ChildNodes->Item[k]);
+			ADoc->AppendChild(ANode);
 		}
 		return boost::make_tuple(ADoc->XML, AVecPoint, AScxmlImportFormat);
 	}
@@ -293,7 +373,8 @@ namespace Statemachine {
 
 				// комментарий, который содержит мета-информацию
 				bool bMetaInfoComment = false;
-				if (MatchesNodesRect(AParentNode->Text, AShapeRect)) {
+				const UnicodeString sCommentText = AParentNode->Text;
+				if (MatchesNodesRect(sCommentText, AShapeRect)) {
 					// попался случай, когда были дальше записаны какие-то мусорные значения,
 					// поэтому реагируем только на первый комментарий!
 					if (iIndexXML == 0) {
@@ -329,15 +410,50 @@ namespace Statemachine {
 						}
 
 						bMetaInfoComment = true;
-						AScxmlImportFormat = sifOldGui;
+						AssignScxmlImportFormat(AScxmlImportFormat, sifOldGui);
 					}
 				}
-				else if (MatchesEdgePath(AParentNode->Text, AVecPoint)) {
+				else if (MatchesEdgePath(sCommentText, AVecPoint)) {
 					AVecTransition.back().get<tttPoints>() = AVecPoint;
 					AVecTransition.back().get<tttImportFormat>() = sifOldGui;
 
 					bMetaInfoComment = true;
-					AScxmlImportFormat = sifOldGui;
+					AssignScxmlImportFormat(AScxmlImportFormat, sifOldGui);
+				}
+				else if (sCommentText.Pos(LITERAL_SIMPLE_SHAPE) == 1) {
+					std::auto_ptr<TStringList>APointsListPtr(new TStringList);
+					APointsListPtr->Delimiter = L';';
+					APointsListPtr->StrictDelimiter = true;
+					APointsListPtr->DelimitedText = StringReplace(sCommentText, LITERAL_SIMPLE_SHAPE, L"",
+						TReplaceFlags());
+
+					AShape->X0 = APointsListPtr->Strings[0].ToInt();
+					AShape->Y0 = APointsListPtr->Strings[1].ToInt();
+					AShape->Width = APointsListPtr->Strings[2].ToInt();
+					AShape->Height = APointsListPtr->Strings[3].ToInt();
+
+					bMetaInfoComment = true;
+					AssignScxmlImportFormat(AScxmlImportFormat, sifSimple);
+				}
+				else if (sCommentText.Pos(LITERAL_SIMPLE_TRANSITION) == 1) {
+					std::auto_ptr<TStringList>APointsListPtr(new TStringList);
+					APointsListPtr->Delimiter = L';';
+					APointsListPtr->StrictDelimiter = true;
+					APointsListPtr->DelimitedText = StringReplace(sCommentText, LITERAL_SIMPLE_TRANSITION, L"",
+						TReplaceFlags());
+					for (int i = 0; i < APointsListPtr->Count; i++) {
+						std::auto_ptr<TStringList>ACoordinates(new TStringList);
+						ACoordinates->Delimiter = L',';
+						ACoordinates->StrictDelimiter = true;
+						ACoordinates->DelimitedText = APointsListPtr->Strings[i];
+						AVecPoint.push_back(Point(ACoordinates->Strings[0].ToInt(), ACoordinates->Strings[1].ToInt()));
+					}
+
+					AVecTransition.back().get<tttPoints>() = AVecPoint;
+					AVecTransition.back().get<tttImportFormat>() = sifSimple;
+
+					bMetaInfoComment = true;
+					AssignScxmlImportFormat(AScxmlImportFormat, sifSimple);
 				}
 
 				if ((!bMetaInfoComment || SettingsData->SaveCommentsAnywayOnLoad) && !bInsideTransition) {
@@ -347,7 +463,7 @@ namespace Statemachine {
 						throw Exception("Type <" + AParentNode->NodeName + "> is not allowed to be child of <" +
 						AParentShape->XMLName + ">");
 
-					AShape->Comments->Text = AParentNode->Text;
+					AShape->Comments->Text = sCommentText;
 				}
 			}
 		}
@@ -367,14 +483,20 @@ namespace Statemachine {
 
 			if (AShape && IsPublishedProp(AShape, "XMLText")) {
 
+				const UnicodeString sParentNodeName = AParentNode->NodeName;
+
 				// !!! непонятный случай, скорей всего такого не может быть, для удаления в будущем
-				if (SettingsData->ParserDoNotLoadQtEditorInfo && AParentNode->NodeName == LITERAL_QT_EDITORINFO) {
+				if (SettingsData->ParserDoNotLoadQtEditorInfo && sParentNodeName == LITERAL_QT_EDITORINFO) {
+					return;
+				}
+
+				// NOTE: possible metadata in content
+				if (sParentNodeName == LITERAL_METADATA) {
 					return;
 				}
 
 				AShape->XMLText->Text = AShape->XMLText->Text + AParentNode->XML;
-				AShape->XMLText->Type = AParentNode->NodeName == L"scxml" ?
-					TXMLTextType::xttSCXML : TXMLTextType::xttXML;
+				AShape->XMLText->Type = sParentNodeName == L"scxml" ? TXMLTextType::xttSCXML : TXMLTextType::xttXML;
 				AShape->XMLText->SyntaxScheme = L"XML";
 				return; // значит добавляем данные в узлы типа <content> или <script>
 			}
@@ -383,6 +505,9 @@ namespace Statemachine {
 			TScxmlBaseShape *AParentShape = AShape;
 			bool bIsTransition = false;
 			bool bExtraContent = false;
+
+			_di_ILMDXmlNode AMetaVirtualNode = NULL;
+
 			// у этого класса не будет родителя, поэтому создаем вручную
 			if (AParentNode->NodeName == "scxml") {
 				TScxmlShape *AScxmlShape = new TScxmlShape(ATree->Owner);
@@ -471,21 +596,36 @@ namespace Statemachine {
 
 				const TTransitionBodyTuple ABodyTuple = XMLNodeChildrenToString(AParentNode);
 				if (boost::get<2>(ABodyTuple) != sifDefault) {
-					AScxmlImportFormat = boost::get<2>(ABodyTuple);
+					AssignScxmlImportFormat(AScxmlImportFormat, boost::get<2>(ABodyTuple));
 				}
 
 				AVecTransition.push_back(boost::make_tuple(AShape, sEvent, sTarget, sCondition, //
 						boost::get<0>(ABodyTuple), boost::get<1>(ABodyTuple),
 						sType == L"internal" ? TScxmlTransitionType::internal : TScxmlTransitionType::external,
-						AExtraParamsPtr->Text, AScxmlImportFormat));
+						AExtraParamsPtr->Text, AScxmlImportFormat, AParentNode));
 
 				bIsTransition = true;
 			}
 			else {
 				if (AParentShape) {
 
-					const TStateChildType AStateType = TScxmlBaseShape::XMLNodeNameToType(AParentNode->NodeName);
+					TStateChildType AStateType = TScxmlBaseShape::XMLNodeNameToType(AParentNode->NodeName);
 					if (AStateType != sctMAXSIZE) {
+
+						if (AStateType == sctState || AStateType == sctParallel) {
+							_di_ILMDXmlNode AMetaChild = NULL;
+							try {
+								AMetaChild = AParentNode->NeedChild(LITERAL_METADATA);
+							}
+							catch(Exception * E) {
+								// skip not found
+							}
+							if (AMetaChild && AMetaChild->AttrExists("Src")) {
+								AStateType = sctVirtual;
+								AMetaVirtualNode = AMetaChild;
+							}
+						}
+
 						AShape = AParentShape->AddStateChild(AStateType, false);
 						if (!AShape)
 							throw Exception
@@ -519,6 +659,18 @@ namespace Statemachine {
 						AInitialShape->Y0 = AInitialShape->Parent->Y0;
 					}
 				}
+
+				if (AMetaVirtualNode) {
+					for (int i = 0; i < AMetaVirtualNode->AttrCount; i++) {
+						const UnicodeString sPropName = AMetaVirtualNode->AttrNames[i];
+						if (IsPublishedProp(AShape, sPropName)) {
+							Variant Var = Variant(AMetaVirtualNode->AttrValues[i]);
+							SetPropValue(AShape, sPropName, Var);
+						}
+					}
+
+					AssignScxmlImportFormat(AScxmlImportFormat, sifMeta);
+				}
 			}
 			else {
 				if (!bIsTransition) {
@@ -548,8 +700,8 @@ namespace Statemachine {
 										std::map<TVisualScxmlBaseShape*,
 										TPoint>::iterator it = g_MapQtParentPoints.find(AVisualParent);
 										if (it != g_MapQtParentPoints.end()) {
-										iParentX -= it->second.x;
-										iParentY -= it->second.y;
+											iParentX -= it->second.x;
+											iParentY -= it->second.y;
 										}
 									}
 								}
@@ -570,7 +722,7 @@ namespace Statemachine {
 
 									g_MapQtParentPoints.insert
 										(std::make_pair(dynamic_cast<TVisualScxmlBaseShape*>(AShape),
-										Point(iRectCenterX, iRectCenterY)));
+											Point(iRectCenterX, iRectCenterY)));
 
 									AShape->X0 = iParentX + AVecPoints[0].x + AVecPoints[1].x;
 									AShape->Y0 = iParentY + AVecPoints[0].y + AVecPoints[1].y;
@@ -581,7 +733,7 @@ namespace Statemachine {
 									case sctFinal:
 									case sctHistory:
 									case sctInitial: {
-										AVisualShape->SetDefaultSize();
+											AVisualShape->SetDefaultSize();
 										}break;
 									default:
 										break;
@@ -589,11 +741,22 @@ namespace Statemachine {
 								}
 							}
 
-							AScxmlImportFormat = sifQt;
+							AssignScxmlImportFormat(AScxmlImportFormat, sifQt);
 
 							if (SettingsData->ParserDoNotLoadQtEditorInfo)
 								return;
 						}
+					}
+
+					// NOTE: Special case for ScxmlEditor meta, do not load in any case
+					if (AParentNode->NodeName == LITERAL_METADATA) {
+
+						LoadPropsFromXML(AShape, AParentNode);
+
+						AssignScxmlImportFormat(AScxmlImportFormat, sifMeta);
+
+						// NOTE: do not load info into statemachine
+						return;
 					}
 
 					WLOG_WARNING(L"Unknown node type <%s> with parent <%s> <%s>", AParentNode->NodeName.c_str(),
@@ -613,6 +776,23 @@ namespace Statemachine {
 			for (int i = 0; i < AParentNode->ChildNodes->Count; i++) {
 				if (bExtraContent)
 					continue;
+
+				if (AMetaVirtualNode) {
+
+                	_di_ILMDXmlNode AMetaChild = NULL;
+					try {
+						AMetaChild = AParentNode->ChildNodes->Item[i]->NeedChild(LITERAL_METADATA);
+					}
+					catch(Exception * E) {
+						// skip not found
+					}
+
+					if (!AMetaChild || !AMetaChild->GetBoolAttr(LITERAL_IS_INLINE_VIRTUAL, false)) {
+						continue;
+					}
+
+				}
+
 				// проанализируем только комменты для поддержки гуев, если это ноды внутри соединения
 				if (!bIsTransition || (AParentNode->ChildNodes->Item[i]->NodeType == LMD_NODE_COMMENT && bIsTransition)
 					) {
@@ -734,6 +914,7 @@ namespace Statemachine {
 		const TScxmlTransitionType AType = ATransition.get<tttTransitionType>();
 		const UnicodeString &sExtraParams = ATransition.get<tttExtraParams>();
 		const TScxmlImportFormat AScxmlImportFormat = ATransition.get<tttImportFormat>();
+		_di_ILMDXmlNode AXMLNode = ATransition.get<tttXmlNode>();
 
 		/* DEBUG (UnicodeString().sprintf(L"Transition with params[%s;%s;%s;%s]", sSource.c_str(), sEvent.c_str(),
 		sTarget.c_str(), sCond.c_str())); */
@@ -744,6 +925,21 @@ namespace Statemachine {
 			throw Exception
 				(UnicodeString().sprintf(L"Can not create transition from:[%s] to:[%s] event:[%s] cond:[%s]", //
 				sSource.c_str(), sTarget.c_str(), sEvent.c_str(), sCond.c_str()));
+
+		_di_ILMDXmlNode AMetaNode = NULL;
+		if (AScxmlImportFormat == sifMeta) {
+			try {
+				AMetaNode = AXMLNode->NeedChild(LITERAL_METADATA);
+				const bool bIsSwitchPair = AMetaNode->GetBoolAttr(LITERAL_IS_SWITCH_PAIR, false);
+				if (bIsSwitchPair) {
+					// NOTE: we display only one transition in visual chart
+					return;
+				}
+			}
+			catch(Exception * E) {
+				// we need to skip only not found child exception
+			}
+		}
 
 		// приходится создавать отдельно из-за невозможности штатными средствами создавать множественные соединения
 		TStateMachineConnection* AConnection = new TStateMachineConnection(ATree->Owner);
@@ -760,6 +956,30 @@ namespace Statemachine {
 		AConnection->XML = sXML;
 		AConnection->Event = sEvent;
 		AConnection->Condition = sCond;
+
+		if (AMetaNode) {
+
+			LoadPropsFromXML(AConnection, AMetaNode);
+
+			AConnection->Points->Clear();
+
+			for (int i = 0; i < AMetaNode->ChildNodes->Count; i++) {
+				_di_ILMDXmlNode AIterMetaNode = AMetaNode->ChildNodes->Item[i];
+				if (AIterMetaNode->NodeName == LITERAL_METADATA_POINT) {
+					const TConnectionPointStyle AXStyle = TConnectionPointStyle(AIterMetaNode->GetIntAttr("XStyle", 0));
+					const TConnectionPointStyle AYStyle = TConnectionPointStyle(AIterMetaNode->GetIntAttr("YStyle", 0));
+					const int iXValue = AIterMetaNode->GetIntAttr("XValue", 0);
+					const int iYValue = AIterMetaNode->GetIntAttr("YValue", 0);
+
+					AConnection->Points->Add(AXStyle, iXValue, AYStyle, iYValue);
+				}
+				else if (AIterMetaNode->NodeName == LITERAL_METADATA_TEXT) {
+					LoadPropsFromXML(AConnection->Text, AIterMetaNode);
+				}
+			}
+
+			return;
+		}
 
 		/* визуальные настройки */
 		AConnection->Style = csLine;
@@ -852,6 +1072,12 @@ namespace Statemachine {
 				case sifQt:
 					CreatePoints_Qt(AConnection, AShape, ASourceNode, ATargetNode, AVecPoint);
 					break;
+				case sifSimple: {
+						AConnection->Points->Clear();
+						for (std::size_t i = 0; i < AVecPoint.size(); i++) {
+							AConnection->Points->Add(AVecPoint[i].x, AVecPoint[i].y);
+						}
+					}break;
 				case sifOldGui:
 				case sifDefault:
 					CreatePoints_OldGui(AConnection, AShape, ASourceNode, ATargetNode, AVecPoint);
@@ -1022,6 +1248,8 @@ namespace Statemachine {
 		}
 
 		switch(AScxmlImportFormat) {
+		case sifSimple:
+		case sifMeta:
 		case sifOldGui: {
 				// не проверяем размер
 			}break;
@@ -1456,9 +1684,9 @@ namespace Statemachine {
 										Editorutils::RememberPoints(AStateMachineConnection, ATargetPoints);
 
 										if (!Editorutils::AreEqualPoints(ASourcePoints, ATargetPoints)) {
-										Editorutils::RestorePoints(AStateMachineConnection, ASourcePoints);
-										WLOG_DEBUG(L"INHERITANCE> Restored points=%s",
-										AStateMachineConnection->Name.c_str());
+											Editorutils::RestorePoints(AStateMachineConnection, ASourcePoints);
+											WLOG_DEBUG(L"INHERITANCE> Restored points=%s",
+												AStateMachineConnection->Name.c_str());
 										}
 									}
 
@@ -1789,8 +2017,12 @@ namespace Statemachine {
 
 						TStateMachineEditorUnit *AUnit = AVirtualShape->SrcUnit;
 						if (AUnit && AUnit->StateMachineDockPanel) {
+
+							TVisualMetaInformationTypes AMetaTypesForVirtual = AMetaTypes;
+							AMetaTypesForVirtual = AMetaTypesForVirtual >> vmiMetadata;
+
 							Statemachine::SaveTreeToScxml(AUnit->StateMachineDockPanel->StateMachineEditor->TheTree,
-								AStreamPtr.get(), false, true, ASaveTypes, AMetaTypes);
+								AStreamPtr.get(), false, true, ASaveTypes, AMetaTypesForVirtual);
 						}
 						else {
 							if (AVirtualShape->Src.IsEmpty())
@@ -1844,6 +2076,17 @@ namespace Statemachine {
 
 								AStateNode = ANode->ChildNodes->Item[ANode->ChildNodes->Count - 1]->AsElement();
 
+								if (AMetaTypes.Contains(vmiMetadata)) {
+									try {
+										_di_ILMDXmlNode AMetaNode = AStateNode->NeedChild(LITERAL_METADATA);
+										if (AMetaNode) {
+											AStateNode->RemoveChild(AMetaNode);
+										}
+									}
+									catch(Exception * E) {
+									}
+								}
+
 								AVirtualShape->ExtraParamsToAttributes(AStateNode);
 								break;
 							}
@@ -1876,15 +2119,16 @@ namespace Statemachine {
 									!AVirtualChildShape->ExcludeFromSave) {
 									if (AElements.find(AVirtualChildShape->XMLName) != AElements.end()) {
 										throw EScxmlBaseShapeException(AVirtualChildShape, L"Duplicated in virtual",
-										L"<" + AVirtualChildShape->XMLName +
-										"> must occur only 1 time but is duplicated in virtual <" +
-										AVirtualShape->Src + ">");
+											L"<" + AVirtualChildShape->XMLName +
+											"> must occur only 1 time but is duplicated in virtual <" +
+											AVirtualShape->Src + ">");
 									}
 								}
 							}
 						}
 					}
-				} else {
+				}
+				else {
 					/* WARNING: this is non-standard inclusion just to save visual layout */
 					AStateNode = ANode->AppendElement(L"state");
 					AStateNode->SetAttr(L"id", AVirtualShape->SimpleText);
@@ -1937,18 +2181,18 @@ namespace Statemachine {
 						}
 
 						const UnicodeString sGuiFormat = UnicodeString().sprintf
-							(L"   node-size-and-position x=%d y=%d w=%d h=%d  ", iX, iY,
-							ABaseShape->Width, ABaseShape->Height);
+							(L"   node-size-and-position x=%d y=%d w=%d h=%d  ", iX, iY, ABaseShape->Width,
+							ABaseShape->Height);
 						AStateNode->AppendComment(sGuiFormat);
 					}
 
 					// Simple
 					if (AMetaTypes.Contains(vmiSimple)) {
-						const UnicodeString sSimpleFormat = UnicodeString().sprintf
-							(L"shape_x_y_w_h:%d;%d;%d;%d", ABaseShape->X0, ABaseShape->Y0,
-							ABaseShape->Width, ABaseShape->Height);
+						const UnicodeString sSimpleFormat = UnicodeString().sprintf(L"%s%d;%d;%d;%d",
+							LITERAL_SIMPLE_SHAPE, ABaseShape->X0, ABaseShape->Y0, ABaseShape->Width,
+							ABaseShape->Height);
 						AStateNode->AppendComment(sSimpleFormat);
-                    }
+					}
 
 					// VSCode
 					if (AMetaTypes.Contains(vmiVSCode)) {
@@ -1961,7 +2205,7 @@ namespace Statemachine {
 
 								TColor AColor = AStateShape->Color;
 								if (AStateShape->IsCluster()) {
-                                	AColor = TColor(RGB(128, 128, 128));
+									AColor = TColor(RGB(128, 128, 128));
 								}
 
 								// Convert TColor to RGB
@@ -2018,11 +2262,69 @@ namespace Statemachine {
 						}
 					}
 
+					// VSCode
+					if (AMetaTypes.Contains(vmiMetadata)) {
+						if (bIsScxml) {
+							AStateNode->SetAttr("xmlns:scxmledit",
+								"https://alexzhornyak.github.io/ScxmlEditor-Tutorial/");
+						}
+
+						ILMDXmlNode *AMetaNode = AStateNode->AppendElement(LITERAL_METADATA);
+
+						std::auto_ptr<TStringList>ASimpleProps(new TStringList);
+						ASimpleProps->Add("X0");
+						ASimpleProps->Add("Y0");
+						ASimpleProps->Add("X1");
+						ASimpleProps->Add("Y1");
+
+						ASimpleProps->Add("Locked");
+
+						ASimpleProps->Add("SelfConnectionInside");
+						ASimpleProps->Add("ChildrenAlignX");
+						ASimpleProps->Add("ChildrenAlignY");
+						ASimpleProps->Add("ChildrenAlignXOffset");
+						ASimpleProps->Add("SkipDebugging");
+						ASimpleProps->Add("AutoVertTextAlign");
+						ASimpleProps->Add("VertTextAlign");
+						ASimpleProps->Add("HorizTextAlign");
+
+						if (ABaseShape->StateChildType == sctVirtual) {
+							ASimpleProps->Add("Src");
+							ASimpleProps->Add("Alias");
+							ASimpleProps->Add("AliasParams");
+						}
+
+						SavePropsToXML(ABaseShape, ASimpleProps.get(), AMetaNode);
+
+					}
 				}
 			}
 
 			/* дочерние элементы */
 			if (ASaveTypes.Contains(istInvisibleChilds) || ASaveTypes.Contains(istMAXSIZE)) {
+				if (ABaseShape->InheritsFrom(__classid(TChildScxmlBaseShape))) {
+					if (AMetaTypes.Contains(vmiMetadata)) {
+						ILMDXmlNode *AMetaNode = AStateNode->AppendElement(LITERAL_METADATA);
+
+						std::auto_ptr<TStringList>ASimpleProps(new TStringList);
+						ASimpleProps->Add("Expanded");
+						ASimpleProps->Add("ClipOutMax");
+						ASimpleProps->Add("ClipOutValue");
+						ASimpleProps->Add("Description");
+
+						SavePropsToXML(ABaseShape, ASimpleProps.get(), AMetaNode);
+
+						if (TVirtualShape *AVirtualShapeParent = dynamic_cast<TVirtualShape *>(ABaseShape->Parent)) {
+                        	AMetaNode->SetBoolAttr(LITERAL_IS_INLINE_VIRTUAL, true);
+						}
+
+						if (AMetaNode->AttrCount == 0) {
+							AStateNode->RemoveChild(AMetaNode);
+						}
+
+					}
+				}
+
 				// все дочерние невидимые
 				for (int i = 0; i < ABaseShape->Children->Count; i++) {
 					TScxmlBaseShape *ABaseChildShape = dynamic_cast<TScxmlBaseShape*>(ABaseShape->Children->Items[i]);
@@ -2059,7 +2361,8 @@ namespace Statemachine {
 								}
 							}break;
 						default:
-							AConnection->AppendTransitionSwitchElement(AStateNode, AConnection->VisualFrom->SimpleText, AMetaTypes);
+							AConnection->AppendTransitionSwitchElement(AStateNode, AConnection->VisualFrom->SimpleText,
+								AMetaTypes);
 							break;
 						}
 
@@ -2079,7 +2382,7 @@ namespace Statemachine {
 								if (it != AEmptyConnections.end()) {
 									throw EStateMachineConnectionException(AConnection, L"Circular deadlock", //
 										UnicodeString().sprintf(L"Circular deadlock detected between [%s] and [%s]",
-										AConnection->Name.c_str(), it->second->Name.c_str()));
+											AConnection->Name.c_str(), it->second->Name.c_str()));
 								}
 							}
 						}
@@ -2525,7 +2828,8 @@ namespace Statemachine {
 
 	// ---------------------------------------------------------------------------
 	void SaveInheritedToScxml(TCustomTree *AEditorRoot, TCustomTree *AEditorAncestor, TStream *AStream,
-		const UnicodeString &sInherited, const TVisualMetaInformationTypes AMetaTypes /* = TVisualMetaInformationTypes() */) {
+		const UnicodeString &sInherited,
+		const TVisualMetaInformationTypes AMetaTypes /* = TVisualMetaInformationTypes() */ ) {
 
 		if (!AEditorRoot)
 			throw Exception(__FUNCTION__ "> AEditorRoot==NULL");

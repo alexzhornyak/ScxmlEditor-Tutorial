@@ -107,6 +107,7 @@ FProject(AProject) {
 	FProjectDefines = L"";
 
 	FVerifyChecksums = true;
+	FInlineBinaryMetadata = true;
 }
 
 // ---------------------------------------------------------------------------
@@ -154,6 +155,8 @@ void __fastcall TProjectProperties::Assign(TPersistent* Source) {
 
 			FProjectDefines = AProjectProperties->FProjectDefines;
 			FVerifyChecksums = AProjectProperties->FVerifyChecksums;
+
+			FInlineBinaryMetadata = AProjectProperties->FInlineBinaryMetadata;
 		}
 		else
 			throw Exception(__FUNCTION__ "> Can not cast <" + Source->ClassName() + "> to <"+this->ClassName() + ">");

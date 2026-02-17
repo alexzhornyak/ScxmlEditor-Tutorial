@@ -13,7 +13,7 @@
 
 **[Video overview - v.2.2](https://youtu.be/30dyXAs-m1A)**
 
-# Scxml Editor 2.6.0
+# Scxml Editor 2.7.0
 Powerful tool for creating, editing and debugging SCXML charts.
 
 ![MainExample](Images/Inheritance_TV_example.gif)
@@ -24,6 +24,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 [![Discord](Images/Discord.svg)](https://discord.gg/5XWDsbEXzn)
 
 ### Changelog
+**2.7.0:** Option to use [Textual Metadata](Doc/ExportScxmlWithMetainformation.md#textual-metadata-project-mode-only) instead of [Binary Metadata](Doc/ExportScxmlWithMetainformation.md#binary-metadata-default)
 **2.6.0:** Export charts with [Qt Creator](Doc/ExportScxmlWithMetainformation.md#qt-creator), [VSCode](Doc/ExportScxmlWithMetainformation.md#vscode), [ScxmlGui](Doc/ExportScxmlWithMetainformation.md#scxmlgui) and [Simple](Doc/ExportScxmlWithMetainformation.md#simple-visual-metainformation-format) graphical metainformation <br>
 **2.5.5:** Chart design panel view presets <br>
 **2.5.4:** Nested initial state indication <br>
@@ -54,7 +55,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 ## Installation
 You can find portable version as attached Zip in ScxmlEditor Github Release page
 
-Latest version: **[2.6.0.1790]**
+Latest version: **[2.7.0.1798]**
 
 ### Windows Installation
 #### First Install

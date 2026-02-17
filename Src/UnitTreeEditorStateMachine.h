@@ -608,6 +608,7 @@ public:
 	void __fastcall SaveToVSCodeScxml(const UnicodeString & sFileName);
 	void __fastcall SaveToScxmlGui(const UnicodeString & sFileName);
 	void __fastcall SaveToSimpleScxml(const UnicodeString & sFileName);
+	void __fastcall SaveToTextMetadataScxml(const UnicodeString & sFileName);
 
 	void __fastcall GetDataIDs(TStrings *AIDList);
 	void __fastcall GetStateNames(TStrings *AStateNamesList);
