@@ -24,7 +24,7 @@ Powerful tool for creating, editing and debugging SCXML charts.
 [![Discord](Images/Discord.svg)](https://discord.gg/5XWDsbEXzn)
 
 ### Changelog
-**2.7.0:** Option to use [Textual Metadata](Doc/ExportScxmlWithMetainformation.md#textual-metadata-project-mode-only) instead of [Binary Metadata](Doc/ExportScxmlWithMetainformation.md#binary-metadata-default)
+**2.7.0:** Option to use [Textual Metadata](Doc/ExportScxmlWithMetainformation.md#textual-metadata-project-mode-only) instead of [Binary Metadata](Doc/ExportScxmlWithMetainformation.md#binary-metadata-default) <br>
 **2.6.0:** Export charts with [Qt Creator](Doc/ExportScxmlWithMetainformation.md#qt-creator), [VSCode](Doc/ExportScxmlWithMetainformation.md#vscode), [ScxmlGui](Doc/ExportScxmlWithMetainformation.md#scxmlgui) and [Simple](Doc/ExportScxmlWithMetainformation.md#simple-visual-metainformation-format) graphical metainformation <br>
 **2.5.5:** Chart design panel view presets <br>
 **2.5.4:** Nested initial state indication <br>
