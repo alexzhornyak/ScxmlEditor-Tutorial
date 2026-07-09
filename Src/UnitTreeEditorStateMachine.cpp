@@ -8532,6 +8532,13 @@ void __fastcall TStateMachineEditor::OnMsgCopyData(TWMCopyData &msg) {
 }
 
 // ---------------------------------------------------------------------------
+void __fastcall TStateMachineEditor::OnMsgUpdatePropInspItems(TMessage &AMsg) {
+	if (this->PropSettingsInspector) {
+    	this->PropSettingsInspector->UpdateItems();
+	}
+}
+
+// ---------------------------------------------------------------------------
 void __fastcall TStateMachineEditor::SaveToBMP(const UnicodeString &sFileName) {
 	TScxmlShape *AScxmlRootShape = this->RootScxml;
 	if (AScxmlRootShape) {

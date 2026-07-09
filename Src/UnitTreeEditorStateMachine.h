@@ -548,10 +548,12 @@ protected:
 	void __fastcall OnMsgDeleteTreeShape(TMessage &AMsg);
 	void __fastcall OnMsgEditTreeShape(TMessage &AMsg);
 	void __fastcall OnMsgCopyData(TWMCopyData &msg);
+	void __fastcall OnMsgUpdatePropInspItems(TMessage &AMsg);
 
 	BEGIN_MESSAGE_MAP
 		VCL_MESSAGE_HANDLER(WM_SCXML_DELETE_TREE_SHAPE, TMessage, OnMsgDeleteTreeShape)
 		VCL_MESSAGE_HANDLER(WM_SCXML_EDIT_TREE_SHAPE, TMessage, OnMsgEditTreeShape)
+		VCL_MESSAGE_HANDLER(WM_SCXML_UPDATE_PROP_INSP_ITEMS, TMessage, OnMsgUpdatePropInspItems)
 		VCL_MESSAGE_HANDLER(WM_COPYDATA, TWMCopyData, OnMsgCopyData)
 	END_MESSAGE_MAP(TTreeEditorEx)
 

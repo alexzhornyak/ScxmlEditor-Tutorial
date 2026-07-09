@@ -2358,6 +2358,8 @@ bool __fastcall TVisualScxmlBaseShape::IsActiveDebugShape(void) {
 __fastcall TChildScxmlBaseShape::TChildScxmlBaseShape(Classes::TComponent * AOwner) : TScxmlBaseShape(AOwner) {
 	FClipOutMax = MAX_SIMPLETEXT_LENGTH;
 	FClipOutValue = true;
+	FClipOutLinesMax = 0;
+	FMultiLine = false;
 	FDescription = L"";
 	FEditByDefault = L"";
 }
@@ -2381,7 +2383,9 @@ void __fastcall TChildScxmlBaseShape::Assign(Classes::TPersistent * Source) {
 			TChildScxmlBaseShape * ABaseShape = dynamic_cast<TChildScxmlBaseShape*>(Source);
 			if (ABaseShape) {
 				this->FClipOutMax = ABaseShape->ClipOutMax;
+				this->FMultiLine = ABaseShape->MultiLine;
 				this->FClipOutValue = ABaseShape->ClipOutValue;
+				this->FClipOutLinesMax = ABaseShape->ClipOutLinesMax;
 				this->FDescription = ABaseShape->FDescription;
 				this->BrotherIndex = ABaseShape->BrotherIndex;
 				this->FEditByDefault = ABaseShape->FEditByDefault;
@@ -2465,6 +2469,22 @@ void __fastcall TChildScxmlBaseShape::DefaultEditProperty(void) {
 }
 
 // ---------------------------------------------------------------------------
+void __fastcall TChildScxmlBaseShape::SetMultiLine(bool bVal) {
+	if (this->FMultiLine != bVal) {
+		this->FMultiLine = bVal;
+
+		this->UpdateSimpleText();
+
+		if (!this->ComponentState.Contains(csLoading) && !this->ComponentState.Contains(csReading)) {
+			TStateMachineEditor *AEditor = this->GetStateMachineEditor();
+			if (AEditor) {
+				PostMessage(AEditor->Handle, WM_SCXML_UPDATE_PROP_INSP_ITEMS, 0, 0);
+			}
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
 void __fastcall TChildScxmlBaseShape::SetDefaultEditableProps(TStrings *AList) {
 	std::vector<TDefaultEditorPair>AVecEditors = GetEditByDefaultEditors();
 
@@ -2488,6 +2508,10 @@ UnicodeString __fastcall TChildScxmlBaseShape::GetEditByDefaultValue(void) {
 // это событие вызывается для проверки фильтрации свойств
 bool __fastcall TChildScxmlBaseShape::OnFilterPropEvent(const UnicodeString &sPropName) {
 	if (sPropName == L"EditByDefault" && !HasDefaultEditableProps()) {
+		return false;
+	}
+
+	if (sPropName == L"ClipOutLinesMax" && !this->MultiLine) {
 		return false;
 	}
 
@@ -2536,6 +2560,10 @@ UnicodeString __fastcall TChildScxmlBaseShape::OnGetHTMLPropertyInfo(const Unico
 		;
 	}
 
+	if (sPropName == L"MultiLine") {
+		return L"Text will be displayed as multiple lines instead of single line\n";
+	}
+
 	if (sPropName == L"ClipOutValue") {
 		return //
 		"If it is set to <B>true</B> then the shape's text will be cut until <B>ClipOutMax</B> position\n" //
@@ -2555,6 +2583,11 @@ UnicodeString __fastcall TChildScxmlBaseShape::OnGetHTMLPropertyInfo(const Unico
 		"    ClipOutValue=true\n" //
 		"    ClipOutMax=5\n" //
 		"Result: Text=<B>'Very'</B>\n";
+	}
+
+	if (sPropName == L"ClipOutLinesMax") {
+		return L"Restrict lines count in <B>MultiLine</B> mode\n" //
+			"If <B>0</B> is set, then lines are not clipped\n";
 	}
 
 	if (sPropName == L"EditByDefault") {
@@ -2610,9 +2643,46 @@ TColor __fastcall TChildScxmlBaseShape::GetNormalFontColor(void) {
 void __fastcall TChildScxmlBaseShape::UpdateSimpleText() {
 	if (!ComponentState.Contains(csLoading) && !ComponentState.Contains(csReading)) {
 
-		UnicodeString sOut = StringReplace(GetOutValue().Trim(), "\r\n", " ", TReplaceFlags() << rfReplaceAll);
-		if (ClipOutValue && sOut.Length() > ClipOutMax) {
-			sOut = sOut.SetLength(ClipOutMax).Trim() + " ...";
+		UnicodeString sOut = L"";
+
+		if (this->MultiLine) {
+			if (this->ClipOutValue) {
+				std::auto_ptr<TStringList>AStringsPtr(new TStringList);
+				AStringsPtr->Text = GetOutValue().Trim();
+
+				const int iTotalCount = AStringsPtr->Count;
+
+				bool bIsAnyRemoved = false;
+
+				for (int i = AStringsPtr->Count - 1; i >= 0; i--) {
+
+					if (this->ClipOutLinesMax > 0 && i >= this->ClipOutLinesMax) {
+						AStringsPtr->Delete(i);
+						bIsAnyRemoved = true;
+					}
+					else {
+						if (ClipOutMax > 0 && AStringsPtr->Strings[i].Length() > ClipOutMax) {
+							AStringsPtr->Strings[i] = AStringsPtr->Strings[i].SetLength(ClipOutMax).Trim() + " ...";
+						}
+					}
+				}
+
+				if (bIsAnyRemoved) {
+					const int iLeftStrings = iTotalCount - AStringsPtr->Count;
+					AStringsPtr->Add(UnicodeString().sprintf(L"(%d more lines) ... ", iLeftStrings));
+				}
+
+				sOut = AStringsPtr->Text;
+			}
+			else {
+				sOut = GetOutValue().Trim();
+			}
+		}
+		else {
+			sOut = StringReplace(GetOutValue().Trim(), "\r\n", " ", TReplaceFlags() << rfReplaceAll);
+			if (ClipOutValue && ClipOutMax > 0 && sOut.Length() > ClipOutMax) {
+				sOut = sOut.SetLength(ClipOutMax).Trim() +  " ...";
+			}
 		}
 
 		// почему то без переменной XMLName возвращает NULL !
@@ -2633,8 +2703,16 @@ void __fastcall TChildScxmlBaseShape::UpdateSimpleText() {
 			}
 		}
 
-		SimpleText = sOut.IsEmpty() ? sXMLName : UnicodeString().sprintf(L"%s%s {%s}", sXMLName.c_str(),
-			sXMLTextInfo.c_str(), sOut.c_str());
+		sOut = sOut.IsEmpty() ? sXMLName : UnicodeString().sprintf(L"%s%s {%s}", sXMLName.c_str(),
+			sXMLTextInfo.c_str(), sOut.TrimRight().c_str());
+
+		if (this->MultiLine) {
+			this->Text->Text = sOut;
+		}
+		else {
+			this->Text->Clear();
+			SimpleText = sOut;
+		}
 
 		UpdateParentSimpleText();
 

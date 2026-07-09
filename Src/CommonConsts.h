@@ -43,6 +43,8 @@
 #define WM_SCXML_ADD_OR_OPEN_EXISTING_UNIT			WM_USER+107
 #define WM_SCXML_UPDATE_DBG_MSG_QUEUE				WM_USER+108
 #define WM_SCXML_EDIT_TREE_SHAPE                  	WM_USER+109
+#define WM_SCXML_UPDATE_PROP_INSP_ITEMS            	WM_USER+110
+
 
 #include <map>
 

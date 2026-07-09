@@ -558,6 +558,10 @@ private:
 	SET_SHAPE_VALUE_UPDATESIMPLETEXT_TYPE(int,ClipOutMax);
 	bool 	FClipOutValue;
 	SET_SHAPE_VALUE_UPDATESIMPLETEXT_TYPE(bool,ClipOutValue);
+	int 	FClipOutLinesMax;
+	SET_SHAPE_VALUE_UPDATESIMPLETEXT_TYPE(int,ClipOutLinesMax);
+	bool 	FMultiLine;
+	void __fastcall SetMultiLine(bool bVal);
 
 	UnicodeString FDescription;
 	UnicodeString FEditByDefault;
@@ -633,8 +637,12 @@ public:
 
 __published:
 	__property ChildIndex;
+	__property bool MultiLine = {read=FMultiLine,write=SetMultiLine,default=false};
 	__property int ClipOutMax = {read=FClipOutMax,write=SetClipOutMax,default=MAX_SIMPLETEXT_LENGTH};
 	__property bool ClipOutValue = {read=FClipOutValue,write=SetClipOutValue,default=true};
+	__property int ClipOutLinesMax = {read=FClipOutLinesMax,write=SetClipOutLinesMax,default=0};
+	__property VertTextAlign;
+	__property HorizTextAlign;
 	__property UnicodeString Description = {read=FDescription, write=SetDescription};
 	__property UnicodeString EditByDefault = {read=GetEditByDefault, write=FEditByDefault, stored=IsEditByDefaultStored};
 };
